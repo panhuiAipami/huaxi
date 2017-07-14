@@ -1,0 +1,14 @@
+[01-Apr-2017 11:45:34] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[01-Apr-2017 11:45:34] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[12-Apr-2017 14:12:25] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[12-Apr-2017 14:12:25] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[21-Apr-2017 15:15:12] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[21-Apr-2017 15:15:12] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[08-May-2017 10:56:00] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[08-May-2017 10:56:00] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[19-May-2017 15:21:35] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[19-May-2017 15:21:35] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[24-May-2017 17:02:58] NOTICE: [pool www] 'user' directive is ignored when FPM is not running as root
+[24-May-2017 17:02:58] NOTICE: [pool www] 'group' directive is ignored when FPM is not running as root
+[24-May-2017 17:02:58] ERROR: unable to bind listening socket for address '127.0.0.1:9000': Address already in use (48)
+[24-May-2017 17:02:58] ERROR: FPM initialization failed
