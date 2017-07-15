@@ -101,22 +101,28 @@ public class UITabBottom extends LinearLayout implements OnClickListener {
         tab1 = newChildItem(MainTabFragEnum.bookcity.getIndex());
         layoutParams = new LayoutParams(0, tabBottomHeight);
         layoutParams.weight = 1;
-        tab1.labelView.setText(getContext().getString(R.string.book_city));
+        tab1.labelView.setText(getContext().getString(R.string.book_catalog));
         tab1.labelView.setTextColor(colorUnclick);
-        tab1.iconView.init(R.mipmap.main_navigation_bookcity_pressed,
-                R.mipmap.main_navigation_bookcity_normal);
+        tab1.iconView.init(R.mipmap.main_navigation_paihang_pressed,
+                R.mipmap.main_navigation_paihang_normal);
         addView(tab1.parent, layoutParams);
+        /**main_navigation_bookcity_pressed
+         * main_navigation_bookcity_normal
+         * main_navigation_paihang_pressed
+         * main_navigation_paihang_normal
+         * book_catalog
+         */
 
          // tab2(排行)
         tab2 = newChildItem(MainTabFragEnum.paihang.getIndex());
         layoutParams = new LayoutParams(0, tabBottomHeight);
         layoutParams.weight = 1;
-        tab2.labelView.setText(getContext().getString(R.string.book_catalog));
+        tab2.labelView.setText(getContext().getString(R.string.book_city));
         tab2.labelView.setTextColor(colorUnclick);
-        tab2.iconView.init(R.mipmap.main_navigation_paihang_pressed,
-        R.mipmap.main_navigation_paihang_normal);
+        tab2.iconView.init(R.mipmap.main_navigation_bookcity_pressed,
+        R.mipmap.main_navigation_bookcity_normal);
         addView(tab2.parent, layoutParams);
-        tab2.parent.setVisibility(GONE);
+//        tab2.parent.setVisibility(GONE);
 
 
         // tab3(个人中心)

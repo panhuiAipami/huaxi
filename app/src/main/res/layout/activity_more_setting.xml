@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="net.huaxi.reader.activity.MoreSettingActivity">
+
+    <RelativeLayout
+        android:id="@+id/detail_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_common_red_background"
+            android:padding="7dp"
+            android:src="@mipmap/login_back_image_pressed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/readpage_works_setting"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+    </RelativeLayout>
+
+
+    <!--   行间距 -->
+    <RelativeLayout
+        android:id="@+id/line_space_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/more_setting_content_height"
+        android:background="#fff"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/readpage_line_space"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="@dimen/usercenter_content_textsize" />
+
+
+        <TextView
+            android:id="@+id/line_space_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:drawablePadding="12dp"
+            android:drawableRight="@mipmap/usercenter_more_icon"
+            android:gravity="center" />
+
+    </RelativeLayout>
+
+
+    <include layout="@layout/line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/more_setting_content_height"
+        android:background="#fff"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/readpage_clicklift_nextpages"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="@dimen/usercenter_content_textsize" />
+
+
+        <ToggleButton
+            android:id="@+id/tb_lift_next"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/more_setting_content_height"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/selector_setting_auto_subscription"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <include layout="@layout/line" />
+
+
+    <!-- 自动订购 -->
+    <LinearLayout
+        android:id="@+id/autosub_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_to_titlebar"
+        android:background="#fff"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_setting_content_height"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/readpage_automatic_order_book_chapter"
+                android:textColor="@color/c04_themes_color"
+                android:textSize="@dimen/usercenter_content_textsize" />
+
+            <ToggleButton
+                android:id="@+id/tb_order_chapter"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/more_setting_content_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@null"
+                android:checked="true"
+                android:drawableRight="@drawable/selector_setting_auto_subscription"
+                android:textOff=""
+                android:textOn="" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/line" />
+
+</LinearLayout>

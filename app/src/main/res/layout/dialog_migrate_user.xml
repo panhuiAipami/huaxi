@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+    >
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/migrate_login"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/migrate_dialog_title"/>
+
+    <TextView
+        android:id="@+id/tv_dialog_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="10dp"
+        android:text="尊敬的秋秋不等冬天，检测到您有3个账号等待同步，是否同步到新账户内？"/>
+
+
+    <net.huaxi.reader.view.ListViewForScrollView
+        android:id="@+id/lv_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:gravity="center_vertical">
+    </net.huaxi.reader.view.ListViewForScrollView>
+
+
+    <Button
+        android:id="@+id/btn_start_migrate"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/selector_common_btn_rad_bg"
+        android:text="开始同步"
+        android:textColor="@android:color/white"/>
+</LinearLayout>

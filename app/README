@@ -1,0 +1,93 @@
+APP新增常用的方法
+
+a.ReportUtils.reportError();   //上传错误日志
+b.XSErrorEnum类  //阅读客户端的CODE枚举;
+
+
+
+
+
+
+
+
+1,问题：导入项目，无法识别项目中的module
+  原因：gradle版本不相同
+  解决办法：下载最新的gradle(com.android.tools.gradle和gradle文件的名字是不对称的)
+
+2,loginhelper用法
+    (0)在manifest中要加上
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <permission android:name="android.permission.WRITE_APN_SETTINGS" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    	   <!-- QQ登录需要 -->
+                <activity
+                    android:name="com.tencent.tauth.AuthActivity"
+                    android:launchMode="singleTask"
+                    android:noHistory="true" >
+                    <intent-filter>
+                        <action android:name="android.intent.action.VIEW" />
+                        <category android:name="android.intent.category.DEFAULT" />
+                        <category android:name="android.intent.category.BROWSABLE" />
+                        <data android:scheme="tencent1104897952" />//appid
+                    </intent-filter>
+                </activity>
+                <activity
+                    android:name="com.tencent.connect.common.AssistActivity"
+                    android:configChanges="orientation|keyboardHidden|screenSize"
+                    android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+                <!-- 微信登录需要 -->
+                <!-- exported=true 表示应用可以跨进程使用 -->
+                <activity
+                    android:name="cn.xs.reader.wxapi.WXEntryActivity"
+                    android:exported="true"
+                    android:label="@string/app_name" >
+                </activity>
+                <!-- 必须注册在微博授权，分享微博时候用到 -->
+                <activity
+                    android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+                    android:configChanges="keyboardHidden|orientation"
+                    android:exported="false"
+                    android:windowSoftInputMode="adjustResize" >
+                </activity>
+
+    (1)activity要实现IWeiboHandler.Response主要用于微博分享
+    (2)下面是在需要第三方应用的功能，应该添加的方法
+	private LoginHelper getLoginHelper() {
+		if (loginHelper == null) {
+			loginHelper = new LoginHelper(MainActivity.this);
+			AppContext.loginHelper = loginHelper;
+		}
+		return loginHelper;
+	}
+	//qq回调
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (this.loginHelper != null) {
+			this.loginHelper.ActivityResult(requestCode, resultCode, data);
+		}
+	}
+
+	// 微博分享返回用
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		this.loginHelper.NewIntent(intent, this);
+	}
+
+	@Override
+	public void onResponse(BaseResponse arg0) {
+		this.loginHelper.WBOnResponse(arg0);
+	}
+	(3)使用
+	  分享方法以share开头
+	  登录方法getLoginHelper().QQLogin();getLoginHelper().WxLogin();getLoginHelper().WbLogin();
+	(4)loginHelper注意事项
+3，强大的下拉刷新框架
+        github地址：https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
+        使用方法compile 'in.srain.cube:ultra-ptr:1.0.11'
+
+4,请求返回解析类ResponseHelper

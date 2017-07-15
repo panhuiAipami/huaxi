@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/c12_themes_color">
+
+    <include
+        layout="@layout/item_topbar_layout"/>
+
+    <RelativeLayout
+        android:id="@+id/man_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男生倾向"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="@dimen/usercenter_content_textsize"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            />
+
+        <ImageView
+            android:id="@+id/setting_checked_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/setting_checked"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+    <include layout="@layout/line_margin"/>
+    <RelativeLayout
+        android:id="@+id/women_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女生倾向"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="@dimen/usercenter_content_textsize"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/setting_checked_women"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/setting_checked"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+    <include layout="@layout/line_margin"/>
+</LinearLayout>

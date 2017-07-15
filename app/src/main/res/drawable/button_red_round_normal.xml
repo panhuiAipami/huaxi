@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 实体 -->
+    <!--<solid android:color="#EC4549" ></solid>-->
+    <solid android:color="#EC4549" ></solid>
+    <!--圆角-->
+    <corners android:radius="@dimen/sex_classify_bg_corner"></corners>
+</shape>

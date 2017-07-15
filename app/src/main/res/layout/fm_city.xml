@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c12_themes_color">
+
+    <RelativeLayout
+        android:id="@+id/city_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color">
+
+        <TextView
+            android:id="@+id/city_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="书城"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+        <ImageView
+            android:id="@+id/city_title_right_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:padding="7dp"
+            android:scaleType="center"
+            android:background="@drawable/selector_common_red_background"
+            android:src="@mipmap/city_search_press"
+            />
+    </RelativeLayout>
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/city_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/city_title_layout"
+        app:stl_overlineColor="#4D000000"
+        app:stl_overlineThickness="0dp"
+        app:stl_underlineColor="#e1e1e1"
+        app:stl_underlineThickness="1dp"
+        app:stl_dividerColor="@color/c01_themes_color"
+        app:stl_dividerThickness="0dp"
+        app:stl_defaultTabTextColor="@color/c05_themes_color"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorWithoutPadding="false"
+        app:stl_indicatorInFront="true"
+        app:stl_indicatorInterpolation="linear"
+        app:stl_indicatorGravity="bottom"
+        app:stl_indicatorColor="@color/c01_themes_color"
+        app:stl_indicatorThickness="2dp"
+        app:stl_indicatorWidth="47dp"
+        app:stl_indicatorCornerRadius="2dp"
+        app:stl_defaultTabTextSize="15dp"
+        android:layout_centerHorizontal="true"
+        app:stl_distributeEvenly="true"
+        app:stl_customTabTextLayoutId="@layout/custom_city_tab_textview"
+        app:stl_customTabTextViewId="@id/city_custom_textview"
+        android:background="@color/c12_themes_color"></com.ogaclejapan.smarttablayout.SmartTabLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/city_tab_layout"
+        android:background="@color/c12_themes_color">
+
+        <net.huaxi.reader.view.ViewPager
+            android:id="@+id/city_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:flipInterval="30"
+            android:persistentDrawingCache="animation">
+
+        </net.huaxi.reader.view.ViewPager>
+    </RelativeLayout>
+    <!--<cn.xs.reader.view.CityShadowLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/city_title_layout"-->
+    <!--></cn.xs.reader.view.CityShadowLayout>-->
+</RelativeLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+                android:background="@color/c11_themes_color">
+    <TextView
+        android:id="@+id/clear_read_record"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textColor="@color/c05_themes_color"
+        android:textSize="@dimen/f06_font_size"
+        android:drawableLeft="@mipmap/delete_read_record"
+        android:drawablePadding="9dp"
+        android:text="清空记录"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        />
+</RelativeLayout>

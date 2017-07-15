@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">花溪小说</string>
+    <string name="appid_bugly">900019649</string>
+    <string name="loading">努力加载中\u2026</string>
+    <string name="common_title">通用标题</string>
+
+    <!-- 主界面 -->
+    <string name="book_shelf">书架</string>
+    <string name="book_city">书城</string>
+    <string name="book_catalog">周刊</string>
+    <string name="book_mine">我的</string>
+
+    <!-- 阅读页 -->
+    <string name="readpage_catalog_download_error">目录加载失败(%1$d)</string>
+    <string name="readpage_pay_button">订阅</string>
+    <string name="readpage_pay_price">现价: %1$s 花瓣</string>
+    <string name="readpage_pay_balance">余额: %1$d 花瓣</string>
+    <string name="readpage_pay_originprice">原价: %1$s 花瓣</string>
+    <string name="readpage_pay_auto">自动订阅后续VIP章节</string>
+    <string name="readpage_max_textsize">已是最大字体</string>
+    <string name="readpage_min_textsize">已是最小字体</string>
+    <string name="readpage_content_download_url_empty">下载地址为空( bookid=%1$s | chapterid =%2$s )"</string>
+    <string name="readpage_warm_tips">温馨提示</string>
+    <string name="readpage_liketoaddshelf">喜欢么，放入书架吧</string>
+    <string name="readpage_catalog">目录</string>
+    <string name="readpage_comment">评论</string>
+    <string name="readpage_setting">设置</string>
+    <string name="readpage_more">更多</string>
+    <string name="readpage_pre_chapter">上一章</string>
+    <string name="readpage_next_chapter">下一章</string>
+    <string name="readpage_monthly">开通会员，免费看书 >>></string>
+    <string name="readpage_addtoshelf">立即加入书架</string>
+    <string name="readpage_addnexttime">下本再说吧</string>
+
+
+    <!--忘记密码-->
+    <string name="forgetpassword">找回密码</string>
+    <!--账户没有关联任何的信息-->
+    <string name="account_no_any_relation">由于您输入的账号从未绑定任何安全验证方式，建议您与我们的客服人员取得联系，进行人工验证。谢谢您的配合！</string>
+    <!--    系统提示语   -->
+    <string name="not_available_network">当前网络不可用，请检查联网状态</string>
+    <string name="network_server_error">服务器繁忙，请稍后重试!</string>
+    <string name="areyousurelogout" translatable="false">确定要退出吗</string>
+    <!-- 目录中的章节提示 -->
+    <string name="chapter_free">免费</string>
+    <string name="chapter_buy">已付费</string>
+    <string name="chapter_download">已下载</string>
+    <!-- 目录加载提示语-->
+    <string name="catalog_loading">努力读取目录中\u2026</string>
+    <string name="download_group_tag">第%1$d章节——第%2$d章</string>
+    <string name="download_chapter_num">已选：%1$d章节</string>
+    <string name="download_chapter_pay">价格：%1$d阅币</string>
+    <string name="download_user_coin">余额：%1$s阅币</string>
+    <string name="chatper_num">第%1$d章节</string>
+    <string name="chapter_count">共%1$d章</string>
+    <string name="chapter_updata_count">更新到%1$d章</string>
+    <!-- 下载部分-->
+    <string name="chapter_price">%1$d阅币</string>
+    <string name="catalog_count">共0章</string>
+    <string name="download_ok">确认下载</string>
+    <string name="select_all">章节全选</string>
+    <string name="has_download">已下载</string>
+    <string name="download">下载</string>
+    <string name="cancel">取消</string>
+    <string name="cancel_all">取消全选</string>
+    <string name="download_error">没给您加载出来...</string>
+    <string name="close">返回</string>
+    <string name="need_more_coin">当前余额不足，无法下载</string>
+    <string name="no">取消</string>
+    <string name="go_bug">去充值</string>
+    <string name="ok">确定</string>
+    <string name="download_in_background">后台下载</string>
+    <string name="download_cancel">取消下载</string>
+    <string name="download_failure">有%1$d章没有下载成功</string>
+    <string name="download_please_wait">努力加载中...</string>
+    <string name="download_please_waiting">正在下载，请耐心等待...</string>
+    <string name="download_try_again">重试</string>
+    <!-- 分享-->
+    <string name="weixin_share">微信好友</string>
+    <string name="weixin_circle">朋友圈</string>
+    <string name="qq_qzone">QQ空间</string>
+    <string name="weibo">微博</string>
+    <string name="not_install_wx_client">尚未安装微信客户端</string>
+    <string name="not_install_qq_client">尚未安装QQ客户端</string>
+    <string name="not_support_qq_client">需要最新版本的QQ客户端</string>
+    <!--搜书 -->
+    <string name="not_available_key">对不起，换个关键词也许就找到了</string>
+    <string name="all_download">已全部下载</string>
+    <string name="data_something">数据出现了一些错误</string>
+    <string name="download_over">下载完成</string>
+    <string name="claer_history">清除搜索历史</string>
+    <!--版本更新 -->
+    <string name="version_update">新版本更新提醒</string>
+    <string name="update_ok">立即享受新版本</string>
+    <string name="update_cancel">下次提醒我</string>
+    <string name="download_progress">正在下载中，请稍后\u2026(%1$s%%)</string>
+
+    <!--密码找回模块-->
+    <string name="forgotpassword_senderror">发送验证码失败</string>
+    <string name="forgotpassword_sendsuccess">验证码发送成功</string>
+    <string name="code_format_error">请输入正确的短信验证码</string>
+    <string name="code_format_null">验证码为空</string>
+    <string name="code_format_success">验证成功</string>
+    <string name="forgotpassword_changesuccess">已记住新密码</string>
+    <string name="get">重新获取</string>
+    <string name="phonenum_is_blank">手机号码为空</string>
+    <string name="phonenum_is_error">手机号码输入错了哦！</string>
+    <string name="photo_verification_is_blank">图片验证码为空</string>
+    <string name="photo_verification_is_error">图片验证码输入错了哦！</string>
+    <string name="photo_verification_is_overdue">图片验证码过期</string>
+    <string name="forgot_verification_message">验证安全信息</string>
+    <string name="forgot_send_fali">验证码发送失败</string>
+    <string name="forgot_password_can_not_empty">密码不能为空</string>
+    <string name="forgot_password_not_same">两次输入密码不同</string>
+    <string name="forgot_password_null">请输入确认密码</string>
+    <string name="forgot_get">获取</string>
+    <string name="forgot_new_password">新密码</string>
+    <string name="forgot_verification_password">确认密码</string>
+    <string name="forgot_password_get">完成</string>
+    <!--修改密码模块-->
+    <string name="changepassword_phone_num_lable">手机号码:</string>
+    <string name="changepassword_pwd_is_blank">密码不能为空</string>
+    <string name="changepassword_pwd_is_error">密码为6到12位</string>
+    <string name="changepassword_twopwd_is_not_same">两次输入密码不同</string>
+    <string name="changepassword_twopwd_is_null">请输入确认密码</string>
+    <string name="changepassword_changesuccess">已记住新密码</string>
+    <string name="changepassword_verification_err">请输入正确的短信验证码</string>
+    <string name="changepassword_verification_null">请输入短信验证码</string>
+    <!--<string name="changepassword_changeerror">修改密码失败</string>-->
+    <!--注册模块-->
+    <string name="register_virify_code_is_blank">验证码不能为空</string>
+    <string name="register_virify_code_is_error">验证码输入错误</string>
+    <!--<string name="register_net_error">当前网络异常，请重试</string>-->
+    <string name="register_error">注册失败</string>
+    <string name="register_sucess">恭喜您，注册成功</string>
+    <string name="register_phone_error">请输入正确的手机号码</string>
+    <string name="register_phone">请输入手机号码</string>
+    <string name="register_need_to_login">,需要直接登录吗</string>
+    <string name="register_positive">确定</string>
+    <string name="register_negative">取消</string>
+    <!--绑定手机模块-->
+    <string name="band_bandphone">绑定手机</string>
+    <string name="band_unbandphone">解绑手机</string>
+    <string name="band_banderror">绑定失败</string>
+    <string name="band_unbanderror">解绑失败</string>
+    <string name="band_bandsuccess">已记住手机号</string>
+    <string name="band_unbandsuccess">已将手机解绑</string>
+    <string name="band_band_phone">绑定手机</string>
+    <string name="band_band_phone_colon">绑定手机:</string>
+    <string name="band_unband_phone">解绑手机</string>
+    <string name="band_please_input_verification">请输入验证码</string>
+    <!-- 详情模块-->
+    <string name="detail_comment_size">%d条</string>
+    <string name="detail_add_bookshelf">加入书架</string>
+    <string name="detail_added_bookshelf">已在书架</string>
+    <string name="detail_book_not_found">没找到作品信息，请点击重试</string>
+    <string name="detail_about_1000_chase">约1000人追</string>
+    <string name="detail_ten_thousand_chase">万人追</string>
+    <string name="detail_one_chase">人追</string>
+    <string name="detail_ten_thousand_word">万字</string>
+    <string name="detail_word">字</string>
+    <string name="detail_serial">连载</string>
+    <string name="detail_finsh">完结</string>
+    <string name="detail_unknow">未知</string>
+    <string name="detail_this_book_is_on_shelf">本书已在书架中</string>
+    <string name="detail_add_fail">添加失败</string>
+    <string name="detail_add_success">已放入书架</string>
+    <string name="detail_go_comment">进入书评区看看</string>
+    <string name="detail_book_text_price">%s分/千字</string>
+    <string name="detail_to_write_comment">快来抢沙发</string>
+    <string name="detail_comment">书评</string>
+    <!-- 登录相关-->
+    <string name="login_to_sync">登录后享受云同步</string>
+    <string name="need_login">请登录后评论</string>
+    <string name="login">登录</string>
+    <string name="please_input_phonenum">请输入手机号</string>
+    <string name="please_input_username">请输入用户名/手机号/邮箱</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_verification_code">请输入验证码</string>
+    <string name="login_lock_count_down">还有%d次该用户将被锁定</string>
+    <string name="login_fail">登录失败</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_user_name_null">请输入用户名</string>
+    <string name="login_user_password_null">请输入密码</string>
+    <!-- 评论模块-->
+    <string name="comment_success">评论成功</string>
+    <string name="comment_error">评论失败（%d）</string>
+    <string name="please_waiting_5m">这部书5分钟后才能再次评论</string>
+    <!-- 搜索提示-->
+    <string name="please_input_key">请输入书名或者作者名</string>
+    <!--个人中心上面的标题 -->
+    <string name="user_center">我的</string>
+    <string name="user_privacy_protection_agreement">用户许可协议</string>
+    <string name="please_input_comment">畅所欲言吧（不少于10个字）</string>
+    <!--个人主页-->
+    <string name="myinfo_id_is_copy">用户ID已复制到剪切板</string>
+    <string name="myinfo_user_id">用户ID:</string>
+    <string name="myinfo_please_band_phone_num">请先绑定手机号码</string>
+    <string name="myinfo_update_fail">修改失败</string>
+    <string name="myinfo_update_success">修改成功</string>
+    <string name="myinfo_upload_start">开始上传</string>
+    <string name="myinfo_can_not_upload">无法上传</string>
+    <string name="myinfo_please_input_sdcard">请插入sd卡</string>
+    <string name="myinfo_title_text">我的资料</string>
+    <string name="person_setting">设置</string>
+    <string name="person_consume_record">消费记录</string>
+    <string name="person_member">会员</string>
+    <string name="person_recharge">充值</string>
+    <string name="seach_about_book">相关推荐</string>
+    <!-- 阅读页更多-->
+    <string name="readpage_not_find_book">对不起，书籍没有找不到!</string>
+    <string name="readpage_works_setting">作品设置</string>
+    <string name="readpage_automatic_order_book_chapter">自动订购本书下一章</string>
+    <string name="readpage_catalog_back">倒序</string>
+    <string name="readpage_clicklift_nextpages">点击屏幕左侧翻下页</string>
+    <string name="readpage_line_space">行间距</string>
+    <string name="readpage_line_space_set">行间距设置</string>
+    <!-- 评论页-->
+    <string name="comment_write">写书评</string>
+    <string name="comment_title">书评</string>
+    <string name="comment_text_too_short">输入字数不少于10个字</string>
+    <string name="comment_no_body">还没有人评论哦~点击抢沙发</string>
+    <string name="comment_no_count">还没有人评论哦~</string>
+    <string name="rechargedetail">充值详情</string>
+    <string name="myinfo_change_nikename">该昵称已被占用</string>
+    <string name="download_coin_not_enough">余额不足</string>
+
+    <!-- 书架 -->
+    <string name="bookshelf_nobook">书城书很多，挑几本喜欢的吧</string>
+    <string name="readpage_catalog_positive_sequence">顺序</string>
+    <string name="readpage_catalog_permutation">倒序</string>
+    <string name="bookshelf_shelf">书架</string>
+    <string name="bookshelf_recently_recorder">更多内容</string>
+    <string name="shelf_recently_pull_torefresh">下拉查看最近阅读</string>
+    <string name="shelf_recently_let_go">释放查看最近阅读</string>
+    <string name="download_app_commlete">完成下载</string>
+    <string name="download_app_install_apk">立即安装</string>
+    <string name="download_app_install_later">稍后安装</string>
+    <!--用户迁移-->
+    <string name="migrate_dialog_title">账号同步提醒</string>
+    <string name="migrate_login_count">尊敬的%1$s，您好：%2$s我们检测到您有%3$d账号等待同步，是否同步到新账号内？</string>
+    <string name="migrate_logout_count">尊敬的用户，您好：%1$s我们检测到您有%2$d账号等待同步，是否同步到新账号内？"</string>
+    <string name="migrate_success">恭喜您，账户同步成功！</string>
+    <string name="migrate_quasi_success">警告！有部分账号同步失败！</string>
+    <string name="migrate_read_start">立即开始畅读</string>
+    <string name="migrate_fail">对不起，账号同步失败！</string>
+    <string name="migrate_time_out">同步信息超时，从新启动老版本！</string>
+    <string name="migrate_restart">重新发起同步</string>
+
+    <!--充值详情-->
+    <string name="recharge_detail_copy">复制单号</string>
+    <string name="recharge_detail_ignore">我知道了</string>
+    <!--分类子页面-->
+    <string name="classify_all_catalog">全部类目</string>
+    <string name="classify_unlimited">不限</string>
+    <string name="classify_super">人气</string>
+    <string name="classify_open">展开</string>
+    <string name="classify_bay">付费</string>
+    <string name="classify_vip">会员</string>
+    <string name="classify_free">免费</string>
+    <string name="classify_collect">收藏</string>
+    <string name="classify_number">字数</string>
+    <string name="classify_attennion">%s点击</string>
+    <string name="classify_favor">%s收藏</string>
+    <string name="classify_text_numr">%s字</string>
+    <string name="classify_all">全部类目</string>
+
+
+    <!--首屏男女分类-->
+    <string name="sex_classify_title">你更喜欢哪一类作品?</string>
+    <string name="sex_classify_man_like">男生偏好</string>
+    <string name="sex_classify_man_desc1">玄武  武侠</string>
+    <string name="sex_classify_man_desc2">仙侠  历史</string>
+    <string name="sex_classify_man_desc3">灵异  都市</string>
+    <string name="sex_classify_more">\u2026</string>
+    <string name="sex_classify_women_like">女生偏好</string>
+    <string name="sex_classify_women_desc1">现代言情</string>
+    <string name="sex_classify_women_desc2">古代言情</string>
+    <string name="sex_classify_women_desc3">浪漫青春</string>
+    <string name="sex_classify_start">开启阅读之旅</string>
+
+    <!--分类-->
+    <string name="boy">男生</string>
+    <string name="girl">女生</string>
+
+    <!--内容偏好设置-->
+    <string name="setting_man">男生偏好</string>
+    <string name="setting_women">女生偏好</string>
+    <string name="setting_content_like">内容偏好设置</string>
+
+    <!--退出登录提示-->
+    <string name="setting_logout_tips">退出后将失去现有书架信息，是否确认退出？</string>
+    <string name="setting_logout_ok">退出登录</string>
+
+    <!--阅读记录提示-->
+    <string name="read_record_title">最近阅读</string>
+    <string name="sub_scribe_title">订阅记录</string>
+
+
+    <string name="read_record_tips">是否清空最近阅读? </string>
+    <string name="read_record_delete_tips">确定要删除记录么?</string>
+    <string name="read_record_none">最近没有阅读作品</string>
+    <string name="sub_record_none">最近没有订阅过作品</string>
+
+
+</resources>

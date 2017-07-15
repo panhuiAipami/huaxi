@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/white"
+    >
+    <!--左边的layout-->
+    <RelativeLayout
+        android:id="@+id/item_consume_layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginLeft="12dp"
+        >
+
+        <TextView
+            android:id="@+id/item_consume_date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:lines="1"
+            android:text="05.06"
+            android:textColor="@color/c05_themes_color"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/item_consume_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_consume_date_textview"
+            android:gravity="center"
+            android:lines="1"
+            android:text="10:14"
+            android:textColor="@color/c05_themes_color"
+            android:textSize="9dp"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/item_consume_record_logo_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="29dp"
+        android:layout_toRightOf="@id/item_consume_layout1"
+        android:src="@mipmap/item_consume_record_logo_image"/>
+    <!--右边的layout-->
+    <RelativeLayout
+        android:id="@+id/item_consume_layout3"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/item_consume_coin_count_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 15"
+            android:textColor="@color/c01_themes_color"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/item_consume_coin_type_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/item_consume_coin_count_textview"
+            android:text="阅币"
+            android:layout_alignBaseline="@id/item_consume_coin_count_textview"
+            android:textColor="@color/c07_themes_color"
+            android:textSize="12dp"
+            />
+
+
+    </RelativeLayout>
+    <!--中间的view-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/item_consume_layout2"
+        android:layout_toLeftOf="@id/item_consume_layout3"
+        android:layout_toRightOf="@id/item_consume_record_logo_imageview"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="23dp"
+        >
+
+        <TextView
+            android:id="@+id/item_consume_bookname_consume_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="订阅章节"
+            android:textColor="@color/c05_themes_color"
+            android:textSize="14dp"/>
+
+        <TextView
+            android:id="@+id/item_consume_bookname_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="国民诡异路"
+            android:layout_below="@id/item_consume_bookname_consume_type"
+            android:lines="1"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="14dp"
+            />
+    </RelativeLayout>
+</RelativeLayout>

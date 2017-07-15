@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="net.huaxi.reader.activity.BookCommentActivity">
+
+    <RelativeLayout
+        android:id="@+id/detail_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color">
+
+        <FrameLayout
+            android:id="@+id/fl_download_back"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:background="@drawable/selector_common_red_background">
+
+            <ImageView
+                android:id="@+id/iv_download_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_common_red_background"
+                android:padding="7dp"
+                android:scaleType="center"
+                android:src="@mipmap/login_back_image_pressed"/>
+        </FrameLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/comment_title"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+        <ImageView
+            android:id="@+id/iv_write_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/selector_common_red_background"
+            android:padding="7dp"
+            android:src="@mipmap/bookcomment_write"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </android.support.v7.widget.RecyclerView>
+
+
+    <include
+        android:id="@+id/commont_null"
+        layout="@layout/common_comment_null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+
+    <include
+        android:id="@+id/loading_error"
+        layout="@layout/common_broken_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/detail_title_layout"
+        android:visibility="gone"></include>
+</LinearLayout>

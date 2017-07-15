@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c12_themes_color"
+    android:fitsSystemWindows="true"
+    tools:context="net.huaxi.reader.activity.ConsumeRecordActivity">
+
+    <RelativeLayout
+        android:id="@+id/consume_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color"
+        >
+
+        <ImageView
+            android:id="@+id/consume_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_common_red_background"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:src="@mipmap/login_back_image_pressed"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="消费记录"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/consume_listhead_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/consume_title_layout"
+        android:background="@color/c01_themes_color"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="消费时间"
+            android:textColor="#ffffff"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="书名"
+            android:textColor="#ffffff"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="消费金额"
+            android:textColor="#ffffff"
+            />
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/consume_ptrframeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/consume_listhead_layout"
+        >
+
+
+        <ListView
+            android:id="@+id/consume_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#e1e1e1"
+            android:dividerHeight="1px"
+            android:fastScrollEnabled="true"
+            ></ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/consume_no_layout"
+        layout="@layout/common_bookshelf_nobook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/consume_title_layout"
+        android:visibility="gone">
+    </include>
+
+    <include
+        android:id="@+id/consume_net_layout"
+        layout="@layout/common_broken_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/consume_title_layout"
+        android:visibility="gone">
+    </include>
+
+    <include
+        android:id="@+id/consume_loading_layout"
+        layout="@layout/common_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/consume_title_layout"
+        ></include>
+</RelativeLayout>

@@ -44,10 +44,15 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.common.AppManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 
@@ -60,12 +65,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.PostRequest;
 
 /**
  * Created by ZMW on 2015/12/3.

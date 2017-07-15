@@ -25,7 +25,7 @@ import butterknife.OnClick;
 
 
 /**
- * @Description: [新版书城的fragment]
+ * @Description: [新版周刊的fragment]
  * @Author: [Saud]
  * @CreateDate: [16/8/2 13:52]
  * @UpDate: [16/8/2 13:52]
@@ -63,7 +63,7 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     }
 
     private void initData() {
-        mStoreWebview.loadUrl(URLConstants.H5PAGE_SELECTION);
+        mStoreWebview.loadUrl(URLConstants.H5PAGE_WEEKLY);
         mSexClassify = SharePrefHelper.getSexClassify();
         if (mSexClassify == 1) {//女
             UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.BOOKCITY_GIRL);

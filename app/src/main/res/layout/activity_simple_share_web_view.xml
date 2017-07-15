@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.huaxi.reader.activity.SimpleShareWebViewActivity">
+    <RelativeLayout
+        android:id="@+id/simple_webview_share_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color">
+
+        <ImageView
+            android:id="@+id/simple_webview_share_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_common_red_background"
+            android:padding="7dp"
+            android:src="@mipmap/login_back_image_pressed" />
+
+        <TextView
+            android:id="@+id/simple_webview_share_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text=""
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+        <RelativeLayout
+            android:id="@+id/simple_webview_share_imageview_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp">
+
+
+            <ImageView
+                android:id="@+id/simple_webview_share_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selector_common_red_background"
+                android:padding="7dp"
+                android:src="@drawable/selector_book_detail_share" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/simple_webview_share_ptrframeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/simple_webview_share_title_layout"
+        android:background="#fff"
+        >
+
+        <net.huaxi.reader.view.WebView
+            android:id="@+id/simple_webview_share_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </net.huaxi.reader.view.WebView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/simple_webview_share_neterror_layout"
+        layout="@layout/common_broken_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/simple_webview_share_title_layout"
+        android:clickable="true"
+        android:visibility="gone"
+        />
+</RelativeLayout>

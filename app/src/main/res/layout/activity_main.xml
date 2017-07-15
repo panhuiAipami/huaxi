@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <net.huaxi.reader.view.UITabBottom
+        android:id="@+id/main_tools_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c12_themes_color"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp" />
+
+
+    <View
+        android:id="@+id/main_split_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/main_tools_bottom"
+        android:background="@color/c09_divider_color" />
+    <!--底部的蒙版-->
+    <RelativeLayout
+        android:id="@+id/main_tools_mask_backround"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.5"
+        android:background="#000"
+        android:visibility="gone">
+
+    </RelativeLayout>
+    <!--<android.support.v4.view.ViewPager-->
+    <net.huaxi.reader.view.MainViewPager
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/main_split_view" />
+
+</RelativeLayout>

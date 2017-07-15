@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false">
+
+    <TextView
+        android:id="@+id/tv_bookcontent_catalogue_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/readpage_catalog"
+        android:textColor="#5e5e5e"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_bookcontent_catatlogue_chapter_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_bookcontent_catalogue_head"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/tv_bookcontent_catalogue_head"
+        android:text="@string/catalog_count"
+        android:textColor="#a7a7a7"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_seriation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_bookcontent_catalogue_head"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/tv_seriation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="@string/readpage_catalog_back"
+            android:textColor="@color/c01_themes_color"
+            android:textSize="@dimen/readpage_catalog_desc_size" />
+
+        <ImageView
+            android:id="@+id/iv_seriation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/catalog_seriation_light" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

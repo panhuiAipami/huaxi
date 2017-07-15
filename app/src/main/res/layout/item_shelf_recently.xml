@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <net.huaxi.reader.view.RoundImageView
+        android:id="@+id/shelf_recently_item_imageview"
+        android:layout_width="@dimen/shelf_recently_width"
+        android:layout_height="@dimen/shelf_recently_height"
+        android:layout_centerInParent="true"
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/detail_book_default"
+        app:borderRadius="5dp"
+        app:type="round" />
+
+</RelativeLayout>

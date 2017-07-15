@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_bar_height"
+    android:background="@color/c01_themes_color"
+    android:visibility="visible">
+
+    <ImageView
+        android:id="@id/toolbar_layout_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/selector_common_red_background"
+        android:padding="7dp"
+        android:src="@mipmap/login_back_image_pressed" />
+
+    <TextView
+        android:id="@+id/toolbar_layout_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/common_title"
+        android:textColor="@color/c13_themes_color"
+        android:textSize="@dimen/f01_font_size" />
+
+    <ImageView
+        android:id="@id/toolbar_layout_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/selector_common_red_background"
+        android:padding="7dp"
+        android:src="@drawable/selector_book_detail_share"
+        android:visibility="gone"/>
+
+</RelativeLayout>

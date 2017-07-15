@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c12_themes_color"
+    tools:context="net.huaxi.reader.activity.RegisterGetAccountActivity">
+
+    <RelativeLayout
+        android:id="@+id/register2_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color"
+        >
+
+        <ImageView
+            android:id="@+id/register2_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:padding="7dp"
+            android:background="@drawable/selector_common_red_background"
+            android:src="@mipmap/login_back_image_pressed"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="注册"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/register2_verification_layout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/register2_title_layout"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/register2_getverification_textview"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="@string/get"
+            android:textColor="@color/get_verification_code_color"
+            android:textSize="@dimen/usercenter_get_verification_code_size"
+            android:background="@drawable/selector_get_verification_code_checked_background"
+            />
+
+        <EditText
+            android:id="@+id/register2_verification_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBaseline="@id/register2_getverification_textview"
+            android:layout_toLeftOf="@id/register2_getverification_textview"
+            android:background="@color/c12_themes_color"
+            android:hint="@string/please_input_verification_code"
+            android:inputType="number"
+            android:lines="1"
+            android:textColor="#383838"
+            android:textSize="@dimen/usercenter_content_textsize"
+            />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/register2_password2_view1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/register2_verification_layout"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="@dimen/account_center_text_distanse"
+        android:background="#828282"
+        ></View>
+
+    <EditText
+        android:id="@+id/register2_newpassword_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/register2_password2_view1"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/c12_themes_color"
+        android:hint="请输入6-12位字母或数字密码"
+        android:inputType="textPassword"
+        android:lines="1"
+        android:textColor="#383838"
+        android:textSize="@dimen/usercenter_content_textsize"
+        />
+
+    <View
+        android:id="@+id/register2_password2_view2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/register2_newpassword_edittext"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="@dimen/account_center_text_distanse"
+        android:background="#828282"
+        ></View>
+
+    <EditText
+        android:id="@+id/register2_repassword_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/register2_password2_view2"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/c12_themes_color"
+        android:hint="确认密码"
+        android:inputType="textPassword"
+        android:lines="1"
+        android:textColor="#383838"
+        android:textSize="@dimen/usercenter_content_textsize"
+        />
+
+    <View
+        android:id="@+id/register2_password2_view3"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/register2_repassword_edittext"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="@dimen/account_center_text_distanse"
+        android:background="#828282"
+        ></View>
+
+    <Button
+        android:id="@+id/register2_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/register2_repassword_edittext"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="67dp"
+        android:background="@drawable/selector_login_background"
+        android:text="注册"
+        android:textColor="#f8f0f0"
+        android:textSize="@dimen/usercenter_text_size"
+        ></Button>
+
+</RelativeLayout>

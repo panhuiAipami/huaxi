@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_common_background"
+              android:paddingLeft="11dp">
+        <TextView
+            android:id="@+id/title_book_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="@dimen/f03_font_size"
+            android:text="标题"
+            android:layout_marginTop="12dp"
+            />
+
+        <TextView
+            android:id="@+id/title_read_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c06_themes_color"
+            android:textSize="@dimen/f06_font_size"
+            android:text="2012 08/01"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
+            />
+</LinearLayout>

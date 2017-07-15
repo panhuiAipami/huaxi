@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+        <!--<item name="android:background">?android:selectableItemBackground</item>-->
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/c12_themes_color</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
+        <item name="android:listDivider">@drawable/shape_divider</item>
+        <item name="android:textColorHint">@color/c07_themes_color</item>
+        <item name="stickyListHeadersListViewStyle">@style/Widget.ListView</item>
+        <item name="android:progressBarStyle">@style/Widget.AppCompat.ProgressBar</item>
+    </style>
+
+    <!--parent="android:Theme.Material"-->
+    <!-- Application theme.AppBaseTheme -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!--<item name="android:windowBackground">@drawable/app_launch_background</item>-->
+    </style>
+
+    <style name="Theme.xs.Search" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Animation.Activity.Style" parent="android:Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_out</item>
+    </style>
+
+
+    <!-- 加载滚动条样式 -->
+    <style name="loading">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/progressloading</item>
+        <item name="android:indeterminateDuration">1000</item>
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
+    <style name="ShareDialogTheme" parent="android:Animation">
+        <!--<item name="@android:windowEnterAnimation">@anim/pop_share_dialog_in</item>-->
+        <!--<item name="@android:windowExitAnimation">@anim/pop_share_dialog_out</item>-->
+        <item name="@android:windowEnterAnimation">@anim/pop_share_dialog_in</item>
+        <item name="@android:windowExitAnimation">@anim/pop_share_dialog_out</item>
+
+    </style>
+    <!--登录dialog的动画-->
+    <style name="LoginDialogTheme" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
+    <!--阅读页设置阅读进度的进度条 -->
+    <style name="Widget.SeekBar.Normal" parent="@style/Widget.AppCompat.SeekBar">
+        <item name="android:maxHeight">8.0dip</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">
+            @android:drawable/progress_indeterminate_horizontal
+        </item>
+        <item name="android:progressDrawable">@drawable/bookcontent_setting_seekbar_horizontal
+        </item>
+        <item name="android:minHeight">8.0dip</item>
+        <item name="android:thumb">@drawable/shape_seekbar_background</item>
+        <item name="android:thumbOffset">10.0dip</item>
+    </style>
+
+    <!-- 读书页面设置的dailog样式-->
+
+    <style name="bookContentPopupDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:backgroundDimAmount">@android:color/transparent</item>
+    </style>
+
+
+    <style name="bottomPopupDialog" parent="@style/bookContentPopupDialog">
+        <item name="android:windowEnterAnimation">@anim/pop_push_up_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_push_down_out</item>
+    </style>
+
+    <style name="titlePopupDialog" parent="@style/bookContentPopupDialog">
+        <item name="android:windowEnterAnimation">@anim/pop_push_down_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_push_up_out</item>
+
+    </style>
+
+    <style name="RightPopupDialog" parent="@style/bookContentPopupDialog">
+        <item name="android:windowEnterAnimation">@anim/pop_push_right_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_push_right_out</item>
+
+    </style>
+
+
+    <style name="LargeCheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/selector_download_large_checkbox</item>
+    </style>
+
+    <style name="SmallCheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/selector_download_small_checkbox</item>
+    </style>
+
+    <style name="Widget.ListView" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <!--账户迁移的对话框的checkbox的样式-->
+    <style name="MigrateCheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/selector_migrate_checkbox</item>
+    </style>
+
+    <!--分类子页面的筛选条件的样式-->
+    <style name="ClassifyRiadioButton" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/selector_classify_radiobutton</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:width">54dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:height">30dp</item>
+    </style>
+
+    <!--去掉android5.0以上按钮的阴影效果-->
+    <style name="WhiteButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">40dip</item>
+        <item name="android:background"> @drawable/selector_common_btn_white_bg</item>
+        <item name="android:textColor">@color/c07_themes_color</item>
+
+    </style>
+    <!--去掉android5.0以上按钮的阴影效果-->
+    <style name="RedButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">40dip</item>
+        <item name="android:background"> @drawable/selector_common_btn_rad_bg</item>
+        <item name="android:textColor">@color/c13_themes_color</item>
+    </style>
+</resources>

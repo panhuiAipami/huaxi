@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#F9494D</color>-->
+    <color name="colorPrimary">#212a3c</color>
+    <!--<color name="colorPrimaryDark">#F9494D</color>-->
+    <color name="colorPrimaryDark">#1f2839</color>
+    <color name="colorAccent">#e97274</color>
+    <!--获取按钮的字颜色-->
+    <color name="get_verification_code_color">#adadad</color>
+    <!--阅读页面底部字体默认颜色-->
+    <color name="assist_selected_color">#cacaca</color>
+    <!--阅读页夜晚按钮颜色-->
+    <color name="readpage_button_night">#FF822A32</color>
+    <!--阅读页夜晚按钮颜色-->
+    <color name="readpage_button_loading_night">#99822A32</color>
+    <color name="gray_popup_text">#bebebe</color>
+    <!-- 阅读页主图颜色值-->
+    <!-- 主题0-->
+    <color name="bookcontent_type0_background1">#dcdcdc</color>
+    <color name="catalogue_type0_title_textcolor">#323232</color>
+    <color name="bookcontent_type0_textcolor2">#7f7f7f</color>
+    <!--<color name="catalogue_download_textcolor">#ca272a</color>-->
+    <color name="catalogue_download_textcolor">#212A3C</color>
+    <color name="bookcontent_type0_listview_driver">#c0c0c0</color>
+    <!-- 主题1-->
+    <color name="catalogue_type1_title_textcolor">#984a5f</color>
+    <color name="bookcontent_type1_textcolor2">#9a5a67</color>
+    <color name="bookcontent_type1_listview_driver">#c98593</color>
+    <!-- 主题2-->
+    <color name="bookcontent_type2_background1">#c5d5be</color>
+    <color name="catalogue_type2_title_textcolor">#3f473a</color>
+    <color name="bookcontent_type2_textcolor2">#51594b</color>
+    <color name="bookcontent_type2_listview_driver">#a5b797</color>
+    <!-- 主题3-->
+    <color name="catalogue_type3_title_textcolor">#5e4330</color>
+    <color name="bookcontent_type3_textcolor2">#725547</color>
+    <color name="bookcontent_type3_listview_driver">#ba9072</color>
+    <!--夜间-->
+    <color name="bookcontent_type4_background1">#111419</color>
+    <color name="catalogue_type4_title_textcolor">#4d5c6e</color>
+    <color name="bookcontent_type4_textcolor2">#3f4c5d</color>
+    <color name="bookcontent_type4_textcolor3">#822a32</color>
+    <color name="bookcontent_type4_listview_driver">#2b3948</color>
+
+    <color name="book_detail_chaptername">#888</color>
+    <!--search-acitivity-dailog-->
+    <!--弹出框背景颜色-->
+    <color name="catalog_item_color_normal">#F3F3F3</color>
+    <color name="catalog_item_color_pressed">#dadada</color>
+    <!--性别分类按钮颜色-->
+    <color name="sex_classify_normal_bg">#c4c4c4</color>
+
+
+    <!--遮罩-->
+    <color name="c00_themes_color">#000000</color>
+    <!--主题高亮色-->
+    <!--<color name="c01_themes_color">#f9494d</color>-->
+    <color name="c01_themes_color">#212A3C</color>
+    <!--高亮提示色-->
+    <color name="c02_themes_color">#ffc333</color>
+    <!--辅助提示色-->
+    <color name="c03_themes_color">#99664b</color>
+    <!--标题文字-->
+    <color name="c04_themes_color">#333333</color>
+    <!--简介文字-->
+    <color name="c05_themes_color">#666666</color>
+    <!--作者名字，部分简介-->
+    <color name="c06_themes_color">#888888</color>
+    <!--标签名字-->
+    <color name="c07_themes_color">#999999</color>
+    <!--辅助提示文字-->
+    <color name="c08_themes_color">#c8c8c8</color>
+    <!--分割线-->
+    <color name="c09_divider_color">#e1e1e1</color>
+    <!--分割块色-->
+    <color name="c10_themes_color">#f2f2f2</color>
+    <!--弹窗背景色-->
+    <color name="c11_themes_color">#f8f8fd</color>
+    <!--背景色-->
+    <color name="c12_themes_color">#f9f9f9</color>
+    <!--底色-->
+    <color name="c13_themes_color">#ffffff</color>
+    <!--按键不可点击时的text颜色-->
+    <color name="c14_themes_color">#99ffffff</color>
+
+    <!--夜晚模式目录样式-->
+    <color name="readpage_catelog_readed">#797979</color>
+    <color name="readpage_catelog_noclick">#a7a7a7</color>
+
+    <color name="readpage_catelog_night_noclick">#525d66</color>
+    <color name="readpage_catelog_night_readed">#65727f</color>
+
+
+
+</resources>

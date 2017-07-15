@@ -1,9 +1,13 @@
 package net.huaxi.reader.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,23 +25,14 @@ import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.PhoneUtils;
 import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
-import net.huaxi.reader.bean.AppVersion;
-import net.huaxi.reader.dialog.CommonDialogFoot;
-import net.huaxi.reader.util.EventBusUtil;
-import net.huaxi.reader.util.UMEventAnalyze;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.Map;
 
 import net.huaxi.reader.R;
-
+import net.huaxi.reader.bean.AppVersion;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.dialog.CommonDialogFoot;
 import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
@@ -46,6 +41,14 @@ import net.huaxi.reader.model.version.AppVersionService;
 import net.huaxi.reader.thread.AppUpdateTask;
 import net.huaxi.reader.thread.ClearCacheTask;
 import net.huaxi.reader.thread.GetCacheTask;
+import net.huaxi.reader.util.EventBusUtil;
+import net.huaxi.reader.util.UMEventAnalyze;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.Map;
 
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
@@ -58,10 +61,20 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private AppVersion appVersion;
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_setting);
+//        StatusBarCompat.setStatusBarColor(this, R.color.c01_themes_color, false);
 //        EventBus.getDefault().register(this);
         initView();
         initData();

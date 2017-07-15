@@ -15,6 +15,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,18 +32,9 @@ import com.tools.commonlibs.tools.BitmapWriteTool;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
-import net.huaxi.reader.bean.User;
-import net.huaxi.reader.view.CircleImageView;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.huaxi.reader.R;
-
+import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
@@ -52,6 +45,14 @@ import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.thread.UploadPhotoTask;
 import net.huaxi.reader.util.ImageUtil;
+import net.huaxi.reader.view.CircleImageView;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener {
     public static final String REGULAR_USERNAEM = "^[_＿a-zA-Z0-9\\u4e00-\\u9fa5]{2,10}$";
@@ -91,8 +92,17 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         initView();

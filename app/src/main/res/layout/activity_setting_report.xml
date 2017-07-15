@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c12_themes_color"
+    tools:context="net.huaxi.reader.activity.SettingReportActivity">
+
+    <RelativeLayout
+        android:id="@+id/setting_report_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color"
+        >
+
+        <ImageView
+            android:id="@+id/setting_report_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:padding="7dp"
+            android:background="@drawable/selector_common_red_background"
+            android:src="@mipmap/login_back_image_pressed"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="问题反馈"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/setting_report_container"
+        android:layout_below="@id/setting_report_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+    <!--<EditText-->
+        <!--android:id="@+id/setting_report_edittext"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="205dp"-->
+        <!--android:layout_below="@id/setting_report_title_layout"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginRight="12dp"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:gravity="top"-->
+        <!--android:paddingTop="11dp"-->
+        <!--android:paddingLeft="14dp"-->
+        <!--android:paddingRight="14dp"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="@color/body_color"-->
+        <!--android:background="@drawable/shape_setting_report_textview"-->
+        <!--android:hint="您的意见是我们改进的动力"-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/setting_report_textview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginRight="12dp"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:text="提交"-->
+        <!--android:textSize="18dp"-->
+        <!--android:textColor="@color/title_color"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@drawable/selector_submit_background"-->
+        <!--android:layout_below="@id/setting_report_edittext"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_height="45dp"/>-->
+</RelativeLayout>

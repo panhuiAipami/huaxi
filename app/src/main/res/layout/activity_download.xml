@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/c12_themes_color"
+                android:fitsSystemWindows="true"
+                tools:context="net.huaxi.reader.activity.DownLoadActivity">
+
+    <RelativeLayout
+        android:id="@+id/detail_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color">
+
+        <FrameLayout
+            android:id="@+id/fl_download_back"
+            android:layout_width="47dp"
+            android:layout_height="47dp">
+
+            <ImageView
+                android:id="@+id/iv_download_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_common_red_background"
+                android:padding="7dp"
+                android:scaleType="center"
+                android:src="@mipmap/login_back_image_pressed"/>
+        </FrameLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/download"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f01_font_size"
+            />
+
+        <RelativeLayout
+            android:id="@+id/detail_share_imageview_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp">
+
+
+            <TextView
+                android:id="@+id/tv_download_select_all"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selector_common_red_background"
+                android:gravity="center"
+                android:minWidth="47dp"
+                android:padding="7dp"
+                android:singleLine="true"
+                android:text="@string/select_all"
+                android:textColor="@color/c13_themes_color"
+                android:textSize="@dimen/f02_font_size"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/search_neterror_layout"
+        layout="@layout/common_broken_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_title_layout"
+        android:visibility="gone"></include>
+
+
+    <LinearLayout
+        android:id="@+id/ll_download_listgroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/detail_title_layout"
+        android:orientation="vertical">
+
+
+        <ExpandableListView
+            android:id="@+id/xlv_download"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:divider="@color/c09_divider_color"
+            android:dividerHeight="1px"
+            android:groupIndicator="@null"></ExpandableListView>
+
+
+        <RelativeLayout
+            android:id="@+id/fl_bottom_groups"
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/white">
+
+
+            <TextView
+                android:id="@+id/tv_chapter_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="9dp"
+                android:text="已选：0章节"
+                android:textColor="@color/c05_themes_color"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_chapter_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_chapter_num"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:text="价格：0阅币"
+                android:textColor="@color/c05_themes_color"
+                android:textSize="12sp"/>
+
+
+            <Button
+                android:id="@+id/btn_download_buy"
+                style="@style/RedButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="54dp"
+                android:text="@string/download_ok"/>
+
+            <TextView
+                android:id="@+id/tv_user_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/btn_download_buy"
+                android:layout_alignRight="@id/btn_download_buy"
+                android:layout_alignTop="@id/tv_chapter_pay"
+                android:text="余额：0阅币"
+                android:textColor="@color/c05_themes_color"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <include
+    android:id="@+id/loading_dialog"
+    layout="@layout/common_loading_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/detail_title_layout" />
+
+
+    <include
+    android:id="@+id/loading_error"
+    layout="@layout/common_bookshelf_nobook"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
+
+</RelativeLayout>

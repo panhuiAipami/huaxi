@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -32,13 +34,22 @@ import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.adapter.AdapterAboutRecommend;
 import net.huaxi.reader.adapter.AdapterSearchKey;
+import net.huaxi.reader.adapter.AdapterSearchRecord;
 import net.huaxi.reader.adapter.BaseRecyclerAdapter;
 import net.huaxi.reader.adapter.XSAdapter;
+import net.huaxi.reader.adapter.XSViewHolder;
 import net.huaxi.reader.appinterface.SearchPresenter;
+import net.huaxi.reader.appinterface.SearchViewListener;
+import net.huaxi.reader.bean.SearchBean;
+import net.huaxi.reader.bean.SearchKeyBean;
 import net.huaxi.reader.common.Utility;
 import net.huaxi.reader.presenter.SearchPresenterImpl;
 import net.huaxi.reader.util.UMEventAnalyze;
+import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -48,15 +59,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.lankton.flowlayout.FlowLayout;
-import net.huaxi.reader.R;
-import net.huaxi.reader.adapter.AdapterAboutRecommend;
-import net.huaxi.reader.adapter.AdapterSearchRecord;
-import net.huaxi.reader.adapter.XSViewHolder;
-import net.huaxi.reader.appinterface.SearchViewListener;
-import net.huaxi.reader.bean.SearchBean;
-import net.huaxi.reader.bean.SearchKeyBean;
-import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
-
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class SearchActivity extends BaseActivity implements SearchViewListener {
@@ -127,9 +129,18 @@ public class SearchActivity extends BaseActivity implements SearchViewListener {
     private boolean isCompress = false;
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_search);
         ButterKnife.bind(SearchActivity.this);
         initViewAdapter();

@@ -16,6 +16,8 @@ public class URLConstants {
 
     // 精选页面
     public static final String H5PAGE_SELECTION = url_base+"/book/store?1=1";
+    //周刊页面
+    public static final String H5PAGE_WEEKLY = url_base+"/book/weekly?1=1";
 
 
     //免费

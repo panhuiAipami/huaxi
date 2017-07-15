@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="shelf_book_width">108dp</dimen>
+    <dimen name="shelf_book_height">144dp</dimen>
+    <dimen name="smae_book_width">86.4dp</dimen>
+    <dimen name="smae_book_height">115.2dp</dimen>
+    <dimen name="shelf_recently_width">81dp</dimen>
+    <dimen name="shelf_recently_height">108dp</dimen>
+    <dimen name="login_instructions_text_size">13sp</dimen>
+    <dimen name="bookinfo_text_margin">12dp</dimen>
+</resources>

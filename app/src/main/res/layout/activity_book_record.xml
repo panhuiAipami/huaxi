@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/record_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/c01_themes_color">
+
+        <ImageView
+            android:id="@+id/record_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_common_red_background"
+            android:padding="7dp"
+            android:src="@mipmap/login_back_image_pressed"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            >
+            <Button
+                android:id="@+id/read_record_btn"
+                android:layout_width="@dimen/left_round_width"
+                android:layout_height="@dimen/left_round_height"
+                android:padding="0dp"
+                android:gravity="center"
+                android:text="@string/read_record_title"
+                android:textColor="@color/c01_themes_color"
+                android:textSize="@dimen/f05_font_size"
+                android:background="@drawable/left_round_pressed"/>
+            <Button
+                android:id="@+id/subscribe_record_btn"
+                android:layout_width="@dimen/left_round_width"
+                android:layout_height="@dimen/left_round_height"
+                android:padding="0dp"
+                android:text="@string/sub_scribe_title"
+                android:textSize="@dimen/f05_font_size"
+                android:gravity="center"
+                android:layout_marginLeft="-1dp"
+                android:textColor="@color/c13_themes_color"
+                android:background="@drawable/right_round_normal"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <!--<fragment-->
+        <!--android:id="@+id/content"-->
+        <!--android:name="FmReadRecord"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></fragment>-->
+
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+</LinearLayout>

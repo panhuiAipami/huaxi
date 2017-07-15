@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/city_item_ptrFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+            >
+
+        <net.huaxi.reader.view.WebView
+            android:id="@+id/city_item_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </net.huaxi.reader.view.WebView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <include
+        layout="@layout/common_broken_network"
+        android:id="@+id/city_item_neterror_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+    </include>
+</RelativeLayout>

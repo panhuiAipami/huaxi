@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="readpage_button_text">
+        <item>内容读取中\u2026</item>
+        <item>重新获取</item>
+        <item>重新获取</item>
+        <item>订阅</item>
+        <item>余额不足，充值并订阅</item>
+        <item>请登录阅读</item>
+    </string-array>
+
+    <string-array name="readpage_state_tips">
+        <item>\u2026</item>
+        <item>@string/not_available_network</item>
+        <item>@string/network_server_error</item>
+        <item>\u2026</item>
+        <item>\u2026</item>
+        <item>本章节需要登录后才能阅读</item>
+    </string-array>
+
+    <string-array name="line_space_style">
+        <item>紧凑</item>
+        <item>默认</item>
+        <item>宽松</item>
+    </string-array>
+
+</resources>

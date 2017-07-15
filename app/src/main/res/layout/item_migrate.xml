@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rl_migrate_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_migrate_normal"
+        android:padding="0.5dp"
+        >
+
+        <CheckBox
+            android:id="@+id/cb_migrate"
+            style="@style/MigrateCheckBoxStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/cb_migrate"
+            android:singleLine="true"
+            android:text="小M"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>
