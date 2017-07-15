@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.huaxi.reader.R;
+import net.huaxi.reader.book.BookContentBottomView;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.dao.ChapterDao;
 import net.huaxi.reader.db.model.BookTable;
@@ -20,8 +22,6 @@ import net.huaxi.reader.view.RoundImageView;
 
 import java.util.List;
 
-import net.huaxi.reader.R;
-
 /**
  * Function:书架Adapter
  * Author:zhumingwei
@@ -32,11 +32,13 @@ public class AdapterBookShelf extends BaseRecyclerAdapter<BookTable> {
     private Context context;
     private FmBookShelf fmBookShelf;
     private boolean isDeleteState;
+    private BookContentBottomView mbookContentBottomView;
 
     public AdapterBookShelf(FmBookShelf fmBookShelf, List<BookTable> list) {
         this.fmBookShelf = fmBookShelf;
         mDatas = list;
         this.context = fmBookShelf.getActivity();
+        mbookContentBottomView=new BookContentBottomView(context);
     }
 
     public AdapterBookShelf(Context context, List<BookTable> list) {
@@ -63,8 +65,10 @@ public class AdapterBookShelf extends BaseRecyclerAdapter<BookTable> {
     public void onBind(RecyclerView.ViewHolder viewHolder, final int RealPosition, final
     BookTable book) {
         if (viewHolder instanceof MyHolder) {
+//            String proess=mbookContentBottomView.getPercentStr1();
             final MyHolder holder = ((MyHolder) viewHolder);
             holder.tvReadProgress.setText("已读" + (int) (book.getReadPercentage() * 100) + "%");
+//            holder.tvReadProgress.setText(proess);
             holder.tvBookName.setText(book.getName());
 
             if (book.getIsMonthly() == 1) { //是否VIP(包月)

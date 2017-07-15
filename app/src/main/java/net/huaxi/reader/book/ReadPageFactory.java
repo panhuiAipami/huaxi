@@ -3,6 +3,7 @@ package net.huaxi.reader.book;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -11,6 +12,7 @@ import com.tools.commonlibs.common.NetType;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.datasource.IChapterContentLoadListener;
 import net.huaxi.reader.book.paging.PageContent;
@@ -19,6 +21,7 @@ import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.dao.ChapterContentDao;
 import net.huaxi.reader.db.dao.ChapterDao;
@@ -32,8 +35,6 @@ import net.huaxi.reader.util.UMEventAnalyze;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import net.huaxi.reader.common.XSErrorEnum;
 
 import hugo.weaving.DebugLog;
 
@@ -222,6 +223,13 @@ public class ReadPageFactory {
                 }
                 return true;
             } else if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == pageContent.getErrorCode()) { //未订阅
+                Log.i("dong", "composingAndRender: 现价====="+BookContentRender.p);
+                Log.i("dong", "composingAndRender: 余额====="+BookContentRender.b);
+
+
+
+
+
                 getBalanceAndDraw(canvas, pageContent, isFinished);
                 return false;
             } else if (XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == pageContent.getErrorCode()) { //余额不足

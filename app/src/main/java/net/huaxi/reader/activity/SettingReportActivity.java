@@ -1,7 +1,11 @@
 package net.huaxi.reader.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,10 +13,10 @@ import android.widget.TextView;
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.tools.commonlibs.activity.BaseActivity;
 
+import net.huaxi.reader.R;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import net.huaxi.reader.R;
 
 public class SettingReportActivity extends BaseActivity {
     private ImageView ivBack;
@@ -21,9 +25,18 @@ public class SettingReportActivity extends BaseActivity {
 
     //    FeedbackAgent fb;
 //    private FeedbackFragment mFeedbackFragment;
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_setting_report);
         initView();
         initEvent();

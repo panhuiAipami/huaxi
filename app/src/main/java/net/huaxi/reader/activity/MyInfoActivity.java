@@ -95,6 +95,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //得到view视图窗口
         Window window = getActivity().getWindow();
         //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
@@ -103,7 +104,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         //设置状态栏颜色
         window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         initView();
     }
@@ -372,6 +372,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
+//            myimageuri
+//            ivHeadImage
+
             return;
         }
         switch (requestCode) {

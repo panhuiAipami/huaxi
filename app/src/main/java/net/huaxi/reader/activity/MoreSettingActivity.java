@@ -1,9 +1,13 @@
 package net.huaxi.reader.activity;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,9 +22,17 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.book.BookContentSettings;
 import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.DataSourceManager;
+import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.https.GetRequest;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.util.UMEventAnalyze;
 
@@ -28,15 +40,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.AppContext;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.https.PostRequest;
 
 public class MoreSettingActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -51,9 +54,18 @@ public class MoreSettingActivity extends BaseActivity implements View.OnClickLis
     private int lineStyle;
     private boolean isInit = true;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_more_setting);
         autoLayout = (LinearLayout) findViewById(R.id.autosub_layout);
         lineSpaceLayout = (RelativeLayout) findViewById(R.id.line_space_layout);

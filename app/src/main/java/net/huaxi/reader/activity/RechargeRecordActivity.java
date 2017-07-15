@@ -1,11 +1,15 @@
 package net.huaxi.reader.activity;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -22,8 +26,12 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.adapter.AdapterRechargeRecord;
+import net.huaxi.reader.bean.ChargeRecord;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.dialog.RechargeRecordDetailDialog;
 import net.huaxi.reader.https.GetRequest;
@@ -36,11 +44,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.bean.ChargeRecord;
-import net.huaxi.reader.common.CommonUtils;
 
 /**
  * 充值记录
@@ -58,9 +61,18 @@ public class RechargeRecordActivity extends BaseActivity implements SwipeRefresh
     private FooterView footerView;
     private int pagecount;//总条数
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_recharge_record);
         initView();
         initEvent();

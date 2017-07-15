@@ -11,14 +11,13 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
+import net.huaxi.reader.R;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.Utility;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import net.huaxi.reader.R;
 
 /**
  * 阅读页底部View
@@ -78,8 +77,8 @@ public class BookContentBottomView extends View {
     /**
      * 时间、百分比字体大小
      */
+//    public String percentStr1;
     private int textSize;
-
     private int batteryWidth; // 绘制宽度
     private int batteryHeight;// 电池高度
     private int paddingBottom; // 距离底部距离
@@ -234,8 +233,9 @@ public class BookContentBottomView extends View {
     public void drawPercent(Canvas canvas) {
         if (readPercent >= 0) {
             canvas.restore();
-            String percentStr = PERCENT_FORMAT1.format(readPercent);
+             String percentStr = PERCENT_FORMAT1.format(readPercent);
             percentStr = (percentStr.equals("100.00") ? "100" : percentStr) + "%";
+//            percentStr1=percentStr;
             int mPercentWidth = (int) mPaint.measureText(percentStr) + sideWidth;
             canvas.drawText(percentStr, screenWidth - mPercentWidth - paddingRight, viewH - paddingBottom, mPaint);
         }

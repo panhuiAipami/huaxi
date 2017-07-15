@@ -13,20 +13,29 @@ import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.appinterface.onCatalogLoadFinished;
 import net.huaxi.reader.book.BookContentBottomView;
 import net.huaxi.reader.book.BookContentModel;
+import net.huaxi.reader.book.BookContentView;
+import net.huaxi.reader.book.ReadPageFactory;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.PagingManager;
 import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.db.model.ChapterTable;
 import net.huaxi.reader.https.BookCatalogThreadLoader;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.util.ScreenLightUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
@@ -37,15 +46,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-import net.huaxi.reader.appinterface.onCatalogLoadFinished;
-import net.huaxi.reader.book.BookContentView;
-import net.huaxi.reader.book.ReadPageFactory;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.common.XSErrorEnum;
-import net.huaxi.reader.https.PostRequest;
 
 import hugo.weaving.DebugLog;
 

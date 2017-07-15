@@ -28,6 +28,7 @@ public class ContentPerferenceActivity extends Activity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.content_preference_activity);
 
         goback = (ImageView) findViewById(R.id.toolbar_layout_back) ;

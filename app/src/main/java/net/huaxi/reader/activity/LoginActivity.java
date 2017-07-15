@@ -1,6 +1,7 @@
 package net.huaxi.reader.activity;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -23,17 +26,24 @@ import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UmengHelper;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.common.XSNetEnum;
 import net.huaxi.reader.dialog.LoginVarnDailog;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.thread.SwitchUserMigrateTask;
 import net.huaxi.reader.util.EventBusUtil;
+import net.huaxi.reader.util.LoginHelper;
 import net.huaxi.reader.util.UMEventAnalyze;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,13 +56,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.UmengHelper;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.PostRequest;
-import net.huaxi.reader.util.LoginHelper;
 
 /**
  * Created by ZMW on 2015/12/15.
@@ -83,9 +86,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.login_username_err)
     TextView mTvUsernaneErr;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         tintManager.setStatusBarTintEnabled(false);

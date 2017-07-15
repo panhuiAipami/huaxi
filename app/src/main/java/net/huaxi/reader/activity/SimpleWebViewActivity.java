@@ -1,14 +1,18 @@
 package net.huaxi.reader.activity;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
@@ -20,16 +24,15 @@ import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
 import com.umeng.analytics.MobclickAgent;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.common.BroadCastConstant;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.view.WebView;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.JavaScript;
 
 /**
  * Created by ZMW on 2015/12/21.
@@ -128,10 +131,19 @@ public class SimpleWebViewActivity extends BaseActivity {
         CookieSyncManager.getInstance().sync();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setNeedStatistics(false);
+        //得到view视图窗口
+        Window window = getActivity().getWindow();
+        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //设置状态栏颜色
+        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_simpleweb);
         initView();
         initCustom();

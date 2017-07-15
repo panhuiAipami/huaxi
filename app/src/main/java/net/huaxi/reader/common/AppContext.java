@@ -14,9 +14,9 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
+
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.statistic.StatisticUtils;
-
 import net.huaxi.reader.util.LoginHelper;
 
 public class AppContext extends CommonApp {
@@ -96,4 +96,14 @@ public class AppContext extends CommonApp {
 			MiPushRegistar.register(this, "2882303761517400865", "5501740053865");
 		}
 	}
+//	public static void setStatusBar(Activity context){
+//		//得到view视图窗口
+//		Window window = context.getWindow();
+//		//取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+//		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//		//需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+//		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//		//设置状态栏颜色
+//		window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
+//	}
 }

@@ -8,23 +8,24 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.ImageUtils;
 import com.tools.commonlibs.tools.LogUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.book.BookContentLineInfo;
 import net.huaxi.reader.book.BookContentSettings;
 import net.huaxi.reader.book.datasource.DataSourceManager;
+import net.huaxi.reader.book.paging.BookContentPaint;
+import net.huaxi.reader.book.paging.PageContent;
+import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.Utility;
 import net.huaxi.reader.statistic.ReportUtils;
 
 import java.util.List;
-
-import net.huaxi.reader.R;
-import net.huaxi.reader.book.BookContentLineInfo;
-import net.huaxi.reader.book.paging.BookContentPaint;
-import net.huaxi.reader.book.paging.PageContent;
-import net.huaxi.reader.common.AppContext;
 
 import hugo.weaving.DebugLog;
 
@@ -40,7 +41,8 @@ public class BookContentRender {
     private Bitmap mBackgroundBitmap;
     private BookContentPaint mPaint;
     private String mChapterTitle;  //章节标题，可以使书名、或者是章节名.
-
+    private int readpage_pay_balanc,Present_price;
+    public static int p,b;
 
     public BookContentRender() {
         mPaint = new BookContentPaint();
@@ -137,6 +139,8 @@ public class BookContentRender {
 //        }
         //折后价格(现价)
         String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
+        p= Integer.parseInt(pageContent.getPrice());
+        Log.i("TAG", "drawStatePayCancas: 现价="+p);
         LogUtils.debug(" 章节价格"+price);
         int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;;
         y = drawPayDiscount(canvas, price,disCountToMarginX, y);
@@ -377,10 +381,11 @@ public class BookContentRender {
         }
 //        drawNinepath(canvas, R.drawable.btn_common_rose_d3, rect);
         mPaint.changeStyleToPayButton();
-
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
-        if (buttonTexts != null && buttonTexts.length >= bookType) {
+        if(readpage_pay_balanc<Present_price){
+            buyText=buttonTexts[4];
+        }else if(buttonTexts != null && buttonTexts.length >= bookType) {
             buyText = buttonTexts[bookType - 1];
         }
         int btnTextX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(buyText)) / 2;
@@ -481,6 +486,9 @@ public class BookContentRender {
         mPaint.changeStyleToBalance();
 
         String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance), balance);
+        b=balance;
+        Log.i("TAG", "drawPayBalance: 余额="+balance);
+        readpage_pay_balanc=balance;
 
 //        final int payTipX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(payTip)) / 2;
 
