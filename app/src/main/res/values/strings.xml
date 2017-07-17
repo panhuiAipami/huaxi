@@ -15,6 +15,7 @@
     <!-- 阅读页 -->
     <string name="readpage_catalog_download_error">目录加载失败(%1$d)</string>
     <string name="readpage_pay_button">订阅</string>
+    <string name="readpage_pay_button11">余额不足，充值并订阅</string>
     <string name="readpage_pay_price">现价: %1$s 花贝或花瓣</string>
     <string name="readpage_pay_balance">余额: %1$d 花瓣</string>
     <string name="readpage_pay_originprice">原价: %1$s 花贝或花瓣</string>

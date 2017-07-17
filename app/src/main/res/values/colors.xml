@@ -90,6 +90,7 @@
     <color name="readpage_catelog_night_noclick">#525d66</color>
     <color name="readpage_catelog_night_readed">#65727f</color>
 
-
+    //充值dialog的边框颜色
+    <color name="orange">#FFA500</color>
 
 </resources>

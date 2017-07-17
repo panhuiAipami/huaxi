@@ -19,12 +19,24 @@ import com.tools.commonlibs.tools.DateUtils;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.activity.ConsumeRecordActivity;
+import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.MyInfoActivity;
+import net.huaxi.reader.activity.NewMessageActivity;
 import net.huaxi.reader.activity.SettingActivity;
+import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.bean.User;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.dialog.GiveCoinsDailog;
+import net.huaxi.reader.dialog.RechargeDialog;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
+import net.huaxi.reader.https.XSKEY;
 import net.huaxi.reader.util.EventBusUtil;
 import net.huaxi.reader.util.ImageUtil;
 import net.huaxi.reader.util.UMEventAnalyze;
@@ -38,16 +50,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.huaxi.reader.R;
-import net.huaxi.reader.activity.ConsumeRecordActivity;
-import net.huaxi.reader.activity.LoginActivity;
-import net.huaxi.reader.activity.NewMessageActivity;
-import net.huaxi.reader.activity.SimpleWebViewActivity;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.https.XSKEY;
-
 //个人中心fragment
 public class FmPersonCenter extends BaseFragment implements View.OnClickListener {
 
@@ -57,6 +59,8 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     private RelativeLayout rlUsername, rlCharge, rlVip, rlNews, rlConsume, rlSetting;
     private ImageView ivCrown;
     private RelativeLayout rlReport, rlHelpCenter;
+    private RechargeDialog rechargeDialog;
+    private JavaScript javaScript;
 
     @Override
     @Nullable
@@ -98,6 +102,10 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View view) {
+        //初始化充值dialog窗口
+        rechargeDialog = new RechargeDialog(getActivity());
+        //实例化JavaScript
+        javaScript = new JavaScript(getActivity(),null);
         ivCrown = (ImageView) view.findViewById(R.id.usercenter_userhead_crown_imageview);
         ivSetting = (ImageView) view.findViewById(R.id.usercenter_setting_imageview);
         ivHeadIcon = (CircleImageView) view.findViewById(R.id.usercenter_userhead_imageview);
@@ -261,12 +269,15 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
             if (!UserHelper.getInstance().isLogin()) {
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+
                 return;
             }
             UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_CHARGE);
-            Intent intent = new Intent(getActivity(), SimpleWebViewActivity.class);
-            intent.putExtra("webtype", SimpleWebViewActivity.WEBTYPE_RECHARGE);
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), SimpleWebViewActivity.class);
+//            intent.putExtra("webtype", SimpleWebViewActivity.WEBTYPE_RECHARGE);
+//            startActivity(intent);
+            //调用充值dialog窗口
+            getRechargeDialog();
         } else if (v.getId() == rlVip.getId()) {
             if (!UserHelper.getInstance().isLogin()) {
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
@@ -368,6 +379,30 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         }
         FeedbackAPI.setUICustomInfo(map);
     }
-
+    //显示充值dialog
+    public void getRechargeDialog(){
+        rechargeDialog.show();
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                javaScript.pay("1","2","","3000","充值","1111");
+                rechargeDialog.cancel();
+            }
+        });
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                javaScript.pay("1","2","","5000","充值","1111");
+                rechargeDialog.cancel();
+            }
+        });
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                javaScript.pay("1","2","","9800","充值","1111");
+                rechargeDialog.cancel();
+            }
+        });
+    }
 
 }

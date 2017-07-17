@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.tools.commonlibs.tools.LogUtils;
 
@@ -85,7 +87,8 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.i("dong3", "onResume: 执行onResume方法");
+        getRefresh();
     }
 
 
@@ -120,22 +123,26 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
         mStoreRefresh.setOnRefreshListener(this);
         mStoreRefresh.setColorSchemeResources(R.color.c01_themes_color);
         webSettings(mStoreWebview);
-        mStoreWebview.setLoadListener(new WebView.WebViewLoadingListener() {
-            @Override
-            public void onFinished(android.webkit.WebView view, String url) {
-                LogUtils.debug("刷新结束");
-                mStoreRefresh.setRefreshing(false);
-                mNeterror.setVisibility(View.GONE);
-            }
+        getRefresh();
 
-            @Override
-            public void onError() {
-                mStoreRefresh.setRefreshing(false);
-                mNeterror.setVisibility(View.VISIBLE);
-                mStoreWebview.loadUrl("javascript:document.body.innerHTML=\"\"");
-            }
-        });
     }
+public void getRefresh(){
+    mStoreWebview.setLoadListener(new WebView.WebViewLoadingListener() {
+        @Override
+        public void onFinished(android.webkit.WebView view, String url) {
+            LogUtils.debug("刷新结束");
+            Toast.makeText(getContext(), "刷新web界面+++++++++", Toast.LENGTH_SHORT).show();
+            mStoreRefresh.setRefreshing(false);
+            mNeterror.setVisibility(View.GONE);
+        }
 
+        @Override
+        public void onError() {
+            mStoreRefresh.setRefreshing(false);
+            mNeterror.setVisibility(View.VISIBLE);
+            mStoreWebview.loadUrl("javascript:document.body.innerHTML=\"\"");
+        }
+    });
+}
 
 }

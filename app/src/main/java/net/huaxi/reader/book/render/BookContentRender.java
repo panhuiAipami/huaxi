@@ -176,11 +176,12 @@ public class BookContentRender {
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
         if (buttonTexts != null && buttonTexts.length >= ReadPageState.BOOKTYPE_LOADING) {
-            buyText = buttonTexts[ReadPageState.BOOKTYPE_LOADING - 1];
+            buyText = buttonTexts[ReadPageState.BOOKTYPE_LOADING-1];
         }
         int btnTextX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(buyText)) / 2;
         int y = (int) (BookContentSettings.getInstance().getScreenHeight() + mPaint.getTextSize()) / 2;
         canvas.drawText(buyText, btnTextX, y, mPaint);
+
     }
 
     @DebugLog
@@ -383,7 +384,7 @@ public class BookContentRender {
         mPaint.changeStyleToPayButton();
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
-        if(readpage_pay_balanc<Present_price){
+        if(readpage_pay_balanc<Present_price||BookContentRender.p>BookContentRender.b&&BookContentRender.p!=0){
             buyText=buttonTexts[4];
         }else if(buttonTexts != null && buttonTexts.length >= bookType) {
             buyText = buttonTexts[bookType - 1];

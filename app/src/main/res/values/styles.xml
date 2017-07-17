@@ -165,4 +165,17 @@
         <item name="android:background"> @drawable/selector_common_btn_rad_bg</item>
         <item name="android:textColor">@color/c13_themes_color</item>
     </style>
+    <!--充值字体颜色与大小-->
+    <style name="Orange_color_big">
+        <item name="android:textSize">19dip</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+    <style name="Gray_color">
+        <item name="android:textSize">14dip</item>
+        <item name="android:textColor">@color/assist_selected_color</item>
+    </style>
+    <style name="Orange_color_small">
+        <item name="android:textSize">14dip</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 </resources>

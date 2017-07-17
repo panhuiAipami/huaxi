@@ -93,18 +93,18 @@ public class UITabBottom extends LinearLayout implements OnClickListener {
         layoutParams.weight = 1;
         tab0.labelView.setText(getContext().getString(R.string.book_shelf));
         tab0.labelView.setTextColor(colorClick);
-        tab0.iconView.init(R.mipmap.main_navigation_bookshelf_pressed,
-                R.mipmap.main_navigation_bookshelf_normal);
+        tab0.iconView.init(R.mipmap.main_navigation_bookshelf_pressed1,
+                R.mipmap.main_navigation_bookshelf_normal1);
         addView(tab0.parent, layoutParams);
 
-        // tab1(书城)
+        // tab1(周刊)
         tab1 = newChildItem(MainTabFragEnum.bookcity.getIndex());
         layoutParams = new LayoutParams(0, tabBottomHeight);
         layoutParams.weight = 1;
         tab1.labelView.setText(getContext().getString(R.string.book_catalog));
         tab1.labelView.setTextColor(colorUnclick);
-        tab1.iconView.init(R.mipmap.main_navigation_paihang_pressed,
-                R.mipmap.main_navigation_paihang_normal);
+        tab1.iconView.init(R.mipmap.main_navigation_paihang_pressed1,
+                R.mipmap.main_navigation_paihang_normal1);
         addView(tab1.parent, layoutParams);
         /**main_navigation_bookcity_pressed
          * main_navigation_bookcity_normal
@@ -113,14 +113,14 @@ public class UITabBottom extends LinearLayout implements OnClickListener {
          * book_catalog
          */
 
-         // tab2(排行)
+         // tab2(书城)
         tab2 = newChildItem(MainTabFragEnum.paihang.getIndex());
         layoutParams = new LayoutParams(0, tabBottomHeight);
         layoutParams.weight = 1;
         tab2.labelView.setText(getContext().getString(R.string.book_city));
         tab2.labelView.setTextColor(colorUnclick);
-        tab2.iconView.init(R.mipmap.main_navigation_bookcity_pressed,
-        R.mipmap.main_navigation_bookcity_normal);
+        tab2.iconView.init(R.mipmap.main_navigation_bookcity_pressed1,
+        R.mipmap.main_navigation_bookcity_normal1);
         addView(tab2.parent, layoutParams);
 //        tab2.parent.setVisibility(GONE);
 
@@ -131,8 +131,8 @@ public class UITabBottom extends LinearLayout implements OnClickListener {
         layoutParams.weight = 1;
         tab3.labelView.setText(getContext().getString(R.string.book_mine));
         tab3.labelView.setTextColor(colorUnclick);
-        tab3.iconView.init(R.mipmap.main_navigation_usercenter_pressed,
-                R.mipmap.main_navigation_usercenter_normal);
+        tab3.iconView.init(R.mipmap.main_navigation_usercenter_pressed1,
+                R.mipmap.main_navigation_usercenter_normal1);
         addView(tab3.parent, layoutParams);
 
         R1 = (colorClick & 0xff0000) >> 16;

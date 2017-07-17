@@ -27,6 +27,7 @@ import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
+import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
@@ -34,6 +35,7 @@ import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.db.model.ChapterTable;
+import net.huaxi.reader.dialog.RechargeDialog;
 import net.huaxi.reader.https.BookCatalogThreadLoader;
 import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.statistic.ReportUtils;
@@ -67,6 +69,7 @@ public class BookContentActivity extends BaseActivity {
     Button autoSubBtn;  //自动订阅
     Button openVipBtn;  //开通会员
     Button closeBtn; //关闭按钮
+    private JavaScript javaScript;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,9 +302,38 @@ public class BookContentActivity extends BaseActivity {
      * 进入充值界面.
      */
     private void gotoRecharge() {
-        Intent intent = new Intent(getActivity(), SimpleWebViewActivity.class);
-        intent.putExtra("webtype", SimpleWebViewActivity.WEBTYPE_RECHARGE);
-        startActivityForResult(intent, FROM_RECHARGE);
+        javaScript = new JavaScript(BookContentActivity.this,null);
+        //跳转到充值界面Activity
+//        Intent intent = new Intent(getActivity(), SimpleWebViewActivity.class);
+//        intent.putExtra("webtype", SimpleWebViewActivity.WEBTYPE_RECHARGE);
+//        startActivityForResult(intent, FROM_RECHARGE);
+        //弹出充值Dialog
+        final RechargeDialog rechargeDialog=new RechargeDialog(this);
+        rechargeDialog.show();
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                javaScript.pay("1","2","","3000","充值","1111");
+                        rechargeDialog.cancel();
+            }
+        });
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                javaScript.pay("1","2","","5000","充值","1111");
+                rechargeDialog.cancel();
+            }
+        });
+        rechargeDialog.getDialog().findViewById(R.id.dialgo_Recharge3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                javaScript.pay("1","2","","9800","充值","1111");
+                rechargeDialog.cancel();
+            }
+        });
     }
 
     private void gotoLogin() {

@@ -15,22 +15,21 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.activity.SearchActivity;
 import net.huaxi.reader.adapter.AdapterBookCityWebView;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.util.UMEventAnalyze;
+import net.huaxi.reader.view.ViewPager;
 import net.huaxi.reader.view.WebView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.JavaScript;
-import net.huaxi.reader.view.ViewPager;
 
 //书城的fragment
 public class FmBookCity extends BaseFragment {

@@ -14,36 +14,36 @@ import android.widget.RelativeLayout;
 
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.activity.BookCommentActivity;
 import net.huaxi.reader.activity.BookDetailActivity;
 import net.huaxi.reader.activity.DownLoadActivity;
+import net.huaxi.reader.activity.LastPageActivity;
 import net.huaxi.reader.activity.MoreSettingActivity;
+import net.huaxi.reader.appinterface.MenuChangeListener;
+import net.huaxi.reader.book.BookContentView.OnViewEventListener;
 import net.huaxi.reader.book.datasource.DataSourceManager;
+import net.huaxi.reader.book.paging.BookContentPaint;
+import net.huaxi.reader.book.paging.PageContent;
 import net.huaxi.reader.book.paging.PagingManager;
+import net.huaxi.reader.book.render.BookContentSettingListener;
+import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.Utility;
+import net.huaxi.reader.common.XSErrorEnum;
+import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
+import net.huaxi.reader.dialog.CommonDailog;
 import net.huaxi.reader.model.OpenBookSettingViewHelper;
 import net.huaxi.reader.statistic.ReportUtils;
+import net.huaxi.reader.util.BookShelfDataUtil;
 import net.huaxi.reader.util.UMEventAnalyze;
 
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-
-import net.huaxi.reader.R;
-import net.huaxi.reader.activity.BookCommentActivity;
-import net.huaxi.reader.activity.LastPageActivity;
-import net.huaxi.reader.appinterface.MenuChangeListener;
-import net.huaxi.reader.book.BookContentView.OnViewEventListener;
-import net.huaxi.reader.book.paging.BookContentPaint;
-import net.huaxi.reader.book.paging.PageContent;
-import net.huaxi.reader.book.render.BookContentSettingListener;
-import net.huaxi.reader.book.render.ReadPageState;
-import net.huaxi.reader.common.XSErrorEnum;
-import net.huaxi.reader.db.dao.BookDao;
-import net.huaxi.reader.dialog.CommonDailog;
-import net.huaxi.reader.util.BookShelfDataUtil;
 
 import static net.huaxi.reader.book.BookContentView.DIRECTION_LEFT;
 import static net.huaxi.reader.book.BookContentView.DIRECTION_RIGHT;
