@@ -207,6 +207,7 @@
     <string name="myinfo_title_text">我的资料</string>
     <string name="person_setting">设置</string>
     <string name="person_consume_record">消费记录</string>
+    <string name="person_consume_rech">充值记录</string>
     <string name="person_member">会员</string>
     <string name="person_recharge">充值</string>
     <string name="seach_about_book">相关推荐</string>

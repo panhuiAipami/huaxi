@@ -96,7 +96,6 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/selector_common_background"
-
         >
 
         <ImageView
@@ -141,7 +140,46 @@
             android:textSize="12dp"
            />
     </RelativeLayout>
+    <!--充值记录-->
+    <RelativeLayout
+        android:id="@+id/rech"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/selector_common_background"
 
+        >
+
+        <ImageView
+            android:id="@+id/usercenter_consume_imageview_rech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/usercenter_vip_icon"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/usercenter_consume_imageview_rech"
+            android:text="@string/person_consume_rech"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="14sp"
+            />
+
+        <ImageView
+            android:id="@+id/usercenter_gotoconsume_imageview_rech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@mipmap/usercenter_next_icon"
+            />
+    </RelativeLayout>
     <!--<include layout="@layout/line_margin"></include>-->
 
     <RelativeLayout

@@ -3,7 +3,6 @@ package net.huaxi.reader.book;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -223,38 +222,22 @@ public class ReadPageFactory {
                 }
                 return true;
             } else if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == pageContent.getErrorCode()) { //未订阅
-                Log.i("dong", "composingAndRender: 现价====="+BookContentRender.p);
-                Log.i("dong", "composingAndRender: 余额====="+BookContentRender.b);
                 //现价大于等于余额的情况下
                 if(BookContentRender.p>BookContentRender.b){
                     XSErrorEnum.CHAPTER_SHORT_BALANCE.setCode(10263);
                     pageContent.setErrorCode(10263);
                     if(XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == pageContent.getErrorCode()){
                         return false;
-//                        pageContent.getLines();
-//                        BookContentActivity bookContentActivity=new BookContentActivity();
-//                        Button buybtn = (Button) bookContentActivity.findViewById(R.id.readpage_pay_button);
-//                        buybtn.setText("余额不足，充值并订阅");
-//                        getBalanceAndDraw(canvas, pageContent, isFinished);
-//                        Log.i("Dong1", "pageContent"+pageContent+"哈哈哈");
-//                        Log.i("Dong1", "canvas: "+canvas.toString()+"哈哈哈");
-//                        Log.i("Dong1", "isFinished: "+isFinished+"哈哈哈");
+
                     }
                 }else {
                     //现价小于余额的情况下
                     getBalanceAndDraw(canvas, pageContent, isFinished);
                 }
 
-
-
-
-                Log.i("Dong", "composingAndRender: "+pageContent+"哈哈哈");
                 return false;
             } else if (XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == pageContent.getErrorCode()) { //余额不足
                 getBalanceAndDraw(canvas, pageContent, isFinished);
-                Log.i("Dong2", "pageContent"+pageContent+"哈哈哈");
-                Log.i("Dong2", "canvas: "+canvas.toString()+"哈哈哈");
-                Log.i("Dong2", "isFinished: "+isFinished+"哈哈哈");
                 LogUtils.debug("loca 2");
                 return false;
             } else if (XSErrorEnum.CHAPTER_DOWNLOAD_FAILED.getCode() == pageContent.getErrorCode()) {  //下载失败

@@ -25,6 +25,7 @@ import net.huaxi.reader.activity.ConsumeRecordActivity;
 import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.MyInfoActivity;
 import net.huaxi.reader.activity.NewMessageActivity;
+import net.huaxi.reader.activity.RechargeRecordActivity;
 import net.huaxi.reader.activity.SettingActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.bean.User;
@@ -61,6 +62,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     private RelativeLayout rlReport, rlHelpCenter;
     private RechargeDialog rechargeDialog;
     private JavaScript javaScript;
+    private RelativeLayout rech;
 
     @Override
     @Nullable
@@ -102,6 +104,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View view) {
+        rech= (RelativeLayout) view.findViewById(R.id.rech);
         //初始化充值dialog窗口
         rechargeDialog = new RechargeDialog(getActivity());
         //实例化JavaScript
@@ -139,6 +142,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         rlSetting.setOnClickListener(this);
         rlReport.setOnClickListener(this);
         rlHelpCenter.setOnClickListener(this);
+        rech.setOnClickListener(this);
     }
 
 
@@ -308,6 +312,11 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         }
         Intent intent = null;
         switch (v.getId()) {
+            case R.id.rech:
+                Intent intentrech = new Intent(getActivity(), RechargeRecordActivity.class);
+                startActivity(intentrech);
+                UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.RECHARGE_HISTORY);
+                break;
             case R.id.usercenter_setting_layout:
                 intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
