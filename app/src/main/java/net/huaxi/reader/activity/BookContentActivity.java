@@ -93,7 +93,7 @@ public class BookContentActivity extends BaseActivity {
         String bookId = intent.getStringExtra(EnterBookContent.BOOK_ID);
         BookTable bookTable = BookDao.getInstance().findBook(bookId);
         if (bookTable == null) {
-            toast(getString(R.string.readpage_not_find_book));
+//            toast(getString(R.string.readpage_not_find_book));
             finish();
             return;
         }
@@ -408,5 +408,23 @@ public class BookContentActivity extends BaseActivity {
             mBookContentModel.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
+        if(UserHelper.getInstance().isLogin()){
+//            ReadPageFactory singleton = ReadPageFactory.getSingleton();
+//            singleton.getBalanceAndDraw(new Canvas(),new PageContent(),true);
+//            onCreate(null);
+            //刷新
+//            mBookBottomView.postInvalidate();
+//            mBookContentView.postInvalidate();
+            //重新加载布局文件
+            setContentView(R.layout.activity_bookcontent);
+            //重新加载控件
+            initViews();
+            parseIntent(getIntent());
+        loadContent();
+            refreshCatalog();
+            //初始化阅读页面的屏幕亮度
+            ScreenLightUtils.initScreenBright(this);
+        }
     }
+
 }

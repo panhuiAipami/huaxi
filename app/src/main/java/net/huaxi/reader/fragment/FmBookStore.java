@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.tools.commonlibs.common.NetType;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.NetUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.activity.SearchActivity;
@@ -31,7 +33,7 @@ import butterknife.OnClick;
  * @UpDate: [16/8/2 13:52]
  * @Version: [v1.0]
  */
-public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
 
 
     @BindView(R.id.store_webview)
@@ -40,7 +42,10 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     SwipeRefreshLayout mStoreRefresh;
     @BindView(R.id.store_neterror)
     LinearLayout mNeterror;
+    @BindView(R.id.fm_store_error)
+    LinearLayout fm_store_error;
     private int mSexClassify;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
 //        mStoreRefresh.setOnRefreshListener(this);
         //刷新动画的颜色
         mStoreRefresh.setColorSchemeResources(R.color.c01_themes_color);
+
     }
 
     private void initData() {
@@ -117,11 +123,18 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     }
 
     private void initView() {
+        if(NetUtils.checkNet() == NetType.TYPE_NONE){
+            //当前无网络
+            mStoreWebview.setVisibility(View.GONE);
+            fm_store_error.setVisibility(View.VISIBLE);
+        }else {
+            mStoreWebview.setVisibility(View.VISIBLE);
+            fm_store_error.setVisibility(View.GONE);
+        }
         mStoreRefresh.setOnRefreshListener(this);
         mStoreRefresh.setColorSchemeResources(R.color.c01_themes_color);
         webSettings(mStoreWebview);
         getRefresh();
-
     }
 public void getRefresh(){
     mStoreWebview.setLoadListener(new WebView.WebViewLoadingListener() {
@@ -137,8 +150,20 @@ public void getRefresh(){
             mStoreRefresh.setRefreshing(false);
             mNeterror.setVisibility(View.VISIBLE);
             mStoreWebview.loadUrl("javascript:document.body.innerHTML=\"\"");
+            //*********************************************************************************//
+
+
         }
     });
 }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fc_store_error:
+                initView();
+                initData();
+                break;
+        }
+    }
 }

@@ -17,17 +17,23 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.activity.BookDetailActivity;
 import net.huaxi.reader.activity.ClassifyActivity;
 import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.RegisterSendActivity;
+import net.huaxi.reader.activity.SimpleShareWebViewActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.bean.BookDetailBean;
+import net.huaxi.reader.bean.CatalogBean;
 import net.huaxi.reader.bean.ClassifyDataBean;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.util.EncodeUtils;
+import net.huaxi.reader.util.LoginHelper;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.view.WebView;
 
@@ -38,13 +44,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.activity.SimpleShareWebViewActivity;
-import net.huaxi.reader.bean.CatalogBean;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.util.LoginHelper;
 
 /**
  * Created by ZMW on 2015/12/14.
@@ -103,7 +102,7 @@ public class JavaScript {
     @JavascriptInterface
     public void pay(String ct, String pt, String nProductSId, String money, String body, String
             checksum) {
-        LogUtils.debug("调用微信支付");
+        LogUtils.debug("调用第三方支付");
         LogUtils.debug("pt==" + pt);
         LogUtils.debug("ct==" + ct);
         LogUtils.debug("money==" + money);

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:text="周刊"
+            android:text="书城"
             android:textColor="@color/c13_themes_color"
             android:textSize="@dimen/f01_font_size"
             />
@@ -60,7 +60,7 @@
         >
     </net.huaxi.reader.view.WebView>
     <LinearLayout
-        android:id="@+id/fm_store_error"
+        android:id="@+id/fm_store1_error"
         android:orientation="vertical"
         android:clickable="true"
         android:gravity="center"

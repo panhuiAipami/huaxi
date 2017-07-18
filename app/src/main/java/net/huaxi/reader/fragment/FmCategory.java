@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.tools.commonlibs.common.NetType;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.NetUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.activity.SearchActivity;
@@ -45,11 +47,14 @@ public class FmCategory extends BaseFragment implements SwipeRefreshLayout.OnRef
     SwipeRefreshLayout mStoreRefresh;
     @BindView(R.id.store_neterror)
     LinearLayout mNeterror;
+
+    private LinearLayout fm_store1_error;
     private int mSexClassify;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fm_store, container, false);
+        view = inflater.inflate(R.layout.fm_store1, container, false);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -122,6 +127,15 @@ public class FmCategory extends BaseFragment implements SwipeRefreshLayout.OnRef
     }
 
     private void initView() {
+        fm_store1_error= (LinearLayout) view.findViewById(R.id.fm_store1_error);
+        if(NetUtils.checkNet() == NetType.TYPE_NONE){
+            //当前无网络
+            mStoreWebview.setVisibility(View.GONE);
+            fm_store1_error.setVisibility(View.VISIBLE);
+        }else {
+            mStoreWebview.setVisibility(View.VISIBLE);
+            fm_store1_error.setVisibility(View.GONE);
+        }
         mStoreRefresh.setOnRefreshListener(this);
         mStoreRefresh.setColorSchemeResources(R.color.c01_themes_color);
         webSettings(mStoreWebview);

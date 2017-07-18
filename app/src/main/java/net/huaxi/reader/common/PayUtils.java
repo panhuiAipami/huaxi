@@ -17,26 +17,24 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.ViewUtils;
 import com.tools.commonlibs.utils.JsonUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.bean.AliPayBean;
+import net.huaxi.reader.bean.QQPayBean;
+import net.huaxi.reader.bean.WXPayOrder;
+import net.huaxi.reader.https.PostRequest;
+import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.thread.AlipayTask;
-import net.huaxi.reader.thread.AlipayWalletPayTask;
 import net.huaxi.reader.thread.QQPayTask;
+import net.huaxi.reader.thread.WXPayTask;
+import net.huaxi.reader.util.EncodeUtils;
+import net.huaxi.reader.util.LoginHelper;
 
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.bean.QQPayBean;
-import net.huaxi.reader.bean.WXPayOrder;
-import net.huaxi.reader.https.PostRequest;
-import net.huaxi.reader.https.ResponseHelper;
-import net.huaxi.reader.thread.WXPayTask;
-import net.huaxi.reader.util.EncodeUtils;
-import net.huaxi.reader.util.LoginHelper;
 
 
 /**
@@ -110,12 +108,13 @@ public class PayUtils {
             ViewUtils.toastShort(AppContext.getInstance().getString(R.string.not_install_wx_client));
             return;
         }
+        //修改微信登录传递的参数
         Map<String, String> map = CommonUtils.getPublicPostArgs();
-        map.put("pr_id", pid);
+        map.put("pr_id", EncodeUtils.encodeString_UTF8(pid));
         map.put("quantity", "1");
-        map.put("total_fee", money);
-        map.put("body", body);
-        map.put("checksum", checksum);
+        map.put("total_fee", EncodeUtils.encodeString_UTF8(money));
+        map.put("body", EncodeUtils.encodeString_UTF8(body));
+        map.put("checksum", EncodeUtils.encodeString_UTF8(checksum));
         PostRequest requeset = new PostRequest(URLConstants.PAY_WXPAY, new Response
                 .Listener<JSONObject>() {
             @Override

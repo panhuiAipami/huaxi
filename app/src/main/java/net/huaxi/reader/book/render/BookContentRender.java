@@ -22,6 +22,7 @@ import net.huaxi.reader.book.paging.BookContentPaint;
 import net.huaxi.reader.book.paging.PageContent;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.common.Utility;
 import net.huaxi.reader.statistic.ReportUtils;
 
@@ -385,7 +386,12 @@ public class BookContentRender {
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
         if(readpage_pay_balanc<Present_price||BookContentRender.p>BookContentRender.b&&BookContentRender.p!=0){
-            buyText=buttonTexts[4];
+            if(UserHelper.getInstance().isLogin()){
+                buyText=buttonTexts[4];
+            }else {
+                buyText=buttonTexts[5];
+            }
+
         }else if(buttonTexts != null && buttonTexts.length >= bookType) {
             buyText = buttonTexts[bookType - 1];
         }

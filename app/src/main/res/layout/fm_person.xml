@@ -48,6 +48,7 @@
             app:border_color="#FFE3E3E3"
             app:border_width="1px"
             />
+
         <!--33ffffff-->
         <ImageView
             android:id="@+id/usercenter_userhead_crown_imageview"
@@ -71,6 +72,15 @@
             android:textColor="@color/c04_themes_color"
             android:textSize="@dimen/usercenter_text_size"
             />
+        <TextView
+            android:id="@+id/balance_coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/usercenter_username_textview"
+            android:layout_toRightOf="@id/usercenter_userhead_imageview"
+            android:text=""/>
 
         <TextView
             android:id="@+id/usercenter_please_login_textview"

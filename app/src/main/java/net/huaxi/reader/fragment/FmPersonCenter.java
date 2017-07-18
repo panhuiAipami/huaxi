@@ -63,6 +63,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     private RechargeDialog rechargeDialog;
     private JavaScript javaScript;
     private RelativeLayout rech;
+    private TextView balance_coins_text;
 
     @Override
     @Nullable
@@ -90,6 +91,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        balance_coins_text.setText("");
         initData();
         ivSetting.setClickable(true);
         UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_PAGE);
@@ -104,6 +106,8 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View view) {
+        //显示账户花贝花瓣余额
+        balance_coins_text = (TextView) view.findViewById(R.id.balance_coins);
         rech= (RelativeLayout) view.findViewById(R.id.rech);
         //初始化充值dialog窗口
         rechargeDialog = new RechargeDialog(getActivity());
@@ -151,8 +155,10 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         if (!NetUtils.checkNetworkUnobstructed()) {
             LogUtils.debug("UserHelper.getInstance().isLogin()===" + UserHelper.getInstance().isLogin());
             if (UserHelper.getInstance().isLogin()) {
+                balance_coins_text.setVisibility(View.VISIBLE);
                 setUserdesc();
             } else {
+                balance_coins_text.setVisibility(View.GONE);
                 setUserNotLogin();
             }
             return;
@@ -206,7 +212,14 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                         return;
                     }
                     String coins = jsonObject.optString(XSKEY.USER_INFO.COIN);
-                    tvCharge.setText(coins + " 阅币");
+                    tvCharge.setText(coins + " 花贝");
+                    if(UserHelper.getInstance().isLogin()){
+                        balance_coins_text.setText("余额：花贝："+coins+"  花瓣：");
+                    }else {
+                        balance_coins_text.setText("");
+                        balance_coins_text.setVisibility(View.GONE);
+                    }
+
                     long time = jsonObject.optLong(XSKEY.USER_INFO.EXPIRE);
                     long t = time * 1000;
                     long t1 = System.currentTimeMillis();//本地0区时间戳
@@ -313,6 +326,11 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         Intent intent = null;
         switch (v.getId()) {
             case R.id.rech:
+                if (!UserHelper.getInstance().isLogin()) {
+                    UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 Intent intentrech = new Intent(getActivity(), RechargeRecordActivity.class);
                 startActivity(intentrech);
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.RECHARGE_HISTORY);

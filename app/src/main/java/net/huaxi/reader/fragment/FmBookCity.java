@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.tools.commonlibs.common.NetType;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.ViewUtils;
@@ -31,10 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+
 //书城的fragment
 public class FmBookCity extends BaseFragment {
     List<String> titles = new ArrayList<String>();//几个网页的title
     List<String> urls = new ArrayList<String>();//几个网页的url
+    @BindView(R.id.fc_store_error)
+    LinearLayout fc_store_error;
     private ViewPager vpCity;
     private AdapterBookCityWebView adapterWebView;
     private ImageView ivSearch;
@@ -64,10 +70,21 @@ public class FmBookCity extends BaseFragment {
 
 
     private void initView(View view) {
+        if(NetUtils.checkNet() == NetType.TYPE_NONE){
+            //当前无网络
+            smartTabLayout.setVisibility(View.GONE);
+            vpCity.setVisibility(View.GONE);
+            fc_store_error.setVisibility(View.VISIBLE);
+        }else {
+            smartTabLayout.setVisibility(View.VISIBLE);
+            vpCity.setVisibility(View.VISIBLE);
+            fc_store_error.setVisibility(View.GONE);
+        }
         vpCity = (ViewPager) view.findViewById(R.id.city_viewpager);
         vpCity.setOffscreenPageLimit(4);
         ivSearch = (ImageView) view.findViewById(R.id.city_title_right_imageview);
         smartTabLayout = (SmartTabLayout) view.findViewById(R.id.city_tab_layout);
+
     }
 
     private void initData() {

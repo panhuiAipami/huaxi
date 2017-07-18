@@ -27,6 +27,7 @@ public class RechargeDialog extends BaseDialog {
         TextView text1 = (TextView) mDialog.findViewById(R.id.dialgo_Recharge1);
         TextView text2 = (TextView) mDialog.findViewById(R.id.dialgo_Recharge2);
         TextView text3 = (TextView) mDialog.findViewById(R.id.dialgo_Recharge3);
+        //设置一个TextView的文本颜色与大小
         SpannableString styledText1 = new SpannableString("30元\n+赠0花瓣\n3000花贝");
         styledText1.setSpan(new TextAppearanceSpan(getContext(), R.style.Orange_color_big), 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         styledText1.setSpan(new TextAppearanceSpan(getContext(), R.style.Orange_color_small), 4, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
