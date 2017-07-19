@@ -8,18 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.tools.commonlibs.tools.DateUtils;
-import net.huaxi.reader.bean.ConsumeRecord;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.huaxi.reader.R;
+import net.huaxi.reader.bean.ConsumeRecord;
+import net.huaxi.reader.bean.ConsumeRecordCustom;
 
 import java.util.Date;
 import java.util.List;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.bean.ConsumeRecordCustom;
-import com.tools.commonlibs.tools.LogUtils;
 
 
 /**
@@ -110,39 +105,51 @@ public class AdapterConsumeRecord extends BaseAdapter {
             }
         }
         ConsumeRecord record = data.get(position);
-        holder.tvDate.setText(DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000), "MM.dd"));
-        holder.tvTime.setText(DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000), "HH:mm"));
-        try {
-            JSONObject desc = new JSONObject(record.getCmDesc());
-           holder.tvBookName.setText(desc.optString("bk_title"));
-            LogUtils.debug("book_title:"+desc.toString());
-//            holder.tvCatalogNo.setText(desc.optString("cpt_title"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        holder.tvConsumeType.setText("1".equals(record.getCmType()) ? "订阅章节" : "其他");
-        LogUtils.debug("record.getCmType"+record.getCmType());
-        holder.tvCoinCount.setText("-" + record.getCmCoins());
-        LogUtils.debug("record.getCmCoins"+record.getCmCoins());
-        holder.tvCoinType.setText("1".equals(record.getCmType()) ? "阅币" : "其他");
+//        holder.tvDate.setText(DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000), "MM.dd"));
+//        holder.tvTime.setText(DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000), "HH:mm"));
+        holder.time.setText("时间："+DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000),"yyyy-MM-dd HH:mm"));
+        holder.coins.setText("1".equals(record.getCmType()) ? "金额："+record.getCmCoins()+"花贝" : "金额："+record.getCmCoins()+"花瓣");
+        holder.content_1.setText("内容："+record.getCmDesc());
+//        Log.i("hhhhh", "getNormalConvertView: "+record.toString());
+//        try {
+//            JSONObject desc = new JSONObject(record.getCmDesc());
+//            //holder.content_1.setText("内容《"+desc.optString("bk_title"+"》-订阅"));
+//           holder.content_1.setText(desc.optString("bk_title"));
+//            Log.i("hhhhh", "getNormalConvertView: "+desc.toString());
+//            LogUtils.debug("book_title:"+desc.toString());
+////            holder.tvCatalogNo.setText(desc.optString("cpt_title"));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        holder.tvConsumeType.setText("1".equals(record.getCmType()) ? "订阅章节" : "其他");
+//        LogUtils.debug("record.getCmType"+record.getCmType());
+//        holder.tvCoinCount.setText("-" + record.getCmCoins());
+//        LogUtils.debug("record.getCmCoins"+record.getCmCoins());
+//        holder.tvCoinType.setText("1".equals(record.getCmType()) ? "阅币" : "其他");
 
         return convertView;
     }
 
 
     class NormalHolder {
-        TextView tvDate, tvTime, tvBookName, tvCatalogNo, tvCoinCount, tvCoinType, tvConsumeType;
+//        TextView tvDate, tvTime, tvBookName, tvCatalogNo, tvCoinCount, tvCoinType, tvConsumeType;
+        TextView coins,time,content_1;
 
         public NormalHolder(View itemView) {
-            tvDate = (TextView) itemView.findViewById(R.id.item_consume_date_textview);
-            tvTime = (TextView) itemView.findViewById(R.id.item_consume_time_textview);
-            tvBookName = (TextView) itemView.findViewById(R.id
-                    .item_consume_bookname_textview);
-            tvConsumeType = (TextView) itemView.findViewById(R.id.item_consume_bookname_consume_type);
-            tvCoinCount = (TextView) itemView.findViewById(R.id
-                    .item_consume_coin_count_textview);
-            tvCoinType = (TextView) itemView.findViewById(R.id
-                    .item_consume_coin_type_textview);
+//            tvDate = (TextView) itemView.findViewById(R.id.item_consume_date_textview);
+//            tvTime = (TextView) itemView.findViewById(R.id.item_consume_time_textview);
+//            tvBookName = (TextView) itemView.findViewById(R.id
+//                    .item_consume_bookname_textview);
+//            tvConsumeType = (TextView) itemView.findViewById(R.id.item_consume_bookname_consume_type);
+//            tvCoinCount = (TextView) itemView.findViewById(R.id
+//                    .item_consume_coin_count_textview);
+//            tvCoinType = (TextView) itemView.findViewById(R.id
+//                    .item_consume_coin_type_textview);
+
+            coins= (TextView) itemView.findViewById(R.id.consumption_coins);
+            time= (TextView) itemView.findViewById(R.id.consumption_time);
+            content_1= (TextView) itemView.findViewById(R.id.consumption_content);
+
         }
     }
 

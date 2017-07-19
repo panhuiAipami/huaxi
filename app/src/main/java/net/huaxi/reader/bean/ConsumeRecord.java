@@ -113,4 +113,19 @@ public class ConsumeRecord implements Serializable {
         return cdate;
     }
 
+    @Override
+    public String toString() {
+        return "ConsumeRecord{" +
+                "umid='" + umid + '\'' +
+                ", sellerMid='" + sellerMid + '\'' +
+                ", cmStatus='" + cmStatus + '\'' +
+                ", cmType='" + cmType + '\'' +
+                ", cmCode='" + cmCode + '\'' +
+                ", cmDesc='" + cmDesc + '\'' +
+                ", cmCoins='" + cmCoins + '\'' +
+                ", cmIp='" + cmIp + '\'' +
+                ", cmSource='" + cmSource + '\'' +
+                ", cdate=" + cdate +
+                '}';
+    }
 }

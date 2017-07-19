@@ -17,7 +17,7 @@
     <string name="readpage_pay_button">订阅</string>
     <string name="readpage_pay_button11">余额不足，充值并订阅</string>
     <string name="readpage_pay_price">现价: %1$s 花贝或花瓣</string>
-    <string name="readpage_pay_balance">余额: %1$d 花瓣</string>
+    <string name="readpage_pay_balance">余额: %1$d 花贝  &#160;&#160;  %2$d  花瓣</string>
     <string name="readpage_pay_originprice">原价: %1$s 花贝或花瓣</string>
     <string name="readpage_pay_auto">自动订阅后续VIP章节</string>
     <string name="readpage_max_textsize">已是最大字体</string>
@@ -305,6 +305,8 @@
     <string name="read_record_delete_tips">确定要删除记录么?</string>
     <string name="read_record_none">最近没有阅读作品</string>
     <string name="sub_record_none">最近没有订阅过作品</string>
+    <!--无网络-->
+    <string name="net_error">网络不给力，请检查网络设置</string>
 
 
 </resources>

@@ -421,7 +421,7 @@ public class BookContentActivity extends BaseActivity {
             initViews();
             parseIntent(getIntent());
         loadContent();
-            refreshCatalog();
+//            refreshCatalog();
             //初始化阅读页面的屏幕亮度
             ScreenLightUtils.initScreenBright(this);
         }

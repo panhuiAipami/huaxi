@@ -35,69 +35,12 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/recharge_record_listview_head_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_below="@id/recharge_record_title_layout"
-        android:background="@color/c01_themes_color"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:paddingLeft="12dp"
-            android:text="充值时间"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            />
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="项目"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="金额"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            />
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="结果"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            />
-
-    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/recharge_record_ptrframeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/recharge_record_listview_head_layout"
+        android:layout_below="@id/recharge_record_title_layout"
         >
 
         <ListView
@@ -136,7 +79,7 @@
         layout="@layout/common_loading_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/recharge_record_listview_head_layout"
+        android:layout_below="@id/recharge_record_title_layout"
         ></include>
 
 </RelativeLayout>

@@ -93,6 +93,9 @@ public class RechargeRecordActivity extends BaseActivity implements SwipeRefresh
         }
 
         pagenow = 1;
+//        String name=String.format(URLConstants.PAY_ORDER_LIST, pagenow, PAGENUM) + CommonUtils
+//                .getPublicGetArgs();
+//        Log.i("tototo", "initData: "+name.toString());
         GetRequest request = new GetRequest(String.format(URLConstants.PAY_ORDER_LIST, pagenow, PAGENUM) + CommonUtils
                 .getPublicGetArgs(), new Response.Listener<JSONObject>() {
             @Override
@@ -100,6 +103,7 @@ public class RechargeRecordActivity extends BaseActivity implements SwipeRefresh
                 frame.setRefreshing(false);
                 vLoadding.setVisibility(View.GONE);
                 LogUtils.debug("response==" + response.toString());
+//                Log.i("tototoh", "initData: "+response.toString());
                 if (!ResponseHelper.isSuccess(response)) {
                     ViewUtils.toastShort("获取支付列表失败");
                     return;

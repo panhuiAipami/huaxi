@@ -91,6 +91,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        if(!UserHelper.getInstance().isLogin())
         balance_coins_text.setText("");
         initData();
         ivSetting.setClickable(true);
@@ -212,9 +213,10 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                         return;
                     }
                     String coins = jsonObject.optString(XSKEY.USER_INFO.COIN);
+                    String petals = jsonObject.optString(XSKEY.USER_INFO.PETALS);
                     tvCharge.setText(coins + " 花贝");
                     if(UserHelper.getInstance().isLogin()){
-                        balance_coins_text.setText("余额：花贝："+coins+"  花瓣：");
+                        balance_coins_text.setText("余额：花贝："+coins+"  花瓣："+petals);
                     }else {
                         balance_coins_text.setText("");
                         balance_coins_text.setVisibility(View.GONE);

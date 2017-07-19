@@ -6,19 +6,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.bean.AliPayBean;
-import net.huaxi.reader.statistic.ReportUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -57,11 +53,11 @@ public class AlipayTask {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                        ViewUtils.toastShort("支付成功");
 
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
+                        ViewUtils.toastShort("支付失败");
                     }
                     if( activity instanceof SimpleWebViewActivity){
                         SimpleWebViewActivity activitys = (SimpleWebViewActivity) activity;

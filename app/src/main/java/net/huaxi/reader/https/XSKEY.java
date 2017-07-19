@@ -28,6 +28,7 @@ public class XSKEY {
         public static final String COIN = "pi_total_coins";
         public static final String EXPIRE = "pi_hire_expire";
         public static final String HIRE_EXPIRE_FLAG = "pi_hire_expire_flag";
+        public static final String PETALS = "false_point";
     }
 
     /*用户目录*/

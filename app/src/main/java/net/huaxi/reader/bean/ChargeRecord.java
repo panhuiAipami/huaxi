@@ -58,6 +58,27 @@ public class ChargeRecord implements Serializable {
     @SerializedName("od_source")//0 - unknown; 1 - Android; 2 - IOS; 3 - WAP; 4 - PC
     private String orSource;//创建订单来源
     @SerializedName("od_cdate")
+    private long cdate;
+
+    public long getCdate() {
+        return cdate;
+    }
+
+    public void setCdate(long cdate) {
+        this.cdate = cdate;
+    }
+
+    @SerializedName("od_false_point")
+    private String petal;
+
+    public String getPetal() {
+        return petal;
+    }
+
+    public void setPetal(String petal) {
+        this.petal = petal;
+    }
+
     private long orCdate;//创建订单时间
 
     public String getUmid() {
@@ -190,5 +211,29 @@ public class ChargeRecord implements Serializable {
 
     public void setOrCdate(long orCdate) {
         this.orCdate = orCdate;
+    }
+
+    @Override
+    public String toString() {
+        return "ChargeRecord{" +
+                "umid='" + umid + '\'' +
+                ", prid='" + prid + '\'' +
+                ", chid='" + chid + '\'' +
+                ", ormid='" + ormid + '\'' +
+                ", orsn='" + orsn + '\'' +
+                ", orState='" + orState + '\'' +
+                ", orQuantity='" + orQuantity + '\'' +
+                ", orAmountDisp='" + orAmountDisp + '\'' +
+                ", orAmountPaid='" + orAmountPaid + '\'' +
+                ", orName='" + orName + '\'' +
+                ", orFinalDate=" + orFinalDate +
+                ", orCoins='" + orCoins + '\'' +
+                ", orDays='" + orDays + '\'' +
+                ", orIp='" + orIp + '\'' +
+                ", orSource='" + orSource + '\'' +
+                ", cdate=" + cdate +
+                ", petal='" + petal + '\'' +
+                ", orCdate=" + orCdate +
+                '}';
     }
 }

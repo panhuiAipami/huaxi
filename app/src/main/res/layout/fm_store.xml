@@ -83,7 +83,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="3dip"
             android:gravity="center"
-            android:text="数据获取失败\n花溪君没能完成主人的使命\n  请检查网络后再戳我试试 ~~~"
+            android:text="@string/net_error"
             android:textColor="#737373" />
     </LinearLayout>
     <include

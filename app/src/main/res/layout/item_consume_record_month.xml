@@ -10,6 +10,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/c04_themes_color"
         android:layout_centerVertical="true"
+        android:visibility="gone"
         android:layout_marginLeft="12dp"
         />
 </RelativeLayout>

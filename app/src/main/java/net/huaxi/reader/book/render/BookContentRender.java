@@ -43,7 +43,8 @@ public class BookContentRender {
     private BookContentPaint mPaint;
     private String mChapterTitle;  //章节标题，可以使书名、或者是章节名.
     private int readpage_pay_balanc,Present_price;
-    public static int p,b;
+    public static int p,b,h;
+    public static int sum;
 
     public BookContentRender() {
         mPaint = new BookContentPaint();
@@ -122,7 +123,7 @@ public class BookContentRender {
      * @param pageContent 渲染页面
      * @param balance     余额
      */
-    public void drawStatePayCancas(Canvas canvas, PageContent pageContent, int balance, boolean autoSub) {
+    public void drawStatePayCancas(Canvas canvas, PageContent pageContent, int balance,int petal, boolean autoSub) {
         
         drawEmptyView(canvas);
         Bitmap bitmap = getButtonBg();
@@ -141,6 +142,7 @@ public class BookContentRender {
         //折后价格(现价)
         String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
         p= Integer.parseInt(pageContent.getPrice());
+//        h=Integer.parseInt(pageContent.get)
         Log.i("TAG", "drawStatePayCancas: 现价="+p);
         LogUtils.debug(" 章节价格"+price);
         int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;;
@@ -151,7 +153,7 @@ public class BookContentRender {
             y = drawPayInitialPrice(canvas, originPrice, disCountToMarginX, y);
         }
         //余额
-        y = drawPayBalance(canvas, balance,disCountToMarginX, y);
+        y = drawPayBalance(canvas, balance,petal,disCountToMarginX, y);
         //绘制分割线
         y = drawPaySplitLine(canvas, y);
         //绘制描述
@@ -385,7 +387,9 @@ public class BookContentRender {
         mPaint.changeStyleToPayButton();
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
-        if(readpage_pay_balanc<Present_price||BookContentRender.p>BookContentRender.b&&BookContentRender.p!=0){
+        //花贝与花瓣的总和
+        sum=BookContentRender.h+BookContentRender.b;
+        if(readpage_pay_balanc<Present_price||BookContentRender.p>BookContentRender.b&&BookContentRender.p!=0&&p>h){
             if(UserHelper.getInstance().isLogin()){
                 buyText=buttonTexts[4];
             }else {
@@ -489,12 +493,12 @@ public class BookContentRender {
      * @param balance 余额
      * @param y       纵坐标
      */
-    private int drawPayBalance(Canvas canvas, int balance, int x, int y) {
+    private int drawPayBalance(Canvas canvas, int balance,int petal, int x, int y) {
         mPaint.changeStyleToBalance();
-
-        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance), balance);
+        //将用户的花贝与花瓣余额传递进去
+        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Integer[]{balance,petal});
         b=balance;
-        Log.i("TAG", "drawPayBalance: 余额="+balance);
+        h=petal;
         readpage_pay_balanc=balance;
 
 //        final int payTipX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(payTip)) / 2;

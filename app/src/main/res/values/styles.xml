@@ -167,15 +167,15 @@
     </style>
     <!--充值字体颜色与大小-->
     <style name="Orange_color_big">
-        <item name="android:textSize">19dip</item>
+        <item name="android:textSize">17dip</item>
         <item name="android:textColor">@color/orange</item>
     </style>
     <style name="Gray_color">
-        <item name="android:textSize">14dip</item>
+        <item name="android:textSize">13dip</item>
         <item name="android:textColor">@color/assist_selected_color</item>
     </style>
     <style name="Orange_color_small">
-        <item name="android:textSize">14dip</item>
+        <item name="android:textSize">13dip</item>
         <item name="android:textColor">@color/orange</item>
     </style>
 </resources>

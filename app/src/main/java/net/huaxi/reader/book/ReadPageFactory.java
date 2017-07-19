@@ -39,7 +39,7 @@ import hugo.weaving.DebugLog;
 
 /**
  * 阅读页生产类
- * Created by taoyingfeng
+ * Created by dongyongjie
  * 2015/12/5.
  */
 public class ReadPageFactory {
@@ -223,7 +223,7 @@ public class ReadPageFactory {
                 return true;
             } else if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == pageContent.getErrorCode()) { //未订阅
                 //现价大于等于余额的情况下
-                if(BookContentRender.p>BookContentRender.b){
+                if(BookContentRender.p>BookContentRender.b&&BookContentRender.p>BookContentRender.sum){
                     XSErrorEnum.CHAPTER_SHORT_BALANCE.setCode(10263);
                     pageContent.setErrorCode(10263);
                     if(XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == pageContent.getErrorCode()){
@@ -272,25 +272,29 @@ public class ReadPageFactory {
      */
     private synchronized void getBalanceAndDraw(final Canvas canvas, final PageContent pageContent, final boolean isFinished) {
         if (NetUtils.checkNet() == NetType.TYPE_NONE) {
-            mBookContentRender.drawStatePayCancas(canvas, pageContent, 0, isAutoSub());
+            mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, isAutoSub());
             LogUtils.debug("pageContent....1"+pageContent.getPrice());
         } else {
             String url = URLConstants.PAY_INFO + "?1=1" + CommonUtils.getPublicGetArgs();
+//            Log.i("dongyongjie", "getBalanceAndDraw: 请求路径==="+url);
             GetRequest payInfoRequest = new GetRequest(url, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     int coins = 0;
+                    int petals = 0;
                     if (ResponseHelper.isSuccess(response)) {
                         JSONObject jsonObject = ResponseHelper.getVdata(response);
                         try {
                             JSONObject data = jsonObject.getJSONObject(XSKEY.USER_INFO.KEY_INFO);
+//                            Log.i("qqq", "onResponse: 用户信息==="+data.toString());
                             if (data != null) {
                                 coins = data.optInt(XSKEY.USER_INFO.COIN, 0);
+                                petals = data.optInt(XSKEY.USER_INFO.PETALS,0);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mBookContentRender.drawStatePayCancas(canvas, pageContent, coins, isAutoSub());
+                        mBookContentRender.drawStatePayCancas(canvas, pageContent, coins,petals, isAutoSub());
                         LogUtils.debug("pageContent....2"+pageContent.getPrice());
                         UMEventAnalyze.countEvent(AppContext.context(),UMEventAnalyze.READPAGE_ORDER);
                         if (mBookContentLoadedListener != null && isFinished) {
@@ -303,7 +307,7 @@ public class ReadPageFactory {
                 public void onErrorResponse(VolleyError error) {
                     ReportUtils.reportError(error);
                     LogUtils.debug("pageContent....3"+pageContent.getPrice());
-                    mBookContentRender.drawStatePayCancas(canvas, pageContent, 0, isAutoSub());
+                    mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, isAutoSub());
                     if (mBookContentLoadedListener != null && isFinished) {
                         mBookContentLoadedListener.onLoadContentFiled(pageContent.getErrorCode());
                     }

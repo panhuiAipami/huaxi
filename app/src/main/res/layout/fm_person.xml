@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/c04_themes_color"
             android:layout_below="@id/usercenter_username_textview"
             android:layout_toRightOf="@id/usercenter_userhead_imageview"
             android:text=""/>
@@ -145,6 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:layout_toLeftOf="@id/usercenter_gotocharge_imageview"
             android:textColor="@color/c05_themes_color"
             android:textSize="12dp"
