@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,6 +52,8 @@ import net.huaxi.reader.view.CircleImageView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -255,11 +259,18 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     String path = String.format(BitmapWriteTool.ROOTPATH + File.separator + "%s" +
                             ".jpg", user.getUmid());
                     LogUtils.debug("icon path:"+path);
+                    Log.i("rrr", "callBack: 图片路径"+path);
+
+
+                    Bitmap map = getLoacalBitmap(path);
+
+
                     myimageuri = Uri.parse(path);
                     Bitmap bitmap1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                     BitmapWriteTool.writeToSDcard(bitmap1, new File(path), Bitmap.CompressFormat.JPEG);
-                    ivHeadImage.setImageBitmap(bitmap);
+                    ivHeadImage.setImageBitmap(map);
                     ivHeadImage.setOnClickListener(MyInfoActivity.this);
+
                 } else {
                     ivHeadImage.setImageResource(R.mipmap.usercenter_default_icon);
                     LogUtils.debug("icon path is null");
@@ -553,5 +564,20 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         startActivityForResult(intent, RESULT_REQUEST_CODE);
 
 
+    }
+    /**
+     * 加载本地图片
+     * http://bbs.3gstdy.com
+     * @param url
+     * @return
+     */
+    public static Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

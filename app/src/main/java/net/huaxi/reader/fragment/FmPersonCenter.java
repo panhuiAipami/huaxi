@@ -3,6 +3,7 @@ package net.huaxi.reader.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -253,11 +254,16 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         if (UserHelper.getInstance().isLogin()) {
             User user = UserHelper.getInstance().getUser();
             String username = user.getNickname();
+            String imageUrl=user.getImgid();
+            Log.i("imageurl", "setUserdesc: 用户头像路径"+imageUrl.toString());
             if (StringUtils.isNotEmpty(username)) {
                 tvUsername.setText(username + "");
             }
-            if (StringUtils.isNotEmpty(user.getImgid())) {
-                ImageUtil.loadImage(getActivity(), user.getImgid(), ivHeadIcon, R.mipmap.usercenter_default_icon);
+//            if (StringUtils.isNotEmpty(user.getImgid())) {
+//                ImageUtil.loadImage(getActivity(), user.getImgid(), ivHeadIcon, R.mipmap.usercenter_default_icon);
+//            }
+            if(StringUtils.isNotEmpty(imageUrl)){
+                ImageUtil.loadImage(getActivity(),imageUrl,ivHeadIcon,R.mipmap.main_navigation_bookshelf_normal1);
             }
         } else {
             setUserNotLogin();

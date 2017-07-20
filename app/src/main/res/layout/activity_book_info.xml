@@ -189,7 +189,7 @@
                         android:layout_toRightOf="@id/riv_detail_img"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="事实上的"
+                        android:text="花溪小说"
                         android:textColor="#fff"
                         android:textSize="16sp"/>
 
@@ -218,6 +218,7 @@
                         android:layout_below="@+id/tv_detail_book_name"
                         android:layout_marginTop="16dp"
                         android:textColor="#fff"
+                        android:text="作者"
                         android:textSize="12sp"/>
 
                     <TextView
@@ -249,7 +250,7 @@
                             android:gravity="center"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:text="西方奇幻"
+                            android:text="小说类型"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/bookinfo_text_size"
                             />
@@ -263,7 +264,7 @@
                             android:gravity="center"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:text="连载"
+                            android:text="状态"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/bookinfo_text_size"
                             />
@@ -277,7 +278,7 @@
                             android:gravity="center"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
-                            android:text="100万字"
+                            android:text="字数"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/bookinfo_text_size"
                             />

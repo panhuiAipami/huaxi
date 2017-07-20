@@ -30,18 +30,6 @@ import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import net.huaxi.reader.R;
 import net.huaxi.reader.adapter.AdapterSameBook;
 import net.huaxi.reader.adapter.BaseRecyclerAdapter;
@@ -75,6 +63,19 @@ import net.huaxi.reader.util.ImageUtil;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.view.RoundImageView;
 import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class BookDetailActivity extends BaseActivity implements ChapterClickListener, onCatalogLoadFinished, SwipeRefreshLayout.OnRefreshListener {
@@ -132,6 +133,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     private DetailAboutDialog detailAboutDialog;
     private int WRITHE_REQUEST_CODE = 1;
     private int COMMENT_REQUEST_CODE = 1;
+    private GetRequest request;
 
 
     @Override
@@ -219,7 +221,8 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     }
 
     private void syncBookDetail() {
-        GetRequest request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL,
+        //                            ViewUtils.toastShort("获取详情失败");
+        request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL,
                 EncodeUtils.encodeString_UTF8(bookid) + CommonUtils.getPublicGetArgs()),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -542,13 +545,17 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                 finish();
                 break;
             case R.id.iv_detail_share:
-                ShareBean shareBean = new ShareBean();
-                shareBean.setShareUrl(mBookDetail.getWebsite());
-                shareBean.setImgUrl(mBookDetail.getCoverImageId());
-                shareBean.setTitle(mBookDetail.getName());
-                shareBean.setDesc(mBookDetail.getBookDesc());
-                new BookContentShareDialog(this, shareBean).show();
-                UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_SHARE);
+                String name = mTvDetailBookName.getText().toString();
+                if(!name.equals("花溪小说")){
+                    ShareBean shareBean = new ShareBean();
+                    shareBean.setShareUrl(mBookDetail.getWebsite());
+                    shareBean.setImgUrl(mBookDetail.getCoverImageId());
+                    shareBean.setTitle(mBookDetail.getName());
+                    shareBean.setDesc(mBookDetail.getBookDesc());
+                    new BookContentShareDialog(this, shareBean).show();
+                    UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_SHARE);
+                }
+
                 break;
             case R.id.tv_detail_catalogue:
                 //目录
@@ -718,4 +725,10 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        request.cancel();
+
+    }
 }

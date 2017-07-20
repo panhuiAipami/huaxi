@@ -11,6 +11,8 @@ import com.tools.commonlibs.task.EasyTask;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
+import net.huaxi.reader.common.AppContext;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -49,11 +51,11 @@ public class ImageUtil {
     }
 
     public static void loadImage(Context context, String url, ImageView view, int default_imgid) {
-            Glide.with(context).load(url).dontAnimate().crossFade(500).error(default_imgid).into(view);
+            Glide.with(AppContext.context()).load(url).dontAnimate().crossFade(500).error(default_imgid).into(view);
     }
 
     public static void loadImageNotFade(Context context, String url, ImageView view, int default_imgid) {
-        Glide.with(context).load(url).error(default_imgid).into(view);
+        Glide.with(AppContext.context()).load(url).error(default_imgid).into(view);
     }
 
     public interface BitmapCallBackListener {

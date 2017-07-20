@@ -421,9 +421,29 @@ public class BookContentActivity extends BaseActivity {
             initViews();
             parseIntent(getIntent());
         loadContent();
-//            refreshCatalog();
+            refreshCatalog();
             //初始化阅读页面的屏幕亮度
             ScreenLightUtils.initScreenBright(this);
+
+
+            //
+            ReportUtils.setUserSceneTag(Constants.BUGLY_SCENE_TAG_READING);
+            if (ReadPageState.BOOKTYPE_NORMAL != mBookContentModel.getBookState()) {
+                if (ReadPageState.BOOKTYPE_RECHARGE == mBookContentModel.getBookState()) {
+                    LogUtils.debug("开始自动订阅!" + mBookContentModel.getBookState());
+                    gotoPay();
+                } else {
+                    LogUtils.debug("刷新当前页面[GET]" + mBookContentModel.getBookState());
+                    if (ReadPageState.BOOKTYPE_UNLOGIN == mBookContentModel.getBookState()) {
+//                    if (!Constants.DEFAULT_USERID.equals(UserHelper.getInstance().getUserId())) {
+//                        SwitchUserMigrateTask task = new SwitchUserMigrateTask(BookContentActivity.this);
+//                        task.execute();
+//                        return;
+//                    }
+                    }
+                    clearAndRefresh();
+                }
+            }
         }
     }
 

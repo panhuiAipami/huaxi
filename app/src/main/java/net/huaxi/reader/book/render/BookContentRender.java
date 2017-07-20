@@ -394,6 +394,8 @@ public class BookContentRender {
                 buyText=buttonTexts[4];
             }else {
                 buyText=buttonTexts[5];
+
+
             }
 
         }else if(buttonTexts != null && buttonTexts.length >= bookType) {
@@ -496,7 +498,7 @@ public class BookContentRender {
     private int drawPayBalance(Canvas canvas, int balance,int petal, int x, int y) {
         mPaint.changeStyleToBalance();
         //将用户的花贝与花瓣余额传递进去
-        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Integer[]{balance,petal});
+        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Object[]{balance,petal});
         b=balance;
         h=petal;
         readpage_pay_balanc=balance;
