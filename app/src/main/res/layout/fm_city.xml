@@ -77,32 +77,32 @@
 
         </net.huaxi.reader.view.ViewPager>
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/fc_store_error"
-        android:orientation="vertical"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/city_error"
+        android:background="@color/c12_themes_color"
         android:clickable="true"
         android:gravity="center"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
+
+
         <ImageView
-            android:id="@+id/img_error"
+            android:id="@+id/common_broken_network_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="3dip"
-            android:padding="10dip"
-            android:src="@mipmap/usercenter_net_error" />
+            android:src="@mipmap/common_broken_network"/>
 
         <TextView
+            android:id="@+id/bookshelf_nonet_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_error"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="3dip"
-            android:gravity="center"
-            android:text="数据获取失败\n花溪君没能完成主人的使命\n  请检查网络后再戳我试试 ~~~"
-            android:textColor="#737373" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:text="@string/not_available_network"
+            android:textColor="#e1e1e1"
+            android:textSize="15sp"/>
+
     </LinearLayout>
     <!--<cn.xs.reader.view.CityShadowLayout-->
     <!--android:layout_width="match_parent"-->

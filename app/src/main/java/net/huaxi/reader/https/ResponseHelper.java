@@ -1,10 +1,13 @@
 package net.huaxi.reader.https;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.util.Log;
+
+import com.tools.commonlibs.tools.LogUtils;
 
 import net.huaxi.reader.common.XSErrorEnum;
-import com.tools.commonlibs.tools.LogUtils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by ZMW on 2015/12/18.
@@ -25,6 +28,7 @@ public class ResponseHelper {
         if (resp != null) {
 
             errorId = resp.optInt(ERRORID, XSErrorEnum.JSON_NO_FEILD.getCode());
+            Log.i("ttttt", "isSuccess: errorId========="+errorId);
         }
         if (0 == errorId) {
             return true;

@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -259,9 +258,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     String path = String.format(BitmapWriteTool.ROOTPATH + File.separator + "%s" +
                             ".jpg", user.getUmid());
                     LogUtils.debug("icon path:"+path);
-                    Log.i("rrr", "callBack: 图片路径"+path);
-
-
+//                    Log.i("rrr", "callBack: 图片路径"+path);
                     Bitmap map = getLoacalBitmap(path);
 
 

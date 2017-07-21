@@ -4,9 +4,15 @@ import android.content.Context;
 
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
 import net.huaxi.reader.bean.AppVersion;
+import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.https.download.Task;
+import net.huaxi.reader.https.download.TaskManagerDelegate;
+import net.huaxi.reader.https.download.TaskStateEnum;
+import net.huaxi.reader.https.download.listener.ITaskStateChangeListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,12 +21,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.huaxi.reader.common.AppContext;
-import net.huaxi.reader.common.XSErrorEnum;
-import net.huaxi.reader.https.download.TaskManagerDelegate;
-import net.huaxi.reader.https.download.TaskStateEnum;
-import net.huaxi.reader.https.download.listener.ITaskStateChangeListener;
 
 /**
  * Created by ZMW on 2016/5/26.
@@ -136,9 +136,7 @@ public class AppVersionHelper {
             JSONObject vdata = ResponseHelper.getVdata(response);
             if (vdata != null) {
                 JSONObject infoJson = vdata.getJSONObject("info");
-
                 if (infoJson != null) {
-
                     appVersion.setVersionName(infoJson.optString("version"));
                     appVersion.setBuild(infoJson.optInt("build"));
                     appVersion.setUptime(infoJson.optString("uptime"));

@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.ImageUtils;
@@ -143,7 +142,7 @@ public class BookContentRender {
         String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
         p= Integer.parseInt(pageContent.getPrice());
 //        h=Integer.parseInt(pageContent.get)
-        Log.i("TAG", "drawStatePayCancas: 现价="+p);
+//        Log.i("TAG", "drawStatePayCancas: 现价="+p);
         LogUtils.debug(" 章节价格"+price);
         int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;;
         y = drawPayDiscount(canvas, price,disCountToMarginX, y);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,6 +56,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static net.huaxi.reader.R.id.login_back_imageview;
+
 /**
  * Created by ZMW on 2015/12/15.
  */
@@ -83,6 +86,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView mTvPasswordErr;
     @BindView(R.id.login_username_err)
     TextView mTvUsernaneErr;
+    private ImageView login_back_imageview1;
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -97,6 +102,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //        //设置状态栏颜色
 //        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_login);
+        Intent intent = getIntent();
+        boolean flag = intent.getBooleanExtra("flag", false);
+        login_back_imageview1= (ImageView) findViewById(R.id.login_back_imageview);
+        if(flag){
+            login_back_imageview1.setVisibility(View.GONE);
+        }else {
+            login_back_imageview1.setVisibility(View.VISIBLE);
+        }
         ButterKnife.bind(this);
         tintManager.setStatusBarTintEnabled(false);
         initView();
@@ -233,14 +246,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return loginHelper;
     }
 
-    @OnClick({R.id.login_back_imageview, R.id.login_dialog_qq_img,
+    @OnClick({login_back_imageview, R.id.login_dialog_qq_img,
             R.id.login_dialog_weixin_img, R.id.login_login_button,
             R.id.login_forgetpassword_textview, R.id.login_register_textview,
             R.id.login_instructions, R.id.login_username_clear, R.id.login_password_clear})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.login_back_imageview:
+            case login_back_imageview:
                 onKeyBack();
                 break;
             case R.id.login_dialog_qq_img:

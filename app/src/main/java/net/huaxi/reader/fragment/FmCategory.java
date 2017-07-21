@@ -45,7 +45,7 @@ public class FmCategory extends BaseFragment implements SwipeRefreshLayout.OnRef
     WebView mStoreWebview;
     @BindView(R.id.store_refresh)
     SwipeRefreshLayout mStoreRefresh;
-    @BindView(R.id.store_neterror)
+//    @BindView(R.id.category_error)
     LinearLayout mNeterror;
 
     private LinearLayout fm_store1_error;
@@ -127,7 +127,8 @@ public class FmCategory extends BaseFragment implements SwipeRefreshLayout.OnRef
     }
 
     private void initView() {
-        fm_store1_error= (LinearLayout) view.findViewById(R.id.fm_store1_error);
+        mNeterror= (LinearLayout) view.findViewById(R.id.category_error);
+        fm_store1_error= (LinearLayout) view.findViewById(R.id.category_error);
         if(NetUtils.checkNet() == NetType.TYPE_NONE){
             //当前无网络
             mStoreWebview.setVisibility(View.GONE);

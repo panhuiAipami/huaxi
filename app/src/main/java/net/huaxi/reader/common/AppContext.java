@@ -2,17 +2,14 @@ package net.huaxi.reader.common;
 
 import android.app.Notification;
 import android.content.Context;
-import android.widget.Toast;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.LogUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.common.message.Log;
-import com.umeng.message.MiPushRegistar;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
 import net.huaxi.reader.statistic.ReportUtils;
@@ -38,7 +35,8 @@ public class AppContext extends CommonApp {
 
 		initUmengMessage();
 		initAliFeedBack();
-		MobclickAgent.openActivityDurationTrack(false);
+		//时间跟踪是否打开
+		MobclickAgent.openActivityDurationTrack(true);
 	}
 
 	private void initAliFeedBack() {
@@ -81,20 +79,20 @@ public class AppContext extends CommonApp {
 		 * 参考集成文档的1.6.2
 		 * http://dev.umeng.com/push/android/integration#1_6_2
 		 * */
-		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler(){
-			@Override
-			public void dealWithCustomAction(Context context, UMessage msg) {
-				Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-			}
-		};
+//		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler(){
+//			@Override
+//			public void dealWithCustomAction(Context context, UMessage msg) {
+//				Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+//			}
+//		};
 		//使用自定义的NotificationHandler，来结合友盟统计处理消息通知
 		//参考http://bbs.umeng.com/thread-11112-1-1.html
 		//CustomNotificationHandler notificationClickHandler = new CustomNotificationHandler();
-		mPushAgent.setNotificationClickHandler(notificationClickHandler);
-
-		if (MiPushRegistar.checkDevice(this)) {
-			MiPushRegistar.register(this, "2882303761517400865", "5501740053865");
-		}
+//		mPushAgent.setNotificationClickHandler(notificationClickHandler);
+//
+//		if (MiPushRegistar.checkDevice(this)) {
+//			MiPushRegistar.register(this, "2882303761517400865", "5501740053865");
+//		}
 	}
 //	public static void setStatusBar(Activity context){
 //		//得到view视图窗口

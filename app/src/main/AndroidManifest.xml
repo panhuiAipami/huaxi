@@ -6,16 +6,16 @@
         android:name="android.hardware.telephony"
         android:required="true"/>
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.PROCESS_INCOMING_CALLS"/>
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+    <!--<uses-permission android:name="android.permission.PROCESS_INCOMING_CALLS"/>-->
 
     <!-- 读取手机状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <!-- 添加访问手机位置的权限 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
     <!-- 精确的GPS -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
@@ -394,7 +394,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="591fc27199f0c75a6d000d7c"/>
+            android:value="5951bff1a40fa30a5200226a"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="0e5ead1d87d3b9bb3f4ba36b934d84aa"/>

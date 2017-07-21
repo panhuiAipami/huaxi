@@ -88,7 +88,7 @@
             android:textColor="#737373" />
     </LinearLayout>
     <include
-        android:id="@+id/store_neterror"
+        android:id="@+id/category_error"
         layout="@layout/common_broken_network"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

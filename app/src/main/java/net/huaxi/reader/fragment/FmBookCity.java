@@ -39,8 +39,8 @@ import butterknife.BindView;
 public class FmBookCity extends BaseFragment {
     List<String> titles = new ArrayList<String>();//几个网页的title
     List<String> urls = new ArrayList<String>();//几个网页的url
-    @BindView(R.id.fc_store_error)
-    LinearLayout fc_store_error;
+    @BindView(R.id.city_error)
+    LinearLayout city_neterror;
     private ViewPager vpCity;
     private AdapterBookCityWebView adapterWebView;
     private ImageView ivSearch;
@@ -74,11 +74,11 @@ public class FmBookCity extends BaseFragment {
             //当前无网络
             smartTabLayout.setVisibility(View.GONE);
             vpCity.setVisibility(View.GONE);
-            fc_store_error.setVisibility(View.VISIBLE);
+            city_neterror.setVisibility(View.VISIBLE);
         }else {
             smartTabLayout.setVisibility(View.VISIBLE);
             vpCity.setVisibility(View.VISIBLE);
-            fc_store_error.setVisibility(View.GONE);
+            city_neterror.setVisibility(View.GONE);
         }
         vpCity = (ViewPager) view.findViewById(R.id.city_viewpager);
         vpCity.setOffscreenPageLimit(4);

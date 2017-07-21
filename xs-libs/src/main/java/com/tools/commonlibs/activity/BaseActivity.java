@@ -205,5 +205,4 @@ public class BaseActivity extends FragmentActivity {
         String device_token = UmengRegistrar.getRegistrationId(BaseActivity.this);
         LogUtils.debug("device_token====" + device_token);
     }
-
 }

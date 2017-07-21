@@ -133,7 +133,6 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     private DetailAboutDialog detailAboutDialog;
     private int WRITHE_REQUEST_CODE = 1;
     private int COMMENT_REQUEST_CODE = 1;
-    private GetRequest request;
 
 
     @Override
@@ -222,7 +221,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
 
     private void syncBookDetail() {
         //                            ViewUtils.toastShort("获取详情失败");
-        request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL,
+        GetRequest request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL,
                 EncodeUtils.encodeString_UTF8(bookid) + CommonUtils.getPublicGetArgs()),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -728,7 +727,5 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        request.cancel();
-
     }
 }

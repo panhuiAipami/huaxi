@@ -33,7 +33,7 @@ import butterknife.OnClick;
  * @UpDate: [16/8/2 13:52]
  * @Version: [v1.0]
  */
-public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
+public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.store_webview)
@@ -45,6 +45,7 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     @BindView(R.id.fm_store_error)
     LinearLayout fm_store_error;
     private int mSexClassify;
+    private boolean flag=false;
 
 
     @Override
@@ -91,7 +92,7 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onResume() {
         super.onResume();
-        getRefresh();
+
     }
 
 
@@ -126,15 +127,26 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
         if(NetUtils.checkNet() == NetType.TYPE_NONE){
             //当前无网络
             mStoreWebview.setVisibility(View.GONE);
-            fm_store_error.setVisibility(View.VISIBLE);
+            mNeterror.setVisibility(View.VISIBLE);
         }else {
             mStoreWebview.setVisibility(View.VISIBLE);
-            fm_store_error.setVisibility(View.GONE);
+            mNeterror.setVisibility(View.GONE);
         }
         mStoreRefresh.setOnRefreshListener(this);
         mStoreRefresh.setColorSchemeResources(R.color.c01_themes_color);
         webSettings(mStoreWebview);
         getRefresh();
+        mNeterror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view=getActivity().getLayoutInflater().inflate(R.layout.fm_store,null);
+                ButterKnife.bind(this, view);
+                initView();
+                initData();
+                mStoreWebview.setVisibility(View.VISIBLE);
+                mNeterror.setVisibility(View.GONE);
+            }
+        });
     }
 public void getRefresh(){
     mStoreWebview.setLoadListener(new WebView.WebViewLoadingListener() {
@@ -151,19 +163,8 @@ public void getRefresh(){
             mNeterror.setVisibility(View.VISIBLE);
             mStoreWebview.loadUrl("javascript:document.body.innerHTML=\"\"");
             //*********************************************************************************//
-
-
         }
     });
 }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.fc_store_error:
-                initView();
-                initData();
-                break;
-        }
-    }
 }

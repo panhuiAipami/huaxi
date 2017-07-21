@@ -204,6 +204,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                 .Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                int hua=0;
                 LogUtils.debug("response==" + response);
                 if (!ResponseHelper.isSuccess(response)) {
                     tvCharge.setText("");
@@ -215,9 +216,19 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                     }
                     String coins = jsonObject.optString(XSKEY.USER_INFO.COIN);
                     String petals = jsonObject.optString(XSKEY.USER_INFO.PETALS);
-                    tvCharge.setText(coins + " 花贝");
+                    if(coins!=null&&petals!=null){
+                        int coins_int = Integer.parseInt(coins);
+                        int petals_int = Integer.parseInt(petals);
+                        if(coins_int<petals_int){
+                            coins_int=0;
+                        }else {
+                            hua=coins_int-petals_int;
+                        }
+                    }
+//                    tvCharge.setText(coins + " 花贝");
+
                     if(UserHelper.getInstance().isLogin()){
-                        balance_coins_text.setText("余额：花贝："+coins+"  花瓣："+petals);
+                        balance_coins_text.setText("余额：花贝："+hua+"  花瓣："+petals);
                     }else {
                         balance_coins_text.setText("");
                         balance_coins_text.setVisibility(View.GONE);

@@ -184,7 +184,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             clearCache();
             UMEventAnalyze.countEvent(this, UMEventAnalyze.SETTING_CACHE);
         } else if (rlCheckVersion.getId() == v.getId()) {
-//            startCheck();
+            //检测新版本，调用方法
+            startCheck();
             new AppUpdateTask(SettingActivity.this).execute();
         } else if (rlContentPreference.getId() == v.getId()) {
             Intent it = new Intent(SettingActivity.this, ContentPerferenceActivity.class);
@@ -196,7 +197,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * 版本检测安装
      */
     private void startCheck() {
-//        GetRequest request = new GetRequest("http://172.16.0.192/h1/2", new Response.Listener<JSONObject>() {
+//        String path="http://api.hxdrive.net/api/checkver";
+//        GetRequest request = new GetRequest("http://172.16.0.192/h1/2", new Response.Listener<JSONObject>()
           GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

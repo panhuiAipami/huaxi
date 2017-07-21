@@ -10,7 +10,7 @@ def releaseTime() {
 def gitVersionCode() {
     def cmd = 'git rev-list HEAD --count'
 //    cmd.execute().text.trim().toInteger()
-    return 1;
+    return 1.0;
 }
 
 bugly {
@@ -52,7 +52,7 @@ android {
 
     productFlavors {
         yingyongbao {}  //默认渠道改为000;
-//        baidu {}
+        huaxiweb {}
 //        _002 {}
 //        _003 {}
 //        _004 {}

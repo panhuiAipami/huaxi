@@ -17,6 +17,7 @@ import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.tools.commonlibs.common.CommonApp;
 
@@ -323,6 +324,7 @@ public class PhoneUtils {
         try {
             PackageInfo info = CommonApp.getInstance().getPackageManager().getPackageInfo(CommonApp.getInstance().getPackageName(), 0);
             code = info.versionCode;
+            Log.i("banbenhao", "getVersionCode: 版本号================"+code);
             return code;
         } catch (Exception e) {
         }

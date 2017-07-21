@@ -126,7 +126,7 @@ public class RechargeRecordActivity extends BaseActivity implements SwipeRefresh
                 } else {
                     footerView.setViewState(FooterView.FOOTVIEW_STATE_PRELOADDING);
                 }
-                if (myrecordList.size() == 0) {
+                if (myrecordList.size() == 0||myrecordList==null) {
                     rlNoRecord.setVisibility(View.VISIBLE);
                 } else {
                     rlNoRecord.setVisibility(View.GONE);
