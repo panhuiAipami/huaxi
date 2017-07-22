@@ -42,8 +42,6 @@
         android:lineSpacingExtra="8dp"
         android:text="内容"
         />
-
-
     <Button
         android:id="@+id/dialog_btn_ok"
         android:layout_width="match_parent"

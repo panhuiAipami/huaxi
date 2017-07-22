@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="小说阅读网"
+            android:text="花溪小说网"
             android:textColor="@color/c13_themes_color"
             android:textSize="@dimen/f01_font_size"
             />

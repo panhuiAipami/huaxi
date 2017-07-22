@@ -61,9 +61,9 @@ public class URLConstants {
     //分享接口
     public static final String SHARE_URL = REDIRECT_URL + "/1006?bookid=%s" + CommonUtils.getPublicGetArgs();
     //App检查更新
-    // public static final String APP_CHECK_UPDATE_URL = "http://update.service.xs.cn/check/?1=1";
-    public static final String APP_CHECK_UPDATE_URL = url_base+"/check/?1=1";
-
+     public static final String APP_CHECK_UPDATE_URL = "http://api.hxdrive.net/api/checkver";
+//    public static final String APP_CHECK_UPDATE_URL = url_base+"api/checkver";
+//http://api.hxdrive.net/api/checkver
 
     //   11位数字      是      13810669999  验证码类型    u_usetype     数字        是      1-注册 2-激活 3-重置 4-登录
     //数据评论接口
@@ -154,4 +154,7 @@ public class URLConstants {
     //订阅记录
     //public static final String SUB_SCRIBE_URL = DATA_ROOT_URL + "/api/chapter/sublist?u_fresh_time=%d&p_num=%d&p_size=%s";
      public static final String SUB_SCRIBE_URL = url_base+"/user/sub?u_fresh_time=%d&p_num=%d&p_size=%s";
+
+    //检测版本更新的接口
+//    public static final String APP_CHECK_UPDATE_URL = "http://update.service.xs.cn/check/?1=1";
 }

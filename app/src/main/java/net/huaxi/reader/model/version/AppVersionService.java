@@ -11,13 +11,13 @@ import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 
 import com.tools.commonlibs.tools.LogUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.bean.AppVersion;
 import net.huaxi.reader.util.EventBusUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import net.huaxi.reader.R;
 
 /**
  * Created by ZMW on 2016/5/30.
@@ -57,7 +57,7 @@ public class AppVersionService extends Service {
         try {
             updateNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             //状态栏提醒内容
-            this.updateNotification = new Notification(R.mipmap.logo_xs, "小说阅读网提醒", System.currentTimeMillis());
+            this.updateNotification = new Notification(R.mipmap.logo_xs, "花溪小说网提醒", System.currentTimeMillis());
             updatePendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RemoteViews.class), 0);// TODO: 2016/5/30 研究
 
             //状态栏提醒内容

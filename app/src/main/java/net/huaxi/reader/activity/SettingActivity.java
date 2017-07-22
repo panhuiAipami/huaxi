@@ -38,7 +38,7 @@ import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.model.version.AppVersionHelper;
 import net.huaxi.reader.model.version.AppVersionService;
-import net.huaxi.reader.thread.AppUpdateTask;
+import net.huaxi.reader.thread.AppCheckUpdateTask;
 import net.huaxi.reader.thread.ClearCacheTask;
 import net.huaxi.reader.thread.GetCacheTask;
 import net.huaxi.reader.util.EventBusUtil;
@@ -184,9 +184,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             clearCache();
             UMEventAnalyze.countEvent(this, UMEventAnalyze.SETTING_CACHE);
         } else if (rlCheckVersion.getId() == v.getId()) {
+            AppCheckUpdateTask appCheckUpdateTask = new AppCheckUpdateTask(SettingActivity.this);
+            appCheckUpdateTask.setFlag(true);
+            appCheckUpdateTask.execute();
             //检测新版本，调用方法
-            startCheck();
-            new AppUpdateTask(SettingActivity.this).execute();
+//            startCheck();
+//            new AppUpdateTask(SettingActivity.this).execute();
+//            new AppCheckUpdateTask(SettingActivity.this).execute();
         } else if (rlContentPreference.getId() == v.getId()) {
             Intent it = new Intent(SettingActivity.this, ContentPerferenceActivity.class);
             startActivity(it);
@@ -196,7 +200,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     /**
      * 版本检测安装
      */
-    private void startCheck() {
+    public void startCheck() {
 //        String path="http://api.hxdrive.net/api/checkver";
 //        GetRequest request = new GetRequest("http://172.16.0.192/h1/2", new Response.Listener<JSONObject>()
           GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL, new Response.Listener<JSONObject>() {
@@ -205,8 +209,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 LogUtils.debug(response.toString());
                 if (ResponseHelper.isSuccess(response)) {
                     appVersion = AppVersionHelper.parseToAppVersion(response);
+                    int build=Integer.parseInt(appVersion.getBuild());
                     if (new File(appVersion.getFilePath()).exists()) {
-                        if (appVersion.getBuild() != PhoneUtils.getVersionCode()) {
+                        if (build != PhoneUtils.getVersionCode()) {
                             initDownloadCompleteDialog();
                         } else {
                             ViewUtils.toastShort("已为最新");

@@ -44,6 +44,7 @@ public class BookContentRender {
     private int readpage_pay_balanc,Present_price;
     public static int p,b,h;
     public static int sum;
+    public int qq;
 
     public BookContentRender() {
         mPaint = new BookContentPaint();
@@ -497,10 +498,17 @@ public class BookContentRender {
     private int drawPayBalance(Canvas canvas, int balance,int petal, int x, int y) {
         mPaint.changeStyleToBalance();
         //将用户的花贝与花瓣余额传递进去
-        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Object[]{balance,petal});
-        b=balance;
+        //用花贝与花瓣的总额减去花瓣
+
+        if(balance>petal){
+            qq=balance-petal;
+        }else {
+            qq=0;
+        }
+        String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Object[]{qq,petal});
+        b=qq;
         h=petal;
-        readpage_pay_balanc=balance;
+        readpage_pay_balanc=qq;
 
 //        final int payTipX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(payTip)) / 2;
 

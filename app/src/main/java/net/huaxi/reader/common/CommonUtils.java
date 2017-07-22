@@ -124,7 +124,7 @@ public class CommonUtils {
         //时区
         map.put("stz", "" + TimeZone.getDefault().getRawOffset() / 60000);
         map.put("apid", PhoneUtils.getPackageName());
-        map.put("apnm", "小说阅读网畅读版");
+        map.put("apnm", "花溪小说网畅读版");
         map.put("channel_type",EncodeUtils.encodeString_UTF8(String.valueOf(SharePrefHelper.getSexClassify())));
         return map;
     }

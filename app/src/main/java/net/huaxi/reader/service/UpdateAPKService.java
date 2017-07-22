@@ -1,11 +1,5 @@
 package net.huaxi.reader.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,12 +10,19 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.tools.commonlibs.tools.LogUtils;
-import net.huaxi.reader.common.BroadCastConstant;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.common.BroadCastConstant;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class UpdateAPKService extends Service {
 
@@ -59,6 +60,7 @@ public class UpdateAPKService extends Service {
 		// 获取传值
 		url = intent.getStringExtra("url");
 		LogUtils.info("启动下载   :" + url);
+//		Log.i("TTTTTT", "onStart: 新版本apk下载路径"+url);
 
 		// 创建文件
 		downloadFile = intent.getStringExtra("urlfile");
@@ -69,7 +71,7 @@ public class UpdateAPKService extends Service {
 		try {
 			updateNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			//状态栏提醒内容
-			this.updateNotification = new Notification(R.mipmap.logo_xs, "小说阅读网提醒", System.currentTimeMillis());
+			this.updateNotification = new Notification(R.mipmap.logo_xs, "花溪小说提醒", System.currentTimeMillis());
 			updatePendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RemoteViews.class), 0);
 
 			//状态栏提醒内容

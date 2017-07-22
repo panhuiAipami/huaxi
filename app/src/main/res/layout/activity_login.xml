@@ -281,7 +281,7 @@
         android:background="@drawable/selector_common_gray_background"
         android:paddingBottom="10dp"
         android:paddingTop="5dp"
-        android:text="* 小说阅读网旧账号登录须知"
+        android:text="* 花溪小说网旧账号登录须知"
         android:textColor="#666"
         android:textSize="@dimen/login_instructions_text_size"
         android:visibility="gone"

@@ -138,7 +138,7 @@ public class AppVersionHelper {
                 JSONObject infoJson = vdata.getJSONObject("info");
                 if (infoJson != null) {
                     appVersion.setVersionName(infoJson.optString("version"));
-                    appVersion.setBuild(infoJson.optInt("build"));
+                    appVersion.setBuild(infoJson.optString("build"));
                     appVersion.setUptime(infoJson.optString("uptime"));
                     appVersion.setIsOptional(infoJson.optBoolean("optional"));
                     JSONObject featureJson = infoJson.getJSONObject("feature");

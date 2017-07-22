@@ -21,6 +21,7 @@ import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.adapter.AdapterMainFragmentPager;
+import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.MainTabFragEnum;
 import net.huaxi.reader.common.SharePrefHelper;
@@ -83,15 +84,22 @@ public class MainActivity extends BaseActivity {
                 ii[1]);
     }
 
+    /**
+     * 用户打开app检测是否有新版本
+     * 放在异步请求中
+     */
     private void updateApk() {
         try {
             long endTime = System.currentTimeMillis();
-//            long startTime = SharePrefHelper.getLastUpdateApkTime();
-//            long interval = endTime - startTime;
-//            if (interval >= Constants.UPDATE_APK_INTERVAL) {
+            //新版本提示更新时间间隔，如果用户点击(下次提醒我)按钮，则一天后再提示
+            //如果用户没有点击，直接退出app，则用户再进入app时再次提醒版本更新
+            long startTime = SharePrefHelper.getLastUpdateApkTime();
+            long interval = endTime - startTime;
+            //时间判断
+            if (interval >= Constants.UPDATE_APK_INTERVAL) {
             SharePrefHelper.setLastUpdateApkTime(endTime);
             new AppCheckUpdateTask(MainActivity.this).execute();
-//            }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -139,12 +139,8 @@ public class FmBookStore extends BaseFragment implements SwipeRefreshLayout.OnRe
         mNeterror.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view=getActivity().getLayoutInflater().inflate(R.layout.fm_store,null);
-                ButterKnife.bind(this, view);
+//                getActivity().finish();
                 initView();
-                initData();
-                mStoreWebview.setVisibility(View.VISIBLE);
-                mNeterror.setVisibility(View.GONE);
             }
         });
     }

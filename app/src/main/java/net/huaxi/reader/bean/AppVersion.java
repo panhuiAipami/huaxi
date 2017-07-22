@@ -14,7 +14,7 @@ public class AppVersion implements Serializable {
     private static final long serialVersionUID = 3638013439797982445L;
 
     private String versionName;
-    private int build;
+    private String build;
     private String uptime;
     private List<String> features;
     private List<String> urls;
@@ -39,11 +39,11 @@ public class AppVersion implements Serializable {
         this.versionName = versionName;
     }
 
-    public int getBuild() {
+    public String getBuild() {
         return build;
     }
 
-    public void setBuild(int build) {
+    public void setBuild(String build) {
         this.build = build;
     }
 

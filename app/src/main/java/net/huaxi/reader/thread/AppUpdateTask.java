@@ -5,14 +5,17 @@ import android.content.Intent;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.toolbox.RequestFuture;
-import net.huaxi.reader.common.URLConstants;
 import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.task.EasyTask;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.PhoneUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
 import net.huaxi.reader.bean.AppVersion;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.model.version.AppVersionHelper;
+import net.huaxi.reader.model.version.AppVersionService;
 import net.huaxi.reader.util.EventBusUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,9 +26,6 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.model.version.AppVersionService;
 
 /**
  * Created by ZMW on 2016/6/2.
@@ -51,8 +51,9 @@ public class AppUpdateTask extends EasyTask<Activity, Void, Void, AppVersion> {
     public void onPostExecute(AppVersion appVersion) {
         super.onPostExecute(appVersion);
         forceUpdate=appVersion.isOptional();
+        int build=Integer.parseInt(appVersion.getBuild());
         if (new File(appVersion.getFilePath()).exists()) {
-            if(appVersion.getBuild()!= PhoneUtils.getVersionCode()){
+            if(build!= PhoneUtils.getVersionCode()){
                 initProgressDialog();
             }else{
                 ViewUtils.toastShort("已为最新");

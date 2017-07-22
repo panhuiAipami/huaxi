@@ -307,6 +307,7 @@ public class PhoneUtils {
         try {
             PackageInfo info = CommonApp.getInstance().getPackageManager().getPackageInfo(CommonApp.getInstance().getPackageName(), 0);
             code = String.valueOf(info.versionName);
+            Log.i("banbenhao", "getVersionCode: 版本名================"+code);
             return code;
         } catch (Exception e) {
         }

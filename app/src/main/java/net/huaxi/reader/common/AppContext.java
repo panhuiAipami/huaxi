@@ -37,6 +37,8 @@ public class AppContext extends CommonApp {
 		initAliFeedBack();
 		//时间跟踪是否打开
 		MobclickAgent.openActivityDurationTrack(true);
+
+
 	}
 
 	private void initAliFeedBack() {

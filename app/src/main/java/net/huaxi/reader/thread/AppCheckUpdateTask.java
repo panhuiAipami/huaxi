@@ -2,6 +2,8 @@ package net.huaxi.reader.thread;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.RequestFuture;
 import com.tools.commonlibs.cache.RequestQueueManager;
@@ -12,8 +14,14 @@ import com.tools.commonlibs.tools.PhoneUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.bean.AppVersion;
+import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.dialog.AppDownloadDialog;
+import net.huaxi.reader.dialog.CommonDailog;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.model.version.AppVersionHelper;
 
 import org.json.JSONObject;
@@ -22,20 +30,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.AppContext;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.dialog.CommonDailog;
-import net.huaxi.reader.https.GetRequest;
-
 /**
  * 检查更新APP异步任务
  * taoyingfeng
  * 2016/2/19.
  */
 public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersion> {
+    private int build;
+    private boolean flag=false;
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
     public AppCheckUpdateTask(Activity caller) {
         super(caller);
@@ -60,17 +66,22 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
     @Override
     public void onPostExecute(final AppVersion appVersion) {
         super.onPostExecute(appVersion);
+//        Log.i("wwww", "onPostExecute: "+appVersion.toString());
         LogUtils.debug("getVersion—>"+PhoneUtils.getVersionCode());
-        if (appVersion != null && appVersion.getBuild() > PhoneUtils.getVersionCode()) {
+        if(appVersion != null){
+            build=Integer.parseInt(appVersion.getBuild());
+        }
+
+        if (appVersion != null && build > PhoneUtils.getVersionCode()) {
             CommonDailog _dailog = new CommonDailog(caller,
                     AppContext.getInstance().getString(R.string.version_update),
                     getContent(appVersion),
                     AppContext.getInstance().getString(R.string.update_ok),
                     AppContext.getInstance().getString(R.string.update_cancel));
-            if (!appVersion.isOptional()) {
+            if (appVersion.isOptional()) {
                 _dailog.dismissCancel();
-                _dailog.setCancelable(false);
-                _dailog.setCanceledOnTouchOutside(false);
+
+                _dailog.setCanceledOnTouchOutside(false);_dailog.setCancelable(false);
             }
             _dailog.setCommonDialogListener(new CommonDailog.CommonDialogListener() {
                 @Override
@@ -80,7 +91,6 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
                             @Override
                             public void run() {
                                 ViewUtils.toastShort(AppContext.getInstance().getString(R.string.not_available_network));
-
                             }
                         });
                         return;
@@ -113,16 +123,25 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
             });
             _dailog.show();
         }
+        if(appVersion.getVersionName().equals(PhoneUtils.getVersionName())){
+            if(flag){
+                Toast.makeText(AppContext.context(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
+                Log.i("TTT", "onPostExecute: 当前已是最新版本");
+                flag=false;
+            }
+        }
     }
 
     private AppVersion checkVersion(){
+//        Log.i("jiejie", "checkVersion: 方法被调用");
         AppVersion appVersion= null;
-        String url = URLConstants.APP_CHECK_UPDATE_URL + CommonUtils.getPublicGetArgs();
+        String url = URLConstants.APP_CHECK_UPDATE_URL;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         GetRequest request = new GetRequest(url,future,future);
         RequestQueueManager.addRequest(request);
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS);
+//            Log.i("eeee", "checkVersion: "+response.toString());
             appVersion= AppVersionHelper.parseToAppVersion(response);
         }catch (InterruptedException e) {
             e.printStackTrace();
