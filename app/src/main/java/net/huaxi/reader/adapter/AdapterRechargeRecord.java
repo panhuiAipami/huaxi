@@ -60,7 +60,7 @@ public class AdapterRechargeRecord  extends BaseAdapter {
 //        Log.i("jie", "getView: 哈哈哈"+record.toString());
         long cdate = record.getCdate();
         Log.i("cdate", "getView: "+cdate);
-        holder.tvOrderCreateTiem.setText(DateUtils.simpleDateFormat(new Date(record.getCdate() * 1000),"yyyy-MM-dd HH:mm"));
+        holder.tvOrderCreateTiem.setText(DateUtils.simpleDateFormat(new Date(cdate * 1000),"yyyy-MM-dd HH:mm"));
         String chid=record.getChid();
         //显示订单号
         holder.item_order_number_textview.setText("订单号："+record.getOrsn());

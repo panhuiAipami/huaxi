@@ -73,7 +73,7 @@
         android:layout_below="@id/setting_aboutwe_xs_textview"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="V1.0.0"
+        android:text="V1.0.2"
         android:textColor="@color/c07_themes_color"
         android:textSize="17dp" />
 
@@ -107,7 +107,7 @@
             android:layout_marginBottom="1dp"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="       Copyright @2016-2017"
+            android:text="       Copyright @2017"
             android:textSize="14dp" />
         <TextView
             android:id="@+id/setting_aboutwe_web_comp"

@@ -22,12 +22,14 @@ import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.activity.ComplimentaryrecordActivity;
 import net.huaxi.reader.activity.ConsumeRecordActivity;
 import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.MyInfoActivity;
 import net.huaxi.reader.activity.NewMessageActivity;
 import net.huaxi.reader.activity.RechargeRecordActivity;
 import net.huaxi.reader.activity.SettingActivity;
+import net.huaxi.reader.activity.SignActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.CommonUtils;
@@ -65,6 +67,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     private JavaScript javaScript;
     private RelativeLayout rech;
     private TextView balance_coins_text;
+    private RelativeLayout complimentary,sign;
 
     @Override
     @Nullable
@@ -108,6 +111,11 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View view) {
+        //赠送记录
+        complimentary= (RelativeLayout) view.findViewById(R.id.usercenter_complimentary_layout);
+        sign= (RelativeLayout) view.findViewById(R.id.usercenter_sign_layout);
+
+
         //显示账户花贝花瓣余额
         balance_coins_text = (TextView) view.findViewById(R.id.balance_coins);
         rech= (RelativeLayout) view.findViewById(R.id.rech);
@@ -139,6 +147,10 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     }
 
     private void initEvent() {
+        //赠送与签到
+        complimentary.setOnClickListener(this);
+        sign.setOnClickListener(this);
+
         ivSetting.setOnClickListener(this);
         rlUsername.setOnClickListener(this);
         rlCharge.setOnClickListener(this);
@@ -369,6 +381,26 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                 intent.putExtra(SimpleWebViewActivity.WEBTYPE, SimpleWebViewActivity.WEBTYPE_HELP_CENTER);
                 startActivity(intent);
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_HELP);
+                break;
+            case R.id.usercenter_complimentary_layout:
+                if (!UserHelper.getInstance().isLogin()) {
+                    UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                Intent intentcomplimentary = new Intent(getActivity(), ComplimentaryrecordActivity.class);
+                startActivity(intentcomplimentary);
+                UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.RECHARGE_HISTORY);
+                break;
+            case R.id.usercenter_sign_layout:
+                if (!UserHelper.getInstance().isLogin()) {
+                    UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                Intent intentsign = new Intent(getActivity(), SignActivity.class);
+                startActivity(intentsign);
+                UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.RECHARGE_HISTORY);
                 break;
 
             default:

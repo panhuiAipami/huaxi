@@ -2,7 +2,6 @@ package net.huaxi.reader.common;
 
 public class URLConstants {
     public static  String url_base = " https://api.hxdrive.net";
-
     public static final String PAY_URL = "https://pay.xs.cn";
     public static final String REDIRECT_URL = "http://rd.xs.cn";
     //数据中心根路径
@@ -18,8 +17,6 @@ public class URLConstants {
     public static final String H5PAGE_SELECTION = url_base+"/book/store?1=1";
     //周刊页面
     public static final String H5PAGE_WEEKLY = url_base+"/book/weekly?1=1";
-
-
     //免费
     public static final String H5PAGE_FREE = "http:\\/\\/rd.xs.cn/1201?1=1";
 
@@ -50,8 +47,9 @@ public class URLConstants {
     //获取支付接口
     public static final String PAY_INFO = url_base+"/user/coins";
 
-    //消费记录 get
-    public static final String PAY_CONSUME_LSIT = url_base + "/consume/log?page=%d&pagenum=%d";
+    //消费记录 get   today=1当天  today=0之前
+    public static final String PAY_CONSUME_LSIT = url_base + "/consume/log?page=%d&pagenum=%d&today=%d";
+//    public static final String PAY_CONSUME_LSIT_BEFORE = url_base + "/consume/log?page=%d&pagenum=%d&today=0";
 
     //搜索接口
     public static final String SEARCH_BOOK_URL = url_base+"/book/search?searchword=%s&offset=%d&limit=%d";
@@ -79,7 +77,7 @@ public class URLConstants {
     public static final String PHONE_LOGIN = ACCOUNT_ROOT_URL + "/api/login";//登录接口 post请求
     public static final String QQ_LOGIN = ACCOUNT_ROOT_URL + "/api/qq_app_login";//qq登录
     //public static final String WX_LOGIN = ACCOUNT_ROOT_URL + "/api/wechat_app_login";//微信登录
-    public static final String WX_LOGIN = url_base+"/login/wechat";//微信登录
+    public static final String WX_LOGIN = url_base+"/user/wxlogin";//微信登录
 
 
 // public static final String USER_DETAIL = ACCOUNT_ROOT_URL + "/api/user";//获取用户资料

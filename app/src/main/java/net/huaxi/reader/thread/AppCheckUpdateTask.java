@@ -72,7 +72,7 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
             build=Integer.parseInt(appVersion.getBuild());
         }
 
-        if (appVersion != null && build > PhoneUtils.getVersionCode()) {
+        if (appVersion != null && build > PhoneUtils.getVersionCode()&&!appVersion.getVersionName().equals(PhoneUtils.getVersionName())) {
             CommonDailog _dailog = new CommonDailog(caller,
                     AppContext.getInstance().getString(R.string.version_update),
                     getContent(appVersion),

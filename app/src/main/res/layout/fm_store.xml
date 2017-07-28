@@ -24,7 +24,7 @@
             />
 
         <ImageView
-            android:id="@+id/store_search"
+            android:id="@+id/store_search1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -54,37 +54,39 @@
         </net.huaxi.reader.view.WebView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <net.huaxi.reader.view.WebView
+        android:visibility="visible"
         android:id="@+id/store_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
     </net.huaxi.reader.view.WebView>
-    <LinearLayout
-        android:id="@+id/fm_store_error"
-        android:orientation="vertical"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fm_net_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c12_themes_color"
         android:clickable="true"
         android:gravity="center"
         android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
+
+
         <ImageView
-            android:id="@+id/img_error"
+            android:id="@+id/common_broken_network_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="3dip"
-            android:padding="10dip"
-            android:src="@mipmap/usercenter_net_error" />
+            android:src="@mipmap/common_broken_network"/>
 
         <TextView
+            android:id="@+id/bookshelf_nonet_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_error"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="3dip"
-            android:gravity="center"
-            android:text="@string/net_error"
-            android:textColor="#737373" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:text="@string/not_available_network"
+            android:textColor="#e1e1e1"
+            android:textSize="15sp"/>
+
     </LinearLayout>
     <include
         android:id="@+id/store_neterror"

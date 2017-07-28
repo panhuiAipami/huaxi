@@ -14,12 +14,11 @@ import org.json.JSONObject;
  * 返回json解析帮助类
  */
 public class ResponseHelper {
-
+    private static final String GIAE_POINT="give_point";
     private static final String ERRORID = "errorid";
     private static final String VDATA = "vdata";
     private static final String ERRORDESC = "errordesc";
     private static final String LAST_UPDATE_TIME = "last_update_time";
-
 
     //验证请求是否成功
     public static boolean isSuccess(JSONObject resp) {
@@ -64,6 +63,14 @@ public class ResponseHelper {
             errorId = resp.optInt(ERRORID, XSErrorEnum.JSON_NO_FEILD.getCode());
         }
         return errorId;
+    }
+    //得到give_point
+    public static int getGIVE_POINT(JSONObject resp) {
+        int give_point=0;
+        if (resp != null) {
+            give_point = resp.optInt(GIAE_POINT, XSErrorEnum.JSON_NO_FEILD.getCode());
+        }
+        return give_point;
     }
 
     /**

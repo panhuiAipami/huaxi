@@ -327,6 +327,84 @@
             android:src="@mipmap/usercenter_next_icon"
             />
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/usercenter_complimentary_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/selector_common_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/usercenter_complimentary_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/give_record"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/usercenter_complimentary_imageview"
+            android:text="@string/person_complimentary_record"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="14sp"
+            />
+
+        <ImageView
+            android:id="@+id/usercenter_goto_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@mipmap/usercenter_next_icon"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/usercenter_sign_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/selector_common_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/usercenter_sign_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/sign1"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/usercenter_sign_imageview"
+            android:text="@string/person_sign"
+            android:textColor="@color/c04_themes_color"
+            android:textSize="14sp"
+            />
+
+        <ImageView
+            android:id="@+id/usercenter_go_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@mipmap/usercenter_next_icon"
+            />
+    </RelativeLayout>
 
 
     <View

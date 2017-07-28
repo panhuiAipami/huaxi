@@ -12,10 +12,10 @@ import android.widget.TextView;
 import com.tools.commonlibs.dialog.BaseDialog;
 import com.tools.commonlibs.tools.DateUtils;
 
-import java.util.Date;
-
 import net.huaxi.reader.R;
 import net.huaxi.reader.bean.ChargeRecord;
+
+import java.util.Date;
 
 /**
  * Created by ZMW on 2016/3/17.
@@ -86,8 +86,8 @@ public class RechargeRecordDetailDialog extends BaseDialog {
     private String getContent(ChargeRecord record) {
         StringBuffer _stringBuffer = new StringBuffer();
         _stringBuffer.append("单号：" + record.getOrsn() + "\n");
-        _stringBuffer.append("时间：" + DateUtils.simpleDateFormat(new Date(record.getOrCdate() * 1000),
-                "yyyy.MM.dd HH:mm") + "\n");
+        long cdate=(record.getCdate()*1000);
+        _stringBuffer.append("时间：" + DateUtils.simpleDateFormat(new Date(cdate),"yyyy-MM-dd HH:mm") + "\n");
         _stringBuffer.append("金额：" + record.getOrAmountPaid() + "元\n");
         _stringBuffer.append("结果：" + ("1".equals(record.getOrState()) ? "成功" : "7".equals(record.getOrState()) ? "失败" : "其他"));
         return _stringBuffer.toString();

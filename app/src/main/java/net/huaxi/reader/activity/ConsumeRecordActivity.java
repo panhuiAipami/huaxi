@@ -45,14 +45,17 @@ import java.util.List;
 /**
  * 消费记录
  */
-public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+    private TextView consume_today_before;
     private ListView lvConsume;
     private ImageView ivBack;
+    private int cantoday = 0;
     private AdapterConsumeRecord adapterConsumeRecord;
     SwipeRefreshLayout frame;
     private RelativeLayout rlTitle;
     private View rlNoConsume, rlNoNet;
     List<ConsumeRecordCustom> consumelist = new ArrayList<ConsumeRecordCustom>();
+    List<ConsumeRecordCustom> consumelisttoday = new ArrayList<ConsumeRecordCustom>();
     private int pagenow;//当前页数
     private static final int PAGENUM = 20;//一页的内容
     private FooterView footerView;
@@ -60,6 +63,9 @@ public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshL
     Type type = new TypeToken<ArrayList<ConsumeRecordCustom>>() {
     }.getType();
     private View vLoadding;
+    private long cdate;
+    private String s;
+    private boolean b;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -98,12 +104,13 @@ public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshL
         }
 
         pagenow = 1;
-        GetRequest request = new GetRequest(String.format(URLConstants.PAY_CONSUME_LSIT, pagenow, PAGENUM) + CommonUtils
+        GetRequest request = new GetRequest(String.format(URLConstants.PAY_CONSUME_LSIT, pagenow, PAGENUM, cantoday) + CommonUtils
                 .getPublicGetArgs(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
                 frame.setRefreshing(false);
                 vLoadding.setVisibility(View.GONE);
+//                Log.i("dongyongjie", "onResponse: " + response.toString());
                 LogUtils.debug("response==" + response.toString());
                 int errorid = ResponseHelper.getErrorId(response);
                 if (XSNetEnum._VDATAERRORCODE_ERROR_CONSUME.getCode() == errorid) {
@@ -201,7 +208,7 @@ public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshL
             return;
 
         }
-        GetRequest request = new GetRequest(String.format(URLConstants.PAY_CONSUME_LSIT, ++pagenow, PAGENUM) + CommonUtils
+        GetRequest request = new GetRequest(String.format(URLConstants.PAY_CONSUME_LSIT, ++pagenow, PAGENUM, cantoday) + CommonUtils
                 .getPublicGetArgs(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
@@ -251,6 +258,11 @@ public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshL
     }
 
     private void initView() {
+        //
+        consume_today_before = (TextView) findViewById(R.id.consume_today_before);
+        consume_today_before.setText("之前");
+        //选择器
+        consume_today_before.setOnClickListener(this);
         vLoadding = findViewById(R.id.consume_loading_layout);
         ivBack = (ImageView) findViewById(R.id.consume_back_imageview);
         lvConsume = (ListView) findViewById(R.id.consume_listview);
@@ -321,6 +333,27 @@ public class ConsumeRecordActivity extends BaseActivity implements SwipeRefreshL
                 lvConsume.smoothScrollToPosition(0);
             }
         });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.consume_today_before:
+                if (consume_today_before.getText().equals("今日")) {
+                    consume_today_before.setText("之前");
+                    cantoday=0;
+                    initData(false);
+                    adapterConsumeRecord.notifyDataSetChanged();
+
+                } else {
+                    consume_today_before.setText("今日");
+                    cantoday=1;
+                    initData(false);
+                    adapterConsumeRecord.notifyDataSetChanged();
+                }
+                break;
+        }
     }
 
 

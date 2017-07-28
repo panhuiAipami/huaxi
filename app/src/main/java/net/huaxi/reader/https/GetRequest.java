@@ -39,7 +39,6 @@ public class GetRequest extends Request<JSONObject> {
         this.setRetryPolicy(new DefaultRetryPolicy(Constants.CONNECT_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy
                 .DEFAULT_BACKOFF_MULT));
     }
-
     /**
      * Get请求（不需要关心header问题）
      *

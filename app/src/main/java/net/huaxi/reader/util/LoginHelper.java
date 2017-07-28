@@ -66,6 +66,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.alibaba.sdk.android.feedback.xblink.config.GlobalConfig.context;
+
 /**
  * Created by ZMW on 2015/12/3.
  */
@@ -88,6 +90,10 @@ public class LoginHelper {
     public static String LOGINCANCLETEXT = "关闭授权";
     public static String LOGINFAILEDTEXT = "授权失败";
     String WX_AppSecert = "a2498b938e917fcbdd3c043278e02f25";
+
+
+    //是否赠送花瓣
+    private int give_point;
     private Activity activity;
     private RequestQueue mQueue;
     // QQ登录相关
@@ -403,17 +409,27 @@ public class LoginHelper {
         //http://account.xs.cn/api/wechatapplogin
         PostRequest request = new PostRequest(URLConstants.WX_LOGIN, new
                 Response.Listener<JSONObject>() {
+
+
+
                     @Override
                     public void onResponse(JSONObject response) {
                         LogUtils.debug(response.toString());
+//                        Log.i("dongyongjie", "onResponse: "+response.toString());
 
                         if (!ResponseHelper.isSuccess(response)) {
                             ViewUtils.toastShort("本次第三方登录失败1");
 //                            ViewUtils.toastShort("1");
                             return;
                         }
+                        int give_point = ResponseHelper.getGIVE_POINT(response);
+                        if(give_point==1){
+                            ToastUtils toastUtil = new ToastUtils(context, R.layout.toast, "完全自定义居中toast 2");
+                            toastUtil.show();
+                        }else {
+                            ViewUtils.toastShort("登录成功");
+                        }
 
-                        ViewUtils.toastShort("登录成功");
                         setCookieAndUid(response);
 
                         if (listener != null)

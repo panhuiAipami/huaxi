@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="net.huaxi.reader.fragment.FmCategory">
+              tools:context="net.huaxi.reader.activity.ComplimentaryrecordActivity">
 
 
     <RelativeLayout
@@ -18,13 +18,24 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:text="书城"
+            android:text="赠送记录"
             android:textColor="@color/c13_themes_color"
             android:textSize="@dimen/f01_font_size"
             />
+        <ImageView
+            android:id="@+id/complimentary_record_back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_common_red_background"
+            android:padding="7dp"
+            android:src="@mipmap/login_back_image_pressed"
+            />
 
         <ImageView
-            android:id="@+id/store_search"
+            android:visibility="gone"
+            android:id="@+id/store_search1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -47,21 +58,21 @@
         >
 
         <net.huaxi.reader.view.WebView
-            android:id="@+id/fg"
+            android:id="@+id/store_webview1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
         </net.huaxi.reader.view.WebView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <net.huaxi.reader.view.WebView
-        android:id="@+id/fg_cate_webview"
         android:visibility="visible"
+        android:id="@+id/store_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
     </net.huaxi.reader.view.WebView>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fg_net_error"
+        android:id="@+id/fm_net_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/c12_themes_color"
@@ -89,7 +100,7 @@
 
     </LinearLayout>
     <include
-        android:id="@+id/category_error"
+        android:id="@+id/store_neterror"
         layout="@layout/common_broken_network"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
