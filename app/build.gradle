@@ -53,9 +53,9 @@ android {
     productFlavors {
         yingyongbao {}  //默认渠道改为000;
         huaxiweb {}
-//        _002 {}
-//        _003 {}
-//        _004 {}
+        huaxi360 {}
+        xiaomi {}
+        baidu {}
 //        _005 {}
 //        _006 {}
 //        _007 {}

@@ -2,7 +2,6 @@ package net.huaxi.reader.thread;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.RequestFuture;
@@ -79,8 +78,8 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
                     AppContext.getInstance().getString(R.string.update_ok),
                     AppContext.getInstance().getString(R.string.update_cancel));
             if (appVersion.isOptional()) {
-                _dailog.dismissCancel();
 
+                _dailog.dismissCancel();
                 _dailog.setCanceledOnTouchOutside(false);_dailog.setCancelable(false);
             }
             _dailog.setCommonDialogListener(new CommonDailog.CommonDialogListener() {
@@ -126,7 +125,7 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
         if(appVersion.getVersionName().equals(PhoneUtils.getVersionName())){
             if(flag){
                 Toast.makeText(AppContext.context(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
-                Log.i("TTT", "onPostExecute: 当前已是最新版本");
+//                Log.i("TTT", "onPostExecute: 当前已是最新版本");
                 flag=false;
             }
         }
