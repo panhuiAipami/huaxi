@@ -59,6 +59,10 @@ public class URLConstants {
     private static final String IMAGE_SRC = "http://res-image.chumang.wang";
     //订阅记录
     public static final String SUB_SCRIBE_URL = url_base + "/user/sub?u_fresh_time=%d&p_num=%d&p_size=%s";
+
+
+
+
     /**
      * ***************************************************************************************************************
      * 带有xs的URL
