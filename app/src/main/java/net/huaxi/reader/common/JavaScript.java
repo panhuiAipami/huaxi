@@ -169,7 +169,6 @@ public class JavaScript {
 
     /**
      * 去书城二级web页
-     *
      * @param url   web页的url
      * @param title web页顶title部显示
      */
