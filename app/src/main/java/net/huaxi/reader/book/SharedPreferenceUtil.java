@@ -3,12 +3,14 @@ package net.huaxi.reader.book;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import net.huaxi.reader.activity.BookContentActivity;
 import net.huaxi.reader.common.Constants;
 
 /**
  * 保存阅读参数配置.
  */
 public class SharedPreferenceUtil {
+
 
     /**
      * 保存屏幕亮度
@@ -223,8 +225,22 @@ public class SharedPreferenceUtil {
     }
 
     /**
+     *是否订阅
+     * bookId作为key
+     */
+    public static void setBooleanIsDingyue(boolean value) {
+        mSharedPreferences.edit().putBoolean(BookContentActivity.IS_DINGYUE, value).commit();
+    }
+    /**
+     *get是否订阅
+     * bookId作为key
+     */
+    public static boolean getBooleanIsDingyue() {
+        return getBooleanAttribute(mSharedPreferences, BookContentActivity.IS_DINGYUE, false);
+    }
+
+    /**
      * 获取int类型属性
-     *
      * @param sp
      * @param key
      * @param defValue

@@ -52,8 +52,8 @@ public class ReadPageFactory {
     private Canvas mNewCanvas;
     //记录服务端返回的订阅状态
     private volatile boolean lastAutoSub = true;
-    //记录客户端的订阅状态
-    private volatile boolean autoSub = true;
+    //记录客户端的订阅状态(红色checkbox的状态)
+    private volatile boolean autoSub = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
 
     private ReadPageFactory() {
         mBookContentRender = new BookContentRender();
@@ -89,9 +89,10 @@ public class ReadPageFactory {
     }
 
     /**
-     * 改变客户端的订阅状态.
+     * 改变客户端的订阅状态.(checkbox的)
      */
     public void changeAutoSub() {
+
         LogUtils.debug("here_1");
         if (mBookContentRender != null) {
             LogUtils.debug("here_2");
@@ -100,6 +101,7 @@ public class ReadPageFactory {
             DataSourceManager.getSingleton().resetPageContentCache(autoSub);
             LogUtils.debug("____55555");
             refreshPage();
+            SharedPreferenceUtil.getInstanceSharedPreferenceUtil().setBooleanIsDingyue(autoSub);
 
             if (autoSub){
                 LogUtils.debug("here_3");
@@ -123,7 +125,7 @@ public class ReadPageFactory {
      * @return boolean
      */
     public boolean isAutoSub() {
-        return this.autoSub;
+        return SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
     }
 
     public void setAutoSub(boolean autoSub) {

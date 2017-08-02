@@ -16,6 +16,7 @@ import com.tools.commonlibs.tools.LogUtils;
 import net.huaxi.reader.R;
 import net.huaxi.reader.book.BookContentLineInfo;
 import net.huaxi.reader.book.BookContentSettings;
+import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.BookContentPaint;
 import net.huaxi.reader.book.paging.PageContent;

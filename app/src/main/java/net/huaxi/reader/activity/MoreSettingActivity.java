@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -81,8 +82,9 @@ public class MoreSettingActivity extends BaseActivity implements View.OnClickLis
 //        lineSpaceStyle.setOnClickListener(this);
         if (UserHelper.getInstance().isLogin()) {
             autoLayout.setVisibility(View.VISIBLE);
-            autoOrderTb.setChecked(false);
-            getAutoSub();
+            boolean b = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
+            autoOrderTb.setChecked(b);
+//            getAutoSub();
         } else {
             autoLayout.setVisibility(View.GONE);
         }
@@ -127,7 +129,13 @@ public class MoreSettingActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.tb_order_chapter) {
-            postAutoSub(isChecked);
+            if (isChecked) {
+                UMEventAnalyze.countEvent(MoreSettingActivity.this,UMEventAnalyze.READPAGE_AUTOORDER_OPEN);
+            } else {
+                UMEventAnalyze.countEvent(MoreSettingActivity.this,UMEventAnalyze.READPAGE_AUTOORDER_CLOSE);
+            }
+            SharedPreferenceUtil.getInstanceSharedPreferenceUtil().setBooleanIsDingyue(isChecked);
+//            postAutoSub(isChecked);
         } else if (buttonView.getId() == R.id.tb_lift_next) {
             SharedPreferenceUtil.getInstanceSharedPreferenceUtil().saveLeftToTurnNext(isChecked);
         }
@@ -182,7 +190,7 @@ public class MoreSettingActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onResponse(JSONObject response) {
                 if (ResponseHelper.isSuccess(response)) {
-                    LogUtils.debug("post autosub action return success");
+                    LogUtils.debug("post autosub action return success"+response.toString());
                 }
             }
         }, new Response.ErrorListener() {

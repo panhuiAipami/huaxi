@@ -12,6 +12,8 @@ import com.tools.commonlibs.tools.FileUtils;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
+import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.model.ChapterPage;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
@@ -441,7 +443,7 @@ public class ChapterContentLoader extends Thread {
         PageContent pageContent = null;
         try {
             String intro = null, price = null,originPrice = null;
-            boolean isAutoSub = true;
+            boolean isAutoSub = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
             boolean hasDiscount = false;
             if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == errorId) {//章节未订阅.
                 bookType = ReadPageState.BOOKTYPE_ORDER_PAY;
@@ -456,7 +458,7 @@ public class ChapterContentLoader extends Thread {
                 //针对预览信息排版
                 intro = data.optString(XSKEY.READER_CHAPTER.INTRO, "");
                 price = data.optString(XSKEY.READER_CHAPTER.PRICE, "0");
-                isAutoSub = data.optInt(XSKEY.READER_CHAPTER.AUTO_SUB, 1) == 1 ? true : false;
+//                isAutoSub = data.optInt(XSKEY.READER_CHAPTER.AUTO_SUB, 1) == 1 ? true : false;//取本地，不用后台了
                 originPrice = data.optString(XSKEY.READER_CHAPTER.ORIGIN_PRICE,"0");
                 hasDiscount = data.optInt(XSKEY.READER_CHAPTER.HAS_DISCOUNT, 0) == 0 ? false : true;
             }
@@ -486,7 +488,7 @@ public class ChapterContentLoader extends Thread {
                     ReadPageFactory.getSingleton().setAutoSub(isAutoSub);
                 } else {
                     //如果用户默认没有选中自动订阅，我们需要人为的给他设置这个状态。
-                    ReadPageFactory.getSingleton().setAutoSub(!isAutoSub);
+                    ReadPageFactory.getSingleton().setAutoSub(isAutoSub);
                 }
             }
         } catch (UnsupportedEncodingException e) {

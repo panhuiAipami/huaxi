@@ -64,17 +64,15 @@ public class URLConstants {
 
 
     /**
-     * ***************************************************************************************************************
-     * 带有xs的URL
+     * 所有带有xs.cn的URL
      * **************************************************************************************************************
      */
-    public static final String PAY_URL = "https://pay.xs.cn";
+    /*public static final String PAY_URL = "https://pay.xs.cn";
     public static final String REDIRECT_URL = "http://rd.xs.cn";
     //数据中心根路径
     private static final String DATA_ROOT_URL = "http://data.xs.cn";
     //分类本地接口。
     public static final String NATIVE_CATALOG_URL = DATA_ROOT_URL + "/api/catelistone?1=1";
-    //****************************
     // 网络h5充值页面
     public static final String H5PAGE_CHARGE = url_base + "/pay/index";
     // 网络h5会员页面
@@ -82,7 +80,7 @@ public class URLConstants {
     public static final String H5PAGE_VIP = "http:\\/\\/rd.xs.cn/1005?1=1";
     //免费
     public static final String H5PAGE_FREE = "http:\\/\\/rd.xs.cn/1201?1=1";
-    /*==================================================================*/
+    *//*==================================================================*//*
     //会员
     public static final String H5PAGE_MEMBER = "http:\\/\\/rd.xs.cn/1207?1=1";
     //新书
@@ -114,7 +112,7 @@ public class URLConstants {
     public static final String PHONE_LOGOUT = url_base + "/user/logout";
     public static final String GET_VERIFICATION_PHONE = ACCOUNT_ROOT_URL + "/api/captcha";//获取图片验证码 post请求
     public static final String BIND_USER = ACCOUNT_ROOT_URL + "/api/bind";//绑定手机号
-    /*章节阅读统计接口*/
+    *//*章节阅读统计接口*//*
     public static final String READPAGE_ANALYSIS_COUNT_URL = DATA_ROOT_URL + "/anay/insert?bookid=%s&cptmid=%s";
     public static final String RECOMMEND_URL = DATA_ROOT_URL + "/api/rcmpublic?block=bookshelves?" + CommonUtils.getPublicGetArgs();
     public static final String GET_CAT_LIST = DATA_ROOT_URL + "/book/catlist?bookMid=%s&book_num=%s";//获取同类作品
@@ -132,6 +130,38 @@ public class URLConstants {
             "&limit=%d";
     //用户中心
     private static final String USER_URL = "http://user.xs.cn";
-    public static final String BOOKSHELF_BOOKS = USER_URL + "/api/bookrack?u_lut=%s";//获取书架列表
+    public static final String BOOKSHELF_BOOKS = USER_URL + "/api/bookrack?u_lut=%s";//获取书架列表*/
 
+    public static final String BIND_USER = "";//绑定手机号
+    public static final String SEND_VERIFICATION_CODE = "";//发送验证码
+    public static final String QQ_LOGIN = "";//qq登陆
+    public static final String GET_CAT_LIST = "";//获取同类产品
+    public static final String GET_AUTHOR_OTHER = "";//密码重置
+    public static final String RESET_PASSWORD = "";//密码重置
+    public static final String GET_VERIFICATION_PHONE = "";//获取图片验证码 post请求
+    public static final String APP_SEND_COMMENT_URL = "";//发送验证码
+    public static final String PHONE_LOGIN = "";//登录接口 post请求
+    public static final String PHONE_LOGOUT = ""; //PHONE_LOGOUT 登出 post请求
+    public static final String USER_REGISTER = "";//手机用户注册 post
+    public static final String H5PAGE_CHARGE = "";
+    public static final String H5PAGE_VIP = "";
+    public static final String H5PAGE_HELP = "";
+    public static final String PAY_URL = "";
+    public static final String RECOMMEND_BOOK_URL = "";
+    public static final String H5PAGE_FREE = "";
+    public static final String RECOMMEND_URL = "";
+    public static final String H5PAGE_MEMBER = "";
+    public static final String H5PAGE_NEW_BOOK = "";
+    public static final String PAY_QQ = "";
+    public static final String BOOKSHELF_BOOKS = "";
+    public static final String READPAGE_ANALYSIS_COUNT_URL = "";
+    public static final String H5PAGE_RANKING = "";
+    public static final String PAY_WXPAY = "";
+    public static final String H5PAGE_GAMBIT = "";
+    public static final String MIGRATE_TODO = "";
+    public static final String CLASSIFY_BOOK_LIST = "";
+    public static final String APP_SPLASH_URL = "";
+/**
+ * ***************************************************************************************************************
+ */
 }

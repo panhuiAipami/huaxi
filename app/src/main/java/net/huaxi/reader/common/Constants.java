@@ -30,6 +30,8 @@ public class Constants {
     public static final int THEME_NIGHT = 4; //夜晚
     /*下载列表中规定父列表包含子列表的个数*/
     public static final int DOWNLOAD_LIST_CHILD_NUM = 20;
+
+
     /*阅读字体颜色*/
     public static final int[] READ_CONTENT_COLORS = {0xFF323232, 0xFF984A5F, 0xFF3F473A, 0xFF5E4330, 0xFF4D5C6E};
     /*阅读其他颜色(标题和底部)*/

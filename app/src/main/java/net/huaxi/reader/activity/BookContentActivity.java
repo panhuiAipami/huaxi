@@ -20,6 +20,7 @@ import net.huaxi.reader.book.BookContentBottomView;
 import net.huaxi.reader.book.BookContentModel;
 import net.huaxi.reader.book.BookContentView;
 import net.huaxi.reader.book.ReadPageFactory;
+import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.PagingManager;
 import net.huaxi.reader.book.render.ReadPageState;
@@ -58,7 +59,10 @@ import hugo.weaving.DebugLog;
  * modtime:
  */
 public class BookContentActivity extends BaseActivity {
-
+    /**
+     * 是否自动订阅下一章
+     */
+    public static  String IS_DINGYUE = null;
     public static final int FROM_RECHARGE = 1021;
     public static final int FROM_LOGIN = 1022;
     /*  Bitmap对象 */
@@ -91,6 +95,7 @@ public class BookContentActivity extends BaseActivity {
     private void parseIntent(Intent intent) {
         //解析书籍ID，并传递给DS；
         String bookId = intent.getStringExtra(EnterBookContent.BOOK_ID);
+        IS_DINGYUE = bookId;
         BookTable bookTable = BookDao.getInstance().findBook(bookId);
         if (bookTable == null) {
 //            toast(getString(R.string.readpage_not_find_book));
@@ -115,6 +120,7 @@ public class BookContentActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ReadPageFactory.getSingleton().loadCurrentPage();
         ReportUtils.setUserSceneTag(Constants.BUGLY_SCENE_TAG_READING);
         if (ReadPageState.BOOKTYPE_NORMAL != mBookContentModel.getBookState()) {
             if (ReadPageState.BOOKTYPE_RECHARGE == mBookContentModel.getBookState()) {

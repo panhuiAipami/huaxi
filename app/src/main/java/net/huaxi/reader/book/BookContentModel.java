@@ -298,7 +298,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         final int fontsize = Utility.getFontHeight(BookContentSettings.getInstance().getAutoSubTextSize());
         BookContentPaint mPaint = new BookContentPaint();
         mPaint.changeStyleToAutoSub();
-        String autoPay = CommonApp.context().getString(R.string.readpage_pay_auto) + time;
+        String autoPay = CommonApp.context().getString(R.string.readpage_pay_auto) +time;
         int textWidth = (int) mPaint.measureText(autoPay);
         int w = fontsize + balance + textWidth;
         int h = fontsize + balance + 20;
@@ -523,7 +523,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
             toast(AppContext.context().getString(R.string.network_server_error));
         }
         setPayButtonLocation(showBtn);
-        setAutoSubButtonLocation(showSub);
+        setAutoSubButtonLocation(showSub);//是否自动定订阅后续Vip章节
         //// TODO: 16/8/31 此版本关闭VIP开通入口
 //        setOpenVipButtonLocation(showOpenVip);
         setCloseButtonLocation(showClose);

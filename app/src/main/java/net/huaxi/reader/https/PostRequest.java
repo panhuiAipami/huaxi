@@ -67,7 +67,7 @@ public class PostRequest extends Request<JSONObject> {
         super(Request.Method.POST, url, errorListener);
         setRetryPolicy(new DefaultRetryPolicy(Constants.CONNECT_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy
                 .DEFAULT_BACKOFF_MULT));
-        LogUtils.info("post request = " + url);
+        LogUtils.info("post request = " + url+"?"+map.toString());
         mListener = listener;
         mMap = map;
         this.setRetryPolicy(new DefaultRetryPolicy(30 * 1000, DefaultRetryPolicy
