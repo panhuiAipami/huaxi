@@ -5,15 +5,15 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
+
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.db.OrmDataBaseHelper;
+import net.huaxi.reader.db.model.ChapterTable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import net.huaxi.reader.db.OrmDataBaseHelper;
-import net.huaxi.reader.db.model.ChapterTable;
 
 public class ChapterDao {
     private static ChapterDao chapterDao;
@@ -191,7 +191,6 @@ public class ChapterDao {
         long t3 = 0;
         System.err.println(" 删除 " + temp + " 条记录");
         try {
-            result = mDao.create(tableList);
             result = mDao.create(tableList);
             t3 = System.currentTimeMillis();
         } catch (SQLException e) {
