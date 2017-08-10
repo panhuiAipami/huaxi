@@ -33,6 +33,7 @@ import net.huaxi.reader.common.UmengHelper;
 import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.dialog.LoginVarnDailog;
 import net.huaxi.reader.https.PostRequest;
+import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.thread.SwitchUserMigrateTask;
 import net.huaxi.reader.util.LoginHelper;
@@ -80,10 +81,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login2);
         Intent intent = getIntent();
         boolean flag = intent.getBooleanExtra("flag", false);
-        login_back_imageview1= (ImageView) findViewById(login_back_imageview);
-        if(flag){
+        login_back_imageview1 = (ImageView) findViewById(login_back_imageview);
+        if (flag) {
             login_back_imageview1.setVisibility(View.GONE);
-        }else {
+        } else {
             login_back_imageview1.setVisibility(View.VISIBLE);
         }
         ButterKnife.bind(this);
@@ -187,7 +188,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return loginHelper;
     }
 
-    @OnClick({login_back_imageview, R.id.login_login_button,R.id.login_dialog_weixin_img})
+    @OnClick({login_back_imageview, R.id.login_login_button, R.id.login_dialog_weixin_img})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -217,9 +218,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if (StringUtils.isBlank(name)) {
                     ViewUtils.toastShort("请输入正确的账号");
-                }else if (StringUtils.isBlank(pwd)) {
+                } else if (StringUtils.isBlank(pwd)) {
                     ViewUtils.toastShort("请输入正确的密码");
-                }else{
+                } else {
                     login(name, pwd);
                 }
 
@@ -269,16 +270,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     int code = data.getInt("code");
                     if (code == 10000) {
                         ViewUtils.toastShort(getString(R.string.login_success));
-                        if (data.has("cookie_str")) {
-                            String cookie = data.getString("cookie_str");
-                            SharePrefHelper.setCookie(cookie);
-                        }
-                        if (data.has("u_mid")) {
-                            String uid = data.getString("u_mid");
-                            User u = new User();
-                            u.setUmid(uid);
-                            UserHelper.getInstance().setUser(u);
-                        }
+                        setCookieAndUid(response);
+                        finish();
                     } else {
                         ViewUtils.toastShort(data.get("message").toString());
                     }
@@ -299,6 +292,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         request.setShouldCache(false);
         RequestQueueManager.addRequest(request);
     }
+
+    private void setCookieAndUid(JSONObject response) {
+
+        SharePrefHelper.setCurLoginUserBookshelfUpdateTime(0);
+        try {
+            JSONObject data = ResponseHelper.getVdata(response);
+            String cookie;
+            if (data.has("cookie_str")) {
+                cookie = data.getString("cookie_str");
+                SharePrefHelper.setCookie(cookie);
+            }
+            if (data.has("u_mid")) {
+                String uid = data.getString("u_mid");
+                User u = new User();
+                u.setUmid(uid);
+                UserHelper.getInstance().setUser(u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
