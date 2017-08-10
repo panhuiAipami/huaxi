@@ -63,7 +63,8 @@ public class URLConstants {
 
     //添加书评
     public static final String ADD_COMMENT = url_base + "/book/comment";
-
+    //账号密码登录
+    public static final String PHONE_LOGIN = url_base+"/user/aclogin";//登录接口 post请求
 
 
 
@@ -144,7 +145,6 @@ public class URLConstants {
     public static final String RESET_PASSWORD = "";//密码重置
     public static final String GET_VERIFICATION_PHONE = "";//获取图片验证码 post请求
     public static final String APP_SEND_COMMENT_URL = "";//发送验证码
-    public static final String PHONE_LOGIN = "";//登录接口 post请求
     public static final String PHONE_LOGOUT = ""; //PHONE_LOGOUT 登出 post请求
     public static final String USER_REGISTER = "";//手机用户注册 post
     public static final String H5PAGE_CHARGE = "";
