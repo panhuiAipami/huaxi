@@ -23,16 +23,25 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.adapter.AdapterLikeBook;
 import net.huaxi.reader.adapter.BaseRecyclerAdapter;
 import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.common.XSNetEnum;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.dialog.BookContentShareDialog;
+import net.huaxi.reader.https.GetRequest;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
+import net.huaxi.reader.https.XSKEY;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.view.ExRecyclerView;
@@ -44,14 +53,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-import net.huaxi.reader.adapter.AdapterLikeBook;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.https.PostRequest;
-import net.huaxi.reader.https.XSKEY;
 
 /**
  * ryantao
@@ -211,7 +212,7 @@ public class LastPageActivity extends BaseActivity implements View.OnClickListen
      *
      * @param bookid
      */
-    private void syncSameBook(String bookid) {
+    private void syncSameBook(final String bookid) {
         if (StringUtils.isEmpty(bookid)) {
             finish();
         }
@@ -239,11 +240,7 @@ public class LastPageActivity extends BaseActivity implements View.OnClickListen
                                                 public void onItemClick(int position, Object data) {
                                                     if (data instanceof BookTable) {
                                                         BookTable bookTable = (BookTable) data;
-                                                        Intent intent = new Intent
-//                                                                (LastPageActivity.this, BookDetailActivity.class);
-                                                                (LastPageActivity.this, BookDetailActivity.class);
-                                                        intent.putExtra("bookid", bookTable.getBookId());
-                                                        startActivity(intent);
+                                                        EnterBookContent.openBookDetail(LastPageActivity.this,bookTable.getBookId());
                                                     }
                                                     UMEventAnalyze.countEvent(LastPageActivity.this,UMEventAnalyze.READPAGE_LASTPAGE_LIKE);
                                                 }

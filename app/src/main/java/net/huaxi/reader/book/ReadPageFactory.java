@@ -343,6 +343,7 @@ public class ReadPageFactory {
     }
 
     /**
+     * 加载内容完成
      * 刷新当前页
      */
     public synchronized void refreshPage() {

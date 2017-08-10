@@ -21,7 +21,27 @@ import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.adapter.DownLoadExpandableListAdapter;
+import net.huaxi.reader.appinterface.ChapterDownloadListener;
+import net.huaxi.reader.appinterface.onCatalogLoadFinished;
+import net.huaxi.reader.bean.DownLoadChild;
+import net.huaxi.reader.bean.DownLoadGroup;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
+import net.huaxi.reader.common.EnterBookContent;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.common.XSErrorEnum;
+import net.huaxi.reader.db.model.ChapterTable;
+import net.huaxi.reader.https.DownLoadThreadLoader;
+import net.huaxi.reader.https.GetRequest;
+import net.huaxi.reader.https.ResponseHelper;
+import net.huaxi.reader.https.XSKEY;
+import net.huaxi.reader.model.DownloadBuyHelp;
+import net.huaxi.reader.model.DownloadDailogHelp;
+import net.huaxi.reader.model.DownloadDataFactory;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.util.XSFileUtils;
 
@@ -35,24 +55,6 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import net.huaxi.reader.R;
-import net.huaxi.reader.adapter.DownLoadExpandableListAdapter;
-import net.huaxi.reader.appinterface.ChapterDownloadListener;
-import net.huaxi.reader.appinterface.onCatalogLoadFinished;
-import net.huaxi.reader.bean.DownLoadChild;
-import net.huaxi.reader.bean.DownLoadGroup;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.common.XSErrorEnum;
-import net.huaxi.reader.db.model.ChapterTable;
-import net.huaxi.reader.https.DownLoadThreadLoader;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.https.ResponseHelper;
-import net.huaxi.reader.https.XSKEY;
-import net.huaxi.reader.model.DownloadBuyHelp;
-import net.huaxi.reader.model.DownloadDailogHelp;
-import net.huaxi.reader.model.DownloadDataFactory;
 
 /**
  * Created by Saud on 16/1/12.
@@ -106,7 +108,7 @@ public class DownLoadActivity extends BaseActivity implements onCatalogLoadFinis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        bookid = getIntent().getStringExtra("bookid");
+        bookid = getIntent().getStringExtra(EnterBookContent.BOOK_ID);
         if (StringUtils.isEmpty(bookid)) {
             bookid = "0";
         }

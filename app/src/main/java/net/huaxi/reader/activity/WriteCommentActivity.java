@@ -18,7 +18,15 @@ import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.book.SharedPreferenceUtil;
+import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.EnterBookContent;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.common.XSNetEnum;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
@@ -26,14 +34,6 @@ import net.huaxi.reader.util.UMEventAnalyze;
 import org.json.JSONObject;
 
 import java.util.Map;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.common.XSNetEnum;
-import net.huaxi.reader.https.PostRequest;
 
 public class WriteCommentActivity extends BaseActivity implements View.OnClickListener {
 
@@ -97,7 +97,7 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-        bookId = getIntent().getStringExtra("bookid");
+        bookId = getIntent().getStringExtra(EnterBookContent.BOOK_ID);
         if (StringUtils.isEmpty(bookId)) {
             bookId = "0";
         }

@@ -46,6 +46,7 @@ import net.huaxi.reader.appinterface.SearchPresenter;
 import net.huaxi.reader.appinterface.SearchViewListener;
 import net.huaxi.reader.bean.SearchBean;
 import net.huaxi.reader.bean.SearchKeyBean;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.Utility;
 import net.huaxi.reader.presenter.SearchPresenterImpl;
 import net.huaxi.reader.util.UMEventAnalyze;
@@ -235,10 +236,7 @@ public class SearchActivity extends BaseActivity implements SearchViewListener {
                 public void onItemClick(int position, Object data) {
                     if (data instanceof SearchBean) {
                         SearchBean searchBean = (SearchBean) data;
-//                        Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                        Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                        intent.putExtra("bookid", searchBean.getBid());
-                        startActivity(intent);
+                        EnterBookContent.openBookDetail(SearchActivity.this,searchBean.getBid());
                         UMEventAnalyze.countEvent(SearchActivity.this, UMEventAnalyze.SEARCH_ABOUT);
                     }
                 }
@@ -406,9 +404,7 @@ public class SearchActivity extends BaseActivity implements SearchViewListener {
                 if (data instanceof SearchBean) {
                     SearchBean bean = (SearchBean) data;
 //                    Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                    Intent intent = new Intent(SearchActivity.this, BookDetailActivity.class);
-                    intent.putExtra("bookid", bean.getBid());
-                    startActivity(intent);
+                    EnterBookContent.openBookDetail(SearchActivity.this,bean.getBid());
                     UMEventAnalyze.countEvent(SearchActivity.this, UMEventAnalyze.SEARCH_RESULT);
                 }
             }

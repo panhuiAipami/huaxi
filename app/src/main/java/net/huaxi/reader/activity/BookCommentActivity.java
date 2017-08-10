@@ -30,6 +30,7 @@ import com.tools.commonlibs.tools.StringUtils;
 import net.huaxi.reader.R;
 import net.huaxi.reader.bean.BookCommentBean;
 import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
@@ -118,7 +119,7 @@ public class   BookCommentActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-        bookId = getIntent().getStringExtra("bookid");
+        bookId = getIntent().getStringExtra(EnterBookContent.BOOK_ID);
         if (StringUtils.isEmpty(bookId)) {
             bookId = "0";
         }
@@ -169,7 +170,7 @@ public class   BookCommentActivity extends BaseActivity implements View.OnClickL
 
     private void startWriteActivity() {
         Intent intent = new Intent(this, WriteCommentActivity.class);
-        intent.putExtra("bookid", bookId);
+        intent.putExtra(EnterBookContent.BOOK_ID, bookId);
         startActivityForResult(intent, 0);
     }
 

@@ -20,7 +20,6 @@ import net.huaxi.reader.book.BookContentBottomView;
 import net.huaxi.reader.book.BookContentModel;
 import net.huaxi.reader.book.BookContentView;
 import net.huaxi.reader.book.ReadPageFactory;
-import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.PagingManager;
 import net.huaxi.reader.book.render.ReadPageState;
@@ -51,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 import hugo.weaving.DebugLog;
+
 
 /**
  * function:    书籍阅读
@@ -207,6 +207,11 @@ public class BookContentActivity extends BaseActivity {
 //        }
     }
 
+
+    /***
+     * 获取目录返回结果
+     * 阅读详情也有这结果回掉
+     */
     private void refreshCatalog() {
         mBookContentModel.blockBookContentView(false);
         ReadPageFactory.getSingleton().drawStateLoading(ReadPageFactory.getSingleton().getNewCanvas());
@@ -278,8 +283,6 @@ public class BookContentActivity extends BaseActivity {
         if (DataSourceManager.getSingleton().getChapterCount() > 0) {
             Log.d("loadContent........", "loadContent: "+DataSourceManager.getSingleton().toString());
             ReadPageFactory.getSingleton().refreshPage();
-
-
         } else {
             refreshCatalog();
         }

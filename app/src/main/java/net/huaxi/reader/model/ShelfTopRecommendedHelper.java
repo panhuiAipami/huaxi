@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import net.huaxi.reader.activity.BookDetailActivity;
-import net.huaxi.reader.bean.Recommended;
-
 import net.huaxi.reader.R;
-
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.adapter.AdapterBookShelf;
+import net.huaxi.reader.bean.Recommended;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.util.ImageUtil;
 
 /**
@@ -55,9 +53,8 @@ public class ShelfTopRecommendedHelper implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
 //                    Intent intent = new Intent(activity, BookDetailActivity.class);
-                    Intent intent = new Intent(activity, BookDetailActivity.class);
-                    intent.putExtra("bookid", recommended.getBookid());
-                    activity.startActivity(intent);
+                    EnterBookContent.openBookDetail(activity,recommended.getBookid());
+
                 }
             });
         } else if (recommended.getType() != null && recommended.getType().equals("0103")) {

@@ -20,8 +20,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.tools.CircularAnim;
 import com.tools.commonlibs.tools.Utils;
+
+import net.huaxi.reader.R;
 import net.huaxi.reader.appinterface.ClassifyPresenter;
+import net.huaxi.reader.appinterface.ClassifyViewListener;
+import net.huaxi.reader.bean.CatalogBean;
+import net.huaxi.reader.bean.ClassifyChildBean;
+import net.huaxi.reader.common.EnterBookContent;
+import net.huaxi.reader.presenter.ClassifyPresenterImpl;
+import net.huaxi.reader.util.ImageUtil;
 import net.huaxi.reader.util.UMEventAnalyze;
+import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,14 +42,6 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.appinterface.ClassifyViewListener;
-import net.huaxi.reader.bean.CatalogBean;
-import net.huaxi.reader.bean.ClassifyChildBean;
-import net.huaxi.reader.presenter.ClassifyPresenterImpl;
-import net.huaxi.reader.util.ImageUtil;
-import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
 
 /**
  * 下面是分类借口的相关参数
@@ -353,9 +354,8 @@ public class ClassifyActivity extends BaseActivity implements RadioGroup.OnCheck
         } else {
             ClassifyChildBean.VdataBean.ListBean listBean = mClassifyAdapter.getData().get(i);
             String bookId = listBean.getBk_mid();
-            Intent intent = new Intent(this, BookDetailActivity.class);
-            intent.putExtra("bookid", bookId);
-            startActivity(intent);
+            EnterBookContent.openBookDetail(ClassifyActivity.this,bookId);
+
         }
 
     }

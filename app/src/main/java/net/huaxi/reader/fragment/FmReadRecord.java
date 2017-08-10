@@ -1,6 +1,5 @@
 package net.huaxi.reader.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,19 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tools.commonlibs.tools.ViewUtils;
-import net.huaxi.reader.activity.BookDetailActivity;
-import net.huaxi.reader.util.UMEventAnalyze;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import net.huaxi.reader.R;
-
 import net.huaxi.reader.adapter.AdapterReadRecord;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.dialog.CommonDialogFoot;
+import net.huaxi.reader.util.UMEventAnalyze;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Function:    阅读记录
@@ -94,9 +92,7 @@ public class FmReadRecord extends BaseFragment {
                     BookTable bookTable = tableList.get(position - 1);
                     if (bookTable != null) {
                         UMEventAnalyze.countEvent(getActivity(),UMEventAnalyze.BOOK_SHELF_READED_RECORD_CLICK);
-                        Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-                        intent.putExtra("bookid", bookTable.getBookId());
-                        getActivity().startActivity(intent);
+                        EnterBookContent.openBookDetail(getActivity(),bookTable.getBookId());
                     }
                 }
             }

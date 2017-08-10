@@ -52,29 +52,33 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle arg0) {
         super.onCreate(arg0);
-        //得到view视图窗口
-        Window window = getActivity().getWindow();
-        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //设置状态栏颜色
-        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
-        setNeedStatistics(false);
+        try{
+            //得到view视图窗口
+            Window window = getActivity().getWindow();
+            //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏颜色
+            window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
+            setNeedStatistics(false);
 //        LogUtils.debug("statusbar==" + Utils.getStatusBarHeight());
 //        LogUtils.debug("title==" + Utils.dip2px(MainActivity.this, 47));
 //        LogUtils.debug("title2==" + Utils.dip2px(MainActivity.this, 170));
 //        LogUtils.debug("宽==" + Utils.dip2px(MainActivity.this, (float) (Utils.getRealScreenSize
 //                (MainActivity.this)[0])));
 //        LogUtils.debug("屏幕宽高dp值==========" + getData());
-        setContentView(R.layout.activity_main);
-        initView();
-        updateApk();
-        //记录阅读状态，如果未正常阅读，需要重新打开。
-        String lastNotFinishedBook = SharePrefHelper.getLastNotExactFinished();
-        if (StringUtils.isNotEmpty(lastNotFinishedBook)) {
-            EnterBookContent.openBookContent(getActivity(), lastNotFinishedBook);
-            UMEventAnalyze.countEvent(this, UMEventAnalyze.SPLASH_TO_READ);
+            setContentView(R.layout.activity_main);
+            initView();
+            updateApk();
+            //记录阅读状态，如果未正常阅读，需要重新打开。
+            String lastNotFinishedBook = SharePrefHelper.getLastNotExactFinished();
+            if (StringUtils.isNotEmpty(lastNotFinishedBook)) {
+                EnterBookContent.openBookContent(getActivity(), lastNotFinishedBook);
+                UMEventAnalyze.countEvent(this, UMEventAnalyze.SPLASH_TO_READ);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

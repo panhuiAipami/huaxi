@@ -236,7 +236,7 @@ public class SharedPreferenceUtil {
      * bookId作为key
      */
     public static boolean getBooleanIsDingyue() {
-        return getBooleanAttribute(mSharedPreferences, BookContentActivity.IS_DINGYUE, false);
+        return getBooleanAttribute(mSharedPreferences, BookContentActivity.IS_DINGYUE, true);
     }
 
     /**

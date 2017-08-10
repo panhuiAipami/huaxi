@@ -19,7 +19,6 @@ import com.tools.commonlibs.tools.StringUtils;
 import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
-import net.huaxi.reader.activity.BookDetailActivity;
 import net.huaxi.reader.activity.ClassifyActivity;
 import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.RegisterSendActivity;
@@ -161,9 +160,7 @@ public class JavaScript {
     public void detail(String bookid) {
         LogUtils.debug("detail..bookid==" + bookid);
 //        Intent intent = new Intent(activity, BookDetailActivity.class);
-        Intent intent = new Intent(activity, BookDetailActivity.class);
-        intent.putExtra("bookid", bookid);
-        activity.startActivity(intent);
+        EnterBookContent.openBookDetail(activity,bookid);
         UMEventAnalyze.countEvent(activity, UMEventAnalyze.BOOKCITY_START_BOOKINFO);
     }
 

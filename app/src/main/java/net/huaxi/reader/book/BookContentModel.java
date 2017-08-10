@@ -17,7 +17,6 @@ import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.activity.BookCommentActivity;
-import net.huaxi.reader.activity.BookDetailActivity;
 import net.huaxi.reader.activity.DownLoadActivity;
 import net.huaxi.reader.activity.LastPageActivity;
 import net.huaxi.reader.activity.MoreSettingActivity;
@@ -31,6 +30,7 @@ import net.huaxi.reader.book.render.BookContentSettingListener;
 import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
+import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.Utility;
 import net.huaxi.reader.common.XSErrorEnum;
@@ -667,7 +667,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         //阅读页-评论
         UMEventAnalyze.countEvent(activity,UMEventAnalyze.READPAGE_COMMENT);
         Intent intent = new Intent(activity, BookCommentActivity.class);
-        intent.putExtra("bookid", DataSourceManager.getSingleton().getBookId());
+        intent.putExtra(EnterBookContent.BOOK_ID, DataSourceManager.getSingleton().getBookId());
         activity.startActivity(intent);
     }
 
@@ -694,7 +694,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         UMEventAnalyze.countEvent(activity,UMEventAnalyze.READPAGE_DOWNLOAD);
         String bookid = DataSourceManager.getSingleton().getBookId();
         Intent intent = new Intent(activity, DownLoadActivity.class);
-        intent.putExtra("bookid", bookid);
+        intent.putExtra(EnterBookContent.BOOK_ID, bookid);
         activity.startActivity(intent);
     }
 
@@ -708,10 +708,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
     public void onOpenDetail() {//详情
         String bookid = DataSourceManager.getSingleton().getBookId();
 //        Intent intent = new Intent(activity, BookDetailActivity.class);
-        Intent intent = new Intent(activity, BookDetailActivity.class);
-        intent.putExtra("bookid", bookid);
-        intent.putExtra("tag", PARENT_ACTIVITY);
-        activity.startActivity(intent);
+        EnterBookContent.openBookDetail(bookid,PARENT_ACTIVITY,activity);
     }
 
 

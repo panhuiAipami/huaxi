@@ -1,5 +1,6 @@
 package net.huaxi.reader.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -121,7 +122,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     @BindView(R.id.srl_bookinfo_refresh)
     SwipeRefreshLayout mRefresh;
     private String bookid;
-    private String tag;
+    private String tag = null;
     private BookDetailBean mBookDetail;
     private BookDetailCatalogueDialog detailCatalogueDialog;
     private AdapterSameBook mAdapterSameBook;
@@ -134,17 +135,16 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     private int WRITHE_REQUEST_CODE = 1;
     private int COMMENT_REQUEST_CODE = 1;
 
+    Dialog dialogLoading;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_info);
         ButterKnife.bind(this);
-        bookid = getIntent().getStringExtra("bookid");
-        if (StringUtils.isEmpty(bookid)) {
-            bookid = "0";
-        }
-        tag = getIntent().getStringExtra("tag");
+        getIntentData();
         initView();
         initAdapter();
         syncBookDetail();
@@ -152,6 +152,17 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
         syncSameBook();
         syncAuthorOther();
         tintManager.setStatusBarTintEnabled(false);
+    }
+
+    public void getIntentData() {
+        bookid = getIntent().getStringExtra(EnterBookContent.BOOK_ID);
+        if (StringUtils.isEmpty(bookid)) {
+            bookid = "0";
+        }
+        tag = getIntent().getStringExtra("tag");
+        if(StringUtils.isEmail(tag)){//是推送
+            dialogLoading = ViewUtils.showProgressDimDialog(this);
+        }
     }
 
     private void initView() {
@@ -357,9 +368,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                                                 public void onItemClick(int position, Object data) {
                                                     if (data instanceof BookTable) {
                                                         BookTable bookTable = (BookTable) data;
-                                                        Intent intent = new Intent(BookDetailActivity.this, BookDetailActivity.class);
-                                                        intent.putExtra("bookid", bookTable.getBookId());
-                                                        startActivity(intent);
+                                                        EnterBookContent.openBookDetail(BookDetailActivity.this,bookTable.getBookId());
                                                         UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_SAME);
                                                     }
                                                 }
@@ -392,7 +401,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
 
     private void syncAuthorOther() {
         Map<String, String> param = CommonUtils.getPublicPostArgs();
-        param.put("bookid", bookid);
+        param.put(EnterBookContent.BOOK_ID, bookid);
 
         PostRequest request = new PostRequest(URLConstants.GET_AUTHOR_OTHER, new Response.Listener<JSONObject>() {
             @Override
@@ -419,10 +428,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                                         public void onItemClick(int position, Object data) {
                                             if (data instanceof BookTable) {
                                                 BookTable bookTable = (BookTable) data;
-                                                Intent intent = new Intent
-                                                        (BookDetailActivity.this, BookDetailActivity.class);
-                                                intent.putExtra("bookid", bookTable.getBookId());
-                                                startActivity(intent);
+                                                EnterBookContent.openBookDetail(BookDetailActivity.this,bookTable.getBookId());
                                                 UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_OTHER);
                                             }
                                         }
@@ -513,6 +519,15 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
             }
         });
 
+
+        if(StringUtils.isEmail(tag)){//推送打开的页面------>去阅读
+            if (detailCatalogueDialog == null) {
+                detailCatalogueDialog = new BookDetailCatalogueDialog(this);
+                detailCatalogueDialog.setChapterClickListener(this);
+            }
+            syncCatalog();
+        }
+
     }
 
     private void setImgDrawble(final Bitmap bitmap, final ImageView view) {
@@ -588,11 +603,11 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                 break;
             case R.id.iv_detail_download:
                 Intent intent = new Intent(this, DownLoadActivity.class);
-                intent.putExtra("bookid", bookid);
+                intent.putExtra(EnterBookContent.BOOK_ID, bookid);
                 startActivity(intent);
                 UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_DOWNLOAD);
                 break;
-            case R.id.btn_detail_read:
+            case R.id.btn_detail_read://立即阅读
                 if (BookContentModel.PARENT_ACTIVITY.equals(tag)) {
                     finish();
                 } else {
@@ -616,6 +631,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
 
     @Override
     public void onCatalogItemClick(String chapterId) {
+        // 目录点击事件
         System.out.println("BookInfoActivity.onCatalogItemClick>>>>>>>");
         UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_CATALOGUE_START);
         BookTable bookTable = BookDao.getInstance().findBook(bookid);
@@ -629,12 +645,29 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     }
 
 
+    /**
+     * 加载目录，设置目录数据
+     * @param chapterTables
+     * @param resultCode
+     */
     @Override
     public void onFinished(List<ChapterTable> chapterTables, int resultCode) {
         mRefresh.setRefreshing(false);
         if (chapterTables != null && chapterTables.size() > 0 && resultCode == XSErrorEnum.SUCCESS.getCode()) {
             if (detailCatalogueDialog != null) {
                 detailCatalogueDialog.setData(chapterTables);
+            }
+
+            if (StringUtils.isEmail(tag)) {//推送打开的页面------>去阅读
+                BookTable bookTable = BookDao.getInstance().findBook(bookid);
+                if (bookTable == null && mBookDetail != null) {
+                    BookDao.getInstance().addBook(mBookDetail);
+                }
+                String chapter_id = getIntent().getStringExtra(EnterBookContent.CHAPTER_ID);
+//                chapter_id = chapterTables.get(Integer.parseInt(chapter_id)-1).getChapterId();
+                EnterBookContent.openBookContent(this, bookid, chapter_id);
+                if(dialogLoading != null)
+                dialogLoading.cancel();
             }
         }
     }
@@ -644,7 +677,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
      */
     private void startWriteActivity() {
         Intent intent = new Intent(this, WriteCommentActivity.class);
-        intent.putExtra("bookid", bookid);
+        intent.putExtra(EnterBookContent.BOOK_ID, bookid);
         startActivityForResult(intent, WRITHE_REQUEST_CODE);
         UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_COMMENT);
     }
@@ -654,7 +687,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
      */
     private void startCommentActivity() {
         Intent intent = new Intent(this, BookCommentActivity.class);
-        intent.putExtra("bookid", bookid);
+        intent.putExtra(EnterBookContent.BOOK_ID, bookid);
         startActivityForResult(intent, COMMENT_REQUEST_CODE);
         UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_COMMENT);
     }
@@ -728,4 +761,6 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 }

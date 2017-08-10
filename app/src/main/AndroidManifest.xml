@@ -386,13 +386,12 @@
             android:name="com.umeng.message.local.UmengLocalNotificationService"
             android:exported="false" />
         <service android:name=".model.version.AppVersionService" />
-
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5951bff1a40fa30a5200226a" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="0e5ead1d87d3b9bb3f4ba36b934d84aa" />
+            android:value="7d092f917d37895917d0d3da8fa5065c" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${CHANNEL}" />

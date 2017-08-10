@@ -1,6 +1,5 @@
 package net.huaxi.reader.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,10 +22,16 @@ import com.tools.commonlibs.tools.DateUtils;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.ViewUtils;
-import net.huaxi.reader.activity.BookDetailActivity;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.common.EnterBookContent;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.db.model.BookTable;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.util.UMEventAnalyze;
+import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,13 +40,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.huaxi.reader.R;
-
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.view.divider.HorizontalDividerItemDecoration;
 
 /**
  * function:    订阅记录
@@ -124,9 +122,7 @@ public class FmSubscribeRecord extends BaseFragment implements SwipeRefreshLayou
                     BookTable bookTable = datas.get(i);
                     if (bookTable != null) {
                         UMEventAnalyze.countEvent(getActivity(),UMEventAnalyze.BOOK_SHELF_ORDER_RECORD_CLICK);
-                        Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-                        intent.putExtra("bookid", bookTable.getBookId());
-                        getActivity().startActivity(intent);
+                        EnterBookContent.openBookDetail(getActivity(),bookTable.getBookId());
                     }
                 }else{
                     ViewUtils.toastShort("数据异常");
