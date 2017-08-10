@@ -27,10 +27,10 @@ import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.common.XSNetEnum;
 import net.huaxi.reader.https.PostRequest;
-import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -79,7 +79,7 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
         if (sp == null) {
             sp = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getShaPreferencesInstance(this);
         }
-        SharedPreferenceUtil.getInstanceSharedPreferenceUtil().saveString(bookId, commentCount);
+        SharedPreferenceUtil.getInstanceSharedPreferenceUtil().saveString(bookId+"comment", commentCount);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
             sp = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getShaPreferencesInstance(this);
         }
         SharedPreferenceUtil instanceSharedPreferenceUtil = SharedPreferenceUtil.getInstanceSharedPreferenceUtil();
-        String text = instanceSharedPreferenceUtil.getString(bookId);
+        String text = instanceSharedPreferenceUtil.getString(bookId+"comment");
         if (!"".equals(text)) {
             etCount.setText(text);
         }
@@ -149,9 +149,13 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
         }
         dialogLoading = ViewUtils.showProgressDialog(this);
         Map<String, String> map = CommonUtils.getPublicPostArgs();
-        map.put("bk_mid", bookId);
-        map.put("cmt_content", commentCount);
-        PostRequest request = new PostRequest(URLConstants.APP_SEND_COMMENT_URL, new Response.Listener<JSONObject>() {
+        map.put("book_id", bookId);
+//        map.put("volume_id", bookId);
+//        map.put("chapter_id", bookId);
+//        map.put("pid", bookId);
+        map.put("content", commentCount);
+        map.put("source", "6");
+        PostRequest request = new PostRequest(URLConstants.ADD_COMMENT, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (dialogLoading != null) {
@@ -159,27 +163,34 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
                 }
                 LogUtils.debug("response====" + response.toString());
                 ivSendComment.setClickable(true);
-                int errorid = ResponseHelper.getErrorId(response);
-                if (ResponseHelper.isSuccess(response)) {
-                    etCount.setText("");
-                    ViewUtils.toastShort(getString(R.string.comment_success));
-                    finish();
-                } else if (errorid == XSNetEnum._VDATAERRORCODE_ERROR_NOT_LOGIN.getCode()) {
-                    LogUtils.debug("需要登录");
-                    Intent intent = new Intent(WriteCommentActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                } else if (errorid == XSNetEnum._DC_CODE_ERROR_READ_CHAPTER_NO_CPT.getCode()) {
-                    LogUtils.debug("请求错误=" + errorid);
-                } else if (errorid == XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL.getCode()) {
-                    ViewUtils.toastShort(getString(R.string.please_waiting_5m));
-                } else if (errorid == XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getCode()) {
-                    ViewUtils.toastShort(XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getMsg());
-                    System.out.println(XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getMsg());
-                } else {
-                    String erroriMSE = String.format(getString(R.string.comment_error), errorid);
-                    ViewUtils.toastShort(erroriMSE);
-                    ReportUtils.reportError(new Throwable("评论发送失败(" + errorid + ")"));
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(response.toString());
+                    int code = object.getInt("code");
+                    if ( code == 10000) {
+                        etCount.setText("");
+                        ViewUtils.toastShort(getString(R.string.comment_success));
+                        finish();
+                    } else if (code == XSNetEnum._VDATAERRORCODE_ERROR_NOT_LOGIN.getCode()) {
+                        LogUtils.debug("需要登录");
+                        Intent intent = new Intent(WriteCommentActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    } else if (code == XSNetEnum._DC_CODE_ERROR_READ_CHAPTER_NO_CPT.getCode()) {
+                        LogUtils.debug("请求错误=" + code);
+                    } else if (code == XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL.getCode()) {
+                        ViewUtils.toastShort(getString(R.string.please_waiting_5m));
+                    } else if (code == XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getCode()) {
+                        ViewUtils.toastShort(XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getMsg());
+                        System.out.println(XSNetEnum._DC_CODE_ERROR_COMMENT_FAIL_SENSITIVE_WORDS.getMsg());
+                    } else {
+                        String erroriMSE = String.format(getString(R.string.comment_error), code);
+                        ViewUtils.toastShort(erroriMSE);
+                        ReportUtils.reportError(new Throwable("评论发送失败(" + code + ")"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override

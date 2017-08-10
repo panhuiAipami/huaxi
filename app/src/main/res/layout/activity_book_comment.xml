@@ -50,7 +50,7 @@
             android:background="@drawable/selector_common_red_background"
             android:padding="7dp"
             android:src="@mipmap/bookcomment_write"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </RelativeLayout>
 

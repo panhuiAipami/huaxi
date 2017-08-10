@@ -160,7 +160,7 @@ public class   BookCommentActivity extends BaseActivity implements View.OnClickL
             case R.id.commont_null:
                 startWriteActivity();
                 break;
-            case R.id.iv_write_comment:
+            case R.id.iv_write_comment://写书评
                 startWriteActivity();
                 break;
             default:

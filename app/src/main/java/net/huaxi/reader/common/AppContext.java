@@ -91,7 +91,6 @@ public class AppContext extends CommonApp {
 
 		mPushAgent.setMessageHandler(messageHandler);
 		mPushAgent.setNotificationClickHandler(notificationClickHandler);
-//		mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
 		//使用自定义的NotificationHandler，来结合友盟统计处理消息通知
 		//参考http://bbs.umeng.com/thread-11112-1-1.html
 		//CustomNotificationHandler notificationClickHandler = new CustomNotificationHandler();

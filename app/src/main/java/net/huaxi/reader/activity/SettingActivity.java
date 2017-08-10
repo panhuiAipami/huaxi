@@ -29,7 +29,6 @@ import com.tools.commonlibs.tools.ViewUtils;
 import net.huaxi.reader.R;
 import net.huaxi.reader.bean.AppVersion;
 import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
@@ -188,7 +187,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             AppCheckUpdateTask appCheckUpdateTask = new AppCheckUpdateTask(SettingActivity.this);
             appCheckUpdateTask.setFlag(true);
             appCheckUpdateTask.execute();
-            EnterBookContent.openBookDetail(SettingActivity.this,"14");
 
             //检测新版本，调用方法
 //            startCheck();

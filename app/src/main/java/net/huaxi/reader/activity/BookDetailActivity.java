@@ -621,7 +621,7 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                 break;
 
             case R.id.iv_detail_addshelf:
-                addBook();
+                addBook();//加入书架
                 UMEventAnalyze.countEvent(BookDetailActivity.this, UMEventAnalyze.BOOKINFO_ADDSHELF);
                 break;
 

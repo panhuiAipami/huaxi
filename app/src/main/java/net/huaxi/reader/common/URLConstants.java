@@ -61,6 +61,10 @@ public class URLConstants {
     public static final String SUB_SCRIBE_URL = url_base + "/user/sub?u_fresh_time=%d&p_num=%d&p_size=%s";
 
 
+    //添加书评
+    public static final String ADD_COMMENT = url_base + "/book/comment";
+
+
 
 
     /**
