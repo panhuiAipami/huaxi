@@ -18,8 +18,8 @@ import com.tools.commonlibs.tools.ViewUtils;
 import net.huaxi.reader.R;
 import net.huaxi.reader.activity.BookCommentActivity;
 import net.huaxi.reader.activity.DownLoadActivity;
-import net.huaxi.reader.activity.LastPageActivity;
 import net.huaxi.reader.activity.MoreSettingActivity;
+import net.huaxi.reader.activity.WriteCommentActivity;
 import net.huaxi.reader.appinterface.MenuChangeListener;
 import net.huaxi.reader.book.BookContentView.OnViewEventListener;
 import net.huaxi.reader.book.datasource.DataSourceManager;
@@ -215,6 +215,10 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         }
     }
 
+    /**
+     * 下一页
+     * @return
+     */
     private boolean loadNextPage() {
 //        ReadPageFactory.getSingleton().loadCurrentPage();
         boolean result = false;
@@ -229,6 +233,10 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         return result;
     }
 
+    /**
+     * 上一页
+     * @return
+     */
     private boolean loadPrePage() {
 //        ReadPageFactory.getSingleton().loadCurrentPage();
         boolean result = false;
@@ -498,8 +506,10 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
         } else if (XSErrorEnum.CHAPTER_LAST.getCode() == code) {
 //            toast(XSErrorEnum.CHAPTER_LAST.getMsg());
             blockBookContentView(true);
-            Intent it = new Intent(activity, LastPageActivity.class);
-//            activity.startActivity(it);
+            Intent it = new Intent(activity, WriteCommentActivity.class);//LastPageActivity   BookCommentActivity    WriteCommentActivity
+            it.putExtra(EnterBookContent.BOOK_ID, DataSourceManager.getSingleton().getBookId());
+            activity.startActivity(it);
+
             //阅读页-最后一页。
             UMEventAnalyze.countEvent(activity,UMEventAnalyze.READPAGE_LAST_PAGE);
             return;
