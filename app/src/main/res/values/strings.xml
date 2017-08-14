@@ -194,7 +194,7 @@
     <!--个人中心上面的标题 -->
     <string name="user_center">我的</string>
     <string name="user_privacy_protection_agreement">用户许可协议</string>
-    <string name="please_input_comment">畅所欲言吧（不少于10个字）</string>
+    <string name="please_input_comment">畅所欲言吧</string>
     <!--个人主页-->
     <string name="myinfo_id_is_copy">用户ID已复制到剪切板</string>
     <string name="myinfo_user_id">用户ID:</string>
@@ -224,7 +224,7 @@
     <!-- 评论页-->
     <string name="comment_write">写书评</string>
     <string name="comment_title">书评</string>
-    <string name="comment_text_too_short">输入字数不少于10个字</string>
+    <string name="comment_text_too_short">内容不能为空</string>
     <string name="comment_no_body">还没有人评论哦~点击抢沙发</string>
     <string name="comment_no_count">还没有人评论哦~</string>
     <string name="rechargedetail">充值详情</string>

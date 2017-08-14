@@ -35,7 +35,7 @@ public class URLConstants {
     public static final String UPLOAD_IMAGE = url_base + "/user/info";//上传头像 表单提交
     //章节阅读[GET/POST]
     public static final String READPAGE_READ_CHAPTER_POST = url_base + "/chapter/content";
-    public static final String READPAGE_READ_CHAPTER = url_base + "/chapter/content?bookid=%s&chapterid=%s";
+    public static final String READPAGE_READ_CHAPTER = url_base + "/chapter/content?bookid=%s&chapterid=%s&auto_sub=%s";
     //未登录获取书籍目录
     // public static final String GET_BOOKCONTENT_CATALOGUE = DATA_ROOT_URL + "/book/contents?bookid=%s&last_update_time=%s";
     public static final String GET_BOOKCONTENT_CATALOGUE = url_base + "/book/catalog?bookid=%s";

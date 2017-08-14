@@ -2,6 +2,7 @@ package net.huaxi.reader.activity;
 
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -188,6 +189,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return loginHelper;
     }
 
+
+    Dialog dialogLoading = null;
+
     @OnClick({login_back_imageview, R.id.login_login_button, R.id.login_dialog_weixin_img})
     public void onClick(View view) {
         Intent intent = null;
@@ -200,6 +204,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_QQ);
 //                break;
             case R.id.login_dialog_weixin_img:
+                dialogLoading = ViewUtils.showProgressDimDialog(this);
                 UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_WX);
                 getHelperInstance().WxLogin();
                 break;
@@ -272,8 +277,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         ViewUtils.toastShort(getString(R.string.login_success));
                         setCookieAndUid(response);
                         finish();
-                    } else {
-                        ViewUtils.toastShort(data.get("message").toString());
+                    } else {//data.get("message").toString()
+                        ViewUtils.toastShort("账号或密码错误");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -330,4 +335,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(dialogLoading != null){
+            dialogLoading.cancel();
+            dialogLoading = null;
+        }
+    }
 }

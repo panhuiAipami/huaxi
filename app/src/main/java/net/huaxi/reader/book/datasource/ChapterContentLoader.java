@@ -13,14 +13,31 @@ import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
+import net.huaxi.reader.R;
+import net.huaxi.reader.book.BookChapterInfo;
+import net.huaxi.reader.book.ReadPageFactory;
 import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.model.ChapterPage;
+import net.huaxi.reader.book.datasource.model.XsFile;
+import net.huaxi.reader.book.paging.PageContent;
+import net.huaxi.reader.book.paging.PagingManager;
+import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
+import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
+import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.Utility;
+import net.huaxi.reader.common.XSErrorEnum;
+import net.huaxi.reader.https.GetRequest;
+import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
+import net.huaxi.reader.https.XSKEY;
 import net.huaxi.reader.https.download.Task;
+import net.huaxi.reader.https.download.TaskManagerDelegate;
+import net.huaxi.reader.https.download.TaskStateEnum;
+import net.huaxi.reader.https.download.listener.ITaskStateChangeListener;
 import net.huaxi.reader.statistic.ReportUtils;
+import net.huaxi.reader.util.EncodeUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
 
 import org.json.JSONArray;
@@ -34,24 +51,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.MappedByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.huaxi.reader.R;
-import net.huaxi.reader.book.BookChapterInfo;
-import net.huaxi.reader.book.ReadPageFactory;
-import net.huaxi.reader.book.datasource.model.XsFile;
-import net.huaxi.reader.book.paging.PageContent;
-import net.huaxi.reader.book.paging.PagingManager;
-import net.huaxi.reader.book.render.ReadPageState;
-import net.huaxi.reader.common.CommonUtils;
-import net.huaxi.reader.common.URLConstants;
-import net.huaxi.reader.common.XSErrorEnum;
-import net.huaxi.reader.https.GetRequest;
-import net.huaxi.reader.https.PostRequest;
-import net.huaxi.reader.https.XSKEY;
-import net.huaxi.reader.https.download.TaskManagerDelegate;
-import net.huaxi.reader.https.download.TaskStateEnum;
-import net.huaxi.reader.https.download.listener.ITaskStateChangeListener;
-import net.huaxi.reader.util.EncodeUtils;
 
 /**
  * 章节内容加载
@@ -242,7 +241,7 @@ public class ChapterContentLoader extends Thread {
     }
 
     /**
-     * 获取章节内容
+     * 获取章节内容-------------------1
      *
      * @param bookId       书籍ID
      * @param chapterId    章节ID
@@ -291,7 +290,10 @@ public class ChapterContentLoader extends Thread {
                     loadListener.onLoading();
                 }
                 Request<JSONObject> request = null;
-                if (mIsPost) {
+                if (mIsPost) {//点击订阅按钮需要发post请求
+
+
+
                     Map<String, String> pMap = new HashMap<String, String>();
                     pMap.put(XSKEY.READER_CHAPTER.BOOKID, EncodeUtils.encodeString_UTF8(bookId));
                     startTime = System.currentTimeMillis();
@@ -310,8 +312,9 @@ public class ChapterContentLoader extends Thread {
                             onMyErrorResponse(error, chapterId, chapterName, loadListener);
                         }
                     }, pMap, "1.2");
-                } else {
-                    final String url = String.format(URLConstants.READPAGE_READ_CHAPTER,EncodeUtils.encodeString_UTF8(bookId), EncodeUtils.encodeString_UTF8(chapterId));
+                } else {//默认阅读get请求
+                    boolean auto_sub = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
+                    final String url = String.format(URLConstants.READPAGE_READ_CHAPTER,EncodeUtils.encodeString_UTF8(bookId), EncodeUtils.encodeString_UTF8(chapterId),EncodeUtils.encodeString_UTF8(auto_sub?"1":"0"));
                     request = new GetRequest(url + CommonUtils.getPublicGetArgs(),
                             new Response.Listener<JSONObject>() {
                         @Override
@@ -331,6 +334,19 @@ public class ChapterContentLoader extends Thread {
         }
     }
 
+
+    /***
+     * 处理成功返回数据------------------------------2
+     * @param response
+     * @param bookId
+     * @param chapterId
+     * @param chapterName
+     * @param startIndex
+     * @param suffix
+     * @param encoding
+     * @param locationLastChapter
+     * @param loadListener
+     */
     private void onMyResponse(JSONObject response, String bookId, String chapterId, String chapterName, int startIndex, String suffix,
                               String encoding, boolean locationLastChapter, IChapterContentLoadListener loadListener) {
         UMEventAnalyze.intervalEvent(AppContext.context(), UMEventAnalyze.ONLINE_READING_COST, System.currentTimeMillis() - startTime);
@@ -355,7 +371,7 @@ public class ChapterContentLoader extends Thread {
         if (data != null) {
             hasJsonData = true;
         }
-        if (hasSubed && hasJsonData) {
+        if (hasSubed && hasJsonData) {//订阅之后
             handleDownloadTask(data, bookId, chapterId, chapterName, startIndex, suffix, encoding, locationLastChapter, loadListener);
             LogUtils.debug("There....");
         } else {
@@ -364,6 +380,14 @@ public class ChapterContentLoader extends Thread {
         }
     }
 
+
+    /***
+     * 处理失败数据----------------------------3
+     * @param error
+     * @param chapterId
+     * @param chapterName
+     * @param loadListener
+     */
     private void onMyErrorResponse(VolleyError error, String chapterId, String chapterName, IChapterContentLoadListener loadListener) {
         UMEventAnalyze.intervalEvent(AppContext.context(), UMEventAnalyze.ONLINE_READING_COST, System.currentTimeMillis() - startTime);
         ReportUtils.reportError(error);
@@ -375,6 +399,7 @@ public class ChapterContentLoader extends Thread {
     }
 
     /**
+     * 启动下载内容----------------已经订阅后下载-------------------4
      * 解析URL,启动下载任务
      */
     private void handleDownloadTask(JSONObject data, final String bookId, final String chapterId, final String chapterName, final int
@@ -403,6 +428,7 @@ public class ChapterContentLoader extends Thread {
             public void onStateChanged(Task task) {
                 int errorCode = task.getErrorCode();
                 if (errorCode == XSErrorEnum.SUCCESS.getCode() && task.getState() == TaskStateEnum.FINISHED && task.getProgress() == 100) {
+                    Log.e("ContentLoader","---------handleDownloadTask-----下载阅读内容成功-----");
                     //下载完成
                     long startTime = System.currentTimeMillis();
                     BookChapterInfo chapterInfo = produceChapterContentFormNet(bookId, chapterId, chapterName, startIndex, encoding,
@@ -422,6 +448,8 @@ public class ChapterContentLoader extends Thread {
                 } else {
                     if (errorCode != XSErrorEnum.SUCCESS.getCode() && task.getProgress() < 100 && (task.getState() == TaskStateEnum
                             .FAILED || task.getState() == TaskStateEnum.FINISHED)) {
+                        Log.e("ContentLoader","---------handleDownloadTask-----下载阅读内容失败!!!-----");
+
                         //下载失败，并结束下载任务.
                         if (loadListener != null) {
                             loadListener.onLoadFinished(PagingManager.producePageContentByErrorCode(chapterId, chapterName, errorCode,
@@ -435,15 +463,16 @@ public class ChapterContentLoader extends Thread {
     }
 
     /**
-     * 章节阅读异常处理(未订阅、余额不足)
+     * 章节阅读异常处理(未订阅、余额不足)----------------2_1
      */
     private void handleException(int errorId, JSONObject data, final String chapterId, final String chapterName, final String encoding,
                                  final IChapterContentLoadListener loadListener) {
         int bookType = ReadPageState.BOOKTYPE_ERROR;
         PageContent pageContent = null;
         try {
+            Log.e("ContentLoader","-------handleException---章节阅读异常处理(未订阅、余额不足)--------errorId="+errorId);
             String intro = null, price = null,originPrice = null;
-            boolean isAutoSub = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
+            boolean isAutoSub = false;
             boolean hasDiscount = false;
             if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == errorId) {//章节未订阅.
                 bookType = ReadPageState.BOOKTYPE_ORDER_PAY;
@@ -458,7 +487,7 @@ public class ChapterContentLoader extends Thread {
                 //针对预览信息排版
                 intro = data.optString(XSKEY.READER_CHAPTER.INTRO, "");
                 price = data.optString(XSKEY.READER_CHAPTER.PRICE, "0");
-//                isAutoSub = data.optInt(XSKEY.READER_CHAPTER.AUTO_SUB, 1) == 1 ? true : false;//取本地，不用后台了
+                isAutoSub = true;
                 originPrice = data.optString(XSKEY.READER_CHAPTER.ORIGIN_PRICE,"0");
                 hasDiscount = data.optInt(XSKEY.READER_CHAPTER.HAS_DISCOUNT, 0) == 0 ? false : true;
             }

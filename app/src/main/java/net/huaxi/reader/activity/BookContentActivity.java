@@ -7,10 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.tools.commonlibs.activity.BaseActivity;
-import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
@@ -24,12 +21,10 @@ import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.PagingManager;
 import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
-import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.SharePrefHelper;
-import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.db.dao.BookDao;
@@ -37,17 +32,12 @@ import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.db.model.ChapterTable;
 import net.huaxi.reader.dialog.RechargeDialog;
 import net.huaxi.reader.https.BookCatalogThreadLoader;
-import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.util.ScreenLightUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.util.listener.ScreenUtils;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import hugo.weaving.DebugLog;
 
@@ -120,14 +110,18 @@ public class BookContentActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ReadPageFactory.getSingleton().loadCurrentPage();
+        ReadPageFactory.getSingleton().changeAutoSub(false);
+        //----------------------------------------------------------
         ReportUtils.setUserSceneTag(Constants.BUGLY_SCENE_TAG_READING);
+        //不是阅读状态
         if (ReadPageState.BOOKTYPE_NORMAL != mBookContentModel.getBookState()) {
+            //是充值状态
             if (ReadPageState.BOOKTYPE_RECHARGE == mBookContentModel.getBookState()) {
                 LogUtils.debug("开始自动订阅!" + mBookContentModel.getBookState());
                 gotoPay();
             } else {
                 LogUtils.debug("刷新当前页面[GET]" + mBookContentModel.getBookState());
+                //登录阅读
                 if (ReadPageState.BOOKTYPE_UNLOGIN == mBookContentModel.getBookState()) {
 //                    if (!Constants.DEFAULT_USERID.equals(UserHelper.getInstance().getUserId())) {
 //                        SwitchUserMigrateTask task = new SwitchUserMigrateTask(BookContentActivity.this);
@@ -162,7 +156,7 @@ public class BookContentActivity extends BaseActivity {
         autoSubBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReadPageFactory.getSingleton().changeAutoSub();
+                ReadPageFactory.getSingleton().changeAutoSub(true);
             }
         });
         openVipBtn = (Button) findViewById(R.id.readpage_openvips);
@@ -276,10 +270,11 @@ public class BookContentActivity extends BaseActivity {
     }
 
     /**
-     * 加载内容
+     * 加载阅读内容
      */
     private void loadContent() {
         mBookContentModel.blockBookContentView(false);
+        //章节大于0去加载内容
         if (DataSourceManager.getSingleton().getChapterCount() > 0) {
             Log.d("loadContent........", "loadContent: "+DataSourceManager.getSingleton().toString());
             ReadPageFactory.getSingleton().refreshPage();
@@ -288,20 +283,23 @@ public class BookContentActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 订阅按钮状态及点击事件
+     */
     private void clickButton() {
         int bookState = mBookContentModel.getBookState();
         LogUtils.debug("bookState:"+bookState);
         switch (bookState) {
             case ReadPageState.BOOKTYPE_ORDER_PAY:
-                gotoPay();
+                gotoPay();//去订阅
                 break;
-            case ReadPageState.BOOKTYPE_RECHARGE:
+            case ReadPageState.BOOKTYPE_RECHARGE://充值
                 gotoRecharge();
                 break;
-            case ReadPageState.BOOKTYPE_UNLOGIN:
+            case ReadPageState.BOOKTYPE_UNLOGIN://登录阅读
                 gotoLogin();
                 break;
-            default:
+            default://清空当前页，然后刷新.
                 clearAndRefresh();
                 break;
         }
@@ -372,7 +370,7 @@ public class BookContentActivity extends BaseActivity {
             postAutoSub();
 
             PagingManager.getSingleton().resetPageCache(bookTable.getLastReadChapter());
-            ReadPageFactory.getSingleton().pay();
+            ReadPageFactory.getSingleton().pay();//订阅
         }
     }
 
@@ -389,25 +387,25 @@ public class BookContentActivity extends BaseActivity {
             LogUtils.debug("为改变autosub的状态，");
             return;
         }
-        final String action = ReadPageFactory.getSingleton().isAutoSub() ? "b_add" : "b_del";
-        Map<String, String> allParams = new HashMap<String, String>();
-        allParams.put("u_action", action);
-        allParams.put("bk_mid", DataSourceManager.getSingleton().getBookId());
-        allParams.putAll(CommonUtils.getPublicPostArgs());
-        PostRequest autoSubRequest = new PostRequest(URLConstants.USER_AUTO_SUB_URL, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (response != null) {
-                    LogUtils.debug("post auto sub = " + response.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ReportUtils.reportError(error);
-            }
-        }, allParams);
-        RequestQueueManager.addRequest(autoSubRequest);
+//        final String action = ReadPageFactory.getSingleton().isAutoSub() ? "b_add" : "b_del";
+//        Map<String, String> allParams = new HashMap<String, String>();
+//        allParams.put("u_action", action);
+//        allParams.put("bk_mid", DataSourceManager.getSingleton().getBookId());
+//        allParams.putAll(CommonUtils.getPublicPostArgs());
+//        PostRequest autoSubRequest = new PostRequest(URLConstants.USER_AUTO_SUB_URL, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                if (response != null) {
+//                    LogUtils.debug("post auto sub = " + response.toString());
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                ReportUtils.reportError(error);
+//            }
+//        }, allParams);
+//        RequestQueueManager.addRequest(autoSubRequest);
     }
 
 
@@ -435,14 +433,17 @@ public class BookContentActivity extends BaseActivity {
             ScreenLightUtils.initScreenBright(this);
 
 
-            //
+            //----------------------------------------------------------
             ReportUtils.setUserSceneTag(Constants.BUGLY_SCENE_TAG_READING);
+            //不是阅读状态
             if (ReadPageState.BOOKTYPE_NORMAL != mBookContentModel.getBookState()) {
+                //是充值状态
                 if (ReadPageState.BOOKTYPE_RECHARGE == mBookContentModel.getBookState()) {
                     LogUtils.debug("开始自动订阅!" + mBookContentModel.getBookState());
                     gotoPay();
                 } else {
                     LogUtils.debug("刷新当前页面[GET]" + mBookContentModel.getBookState());
+                    //登录阅读
                     if (ReadPageState.BOOKTYPE_UNLOGIN == mBookContentModel.getBookState()) {
 //                    if (!Constants.DEFAULT_USERID.equals(UserHelper.getInstance().getUserId())) {
 //                        SwitchUserMigrateTask task = new SwitchUserMigrateTask(BookContentActivity.this);

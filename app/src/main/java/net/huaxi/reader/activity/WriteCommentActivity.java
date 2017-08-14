@@ -142,7 +142,7 @@ public class WriteCommentActivity extends BaseActivity implements View.OnClickLi
      */
     private void sentComment() {
         String commentCount = etCount.getText().toString().trim();
-        if (StringUtils.isBlank(commentCount) || commentCount.length() < 10) {
+        if (StringUtils.isBlank(commentCount)) {
             ivSendComment.setClickable(true);
             ViewUtils.toastShort(getString(R.string.comment_text_too_short));
             return;

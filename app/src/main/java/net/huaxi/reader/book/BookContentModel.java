@@ -76,6 +76,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
     private Canvas mOldContentPageCanvas;
     private Canvas mNewContentPageCanvas;
     private Bitmap tempNewContentPageBitmap = null;
+    //阅读状态
     private int bookState = ReadPageState.BOOKTYPE_NORMAL;
     private OpenBookSettingViewHelper openPopupHelper;
     private Bitmap tempOldContentPageBitmap = null;
@@ -491,13 +492,14 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
     public void onLoadContentFiled(int code) {
         //// TODO: 2015/12/11 内容加载失败回调
         boolean showBtn = false, showSub = false, showOpenVip = false, showClose = false;
-        if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == code) {
+
+        if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == code) {//未订阅
             bookState = ReadPageState.BOOKTYPE_ORDER_PAY;
             showBtn = true;
             showSub = true;
             showOpenVip = true && DataSourceManager.getSingleton().getIsMonthly();
             showClose = false;
-        } else if (XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == code) {
+        } else if (XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == code) {//余额不足
             bookState = ReadPageState.BOOKTYPE_RECHARGE;
             showBtn = true;
             showSub = true;

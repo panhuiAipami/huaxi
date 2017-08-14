@@ -3,6 +3,7 @@ package net.huaxi.reader.book;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -43,6 +44,10 @@ import hugo.weaving.DebugLog;
  * 2015/12/5.
  */
 public class ReadPageFactory {
+    private Canvas mCanvas = null;
+    private PageContent mPageContent = null;
+    private int mCoins;
+    private int mPetals;
 
     private static ReadPageFactory singleton;
     public volatile boolean isRunning = false;
@@ -91,22 +96,24 @@ public class ReadPageFactory {
     /**
      * 改变客户端的订阅状态.(checkbox的)
      */
-    public void changeAutoSub() {
+    public void changeAutoSub(boolean refresh) {
 
         LogUtils.debug("here_1");
-        if (mBookContentRender != null) {
-            LogUtils.debug("here_2");
+        if (mBookContentRender != null && refresh) {//点击按钮
+            Log.e("changeAutoSub","----------1---------");
             autoSub = !autoSub;
-            LogUtils.debug("autsub_here"+autoSub);
+            //需要更改状态，重新绘制chechBox
             DataSourceManager.getSingleton().resetPageContentCache(autoSub);
-            LogUtils.debug("____55555");
             refreshPage();
-            SharedPreferenceUtil.getInstanceSharedPreferenceUtil().setBooleanIsDingyue(autoSub);
 
             if (autoSub){
-                LogUtils.debug("here_3");
                 UMEventAnalyze.countEvent(AppContext.context(),UMEventAnalyze.READPAGE_AUTOORDER_SELECT);
             }
+        }else {
+            Log.e("changeAutoSub","----------2---------");
+//            DataSourceManager.getSingleton().resetPageContentCache(autoSub);
+//            refreshPage();
+//            mBookContentRender.drawStatePayCancas(mCanvas, mPageContent, mCoins, mPetals, true);//始终是选中，除非手动取消
         }
     }
 
@@ -116,7 +123,7 @@ public class ReadPageFactory {
      * @return boolean
      */
     public boolean hasChangeAutoSub() {
-        return lastAutoSub != autoSub;
+        return autoSub;
     }
 
     /**
@@ -125,7 +132,7 @@ public class ReadPageFactory {
      * @return boolean
      */
     public boolean isAutoSub() {
-        return SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
+        return autoSub;
     }
 
     public void setAutoSub(boolean autoSub) {
@@ -189,7 +196,7 @@ public class ReadPageFactory {
     }
 
     /**
-     * 排版和绘画
+     * 排版和绘画----------------------------终极绘制展示---------
      *
      * @param pageContent page content
      * @param canvas      画布
@@ -228,6 +235,8 @@ public class ReadPageFactory {
                 if(BookContentRender.p>BookContentRender.b&&BookContentRender.p>BookContentRender.sum){
                     XSErrorEnum.CHAPTER_SHORT_BALANCE.setCode(10263);
                     pageContent.setErrorCode(10263);
+                    //余额不足充值订阅
+                    getBalanceAndDraw(canvas, pageContent, isFinished);
                     if(XSErrorEnum.CHAPTER_SHORT_BALANCE.getCode() == pageContent.getErrorCode()){
                         return false;
 
@@ -274,7 +283,7 @@ public class ReadPageFactory {
      */
     private synchronized void getBalanceAndDraw(final Canvas canvas, final PageContent pageContent, final boolean isFinished) {
         if (NetUtils.checkNet() == NetType.TYPE_NONE) {
-            mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, isAutoSub());
+            mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, autoSub);
             LogUtils.debug("pageContent....1"+pageContent.getPrice());
         } else {
             String url = URLConstants.PAY_INFO + "?1=1" + CommonUtils.getPublicGetArgs();
@@ -296,7 +305,14 @@ public class ReadPageFactory {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mBookContentRender.drawStatePayCancas(canvas, pageContent, coins,petals, isAutoSub());
+                        //需要改变checkBox，重新绘制需要的参数
+                        mCanvas = canvas;
+                        mPageContent = pageContent;
+                        mCoins = coins;
+                        mPetals = petals;
+
+                        mBookContentRender.drawStatePayCancas(canvas, pageContent, coins,petals, autoSub);
+
                         LogUtils.debug("pageContent....2"+pageContent.getPrice());
                         UMEventAnalyze.countEvent(AppContext.context(),UMEventAnalyze.READPAGE_ORDER);
                         if (mBookContentLoadedListener != null && isFinished) {
@@ -309,7 +325,7 @@ public class ReadPageFactory {
                 public void onErrorResponse(VolleyError error) {
                     ReportUtils.reportError(error);
                     LogUtils.debug("pageContent....3"+pageContent.getPrice());
-                    mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, isAutoSub());
+                    mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, autoSub);
                     if (mBookContentLoadedListener != null && isFinished) {
                         mBookContentLoadedListener.onLoadContentFiled(pageContent.getErrorCode());
                     }
@@ -324,10 +340,14 @@ public class ReadPageFactory {
      */
     public synchronized void pay() {
         if (isValidAction()) {
+
+            SharedPreferenceUtil.getInstanceSharedPreferenceUtil().setBooleanIsDingyue(autoSub);
+
             DataSourceManager.getSingleton().setChapterContentLoadListener(new IChapterContentLoadListener() {
                 @Override
                 public void onLoadFinished(PageContent pageContent) {
                     composingAndRender(pageContent, getNewCanvas(), true);
+                    Log.e("Fctory","-----------订阅章节-------"+autoSub);
 
                 }
 

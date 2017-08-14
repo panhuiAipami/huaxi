@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.LogUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -45,7 +44,7 @@ public class AppContext extends CommonApp {
 
 	private void initAliFeedBack() {
 		//匿名反馈初始化方式
-		FeedbackAPI.initAnnoy(getInstance(), ALIFEEDBACK_APPKEY);
+//		FeedbackAPI.initAnnoy(getInstance(), ALIFEEDBACK_APPKEY);
 		//openim账号初始化方式
 //		FeedbackAPI.initOpenImAccount(getInstance(),ALIFEEDBACK_APPKEY, String uid, String pw)
 	}

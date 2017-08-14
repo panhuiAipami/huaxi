@@ -30,8 +30,8 @@ public class PageContent {
     private int bookType = ReadPageState.BOOKTYPE_NORMAL;
     //价格(未订阅使用)
     private String price;
-    //是否自动订阅
-    private boolean autoSub;
+    //是否自动订阅checKBox
+    private boolean autoSub = true;
     //是否有折扣
     private boolean hasDiscount;
     //原始价格

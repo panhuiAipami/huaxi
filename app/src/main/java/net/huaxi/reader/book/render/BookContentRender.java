@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.tools.commonlibs.common.CommonApp;
 import com.tools.commonlibs.tools.ImageUtils;
@@ -16,7 +17,6 @@ import com.tools.commonlibs.tools.LogUtils;
 import net.huaxi.reader.R;
 import net.huaxi.reader.book.BookContentLineInfo;
 import net.huaxi.reader.book.BookContentSettings;
-import net.huaxi.reader.book.SharedPreferenceUtil;
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.paging.BookContentPaint;
 import net.huaxi.reader.book.paging.PageContent;
@@ -125,41 +125,45 @@ public class BookContentRender {
      * @param balance     余额
      */
     public void drawStatePayCancas(Canvas canvas, PageContent pageContent, int balance,int petal, boolean autoSub) {
-        
-        drawEmptyView(canvas);
-        Bitmap bitmap = getButtonBg();
+        try{
+            drawEmptyView(canvas);
+            Bitmap bitmap = getButtonBg();
 
-        //支付按钮
-        int y = drawPayButton(canvas, pageContent.getBookType(), bitmap);
+            //支付按钮
+            int y = drawPayButton(canvas, pageContent.getBookType(), bitmap);
 
-        //关闭按钮
+            //关闭按钮
 //        drawCloseButton(canvas, y, bitmap);
-        int y2 = y + IMG_H;
-        y2 = drawAutoSubscribe(canvas, y2, autoSub);
-        //包月作品,绘画开通会员入口
+            int y2 = y + IMG_H;
+            y2 = drawAutoSubscribe(canvas, y2, autoSub);
+            //包月作品,绘画开通会员入口
 //        if (DataSourceManager.getSingleton().getIsMonthly()) {
 //        drawMonthlyTips(canvas, y2);
 //        }
-        //折后价格(现价)
-        String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
-        p= Integer.parseInt(pageContent.getPrice());
+            //折后价格(现价)
+            String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
+            p= Integer.parseInt(pageContent.getPrice());
 //        h=Integer.parseInt(pageContent.get)
 //        Log.i("TAG", "drawStatePayCancas: 现价="+p);
-        LogUtils.debug(" 章节价格"+price);
-        int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;;
-        y = drawPayDiscount(canvas, price,disCountToMarginX, y);
-        if(pageContent.isHasDiscount()) {
-            //原价
-            String originPrice = String.format(CommonApp.context().getString(R.string.readpage_pay_originprice), pageContent.getOriginPrice());
-            y = drawPayInitialPrice(canvas, originPrice, disCountToMarginX, y);
+            LogUtils.debug(" 章节价格"+price);
+            int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;;
+            y = drawPayDiscount(canvas, price,disCountToMarginX, y);
+            if(pageContent.isHasDiscount()) {
+                //原价
+                String originPrice = String.format(CommonApp.context().getString(R.string.readpage_pay_originprice), pageContent.getOriginPrice());
+                y = drawPayInitialPrice(canvas, originPrice, disCountToMarginX, y);
+            }
+            //余额
+            y = drawPayBalance(canvas, balance,petal,disCountToMarginX, y);
+            //绘制分割线
+            y = drawPaySplitLine(canvas, y);
+            //绘制描述
+            drawDescText(canvas, pageContent.getLines(), y);
+            releaseBitmap(bitmap);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        //余额
-        y = drawPayBalance(canvas, balance,petal,disCountToMarginX, y);
-        //绘制分割线
-        y = drawPaySplitLine(canvas, y);
-        //绘制描述
-        drawDescText(canvas, pageContent.getLines(), y);
-        releaseBitmap(bitmap);
+
     }
 
     /**
@@ -617,6 +621,7 @@ public class BookContentRender {
         int bitmapRes = 0;
         boolean isNight = BookContentSettings.getInstance().getTheme() == Constants.THEME_NIGHT ? true : false;
 //        if (!isNight) {  //白天模式
+        Log.e("drawAutoSubCheckBox","------------是否选中------"+checked);
             if (checked) {
                 oldBitmap = BitmapFactory.decodeResource(CommonApp.resources(), R.mipmap.readpage_checkbox_day_selected);
             } else {

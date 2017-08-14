@@ -4,10 +4,13 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 
 import com.tools.commonlibs.tools.LogUtils;
+
 import net.huaxi.reader.book.BookContentLineInfo;
 import net.huaxi.reader.book.BookContentSettings;
 import net.huaxi.reader.book.datasource.model.ChapterPage;
 import net.huaxi.reader.book.paging.encode.GBKEncoding;
+import net.huaxi.reader.book.paging.encode.IEncoding;
+import net.huaxi.reader.book.paging.encode.UTF8Encoding;
 import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.Utility;
 
@@ -17,9 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import net.huaxi.reader.book.paging.encode.IEncoding;
-import net.huaxi.reader.book.paging.encode.UTF8Encoding;
 
 /**
  * 分页排版
@@ -64,6 +64,7 @@ public class Paging {
     }
 
     /**
+     * 阅读内容排版
      * @param chapterId   章节ID
      * @param chapterName 章节名称
      * @param data        章节字节流
@@ -282,7 +283,7 @@ public class Paging {
                 float[] titleWidth = null;
                 float[] widths = new float[content[j].length()];
                 String tempTitle = content[j].substring(0, content[j].indexOf("\r\n"));
-                LogUtils.debug("paging........"+content.length);
+                LogUtils.debug(".....content.length..."+content.length);
                 //解析内容的宽度
                 if (bookType == ReadPageState.BOOKTYPE_NORMAL) {
                     //解析标题的宽度

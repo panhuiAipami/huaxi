@@ -1,13 +1,13 @@
 package net.huaxi.reader.book.paging;
 
 import com.tools.commonlibs.tools.LogUtils;
+
 import net.huaxi.reader.book.datasource.DataSourceManager;
 import net.huaxi.reader.book.datasource.model.ChapterPage;
+import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.statistic.ReportUtils;
 
 import java.util.HashMap;
-
-import net.huaxi.reader.book.render.ReadPageState;
 
 /**
  * 分页内容管理中心
@@ -165,7 +165,7 @@ public class PagingManager {
                         }
                     }
                 }
-                LogUtils.info("@@@@获取PageContent对象 第" + chapterNo + "章 startIndex =" + startIndex + " [locateLastPage =" + locateLastPage
+                LogUtils.info("------getPageContent----->获取PageContent对象 第" + chapterNo + "章 startIndex =" + startIndex + " [locateLastPage =" + locateLastPage
                         + "] index =" +
                         index + "页");
                 int count = DataSourceManager.getSingleton().getChapterCount();
