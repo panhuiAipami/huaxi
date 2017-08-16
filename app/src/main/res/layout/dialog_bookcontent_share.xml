@@ -102,6 +102,7 @@
         android:id="@+id/ll_weibo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">

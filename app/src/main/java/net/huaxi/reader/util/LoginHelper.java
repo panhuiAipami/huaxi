@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -43,15 +45,20 @@ import com.tencent.tauth.UiError;
 import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.common.AppManager;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.MD5Utils;
 import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.appinterface.ListenerManager;
+import net.huaxi.reader.appinterface.ShareResult;
+import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
+import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
@@ -71,14 +78,15 @@ import static com.alibaba.sdk.android.feedback.xblink.config.GlobalConfig.contex
 /**
  * Created by ZMW on 2015/12/3.
  */
-public class LoginHelper {
-
+public class LoginHelper implements ShareResult{
+    boolean isShare = false;
     //腾讯appid
     public static final String QQLOGIN_APP_ID = "1105023260";//真
 //    public static final String QQLOGIN_APP_ID = "100703379";//测试用
 
     public static final String WX_APP_ID = "wxdbd49a9d87fa9a19";
     public static final String WX_APP_PARTNERID = "1298708001";
+
     //微博相关
     public static final String WB_SCOPE = "email,direct_messages_read,direct_messages_write,"
             + "friendships_groups_read,friendships_groups_write,statuses_to_me_read," +
@@ -100,7 +108,7 @@ public class LoginHelper {
     private Tencent mTencent;
     private QQToken qqToken;
     private UserInfo qq_user_info;
-    private IUiListener qqAuthListener;
+    private IUiListener qqAuthListener = new QQBaseUiListener();
     //	private IUiListener qqUserInfoListener;
     private String qqUUID;
     //微信相关
@@ -119,13 +127,39 @@ public class LoginHelper {
     //登录回调接口
     private HelpListener listener;
     private IOpenApi openApi;
+    private ShareBean bean;
 
     public LoginHelper(Activity activity) {
         this.activity = activity;
         mQueue = Volley.newRequestQueue(activity);
     }
+    public LoginHelper(Activity activity, ShareBean bean) {
+        this.activity = activity;
+        this.bean = bean;
+        mQueue = Volley.newRequestQueue(activity);
+    }
 
-    ;
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0://成功
+                    addShareInfoRequest(bean.getShareUrl(),bean.taskId,bean.shareType);
+                    ViewUtils.toastLong("分享成功");
+                    break;
+                case 1://失败
+                    ViewUtils.toastLong("分享失败");
+                    break;
+                case 2://取消
+                    ViewUtils.toastLong("分享取消");
+                    break;
+                case 3://微信分享图片异常
+                    ViewUtils.toastLong("分享图片错误");
+                    break;
+            }
+        }
+    };
 
     private static byte[] bmpToByteArray(Bitmap bmp) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -150,13 +184,13 @@ public class LoginHelper {
 
     //qq登录
     public void QQLogin(HelpListener listener) {
+        isShare = false;
         this.listener = listener;
         if (mTencent == null) {
             mTencent = Tencent.createInstance(QQLOGIN_APP_ID, this.activity);
             qqToken = mTencent.getQQToken();
             qq_user_info = new UserInfo(this.activity, qqToken);
         }
-        qqAuthListener = new QQBaseUiListener();
         mTencent.login(this.activity, "all", qqAuthListener);
     }
 
@@ -194,6 +228,8 @@ public class LoginHelper {
         }, map);
         RequestQueueManager.addRequest(request);
     }
+
+
 
     public void ActivityResult(int requestCode, int resultCode, Intent data) {
         LogUtils.debug("resultCode=" + resultCode);
@@ -466,14 +502,22 @@ public class LoginHelper {
         }
     }
 
-    //qq空间分享
+    /**
+     * qq空间分享
+     */
     public void shareToQzone(String httpUrl, String iconUrl, String title, String description) {
+        isShare = true;
         if (httpUrl == null || title == null || description == null) {
-            LogUtils.debug("微信分享参数问题");
             return;
         }
         if (mTencent == null) {
-            mTencent = Tencent.createInstance(QQLOGIN_APP_ID, activity);
+            try{
+                mTencent = Tencent.createInstance(QQLOGIN_APP_ID, activity);
+
+            }catch (Exception e){
+
+                e.printStackTrace();
+            }
 //				qqToken = mTencent.getQQToken();
 //				qq_user_info = new UserInfo(this.activity, qqToken);
         }
@@ -488,34 +532,13 @@ public class LoginHelper {
         ArrayList<String> a = new ArrayList<String>();
         a.add(iconUrl);
         params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, a);
-        if (qqAuthListener == null) {
-            qqAuthListener = new QQBaseUiListener();
-        }
         System.out.println(" targetUrl>>>>>>>>>>>" + httpUrl);
 
-        mTencent.shareToQzone(activity, params, new IUiListener() {
-            @Override
-            public void onComplete(Object o) {
-                LogUtils.debug("分享完成");
-                ViewUtils.toastShort("分享完成");
-            }
-
-            @Override
-            public void onError(UiError uiError) {
-                LogUtils.debug("分享失败");
-                ViewUtils.toastShort("分享失败");
-            }
-
-            @Override
-            public void onCancel() {
-                LogUtils.debug("分享关闭");
-                ViewUtils.toastShort("分享关闭");
-            }
-        });
+        mTencent.shareToQzone(activity, params, qqAuthListener);
     }
 
     //微信分享相关 isToFriend true 为分享到朋友 ，false 为分享到朋友圈
-    public void shareWxWebPage(String httpUrl, boolean isToFriend, int iconRes, String title,
+    public void shareWxWebPage(String httpUrl, int iconRes, String title,
                                String description) {
         if (httpUrl == null || title == null || description == null) {
             LogUtils.debug("微信分享参数问题");
@@ -527,18 +550,29 @@ public class LoginHelper {
         }
         if (WXApi != null && WXApi.isWXAppInstalled()) {
             Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), iconRes);
-            shareWxWebPage(httpUrl, isToFriend, icon, title, description);
+            shareWxsendReq(httpUrl, icon, title, description);
         } else {
             ViewUtils.toastShort(AppContext.getInstance().getString(R.string.not_install_wx_client));
         }
     }
 
+    /***
+     * 微信
+     * @param httpUrl
+     * @param isToFriend
+     * @param iconUrl
+     * @param title
+     * @param description
+     */
+    boolean isToFriend = false;
     public void shareWxWebPage(final String httpUrl, final boolean isToFriend, final String iconUrl, final String title,
                                final String description) {
         if (httpUrl == null || title == null || description == null) {
             LogUtils.debug("微信分享参数问题");
             return;
         }
+        ListenerManager.getInstance().setResult(this);
+        this.isToFriend = isToFriend;
         if (WXApi == null) {
             WXApi = WXAPIFactory.createWXAPI(activity, WX_APP_ID);
             WXApi.registerApp(WX_APP_ID);
@@ -551,13 +585,16 @@ public class LoginHelper {
                     super.run();
                     try {
                         Bitmap b = Glide.with(activity).load(iconUrl).asBitmap().into(50, 50).get(5, TimeUnit.SECONDS);
-                        shareWxWebPage(httpUrl, isToFriend, b, title, description);
+                        shareWxsendReq(httpUrl, b, title, description);
                     } catch (TimeoutException e) {
-                        ViewUtils.toastShort("图片分享失败");
+                        e.printStackTrace();
+                        handler.sendEmptyMessage(3);
                     } catch (InterruptedException e) {
-                        ViewUtils.toastShort("图片分享失败");
+                        e.printStackTrace();
+                        handler.sendEmptyMessage(3);
                     } catch (ExecutionException e) {
-                        ViewUtils.toastShort("图片分享失败");
+                        e.printStackTrace();
+                        handler.sendEmptyMessage(3);
                     }
                 }
             }.start();
@@ -567,9 +604,8 @@ public class LoginHelper {
         }
     }
 
-    private void shareWxWebPage(String httpUrl, boolean isToFriend, Bitmap icon, String title,
+    private void shareWxsendReq(String httpUrl, Bitmap icon, String title,
                                 String description) {
-
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = httpUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
@@ -579,8 +615,7 @@ public class LoginHelper {
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
-        req.scene = !isToFriend ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req
-                .WXSceneSession;
+        req.scene = this.isToFriend ?SendMessageToWX.Req.WXSceneSession: SendMessageToWX.Req.WXSceneTimeline;
 
         WXApi.sendReq(req);
     }
@@ -653,7 +688,7 @@ public class LoginHelper {
         mWeiboShareAPI.sendRequest(activity, request, authInfo, token, new WeiboAuthListener() {
             @Override
             public void onComplete(Bundle bundle) {
-                ViewUtils.toastShort("分享成功");
+                handler.sendEmptyMessage(0);
             }
 
             @Override
@@ -673,35 +708,37 @@ public class LoginHelper {
         weiboMessage.textObject = getTextObj(description);
         weiboMessage.mediaObject = getWebpageObj(httpUrl, bitmap, title, description);
         weiboMessage.imageObject = getImageObj(bitmap);
+
         SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
         request.transaction = String.valueOf(System.currentTimeMillis());
         request.multiMessage = weiboMessage;
+
+
+
         int supportApi = mWeiboShareAPI.getWeiboAppSupportAPI();
         AuthInfo authInfo = new AuthInfo(activity, WB_APP_KEY, WB_REDIRECT_URL, WB_SCOPE);
         String token = "";
-//        if (weiboToken != null) {
-//            token = weiboToken.getToken();
-//        }
-//        mWeiboShareAPI.sendRequest(activity,request);
 
-        mWeiboShareAPI.sendRequest(activity, request, authInfo, token, new WeiboAuthListener() {
-            @Override
-            public void onComplete(Bundle bundle) {
-                ViewUtils.toastShort("分享成功");
-            }
 
-            @Override
-            public void onWeiboException(WeiboException e) {
-                System.out.println("分享失败-----" + e);
-            }
 
-            @Override
-            public void onCancel() {
-                System.out.println("分享---onCancel");
-            }
-        });
+        if (null == mSsoHandler) {
+            mSsoHandler = new SsoHandler(activity, authInfo);
+        }
+        //		webiboUserInfoListener = new LogOutRequestListener();
+        weiboAuthListener = new AuthListener();
+//        mSsoHandler.authorize(weiboAuthListener);
+
+        mWeiboShareAPI.sendRequest(activity, request, authInfo, token, weiboAuthListener);
     }
 
+
+    /**
+     * 微博分享
+     * @param httpUrl
+     * @param iconUrl
+     * @param title
+     * @param description
+     */
     public void shareWb(final String httpUrl, final String iconUrl, final String title, final String description) {
         if (mWeiboShareAPI == null) {
             mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(activity, LoginHelper.WB_APP_KEY);
@@ -718,13 +755,10 @@ public class LoginHelper {
                     Bitmap b = Glide.with(activity).load(iconUrl).asBitmap().into(300, 300).get(5, TimeUnit.SECONDS);
                     shareWb(httpUrl, b, title, description);
                 } catch (TimeoutException e) {
-                    ViewUtils.toastShort("图片分享失败");
                     e.printStackTrace();
                 } catch (InterruptedException e) {
-                    ViewUtils.toastShort("图片分享失败");
                     e.printStackTrace();
                 } catch (ExecutionException e) {
-                    ViewUtils.toastShort("图片分享失败");
                     e.printStackTrace();
                 }
             }
@@ -733,16 +767,16 @@ public class LoginHelper {
 
     }
 
-    public void WBOnResponse(BaseResponse baseResp) {
+    public void onResponse(BaseResponse baseResp) {
         switch (baseResp.errCode) {
             case WBConstants.ErrorCode.ERR_OK:
-                ViewUtils.toastLong("分享成功");
+                handler.sendEmptyMessage(0);
                 break;
             case WBConstants.ErrorCode.ERR_CANCEL:
-                ViewUtils.toastLong("取消分享");
+                handler.sendEmptyMessage(1);
                 break;
             case WBConstants.ErrorCode.ERR_FAIL:
-                ViewUtils.toastLong("分享失败");
+                handler.sendEmptyMessage(2);
                 break;
         }
     }
@@ -821,6 +855,24 @@ public class LoginHelper {
         this.listener = listener;
     }
 
+    @Override
+    public void success() {
+        handler.sendEmptyMessage(0);
+    }
+
+    @Override
+    public void cancel() {
+        handler.sendEmptyMessage(2);
+    }
+
+    @Override
+    public void faild() {
+        handler.sendEmptyMessage(1);
+
+
+    }
+
+
     public enum LoginType {
         qq(1), weibo(2), weixin(3);
         private int value;
@@ -842,32 +894,44 @@ public class LoginHelper {
     class QQBaseUiListener implements IUiListener {
         @Override
         public void onError(UiError e) {
-            ViewUtils.toastShort(LOGINFAILEDTEXT);
-            ReportUtils.reportError(new Throwable(e.errorMessage));
+            if(isShare){
+                handler.sendEmptyMessage(1);
+            }else {
+                ViewUtils.toastShort(LOGINFAILEDTEXT);
+                ReportUtils.reportError(new Throwable(e.errorMessage));
+            }
         }
 
         @Override
         public void onCancel() {
-            ViewUtils.toastShort(LOGINCANCLETEXT);
+            if(isShare){
+                handler.sendEmptyMessage(2);
+            }else {
+                ViewUtils.toastShort(LOGINCANCLETEXT);
+            }
         }
 
         @Override
         public void onComplete(Object arg0) {
-            ViewUtils.toastShort(LOGINSUCCESSTEXT);
-            JSONObject json = (JSONObject) arg0;
-            try {
-                getQQUserDetail(json.getString("access_token"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (!json.isNull("openid")) {
+            if(isShare){
+                handler.sendEmptyMessage(0);
+            }else {
+                ViewUtils.toastShort(LOGINSUCCESSTEXT);
+                JSONObject json = (JSONObject) arg0;
                 try {
-                    qqUUID = json.getString("openid");
-                    getUserID(qqUUID, LoginType.qq);
+                    getQQUserDetail(json.getString("access_token"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+
+                if (!json.isNull("openid")) {
+                    try {
+                        qqUUID = json.getString("openid");
+                        getUserID(qqUUID, LoginType.qq);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -907,4 +971,50 @@ public class LoginHelper {
             ViewUtils.toastShort(LOGINCANCLETEXT);
         }
     }
+
+
+    /**
+     * 分享成功数据回传给后台
+     * @param shareUrl
+     * @param taskId
+     * @param shareType
+     */
+    public void addShareInfoRequest(String shareUrl,String taskId,int shareType){
+    //http://apiin.huaxi.net/user/api_in/shareWeiXin.ashx?action=addUserSharedInfo& &sharedUrl=?&userID=?&taskId=?&device=?&shareType=?&_token=？
+    //sharedUrl=?&userID=?&taskId=?&device=?&shareType=?
+    String userID = UserHelper.getInstance().getUserId();
+    String device = "android";
+    String MD5_SECRET = "1W4h7$9+*3@";
+    String str = "sharedUrl=&userID="+userID+"&taskId="+taskId+"&device="+device+"&shareType="+shareType;
+    String token = MD5Utils.MD5(str+MD5_SECRET);
+
+    String url = URLConstants.url_add_share_info+"?action=addUserSharedInfo&"+str+"&_token="+token;
+//    Log.i("share","------url------"+url);
+
+    GetRequest request = new GetRequest(url, new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            try {
+//                Log.i("share","------onResponse------"+response.toString());
+                JSONObject object = new JSONObject(response.toString());
+                boolean isShow = object.getBoolean("result");
+                if(isShow){//首次提示并刷新h5
+                    String hini = activity.getResources().getString(R.string.share_first_hini);
+                    ViewUtils.toastShort(hini);
+                    AppContext.appContext.getHandler().sendEmptyMessage(0);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+//            Log.i("share","------onErrorResponse------"+error.toString());
+
+        }
+    });
+    RequestQueueManager.addRequest(request);
+}
+
 }

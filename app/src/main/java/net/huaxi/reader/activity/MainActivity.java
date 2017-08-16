@@ -5,6 +5,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,8 @@ import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.adapter.AdapterMainFragmentPager;
+import net.huaxi.reader.appinterface.GoToShuJia;
+import net.huaxi.reader.appinterface.ListenerManager;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.MainTabFragEnum;
@@ -31,7 +35,7 @@ import net.huaxi.reader.view.UITabBottom;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements GoToShuJia{
 
     long firstTime = 0;
     private ViewPager vpMain;
@@ -52,6 +56,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle arg0) {
         super.onCreate(arg0);
         try{
+            ListenerManager.getInstance().setGoToShuJia(this);
             setContentView(R.layout.activity_main);
             initView();
             updateApk();
@@ -225,4 +230,17 @@ public class MainActivity extends BaseActivity {
         initTabs();
     }
 
+    @Override
+    public void go() {
+        handler.sendEmptyMessage(0);
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            vpMain.setCurrentItem(0,true);
+            bottonTools.selectTab(vpMain.getCurrentItem());
+        }
+    };
 }

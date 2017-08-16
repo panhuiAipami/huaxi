@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.DateUtils;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.MD5Utils;
 import com.tools.commonlibs.tools.NetUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
@@ -31,6 +32,7 @@ import net.huaxi.reader.activity.RechargeRecordActivity;
 import net.huaxi.reader.activity.SettingActivity;
 import net.huaxi.reader.activity.SignActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
+import net.huaxi.reader.activity.WebViewActivity;
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.JavaScript;
@@ -54,9 +56,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//个人中心fragment
+//个人中心（我的）fragment
 public class FmPersonCenter extends BaseFragment implements View.OnClickListener {
-
     private ImageView ivSetting;
     private CircleImageView ivHeadIcon;
     private TextView tvUsername, tvCharge, tvVip, tvLogin;
@@ -67,7 +68,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
     private JavaScript javaScript;
     private RelativeLayout rech;
     private TextView balance_coins_text;
-    private RelativeLayout complimentary,sign;
+    private RelativeLayout complimentary,sign,usercenter_task_layout;
 
     @Override
     @Nullable
@@ -144,6 +145,9 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         rlReport.setVisibility(View.GONE);
         rlHelpCenter = (RelativeLayout) view.findViewById(R.id.setting_help_center_layout);
         rlHelpCenter.setVisibility(view.GONE);
+
+        //任务
+        usercenter_task_layout = (RelativeLayout) view.findViewById(R.id.usercenter_task_layout);
     }
 
     private void initEvent() {
@@ -161,6 +165,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         rlReport.setOnClickListener(this);
         rlHelpCenter.setOnClickListener(this);
         rech.setOnClickListener(this);
+        usercenter_task_layout.setOnClickListener(this);
     }
 
 
@@ -402,6 +407,14 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                 startActivity(intentsign);
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.RECHARGE_HISTORY);
                 break;
+            case R.id.usercenter_task_layout:
+                String userID = UserHelper.getInstance().getUserId();
+                String deviceType = "android";
+                String MD5_SECRET = "1W4h7$9+*3@";
+                String token = MD5Utils.MD5("userID="+userID+"&deviceType="+deviceType+MD5_SECRET);
+                String url = URLConstants.url_base2+"/w/AppTask.aspx?userID="+userID+"&deviceType=android&_token="+token;
+                WebViewActivity.goToWebView(getActivity(),url);
+                break;
 
             default:
                 break;
@@ -482,5 +495,4 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
             }
         });
     }
-
 }

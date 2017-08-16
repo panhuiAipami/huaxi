@@ -281,7 +281,7 @@ public class LastPageActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onResponse(BaseResponse arg0) {
         if (AppContext.getLoginHelper() != null) {
-            AppContext.getLoginHelper().WBOnResponse(arg0);
+            AppContext.getLoginHelper().onResponse(arg0);
         }
     }
 

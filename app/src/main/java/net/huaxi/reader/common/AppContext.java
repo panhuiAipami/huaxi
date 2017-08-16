@@ -13,12 +13,24 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
+import net.huaxi.reader.activity.WebViewActivity;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.statistic.StatisticUtils;
 import net.huaxi.reader.util.LoginHelper;
 
 public class AppContext extends CommonApp {
+	public static AppContext appContext;
 	private static String ALIFEEDBACK_APPKEY="23318538";
+	WebViewActivity.MyHandler handler;
+
+	public WebViewActivity.MyHandler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(WebViewActivity.MyHandler handler) {
+		this.handler = handler;
+	}
+
 	private static LoginHelper loginHelper;
 	public static LoginHelper getLoginHelper (){
 		return loginHelper;
@@ -29,6 +41,7 @@ public class AppContext extends CommonApp {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		appContext = this;
 		
 		ReportUtils.initSDK(getInstance());
 

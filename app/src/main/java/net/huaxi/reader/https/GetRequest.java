@@ -50,7 +50,7 @@ public class GetRequest extends Request<JSONObject> {
     public GetRequest(String url, Listener<JSONObject> listener, ErrorListener errorListener, String serverVersion) {
         super(Request.Method.GET, url, errorListener);
         this.serverVersion = serverVersion;
-        LogUtils.info("get request = " + url);
+        LogUtils.info("-----request_url------->" + url);
         mListener = listener;
         this.setRetryPolicy(new DefaultRetryPolicy(Constants.CONNECT_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy
                 .DEFAULT_BACKOFF_MULT));
@@ -73,7 +73,7 @@ public class GetRequest extends Request<JSONObject> {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response
                     .headers));
-            LogUtils.debug("volley_response_data====" + jsonString);
+            LogUtils.debug("----volley_response---->" + jsonString);
             String errorid = new JSONObject(jsonString).optString("errorid");
             if (!errorid.equals("0")) {
                 LogUtils.debug("请求失败:" + errorid);

@@ -81,6 +81,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 //            LogUtils.debug("resp.openid" + resp.openId);
             Intent intent = new Intent();
             intent.setAction(BroadCastConstant.WXPAYCALLBACK);
+
             if (code == 0) {
                 intent.putExtra("success", 1);
                 UMEventAnalyze.resultEvent(AppContext.context(),UMEventAnalyze.RECHARGE_RESULT,0);

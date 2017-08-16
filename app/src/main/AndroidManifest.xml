@@ -265,6 +265,10 @@
             android:name=".activity.ContentPerferenceActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".service.UpdateAPKService" />
 
         <!-- 监听通知点击或者忽略处理的广播 -->

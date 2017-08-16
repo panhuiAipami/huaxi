@@ -16,6 +16,8 @@ public class ShareBean implements Serializable{
     private String title;
 
     private String desc;
+    public String taskId;
+    public int shareType;
 
     public String getShareUrl() {
         return shareUrl;

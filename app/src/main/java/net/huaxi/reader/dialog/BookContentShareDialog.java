@@ -78,22 +78,26 @@ public class BookContentShareDialog extends BaseDialog {
             if (shareBean != null)
                 switch (v.getId()) {
                     case R.id.ll_weixin_friend:
-                        getLoginHelper().shareWxWebPage(shareBean.getShareUrl(), true, shareBean.getImgUrl(), shareBean.getTitle(),
+                        getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), true, shareBean.getImgUrl(), shareBean.getTitle(),
                                 shareBean.getDesc());
+                        shareBean.shareType=1;
                         mDialog.dismiss();
                         break;
                     case R.id.ll_weixin_circle:
-                        getLoginHelper().shareWxWebPage(shareBean.getShareUrl(), false, shareBean.getImgUrl(), shareBean.getTitle(),
+                        getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), false, shareBean.getImgUrl(), shareBean.getTitle(),
                                 shareBean.getDesc());
+                        shareBean.shareType=2;
                         mDialog.dismiss();
                         break;
                     case R.id.ll_qq_qzone:
-                        getLoginHelper().shareToQzone(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean
+                        getLoginHelper(shareBean).shareToQzone(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean
                                 .getDesc());
+                        shareBean.shareType=3;
                         mDialog.dismiss();
                         break;
                     case R.id.ll_weibo:
-                        getLoginHelper().shareWb(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean.getDesc());
+                        getLoginHelper(shareBean).shareWb(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean.getDesc());
+                        shareBean.shareType=4;
                         mDialog.dismiss();
                         break;
                     default:
@@ -119,6 +123,13 @@ public class BookContentShareDialog extends BaseDialog {
         return loginHelper;
     }
 
+    private LoginHelper getLoginHelper(ShareBean bean) {
+        if (loginHelper == null) {
+            loginHelper = new LoginHelper(activity,bean);
+            AppContext.setLoginHelper(loginHelper);
+        }
+        return loginHelper;
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 

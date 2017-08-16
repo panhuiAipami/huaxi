@@ -10,8 +10,8 @@ import com.tencent.mobileqq.openpay.api.OpenApiFactory;
 import com.tencent.mobileqq.openpay.data.base.BaseResponse;
 import com.tencent.mobileqq.openpay.data.pay.PayResponse;
 import com.tools.commonlibs.activity.BaseActivity;
-import net.huaxi.reader.common.BroadCastConstant;
 
+import net.huaxi.reader.common.BroadCastConstant;
 import net.huaxi.reader.util.LoginHelper;
 
 public class QQPayCallBockActivity extends BaseActivity implements IOpenApiListener {

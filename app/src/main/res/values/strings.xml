@@ -206,6 +206,7 @@
     <string name="myinfo_please_input_sdcard">请插入sd卡</string>
     <string name="myinfo_title_text">我的资料</string>
     <string name="person_setting">设置</string>
+    <string name="person_task">任务</string>
     <string name="person_consume_record">消费记录</string>
     <string name="person_complimentary_record">赠送记录</string>
     <string name="person_sign">签到</string>
@@ -309,6 +310,9 @@
     <string name="sub_record_none">最近没有订阅过作品</string>
     <!--无网络-->
     <string name="net_error">网络不给力，请检查网络设置</string>
+    <!--首次分享提示-->
+    <string name="share_first_hini">(•̀ᴗ•́)و ̑̑  干得漂亮！
+    任务状态有变化咯，看看吧！</string>
 
 
 </resources>

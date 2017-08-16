@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.android.volley.Response;
@@ -24,11 +26,14 @@ import net.huaxi.reader.activity.LoginActivity;
 import net.huaxi.reader.activity.RegisterSendActivity;
 import net.huaxi.reader.activity.SimpleShareWebViewActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
+import net.huaxi.reader.appinterface.ListenerManager;
 import net.huaxi.reader.bean.BookDetailBean;
 import net.huaxi.reader.bean.CatalogBean;
 import net.huaxi.reader.bean.ClassifyDataBean;
+import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
+import net.huaxi.reader.dialog.BookContentShareDialog;
 import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.util.EncodeUtils;
@@ -55,6 +60,8 @@ public class JavaScript {
     private final int CHANNEL_WEIXIN = 2;
     private final int CHANNEL_ALIPAYY = 1;
     private final int CHANNEL_QQWALLET = 4;
+
+
 
     public interface JavaScriptStateCallBack {
         void StateCallBack(boolean b);
@@ -95,7 +102,7 @@ public class JavaScript {
      * @param pt          充值产品类型
      * @param nProductSId 苹果用的sid
      * @param money       充值金额
-         * @param body     显示
+     * @param body        显示
      * @param checksum    校验和
      */
     @JavascriptInterface
@@ -160,12 +167,49 @@ public class JavaScript {
     public void detail(String bookid) {
         LogUtils.debug("detail..bookid==" + bookid);
 //        Intent intent = new Intent(activity, BookDetailActivity.class);
-        EnterBookContent.openBookDetail(activity,bookid);
+        EnterBookContent.openBookDetail(activity, bookid);
         UMEventAnalyze.countEvent(activity, UMEventAnalyze.BOOKCITY_START_BOOKINFO);
     }
 
+    @JavascriptInterface
+    public void task(String taskid, String shareurl, String abc) {
+        //任务里的分享 http://w.huaxi.net/14','wxSharedUserId=457157&title=test0814&memo=test0814wcj&sharedIcon=http%3a%2f%2fimg.huaxi.net%2fimages%2fm%2fhuaxi22.jpg'
+
+        Log.e("task",taskid+"--------shareurl="+shareurl+"-----abc="+abc);
+
+        String title[] = abc.split("&");
+        String userId = title[0].substring(15,title[0].length());
+        String strTitle = title[1].substring(6,title[1].length());
+        String memo = title[2].substring(5,title[2].length());
+        String sharedIcon = title[3].substring(11,title[3].length());
+
+        Log.e("task","--------userId="+userId+"-----strTitle="+strTitle+"----memo="+memo+"----sharedIcon="+sharedIcon);
+
+        ShareBean shareBean = new ShareBean();
+        shareBean.setShareUrl(shareurl);
+        shareBean.setImgUrl(TextUtils.isEmpty(sharedIcon)?UserHelper.getInstance().getUser().getImgid():sharedIcon);
+        shareBean.setTitle(strTitle);
+        shareBean.setDesc(memo);
+        shareBean.taskId = taskid;
+        new BookContentShareDialog(activity, shareBean).show();
+    }
+
+
+
+
+
+    @JavascriptInterface
+    public void history() {//返回书架
+        Log.e("history","------------history --------");
+        activity.finish();
+        if( ListenerManager.getInstance().getGoToShuJia() != null)
+        ListenerManager.getInstance().getGoToShuJia().go();
+    }
+
+
     /**
      * 去书城二级web页
+     *
      * @param url   web页的url
      * @param title web页顶title部显示
      */
@@ -257,35 +301,35 @@ public class JavaScript {
                         EnterBookContent.openBookContent(activity, var);
                         return;
                     }
-                    GetRequest request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL,EncodeUtils.encodeString_UTF8(var) + CommonUtils.getPublicGetArgs()
+                    GetRequest request = new GetRequest(String.format(URLConstants.GET_BOOKDETAIL, EncodeUtils.encodeString_UTF8(var) + CommonUtils.getPublicGetArgs()
                     ), new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    LogUtils.debug("response==" + response.toString());
-                                    if (!ResponseHelper.isSuccess(response)) {
-                                        return;
-                                    }
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            LogUtils.debug("response==" + response.toString());
+                            if (!ResponseHelper.isSuccess(response)) {
+                                return;
+                            }
 
-                                    JSONObject jsonObject = ResponseHelper.getVdata(response);
-                                    if (jsonObject != null) {
-                                        Type type = new TypeToken<ArrayList<BookDetailBean>>() {
-                                        }.getType();
-                                        List<BookTable> bookTables = new Gson().fromJson(jsonObject
-                                                .optJSONArray("list").toString(), type);
-                                        if (bookTables != null && bookTables.size() > 0) {
-                                            BookTable bookDetail = bookTables.get(0);
-                                            bookDetail.setBookDesc(bookDetail.getBookDesc().replaceAll("\\t", ""));
-                                            if (bookDetail != null && BookDao.getInstance().hasKey(bookDetail.getBookId()) == 0) {
-                                                BookDao.getInstance().addBook(bookDetail);
-                                            }
-                                            LogUtils.debug("there.....");
-                                            EnterBookContent.openBookContent(activity, var);
-                                        } else {
-                                        }
-                                    } else {
+                            JSONObject jsonObject = ResponseHelper.getVdata(response);
+                            if (jsonObject != null) {
+                                Type type = new TypeToken<ArrayList<BookDetailBean>>() {
+                                }.getType();
+                                List<BookTable> bookTables = new Gson().fromJson(jsonObject
+                                        .optJSONArray("list").toString(), type);
+                                if (bookTables != null && bookTables.size() > 0) {
+                                    BookTable bookDetail = bookTables.get(0);
+                                    bookDetail.setBookDesc(bookDetail.getBookDesc().replaceAll("\\t", ""));
+                                    if (bookDetail != null && BookDao.getInstance().hasKey(bookDetail.getBookId()) == 0) {
+                                        BookDao.getInstance().addBook(bookDetail);
                                     }
+                                    LogUtils.debug("there.....");
+                                    EnterBookContent.openBookContent(activity, var);
+                                } else {
                                 }
-                            }, new Response.ErrorListener() {
+                            } else {
+                            }
+                        }
+                    }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                         }
