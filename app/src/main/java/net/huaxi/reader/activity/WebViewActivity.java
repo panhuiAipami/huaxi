@@ -14,7 +14,6 @@ import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.common.NetType;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.NetUtils;
-import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.common.AppContext;
@@ -22,7 +21,8 @@ import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.view.WebView;
 
 /**
- * Created by panhui on 2017/8/15.
+ * @author panhui
+ * 任务h5界面
  */
 
 public class WebViewActivity extends BaseActivity implements  IWeiboHandler.Response{
