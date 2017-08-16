@@ -50,6 +50,7 @@ import net.huaxi.reader.view.CircleImageView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -182,13 +183,40 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
             }
             return;
         }
+        //------------------------config  是否显示task--------------------------
+        GetRequest config = new GetRequest(URLConstants.config_task_show, new Response
+                .Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.toString());
+                    int showTask = jsonObject.getInt("task");// 0 不显示 1 显示
+                    if(showTask == 0){
+                        usercenter_task_layout.setVisibility(View.GONE);
+                    }else{
+                        usercenter_task_layout.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        RequestQueueManager.addRequest(config);
+
+
+        //------------------用户资料------UserInfo--------------------------
 
         GetRequest request = new GetRequest(URLConstants.USER_DETAIL + "?1=1" + CommonUtils
                 .getPublicGetArgs(), new Response
                 .Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                LogUtils.debug("response请求个人信息==" + response.toString());
                 int errorid = ResponseHelper.getErrorId(response);
                 if (errorid == -100005) {
                     setUserNotLogin();
@@ -216,6 +244,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         });
         RequestQueueManager.addRequest(request);
 
+        //------------------支付接口-----coins--------------------
         GetRequest payinforequest = new GetRequest(URLConstants.PAY_INFO + "?1=1" + CommonUtils
                 .getPublicGetArgs(), new Response
                 .Listener<JSONObject>() {
