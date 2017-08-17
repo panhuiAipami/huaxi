@@ -428,7 +428,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:src="@mipmap/usercenter_setting_icon"
+            android:src="@mipmap/my_task_image"
 
             />
 
