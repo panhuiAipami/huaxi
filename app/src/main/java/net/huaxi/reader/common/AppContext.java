@@ -14,6 +14,7 @@ import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
 import net.huaxi.reader.activity.WebViewActivity;
+import net.huaxi.reader.fragment.FmBookShelf;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.statistic.StatisticUtils;
 import net.huaxi.reader.util.LoginHelper;
@@ -22,6 +23,15 @@ public class AppContext extends CommonApp {
 	public static AppContext appContext;
 	private static String ALIFEEDBACK_APPKEY="23318538";
 	WebViewActivity.MyHandler handler;
+	 FmBookShelf.MyHandler handler2 = null;
+
+	public FmBookShelf.MyHandler getHandler2() {
+		return handler2;
+	}
+
+	public void setHandler2(FmBookShelf.MyHandler handler2) {
+		this.handler2 = handler2;
+	}
 
 	public WebViewActivity.MyHandler getHandler() {
 		return handler;

@@ -27,6 +27,19 @@
             />
 
         <TextView
+            android:id="@+id/shelf_add_free_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:text="@string/task_free_add_hb"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="@dimen/f04_font_size"/>
+
+        <TextView
             android:id="@+id/shelf_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

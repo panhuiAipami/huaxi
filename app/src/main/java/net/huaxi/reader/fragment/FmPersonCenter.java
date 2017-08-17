@@ -34,6 +34,7 @@ import net.huaxi.reader.activity.SignActivity;
 import net.huaxi.reader.activity.SimpleWebViewActivity;
 import net.huaxi.reader.activity.WebViewActivity;
 import net.huaxi.reader.bean.User;
+import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.JavaScript;
 import net.huaxi.reader.common.URLConstants;
@@ -194,7 +195,9 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                     int showTask = jsonObject.getInt("task");// 0 不显示 1 显示
                     if(showTask == 0){
                         usercenter_task_layout.setVisibility(View.GONE);
+                        AppContext.appContext.getHandler2().sendEmptyMessage(0);
                     }else{
+                        AppContext.appContext.getHandler2().sendEmptyMessage(1);
                         usercenter_task_layout.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {

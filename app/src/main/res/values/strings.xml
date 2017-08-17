@@ -206,10 +206,11 @@
     <string name="myinfo_please_input_sdcard">请插入sd卡</string>
     <string name="myinfo_title_text">我的资料</string>
     <string name="person_setting">设置</string>
-    <string name="person_task">任务</string>
+    <string name="person_task">做任务领花瓣</string>
+    <string name="task_free_add_hb">免费花瓣</string>
     <string name="person_consume_record">消费记录</string>
     <string name="person_complimentary_record">赠送记录</string>
-    <string name="person_sign">签到</string>
+    <string name="person_sign">签到领花瓣</string>
     <string name="person_consume_rech">充值记录</string>
     <string name="person_member">会员</string>
     <string name="person_recharge">充值</string>
