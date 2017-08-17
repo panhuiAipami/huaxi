@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.tools.commonlibs.activity.BaseActivity;
+import com.tools.commonlibs.tools.PhoneUtils;
 
 import net.huaxi.reader.R;
 
@@ -32,7 +33,7 @@ public class SettingAboutWeActivity extends BaseActivity {
         tvPackageName= (TextView) findViewById(R.id.setting_aboutwe_packagename_textview);
         //测试用
 //        tvPackageName.setText("V " + PhoneUtils.getVersionName() + "_" + PhoneUtils.getVersionCode());
-//        tvPackageName.setText("V " + PhoneUtils.getVersionName());
+        tvPackageName.setText("V " + PhoneUtils.getVersionName());
         findViewById(R.id.setting_aboutwe_back_imageview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
