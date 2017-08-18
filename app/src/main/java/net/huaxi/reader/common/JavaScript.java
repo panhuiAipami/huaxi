@@ -33,6 +33,7 @@ import net.huaxi.reader.bean.ClassifyDataBean;
 import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.model.BookTable;
+import net.huaxi.reader.dialog.BookContentShareDialog;
 import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.util.EncodeUtils;
@@ -193,13 +194,14 @@ public class JavaScript {
 
     public void  shareH5Data() {
         String title[] = this.abc.split("&");
-        String userId = title[0].substring(15, title[0].length());
-        String strTitle = title[1].substring(6, title[1].length());
-        String memo = title[2].substring(5, title[2].length());
-        String sharedIcon = title[3].substring(11, title[3].length());
-        String shareType = title[4].substring(11, title[4].length());
 
-        Log.e("task", "--------userId=" + userId + "-----strTitle=" + strTitle + "----memo=" + memo + "----sharedIcon=" + sharedIcon);
+        String userId = title[0].substring(index(title[0]), title[0].length());
+        String strTitle = title[1].substring(index(title[1]), title[1].length());
+        String memo = title[2].substring(index(title[2]), title[2].length());
+        String sharedIcon = title[3].substring(index(title[3]), title[3].length());
+        String shareType = title[4].substring(index(title[4]), title[4].length());
+
+        Log.e("shareH5Data", "-----userId=" + userId + "---strTitle=" + strTitle + "---memo=" + memo + "---sharedIcon=" + sharedIcon+"----shareType= "+shareType);
 
         ShareBean shareBean = new ShareBean();
         shareBean.setShareUrl(this.shareurl);
@@ -220,13 +222,18 @@ public class JavaScript {
                         shareBean.getDesc());
                 shareBean.shareType = 1;
                 break;
-            case 3://ios评价
+//            case 3://ios评价
+//                break;
+            default:
+                new BookContentShareDialog(activity, shareBean).show();
                 break;
-
-//        new BookContentShareDialog(activity, shareBean).show();
         }
-
     }
+
+    public int index(String str){
+        return str.indexOf("=")+1;
+    }
+
 
     LoginHelper loginHelper;
     private LoginHelper getLoginHelper(ShareBean bean) {
