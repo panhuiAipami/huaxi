@@ -35,7 +35,6 @@ import java.util.concurrent.TimeoutException;
  * 2016/2/19.
  */
 public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersion> {
-    private int build;
     private boolean flag=false;
 
     public void setFlag(boolean flag) {
@@ -67,11 +66,14 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
         super.onPostExecute(appVersion);
 //        Log.i("wwww", "onPostExecute: "+appVersion.toString());
         LogUtils.debug("getVersion—>"+PhoneUtils.getVersionCode());
+        int  build=0;
+        float versionName = 0;
         if(appVersion != null){
             build=Integer.parseInt(appVersion.getBuild());
+            versionName = Float.parseFloat(appVersion.getVersionName());
         }
 
-        if (appVersion != null && build > PhoneUtils.getVersionCode()&&!appVersion.getVersionName().equals(PhoneUtils.getVersionName())) {
+        if (appVersion != null && versionName > Float.parseFloat(PhoneUtils.getVersionName())) {
             CommonDailog _dailog = new CommonDailog(caller,
                     AppContext.getInstance().getString(R.string.version_update),
                     getContent(appVersion),
