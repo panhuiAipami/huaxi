@@ -90,9 +90,13 @@ public class BookContentShareDialog extends BaseDialog {
                         mDialog.dismiss();
                         break;
                     case R.id.ll_qq_qzone:
-                        getLoginHelper(shareBean).shareToQzone(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean
-                                .getDesc());
-                        shareBean.shareType=3;
+                        try {
+                            getLoginHelper(shareBean).shareToQzone(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean
+                                    .getDesc());
+                            shareBean.shareType=3;
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         mDialog.dismiss();
                         break;
                     case R.id.ll_weibo:

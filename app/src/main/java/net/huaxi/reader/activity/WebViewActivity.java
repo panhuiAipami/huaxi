@@ -59,7 +59,7 @@ public class WebViewActivity extends BaseActivity implements  IWeiboHandler.Resp
         if(NetUtils.checkNet() != NetType.TYPE_NONE){
             webView.loadUrl(url);
         }
-        webView.addJavascriptInterface(new JavaScript(getActivity(), webView), JavaScript.NAME);
+        webView.addJavascriptInterface(new JavaScript(this, webView), JavaScript.NAME);
         getRefresh();
 
     }

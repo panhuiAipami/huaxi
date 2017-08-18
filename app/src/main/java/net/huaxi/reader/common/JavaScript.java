@@ -56,12 +56,19 @@ public class JavaScript {
     public static final String NAME = "jiuyuu";
     private Activity activity;
     private WebView webView;
-    private Handler handler;
     private final int CHANNEL_WEIXIN = 2;
     private final int CHANNEL_ALIPAYY = 1;
     private final int CHANNEL_QQWALLET = 4;
+    String taskid;String shareurl;String abc;
 
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            shareH5Data();
+        }
+    };
 
     public interface JavaScriptStateCallBack {
         void StateCallBack(boolean b);
@@ -176,8 +183,17 @@ public class JavaScript {
         //任务里的分享 http://w.huaxi.net/14','wxSharedUserId=457157&title=test0814&memo=test0814wcj&sharedIcon=http%3a%2f%2fimg.huaxi.net%2fimages%2fm%2fhuaxi22.jpg'
 
         Log.e("task",taskid+"--------shareurl="+shareurl+"-----abc="+abc);
+        this.taskid = taskid;
+        this.shareurl = shareurl;
+        this.abc = abc;
 
-        String title[] = abc.split("&");
+        handler.sendEmptyMessage(0);
+    }
+
+
+
+    public void  shareH5Data(){
+        String title[] = this.abc.split("&");
         String userId = title[0].substring(15,title[0].length());
         String strTitle = title[1].substring(6,title[1].length());
         String memo = title[2].substring(5,title[2].length());
@@ -186,11 +202,11 @@ public class JavaScript {
         Log.e("task","--------userId="+userId+"-----strTitle="+strTitle+"----memo="+memo+"----sharedIcon="+sharedIcon);
 
         ShareBean shareBean = new ShareBean();
-        shareBean.setShareUrl(shareurl);
+        shareBean.setShareUrl(this.shareurl);
         shareBean.setImgUrl(TextUtils.isEmpty(sharedIcon)?UserHelper.getInstance().getUser().getImgid():sharedIcon);
         shareBean.setTitle(strTitle);
         shareBean.setDesc(memo);
-        shareBean.taskId = taskid;
+        shareBean.taskId = this.taskid;
         new BookContentShareDialog(activity, shareBean).show();
     }
 

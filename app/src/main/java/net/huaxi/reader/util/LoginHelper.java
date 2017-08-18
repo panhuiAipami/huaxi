@@ -522,7 +522,7 @@ public class LoginHelper implements ShareResult{
 //				qq_user_info = new UserInfo(this.activity, qqToken);
         }
         //分享类型
-        Bundle params = new Bundle();
+        final Bundle params = new Bundle();
         params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare
                 .SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);//必填
