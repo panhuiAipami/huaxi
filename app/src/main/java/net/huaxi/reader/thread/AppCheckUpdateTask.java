@@ -65,7 +65,7 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
     public void onPostExecute(final AppVersion appVersion) {
         super.onPostExecute(appVersion);
 //        Log.i("wwww", "onPostExecute: "+appVersion.toString());
-        LogUtils.debug("getVersion—>"+PhoneUtils.getVersionCode());
+        LogUtils.debug("versionName—>"+PhoneUtils.getVersionName());
         int  build=0;
         float versionName = 0;
         if(appVersion != null){
