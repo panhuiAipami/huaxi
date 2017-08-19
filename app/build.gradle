@@ -22,7 +22,7 @@ android {
         //最新版本:106;
         versionCode 10000 //此值在release时自动生成。
         //版本名每次正式发包时需要修改。
-        versionName "1.0.1"
+        versionName "1.0.3"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
