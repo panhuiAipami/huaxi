@@ -193,12 +193,12 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                 try {
                     jsonObject = new JSONObject(response.toString());
                     int showTask = jsonObject.getInt("task");// 0 不显示 1 显示
-                    if(showTask == 0){
-                        usercenter_task_layout.setVisibility(View.GONE);
-                        AppContext.appContext.getHandler2().sendEmptyMessage(0);
-                    }else{
+                  if(showTask == 1 && UserHelper.getInstance().isLogin()){
                         AppContext.appContext.getHandler2().sendEmptyMessage(1);
                         usercenter_task_layout.setVisibility(View.VISIBLE);
+                    }else{
+                        usercenter_task_layout.setVisibility(View.GONE);
+                        AppContext.appContext.getHandler2().sendEmptyMessage(0);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -1,9 +1,12 @@
 package net.huaxi.reader.common;
 
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import net.huaxi.reader.bean.User;
 import net.huaxi.reader.db.model.BookTable;
 
@@ -21,18 +24,19 @@ public class SharePrefHelper {
     //用户id
     private static final String user_id = "user_id";
 
-//    public static void setUserId(String userId) {
-//        Editor editor = AppContext.getInstance().getSharedPreferences(USER_PREF, 0).edit();
-//        editor.putString(user_id, userId);
-//        editor.commit();
-//    }
-//
-//    public static String getUserId() {
-//        String result = null;
-//        result = AppContext.getInstance().getSharedPreferences(USER_PREF, 0).getString(user_id,
-//                Constants.DEFAULT_USERID);
-//        return result;
-//    }
+
+    public static boolean getBoolean(String key, boolean defValue) {
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(AppContext.appContext);
+        return settings.getBoolean(key, defValue);
+    }
+
+    public static void putBoolean(String key, boolean value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AppContext.appContext).edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
 
     //用户cookie
     private static final String user_cookie = "user_cookie";

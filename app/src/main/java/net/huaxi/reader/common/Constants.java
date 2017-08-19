@@ -7,7 +7,8 @@ import com.tools.commonlibs.common.CommonApp;
 import java.io.File;
 
 public class Constants {
-
+    //任务状态
+    public static final String  SHOW_TASK_STATUS = "show_task_status";
 
     /****************
      * 网络参数

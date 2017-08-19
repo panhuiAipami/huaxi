@@ -2,6 +2,8 @@ package net.huaxi.reader.common;
 
 public class URLConstants {
     public static String url_base = " https://api.hxdrive.net";
+    // 任务是否完成
+    public static String shareWeiXin = "http://apiin.huaxi.net/user/api_in/shareWeiXin.ashx?";
     // 任务
     public static String url_base2 = "http://user.huaxi.net";
     // 统计分享数据

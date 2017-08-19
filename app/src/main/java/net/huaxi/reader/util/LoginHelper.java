@@ -49,6 +49,7 @@ import com.tools.commonlibs.tools.MD5Utils;
 import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.activity.MainActivity;
 import net.huaxi.reader.appinterface.ListenerManager;
 import net.huaxi.reader.appinterface.ShareResult;
 import net.huaxi.reader.bean.ShareBean;
@@ -146,6 +147,7 @@ public class LoginHelper implements ShareResult{
             switch (msg.what){
                 case 0://成功
                     addShareInfoRequest(bean.getShareUrl(),bean.taskId,bean.shareType);
+                    MainActivity.getTaskStatus();
                     ViewUtils.toastLong("分享成功");
                     break;
                 case 1://失败

@@ -14,28 +14,38 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.tools.commonlibs.activity.BaseActivity;
+import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
+import com.tools.commonlibs.tools.MD5Utils;
 import com.tools.commonlibs.tools.StringUtils;
-import com.tools.commonlibs.tools.Utils;
 import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.adapter.AdapterMainFragmentPager;
 import net.huaxi.reader.appinterface.GoToShuJia;
 import net.huaxi.reader.appinterface.ListenerManager;
+import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.Constants;
 import net.huaxi.reader.common.EnterBookContent;
 import net.huaxi.reader.common.MainTabFragEnum;
 import net.huaxi.reader.common.SharePrefHelper;
+import net.huaxi.reader.common.URLConstants;
+import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.fragment.FmBookShelf;
+import net.huaxi.reader.https.GetRequest;
+import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.thread.AppCheckUpdateTask;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.view.UITabBottom;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class MainActivity extends BaseActivity implements GoToShuJia{
+public class MainActivity extends BaseActivity implements GoToShuJia {
 
     long firstTime = 0;
     private ViewPager vpMain;
@@ -55,27 +65,23 @@ public class MainActivity extends BaseActivity implements GoToShuJia{
     @Override
     protected void onCreate(@Nullable Bundle arg0) {
         super.onCreate(arg0);
-        try{
+        try {
             ListenerManager.getInstance().setGoToShuJia(this);
             setContentView(R.layout.activity_main);
             initView();
             updateApk();
+            getTaskStatus();
             //记录阅读状态，如果未正常阅读，需要重新打开。
             String lastNotFinishedBook = SharePrefHelper.getLastNotExactFinished();
             if (StringUtils.isNotEmpty(lastNotFinishedBook)) {
                 EnterBookContent.openBookContent(getActivity(), lastNotFinishedBook);
                 UMEventAnalyze.countEvent(this, UMEventAnalyze.SPLASH_TO_READ);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private String getData() {
-        int[] ii = Utils.getRealScreenSize(MainActivity.this);
-        return Utils.px2dip(MainActivity.this, ii[0]) + "*" + Utils.px2dip(MainActivity.this,
-                ii[1]);
-    }
 
     /**
      * 用户打开app检测是否有新版本
@@ -90,8 +96,8 @@ public class MainActivity extends BaseActivity implements GoToShuJia{
             long interval = endTime - startTime;
             //时间判断
             if (interval >= Constants.UPDATE_APK_INTERVAL) {
-            SharePrefHelper.setLastUpdateApkTime(endTime);
-            new AppCheckUpdateTask(MainActivity.this).execute();
+                SharePrefHelper.setLastUpdateApkTime(endTime);
+                new AppCheckUpdateTask(MainActivity.this).execute();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,17 +117,6 @@ public class MainActivity extends BaseActivity implements GoToShuJia{
         vpMain.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int pageIndex) {
-                LogUtils.debug("onPageSelected index==" + pageIndex);
-                if (pageIndex != MainTabFragEnum.bookshelf.getIndex()) {
-                    tintManager.setStatusBarTintColor(getResources().getColor(R.color
-                            .c01_themes_color));
-                } else {
-                    LogUtils.debug("onPageSelected index==" + pageIndex);
-                    if (pagerAdapter.getFragment(pageIndex) != null) {
-                        LogUtils.debug("onPageSelected index==" + pageIndex);
-                        (((FmBookShelf) pagerAdapter.getFragment(pageIndex))).setStateBar();
-                    }
-                }
                 bottonTools.selectTab(vpMain.getCurrentItem());
                 switch (pageIndex) {
                     case 0:
@@ -239,8 +234,38 @@ public class MainActivity extends BaseActivity implements GoToShuJia{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            vpMain.setCurrentItem(0,true);
+            vpMain.setCurrentItem(0, true);
             bottonTools.selectTab(vpMain.getCurrentItem());
         }
     };
+
+    public static void getTaskStatus() {
+        //任务是否完成接口
+        String token = MD5Utils.MD5("userID=" + UserHelper.getInstance().getUserId() + "&device=android1W4h7$9+*3@");
+        String url = URLConstants.shareWeiXin + "action=checkUserCompleteCurrentDayTask&userID=" + UserHelper.getInstance().getUserId() + "&device=android&_token=" + token;
+        GetRequest request1 = new GetRequest(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.toString());
+                    if (jsonObject != null) {
+                        int totalTask = jsonObject.getInt("totalTask");
+                        int completeTask = jsonObject.getInt("completeTask");
+                        SharePrefHelper.putBoolean(Constants.SHOW_TASK_STATUS, totalTask > completeTask);
+                        AppContext.appContext.getHandler2().sendEmptyMessage(1);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ReportUtils.reportError(error);
+            }
+        });
+        RequestQueueManager.addRequest(request1);
+    }
 }
