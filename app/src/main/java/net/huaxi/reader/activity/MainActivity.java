@@ -117,6 +117,17 @@ public class MainActivity extends BaseActivity implements GoToShuJia {
         vpMain.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int pageIndex) {
+                LogUtils.debug("onPageSelected index==" + pageIndex);
+                if (pageIndex != MainTabFragEnum.bookshelf.getIndex()) {
+                    tintManager.setStatusBarTintColor(getResources().getColor(R.color
+                            .c01_themes_color));
+                } else {
+                    LogUtils.debug("onPageSelected index==" + pageIndex);
+                    if (pagerAdapter.getFragment(pageIndex) != null) {
+                        LogUtils.debug("onPageSelected index==" + pageIndex);
+                        (((FmBookShelf) pagerAdapter.getFragment(pageIndex))).setStateBar();
+                    }
+                }
                 bottonTools.selectTab(vpMain.getCurrentItem());
                 switch (pageIndex) {
                     case 0:
