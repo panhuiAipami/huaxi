@@ -43,8 +43,8 @@ public class BookContentRender {
     private BookContentPaint mPaint;
     private String mChapterTitle;  //章节标题，可以使书名、或者是章节名.
     private int readpage_pay_balanc,Present_price;
-    public static int p,b,h;
-    public static int sum;
+    public  int p,b,h;
+    public  int sum;
     public int qq;
 
     public BookContentRender() {
@@ -393,8 +393,8 @@ public class BookContentRender {
         String[] buttonTexts = AppContext.context().getResources().getStringArray(R.array.readpage_button_text);
         String buyText = CommonApp.getInstance().getString(R.string.readpage_pay_button);  //充值Text;
         //花贝与花瓣的总和
-        sum=BookContentRender.h+BookContentRender.b;
-        if(readpage_pay_balanc<Present_price||BookContentRender.p>BookContentRender.b&&BookContentRender.p!=0&&p>h){
+        sum=h+b;
+        if(readpage_pay_balanc<Present_price||p>b&&p!=0&&p>h){
             if(UserHelper.getInstance().isLogin()){
                 buyText=buttonTexts[4];
             }else {
@@ -510,9 +510,12 @@ public class BookContentRender {
         }else {
             qq=0;
         }
+        //花贝 和 花瓣
         String payTip = String.format(CommonApp.getInstance().getString(R.string.readpage_pay_balance),new Object[]{qq,petal});
         b=qq;
         h=petal;
+        Log.e("BookContentRender","-------drawPayBalance------b="+b+"---h="+h+"------");
+
         readpage_pay_balanc=qq;
 
 //        final int payTipX = (int) (BookContentSettings.getInstance().getScreenWidth() - mPaint.measureText(payTip)) / 2;

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -492,6 +493,7 @@ public class BookContentModel implements IBookContentLoadedListener, OnViewEvent
     public void onLoadContentFiled(int code) {
         //// TODO: 2015/12/11 内容加载失败回调
         boolean showBtn = false, showSub = false, showOpenVip = false, showClose = false;
+        Log.e("BookContentModel","-------onLoadContentFiled----------------code="+code);
 
         if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == code) {//未订阅
             bookState = ReadPageState.BOOKTYPE_ORDER_PAY;

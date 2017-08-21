@@ -37,6 +37,7 @@ import net.huaxi.reader.bean.User;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
 import net.huaxi.reader.common.JavaScript;
+import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UserHelper;
 import net.huaxi.reader.dialog.GiveCoinsDailog;
@@ -273,6 +274,8 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
                         }else {
                             hua=coins_int-petals_int;
                         }
+                        SharePrefHelper.putInt("huabei",hua);
+                        SharePrefHelper.putInt("huaban",petals_int);
                     }
 //                    tvCharge.setText(coins + " 花贝");
 

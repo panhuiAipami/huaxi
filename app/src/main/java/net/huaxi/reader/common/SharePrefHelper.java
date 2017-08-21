@@ -37,6 +37,17 @@ public class SharePrefHelper {
         editor.commit();
     }
 
+    public static int getInt(String key, int defValue) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(AppContext.appContext);
+        return settings.getInt(key, defValue);
+    }
+
+    public static void putInt(String key, int value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AppContext.appContext).edit();
+        editor.putInt(key, value);
+        editor.commit();
+    }
+
 
     //用户cookie
     private static final String user_cookie = "user_cookie";

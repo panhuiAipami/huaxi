@@ -20,6 +20,7 @@ import net.huaxi.reader.book.render.BookContentRender;
 import net.huaxi.reader.book.render.ReadPageState;
 import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.CommonUtils;
+import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.XSErrorEnum;
 import net.huaxi.reader.db.dao.BookDao;
@@ -209,8 +210,7 @@ public class ReadPageFactory {
         if (pageContent == null) {
             return false;
         }
-
-        LogUtils.info(" code " + pageContent.getErrorCode() + ", chaptername = " + pageContent.getChapterName());
+        Log.e("ReadPageFactory","-------composingAndRender----------------code="+pageContent.getErrorCode()+"---价格="+mBookContentRender.p+"------花贝="+mBookContentRender.b+"----花瓣="+mBookContentRender.h);
         if (pageContent.getPageNo() == 1) {     //章节的第一页标题显示书名.
             mBookContentRender.setChapterName(DataSourceManager.getSingleton().getBookName());
         } else {
@@ -218,7 +218,7 @@ public class ReadPageFactory {
         }
 //        pageContent.setErrorCode(XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode());
         try {
-            if (XSErrorEnum.SUCCESS.getCode() == pageContent.getErrorCode()) {
+            if (XSErrorEnum.SUCCESS.getCode() == pageContent.getErrorCode()) {//成功
                 mBookContentRender.drawStateNormalCanvas(canvas, pageContent.getLines());
                 if (mBookContentLoadedListener != null && isFinished) {
                     mBookContentLoadedListener.onLoadContentCompleted(pageContent);
@@ -232,7 +232,12 @@ public class ReadPageFactory {
                 return true;
             } else if (XSErrorEnum.CHAPTER_NOT_SUBSCRIBE.getCode() == pageContent.getErrorCode()) { //未订阅
                 //现价大于等于余额的情况下
-                if(BookContentRender.p>BookContentRender.b&&BookContentRender.p>BookContentRender.sum){
+                int huabei = SharePrefHelper.getInt("huabei",0);
+                int huaban = SharePrefHelper.getInt("huaban",0);
+                if(mBookContentRender.sum != huabei+huaban){
+                    mBookContentRender.sum = huabei+huaban;
+                }
+                if(mBookContentRender.p>mBookContentRender.sum){
                     XSErrorEnum.CHAPTER_SHORT_BALANCE.setCode(10263);
                     pageContent.setErrorCode(10263);
                     //余额不足充值订阅
@@ -301,6 +306,8 @@ public class ReadPageFactory {
                             if (data != null) {
                                 coins = data.optInt(XSKEY.USER_INFO.COIN, 0);
                                 petals = data.optInt(XSKEY.USER_INFO.PETALS,0);
+                                Log.e("ReadPageFactory","-------getBalanceAndDraw------coins="+coins+"---petals="+petals+"------");
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
