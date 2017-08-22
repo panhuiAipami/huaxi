@@ -51,24 +51,19 @@ android {
         huaxi360 {}
         xiaomi {}
         baidu {}
-//        _005 {}
-//        _006 {}
-//        _007 {}
-//        _008 {}
-//        _009 {}
-//        _010 {}
-//        _011 {}
-//        _012 {}
-//        _013 {}
-//        _014 {}
-//        _015 {}
-//        _016 {}
-//        _017 {}
-//        _018 {}
-//        _019 {}
-//        _020 {}
-//        _021 {}
-//        _022 {}
+        Alibaba {}
+        jifeng {}
+        zhushou360 {}
+        baiduzhushou {}
+        wandoujia {}
+        anzhi {}
+        yingyonghui {}
+        sougoushichang {}
+        sougouzhushou {}
+        meizu {}
+        lenovo {}
+        oppo {}
+        vivo {}
     }
     //批量配置
     productFlavors.all { flavor ->
