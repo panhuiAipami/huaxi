@@ -46,7 +46,7 @@ android {
     }
 
     productFlavors {
-        yingyongbao {}  //默认渠道改为000;
+        yingyongbao {}
         huaxiweb {}
         huaxi360 {}
         xiaomi {}
@@ -64,6 +64,7 @@ android {
         lenovo {}
         oppo {}
         vivo {}
+        google_play {}
     }
     //批量配置
     productFlavors.all { flavor ->
