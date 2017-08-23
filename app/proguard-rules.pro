@@ -37,7 +37,7 @@
 
      # 混淆时所采用的算法
     -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-
+    -keepattributes SourceFile,LineNumberTable
     #保护注解
     -keepattributes *Annotation*
     #屏蔽警告
