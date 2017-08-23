@@ -43,29 +43,31 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setNeedStatistics(true);
         AppManager.getAppManager().addActivity(this);
-        //TODO:关闭状态栏设置应用背景颜色.
-//		// 创建状态栏的管理实例
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            // Translucent status bar
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager
-                    .LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //得到view视图窗口
+            Window window = getActivity().getWindow();
+            //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏颜色
+//            window.setStatusBarColor(Color.parseColor("#212A3C"));
 
-            // Translucent navigation bar
-//            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager
-//                    .LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        initUmengMessage();
-        //此处可以重新指定状态栏颜色
-        tintManager = new SystemBarTintManager(getActivity());
-        tintManager.setStatusBarAlpha(1f);
+            //        //此处可以重新指定状态栏颜色
+            tintManager = new SystemBarTintManager(getActivity());
+//        tintManager.setStatusBarAlpha(1f);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintColor(Color.parseColor("#F9494D"));
+        tintManager.setStatusBarTintColor(Color.parseColor("#212A3C"));
+        }
+        initUmengMessage();
+
+
 
     }
+
 
     @Override
     protected void onStart() {
@@ -204,5 +206,6 @@ public class BaseActivity extends FragmentActivity {
         PushAgent.getInstance(BaseActivity.this).onAppStart();
         String device_token = UmengRegistrar.getRegistrationId(BaseActivity.this);
         LogUtils.debug("device_token====" + device_token);
+
     }
 }
