@@ -11,8 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
@@ -136,14 +134,6 @@ public class SimpleWebViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setNeedStatistics(false);
-        //得到view视图窗口
-        Window window = getActivity().getWindow();
-        //取消设置透明状态栏,使 ContentView 内容不再覆盖状态栏
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //设置状态栏颜色
-        window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
         setContentView(R.layout.activity_simpleweb);
         initView();
         initCustom();

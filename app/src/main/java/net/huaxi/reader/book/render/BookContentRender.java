@@ -142,7 +142,7 @@ public class BookContentRender {
 //        }
             //折后价格(现价)
             String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
-            p= Integer.parseInt(pageContent.getPrice());
+            p= Integer.parseInt(TextUtils.isEmpty(pageContent.getPrice())?"0":pageContent.getPrice());
 //        h=Integer.parseInt(pageContent.get)
 //        Log.i("TAG", "drawStatePayCancas: 现价="+p);
             LogUtils.debug(" 章节价格"+price);
