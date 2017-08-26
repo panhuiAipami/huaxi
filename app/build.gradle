@@ -22,7 +22,7 @@ android {
         //最新版本:106;
         versionCode 10000 //此值在release时自动生成。
         //版本名每次正式发包时需要修改。
-        versionName "1.0.3"
+        versionName "1.0.4"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
@@ -183,23 +183,25 @@ dependencies {
     //修改activity状态栏的颜色
     //https://github.com/yqritc/RecyclerView-FlexibleDivider //recyclerview的分割线
     //compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'  代码已经考入divider包中
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:support-v4:25.0.1'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.jakewharton.hugo:hugo-runtime:1.2.1'
     compile 'com.github.chenupt.android:springindicator:1.0.2@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.3'
     compile 'com.jakewharton:butterknife:8.0.1'
     compile 'cn.lankton:flowlayout:2.0.0'
     compile 'com.robinhood.ticker:ticker:1.0.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:25.0.1'
     compile 'com.githang:status-bar-compat:0.3'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+
+    compile 'com.huawei.android.hms:iap:2.5.2.300'
 }
 
 

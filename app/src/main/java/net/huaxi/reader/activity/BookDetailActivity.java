@@ -151,7 +151,6 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
         syncComment();
         syncSameBook();
         syncAuthorOther();
-        tintManager.setStatusBarTintEnabled(false);
     }
 
     public void getIntentData() {

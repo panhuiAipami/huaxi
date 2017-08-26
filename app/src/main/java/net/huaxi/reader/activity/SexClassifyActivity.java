@@ -31,7 +31,6 @@ public class SexClassifyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ScreenUtils.fullScreen(this);
-        tintManager.setStatusBarTintEnabled(false);
         setContentView(R.layout.activity_sex_classify);
         init();
     }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
@@ -64,9 +63,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        a();
         ScreenUtils.fullScreen(this);
-        tintManager.setStatusBarTintEnabled(false);
         setContentView(R.layout.activity_splash);
         splashIv = (ImageView) findViewById(R.id.splash);
         isFirstStart = SharePrefHelper.getIsFirstStart();
@@ -75,14 +72,6 @@ public class SplashActivity extends BaseActivity {
 
     }
 
-    public void a() {
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                Log.e("uncaughtException", e.toString());
-            }
-        });
-    }
 
     @Override
     protected void onStart() {

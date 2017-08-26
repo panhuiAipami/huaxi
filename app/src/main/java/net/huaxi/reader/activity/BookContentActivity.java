@@ -72,7 +72,6 @@ public class BookContentActivity extends BaseActivity {
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         //设置全屏
         ScreenUtils.fullScreen(this);
-        tintManager.setStatusBarTintEnabled(false);
         setContentView(R.layout.activity_bookcontent);
         initViews();
         parseIntent(getIntent());

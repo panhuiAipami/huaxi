@@ -46,6 +46,7 @@ public class BaseActivity extends FragmentActivity {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setNeedStatistics(true);
         AppManager.getAppManager().addActivity(this);
+        tintManager = new SystemBarTintManager(getActivity());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //得到view视图窗口
             Window window = getActivity().getWindow();
@@ -57,7 +58,6 @@ public class BaseActivity extends FragmentActivity {
 //            window.setStatusBarColor(Color.parseColor("#212A3C"));
 
             //        //此处可以重新指定状态栏颜色
-            tintManager = new SystemBarTintManager(getActivity());
 //        tintManager.setStatusBarAlpha(1f);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintColor(Color.parseColor("#212A3C"));

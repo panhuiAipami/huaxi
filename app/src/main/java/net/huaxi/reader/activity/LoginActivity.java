@@ -89,7 +89,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             login_back_imageview1.setVisibility(View.VISIBLE);
         }
         ButterKnife.bind(this);
-        tintManager.setStatusBarTintEnabled(false);
         initView();
         initListener();
         ReportUtils.setUserSceneTag(Constants.BUGLY_SCENE_TAG_ACCOUNT);
