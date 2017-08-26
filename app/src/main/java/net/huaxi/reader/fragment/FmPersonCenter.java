@@ -313,23 +313,27 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
      * 设置用户信息
      */
     private void setUserdesc() {
+        try {
 
-        if (UserHelper.getInstance().isLogin()) {
-            User user = UserHelper.getInstance().getUser();
-            String username = user.getNickname();
-            String imageUrl=user.getImgid();
-            Log.i("imageurl", "setUserdesc: 用户头像路径"+imageUrl.toString());
-            if (StringUtils.isNotEmpty(username)) {
-                tvUsername.setText(username + "");
-            }
+            if (UserHelper.getInstance().isLogin()) {
+                User user = UserHelper.getInstance().getUser();
+                String username = user.getNickname();
+                String imageUrl = user.getImgid();
+                Log.i("imageurl", "setUserdesc: 用户头像路径" + imageUrl.toString());
+                if (StringUtils.isNotEmpty(username)) {
+                    tvUsername.setText(username + "");
+                }
 //            if (StringUtils.isNotEmpty(user.getImgid())) {
 //                ImageUtil.loadImage(getActivity(), user.getImgid(), ivHeadIcon, R.mipmap.usercenter_default_icon);
 //            }
-            if(StringUtils.isNotEmpty(imageUrl)){
-                ImageUtil.loadImage(getActivity(),imageUrl,ivHeadIcon,R.mipmap.main_navigation_bookshelf_normal1);
+                if (StringUtils.isNotEmpty(imageUrl)) {
+                    ImageUtil.loadImage(getActivity(), imageUrl, ivHeadIcon, R.mipmap.main_navigation_bookshelf_normal1);
+                }
+            } else {
+                setUserNotLogin();
             }
-        } else {
-            setUserNotLogin();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

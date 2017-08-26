@@ -45,6 +45,41 @@ public class PayUtils {
     public static final int PRODUCT_TYPE_COIN = 1;
     private static IOpenApi openApi;
 
+
+    public static void HuaWeiPay(final Activity activity, final String money, String body, final String pid,
+                              String checksum, final Dialog dialog) {
+        Map<String, String> map = CommonUtils.getPublicPostArgs();
+        map.put("pr_id", EncodeUtils.encodeString_UTF8(pid));
+        map.put("quantity", "1");
+        map.put("total_fee", EncodeUtils.encodeString_UTF8(money));
+        map.put("body", EncodeUtils.encodeString_UTF8(body));
+        map.put("checksum", EncodeUtils.encodeString_UTF8(checksum));
+        PostRequest request = new PostRequest(URLConstants.PAY_ALIPAY, new Response
+                .Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)  {
+                if (!ResponseHelper.isSuccess(response)) {
+                    return;
+                }
+                if (dialog != null)
+                    dialog.cancel();
+
+//                HuaWeiPayTask p = new HuaWeiPayTask(this,new PayResultCallback(REQUEST_HMS_RESOLVE_ERROR));
+//                p.pay("花溪小说","第一章",0.01);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ViewUtils.toastShort("生成订单失败");
+                if (dialog != null)
+                    dialog.cancel();
+            }
+        }, map);
+        RequestQueueManager.addRequest(request.setShouldCache(false));
+    }
+
+
     public static void AliPay(final Activity activity, final String money, String body, final String pid,
                               String checksum, final Dialog dialog) {
         Map<String, String> map = CommonUtils.getPublicPostArgs();

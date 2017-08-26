@@ -145,7 +145,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == tvLogout.getId()) {
-            final CommonDialogFoot dialog = new CommonDialogFoot(this,getString(R.string.setting_logout_tips),getString(R.string.ok),getString(R.string.cancel));
+            final CommonDialogFoot dialog = new CommonDialogFoot(this, getString(R.string.setting_logout_tips), getString(R.string.ok), getString(R.string.cancel));
             dialog.getOkButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -194,13 +194,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void startCheck() {
 //        String path="http://api.hxdrive.net/api/checkver";
 //        GetRequest request = new GetRequest("http://172.16.0.192/h1/2", new Response.Listener<JSONObject>()
-          GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL, new Response.Listener<JSONObject>() {
+        GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 LogUtils.debug(response.toString());
                 if (ResponseHelper.isSuccess(response)) {
                     appVersion = AppVersionHelper.parseToAppVersion(response);
-                    int build=Integer.parseInt(appVersion.getBuild());
+                    int build = Integer.parseInt(appVersion.getBuild());
                     if (new File(appVersion.getFilePath()).exists()) {
                         if (build != PhoneUtils.getVersionCode()) {
                             initDownloadCompleteDialog();
@@ -348,5 +348,4 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
     }
-
 }

@@ -35,7 +35,7 @@ import java.util.concurrent.TimeoutException;
  * 2016/2/19.
  */
 public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersion> {
-    private boolean flag=false;
+    private boolean flag = false;
 
     public void setFlag(boolean flag) {
         this.flag = flag;
@@ -64,16 +64,18 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
     @Override
     public void onPostExecute(final AppVersion appVersion) {
         super.onPostExecute(appVersion);
-//        Log.i("wwww", "onPostExecute: "+appVersion.toString());
-        LogUtils.debug("versionName—>"+PhoneUtils.getVersionName());
-        int  build=0;
-        float versionName = 0;
-        if(appVersion != null){
-            build=Integer.parseInt(appVersion.getBuild());
-            versionName = Float.parseFloat(appVersion.getVersionName());
+        int serviceVersion = 0;
+        int localVersion = 0;
+        if (appVersion == null) {
+            return;
         }
 
-        if (appVersion != null && versionName > Float.parseFloat(PhoneUtils.getVersionName())) {
+        serviceVersion = Integer.parseInt(appVersion.getVersionName().replace(".", ""));
+        localVersion = Integer.parseInt(PhoneUtils.getVersionName().replace(".", "").replace("-debug", ""));
+
+        if (localVersion >= serviceVersion) {
+            Toast.makeText(AppContext.context(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
+        } else if (serviceVersion > localVersion) {
             CommonDailog _dailog = new CommonDailog(caller,
                     AppContext.getInstance().getString(R.string.version_update),
                     getContent(appVersion),
@@ -82,12 +84,13 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
             if (appVersion.isOptional()) {
 
                 _dailog.dismissCancel();
-                _dailog.setCanceledOnTouchOutside(false);_dailog.setCancelable(false);
+                _dailog.setCanceledOnTouchOutside(false);
+                _dailog.setCancelable(false);
             }
             _dailog.setCommonDialogListener(new CommonDailog.CommonDialogListener() {
                 @Override
                 public void ok(Dialog dialog) {
-                    if(!NetUtils.checkNetworkUnobstructed()){
+                    if (!NetUtils.checkNetworkUnobstructed()) {
                         caller.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -98,20 +101,20 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
                     }
                     String urlString = "";
                     LogUtils.debug("here 12");
-                    LogUtils.debug("here 121"+ appVersion.getUrls());
+                    LogUtils.debug("here 121" + appVersion.getUrls());
                     if (appVersion.getUrls() != null && appVersion.getUrls().size() > 0) {
                         for (String url : appVersion.getUrls()) {
                             if (StringUtils.isNotEmpty(url)) {
                                 urlString = url;
-                                LogUtils.debug("urlString--->"+url);
+                                LogUtils.debug("urlString--->" + url);
                                 break;
                             }
                         }
                     }
                     if (StringUtils.isNotEmpty(urlString)) {
-                        AppDownloadDialog _appDownloadDialog = new AppDownloadDialog(caller, urlString,appVersion.getFilePath());
+                        AppDownloadDialog _appDownloadDialog = new AppDownloadDialog(caller, urlString, appVersion.getFilePath());
                         _appDownloadDialog.show();
-                    }else{
+                    } else {
                         Utils.gotoMarket(caller, PhoneUtils.getPackageName());
                     }
                     dialog.dismiss();
@@ -124,27 +127,20 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
             });
             _dailog.show();
         }
-        if(appVersion.getVersionName().equals(PhoneUtils.getVersionName())){
-            if(flag){
-                Toast.makeText(AppContext.context(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
-//                Log.i("TTT", "onPostExecute: 当前已是最新版本");
-                flag=false;
-            }
-        }
     }
 
-    private AppVersion checkVersion(){
+    private AppVersion checkVersion() {
 //        Log.i("jiejie", "checkVersion: 方法被调用");
-        AppVersion appVersion= null;
+        AppVersion appVersion = null;
         String url = URLConstants.APP_CHECK_UPDATE_URL;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        GetRequest request = new GetRequest(url,future,future);
+        GetRequest request = new GetRequest(url, future, future);
         RequestQueueManager.addRequest(request);
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS);
 //            Log.i("eeee", "checkVersion: "+response.toString());
-            appVersion= AppVersionHelper.parseToAppVersion(response);
-        }catch (InterruptedException e) {
+            appVersion = AppVersionHelper.parseToAppVersion(response);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -156,17 +152,17 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
     }
 
 
-    private String getContent(AppVersion appVersion){
+    private String getContent(AppVersion appVersion) {
         StringBuffer sb = new StringBuffer();
         if (appVersion != null) {
             sb.append("版本：" + appVersion.getVersionName() + "\n");
             if (appVersion.getFeatures() != null && appVersion.getFeatures().size() > 0) {
                 for (int i = 0; i < appVersion.getFeatures().size(); i++) {
-                    sb.append((i+1)+"、" + appVersion.getFeatures().get(i)+"\n");
+                    sb.append((i + 1) + "、" + appVersion.getFeatures().get(i) + "\n");
                 }
             }
         }
-        LogUtils.debug("version---->"+sb.toString());
+        LogUtils.debug("version---->" + sb.toString());
         return sb.toString();
 
     }

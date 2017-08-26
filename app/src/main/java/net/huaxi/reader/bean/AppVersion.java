@@ -19,6 +19,19 @@ public class AppVersion implements Serializable {
     private List<String> features;
     private List<String> urls;
     private boolean isOptional = false;//是否强制更新
+
+    @Override
+    public String toString() {
+        return "AppVersion{" +
+                "versionName='" + versionName + '\'' +
+                ", build='" + build + '\'' +
+                ", uptime='" + uptime + '\'' +
+                ", features=" + features +
+                ", urls=" + urls +
+                ", isOptional=" + isOptional +
+                '}';
+    }
+
     public String getFilePath(){
         return Constants.XSREADER_TEMP + "jiuyuu-"+versionName + "-" + build + ".apk";
     }

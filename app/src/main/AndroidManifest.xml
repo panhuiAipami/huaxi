@@ -270,6 +270,20 @@
 
         <service android:name=".service.UpdateAPKService" />
 
+
+        <!--华为支付跳转页面-->
+        <activity
+            android:name="com.huawei.hms.activity.BridgeActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent">
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
         <!-- 监听通知点击或者忽略处理的广播 -->
         <receiver
             android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
@@ -389,6 +403,20 @@
             android:name="com.umeng.message.local.UmengLocalNotificationService"
             android:exported="false" />
         <service android:name=".model.version.AppVersionService" />
+
+        <!-- 华为支付   value的值“appid”用实际申请的应用ID替换，来源于开发者联盟网站应用的权益详情。-->
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid" />
+
+        <!--“xxx.xxx.xxx”用实际的应用包名替换-->
+        <provider
+            android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="net.huaxi.reader.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"></provider>
+
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5951bff1a40fa30a5200226a" />

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
@@ -18,17 +19,6 @@ import com.tools.commonlibs.tools.FileUtils;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.PhoneUtils;
 import com.tools.commonlibs.tools.StringUtils;
-import net.huaxi.reader.util.UMEventAnalyze;
-import net.huaxi.reader.util.listener.ScreenUtils;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.common.CommonUtils;
@@ -45,6 +35,17 @@ import net.huaxi.reader.https.XSKEY;
 import net.huaxi.reader.model.SplashShowHelper;
 import net.huaxi.reader.statistic.ReportUtils;
 import net.huaxi.reader.thread.DownLoadPictureThread;
+import net.huaxi.reader.util.UMEventAnalyze;
+import net.huaxi.reader.util.listener.ScreenUtils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * taoyingfeng
@@ -63,6 +64,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        a();
         ScreenUtils.fullScreen(this);
         tintManager.setStatusBarTintEnabled(false);
         setContentView(R.layout.activity_splash);
@@ -71,6 +73,15 @@ public class SplashActivity extends BaseActivity {
         isInitSexClassify = SharePrefHelper.isInitSexClassify();
         UMEventAnalyze.countEvent(this, UMEventAnalyze.SPLASH_PAGE);
 
+    }
+
+    public void a() {
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                Log.e("uncaughtException", e.toString());
+            }
+        });
     }
 
     @Override
