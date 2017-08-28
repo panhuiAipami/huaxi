@@ -4,12 +4,7 @@ def releaseTime() {
     return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
-//获取自动版本号
-def gitVersionCode() {
-    def cmd = 'git rev-list HEAD --count'
-//    cmd.execute().text.trim().toInteger()
-    return 1.0;
-}
+
 
 
 android {
@@ -20,7 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         //最新版本:106;
-        versionCode 10000 //此值在release时自动生成。
+        versionCode 2
         //版本名每次正式发包时需要修改。
         versionName "1.0.4"
         // dex突破65535的限制
@@ -117,7 +112,6 @@ android {
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
                 if (variant.buildType.name.equals('release')) {
-                    variant.mergedFlavor.versionCode = gitVersionCode();
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
 //                         输出apk名称为boohee_release_v1.0_2015-01-15_wandoujia.apk
