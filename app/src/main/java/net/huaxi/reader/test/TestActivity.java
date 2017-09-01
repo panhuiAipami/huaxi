@@ -1,23 +1,17 @@
 package net.huaxi.reader.test;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.client.Status;
 import com.huawei.hms.support.api.entity.pay.PayStatusCodes;
-import com.huawei.hms.support.api.pay.HuaweiPay;
 import com.huawei.hms.support.api.pay.PayResult;
-import com.huawei.hms.support.api.pay.PayResultInfo;
 import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.tools.LogUtils;
 
@@ -28,15 +22,6 @@ import net.huaxi.reader.db.dao.BookDao;
 import net.huaxi.reader.db.dao.ChapterDao;
 import net.huaxi.reader.db.model.BookTable;
 import net.huaxi.reader.db.model.ChapterTable;
-import net.huaxi.reader.thread.HuaWeiPayTask;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.huawei.hms.activity.BridgeActivity.EXTRA_RESULT;
-import static net.huaxi.reader.thread.HuaWeiPayTask.REQUEST_HMS_RESOLVE_ERROR;
 
 public class TestActivity extends BaseActivity {
     Button readTest = null;
@@ -209,106 +194,4 @@ public class TestActivity extends BaseActivity {
         }
     }
 
-
-
-    /**
-     * 当用户未登录或者未授权，调用signin接口拉起对应的页面处理完毕后会将结果返回给当前activity处理
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //连接失败处理
-        if(requestCode == REQUEST_HMS_RESOLVE_ERROR) {
-            if(resultCode == Activity.RESULT_OK) {
-
-                int result = data.getIntExtra(EXTRA_RESULT, 0);
-
-                if(result == ConnectionResult.SUCCESS) {
-                    Log.i(HuaWeiPayTask.TAG, "错误成功解决");
-//                    if (!client.isConnecting() && !client.isConnected()) {
-//                        client.connect();
-//                    }
-                } else if(result == ConnectionResult.CANCELED) {
-                    Log.i(HuaWeiPayTask.TAG, "解决错误过程被用户取消");
-                } else if(result == ConnectionResult.INTERNAL_ERROR) {
-                    Log.i(HuaWeiPayTask.TAG, "发生内部错误，重试可以解决");
-                    //CP可以在此处重试连接华为移动服务等操作，导致失败的原因可能是网络原因等
-                } else {
-                    Log.i(HuaWeiPayTask.TAG, "未知返回码");
-                }
-            } else {
-                Log.i(HuaWeiPayTask.TAG, "调用解决方案发生错误");
-            }
-        } else if (requestCode == HuaWeiPayTask.REQ_CODE_PAY) {//连接成功
-            //当返回值是-1的时候表明用户支付调用调用成功
-            if (resultCode == Activity.RESULT_OK) {
-                //获取支付完成信息
-                PayResultInfo payResultInfo = HuaweiPay.HuaweiPayApi.getPayResultInfoFromIntent(data);
-                if (payResultInfo != null) {
-                    Map<String, Object> paramsa = new HashMap<>();
-                    if (PayStatusCodes.PAY_STATE_SUCCESS == payResultInfo.getReturnCode()) {
-
-                        paramsa.put("returnCode", payResultInfo.getReturnCode());
-                        paramsa.put("userName", payResultInfo.getUserName());
-                        paramsa.put("requestId", payResultInfo.getRequestId());
-                        paramsa.put("amount", payResultInfo.getAmount());
-                        paramsa.put("time", payResultInfo.getTime());
-
-                        String orderId = payResultInfo.getOrderID();
-                        if (!TextUtils.isEmpty(orderId)) {
-                            paramsa.put("orderID", orderId);
-                        }
-                        String withholdID = payResultInfo.getWithholdID();
-                        if (!TextUtils.isEmpty(withholdID)) {
-                            paramsa.put("withholdID", withholdID);
-                        }
-                        String errMsg = payResultInfo.getErrMsg();
-                        if (!TextUtils.isEmpty(errMsg)) {
-                            paramsa.put("errMsg", errMsg);
-                        }
-
-                        String noSigna = HuaWeiPayTask.getNoSign(paramsa);
-                        boolean success = HuaWeiPayTask.doCheck(noSigna, payResultInfo.getSign());
-
-                        if (success) {
-                            Log.i(HuaWeiPayTask.TAG, "支付/订阅成功");
-                        } else {
-                            //支付成功，但是签名校验失败。CP需要到服务器上查询该次支付的情况，然后再进行处理。
-                            Log.i(HuaWeiPayTask.TAG, "支付/订阅成功，但是签名验证失败");
-                        }
-
-                        Log.i(HuaWeiPayTask.TAG, "商户名称: " + payResultInfo.getUserName());
-                        if (!TextUtils.isEmpty(orderId)) {
-                            Log.i(HuaWeiPayTask.TAG, "订单编号: " + orderId);
-                        }
-                        Log.i(HuaWeiPayTask.TAG, "支付金额: " + payResultInfo.getAmount());
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-                        String time = payResultInfo.getTime();
-                        if (time != null) {
-                            try {
-                                Date curDate = new Date(Long.valueOf(time));
-                                String str = formatter.format(curDate);
-                                Log.i(HuaWeiPayTask.TAG, "交易时间: " + str);
-                            } catch (NumberFormatException e) {
-                                Log.i(HuaWeiPayTask.TAG, "交易时间解析出错 time: " + time);
-                            }
-                        }
-                        Log.i(HuaWeiPayTask.TAG, "商户订单号: " + payResultInfo.getRequestId());
-                    } else if (PayStatusCodes.PAY_STATE_CANCEL == payResultInfo.getReturnCode()) {
-                        //支付失败，原因是用户取消了支付，可能是用户取消登录，或者取消支付
-                        Log.i(HuaWeiPayTask.TAG, "支付失败：用户取消" + payResultInfo.getErrMsg());
-                    } else {
-                        //支付失败，其他一些原因
-                        Log.i(HuaWeiPayTask.TAG, "支付失败：" + payResultInfo.getErrMsg());
-                    }
-                } else {
-                    //支付失败
-                }
-            } else {
-                //当resultCode 为0的时候表明用户未登录，则CP可以处理用户不登录事件
-                Log.i(HuaWeiPayTask.TAG, "resultCode为0, 用户未登录 CP可以处理用户不登录事件");
-            }
-        }
-    }
 }

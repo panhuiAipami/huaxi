@@ -8,7 +8,7 @@ import java.io.File;
 
 public class Constants {
     //打华为包需为true，否则为false（华为渠道需要用华为支付）
-    public static final boolean  CHANNEL_IS_HUAWEI = false;
+    public static final boolean  CHANNEL_IS_HUAWEI = true;
 
     //任务状态
     public static final String  SHOW_TASK_STATUS = "show_task_status";

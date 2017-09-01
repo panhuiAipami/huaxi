@@ -59,10 +59,13 @@ public class JavaScript {
     private final int CHANNEL_WEIXIN = 2;
     private final int CHANNEL_ALIPAYY = 1;
     private final int CHANNEL_QQWALLET = 4;
-    String taskid;String shareurl;String abc;
+    private final int CHANNEL_HWPAY = 0;
+    String taskid;
+    String shareurl;
+    String abc;
 
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -95,15 +98,6 @@ public class JavaScript {
 
 
     /**
-     *
-     * @param ct 充值渠道类型
-     *            PAY_CHANNEL_ALIPAY	= 1;     const PAY_CHANNEL_WECHAT	= 2;    const
-     *            PAY_CHANNEL_APPLE		= 3;
-     * @param pt 充值产品类型
-     * @param money 充值金额
-     * @param body
-     */
-    /**
      * @param ct          充值渠道类型 PAY_CHANNEL_ALIPAY	= 1;     const PAY_CHANNEL_WECHAT	= 2;
      *                    const PAY_CHANNEL_APPLE		= 3;
      * @param pt          充值产品类型
@@ -115,8 +109,7 @@ public class JavaScript {
     @JavascriptInterface
     public void pay(String ct, String pt, String nProductSId, String money, String body, String
             checksum) {
-        LogUtils.debug("调用第三方支付");
-        LogUtils.debug("pt==" + pt);
+        LogUtils.debug("第三方支付-->" + pt);
         LogUtils.debug("ct==" + ct);
         LogUtils.debug("money==" + money);
         LogUtils.debug("body==" + body);
@@ -127,44 +120,58 @@ public class JavaScript {
             fee = Float.parseFloat(money);
             channeltype = Integer.parseInt(ct);
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (fee != 0 && channeltype == CHANNEL_WEIXIN) {
+
+        //华为渠道用华为支付
+        if (fee != 0 && Constants.CHANNEL_IS_HUAWEI) {
             if (body.contains("阅读币")) {//充值
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_WEIXIN);//微信支付
-//                System.out.println("微信--阅读币");
+//                UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_QQ);//华为支付
             } else {
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_WEIXIN);//微信支付
-//                System.out.println("微信--会员");
+//                UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_QQ);//华为支付
             }
-            IWXAPI mWeixinAPI = WXAPIFactory.createWXAPI(activity, LoginHelper.WX_APP_ID, false);
-            if (!mWeixinAPI.isWXAppSupportAPI()) {
-                ViewUtils.toastShort(activity.getString(R.string.not_install_wx_client));
+            Dialog dialog = ViewUtils.showProgressDialog(activity);
+            PayUtils.HuaWeiPay(activity, money, body, pt, checksum, dialog);
+            return;
+        } else {
+            if (fee != 0 && channeltype == CHANNEL_WEIXIN) {
+                if (body.contains("阅读币")) {//充值
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_WEIXIN);//微信支付
+//                System.out.println("微信--阅读币");
+                } else {
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_WEIXIN);//微信支付
+//                System.out.println("微信--会员");
+                }
+                IWXAPI mWeixinAPI = WXAPIFactory.createWXAPI(activity, LoginHelper.WX_APP_ID, false);
+                if (!mWeixinAPI.isWXAppSupportAPI()) {
+                    ViewUtils.toastShort(activity.getString(R.string.not_install_wx_client));
+                    return;
+                }
+                Dialog dialog = ViewUtils.showProgressDialog(activity);
+                PayUtils.WxPay(activity, money, body, pt, checksum, dialog);
+                return;
+            } else if (fee != 0 && channeltype == CHANNEL_ALIPAYY) {
+                if (body.contains("阅读币")) {//充值
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_ALIPAY);//支付宝支付
+//                System.out.println("支付宝--阅读币");
+                } else {
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_ALIPAY);//支付宝支付
+//                System.out.println("支付--会员");
+                }
+                Dialog dialog = ViewUtils.showProgressDialog(activity);
+                LogUtils.debug("Alipay_here 0");
+                PayUtils.AliPay(activity, money, body, pt, checksum, dialog);
+                return;
+            } else if (fee != 0 && channeltype == CHANNEL_QQWALLET) {
+                if (body.contains("阅读币")) {//充值
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_QQ);//qq支付
+                } else {
+                    UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_QQ);//qq支付
+                }
+                Dialog dialog = ViewUtils.showProgressDialog(activity);
+                PayUtils.QQPay(activity, money, body, pt, checksum, dialog);
                 return;
             }
-            Dialog dialog = ViewUtils.showProgressDialog(activity);
-            PayUtils.WxPay(activity, money, body, pt, checksum, dialog);
-            return;
-        } else if (fee != 0 && channeltype == CHANNEL_ALIPAYY) {
-            if (body.contains("阅读币")) {//充值
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_ALIPAY);//支付宝支付
-//                System.out.println("支付宝--阅读币");
-            } else {
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_ALIPAY);//支付宝支付
-//                System.out.println("支付--会员");
-            }
-            Dialog dialog = ViewUtils.showProgressDialog(activity);
-            LogUtils.debug("Alipay_here 0");
-            PayUtils.AliPay(activity, money, body, pt, checksum, dialog);
-            return;
-        } else if (fee != 0 && channeltype == CHANNEL_QQWALLET) {
-            if (body.contains("阅读币")) {//充值
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.RECHARGE_QQ);//支付宝支付
-            } else {
-                UMEventAnalyze.countEvent(activity, UMEventAnalyze.VIP_QQ);//支付宝支付
-            }
-            Dialog dialog = ViewUtils.showProgressDialog(activity);
-            PayUtils.QQPay(activity, money, body, pt, checksum, dialog);
-            return;
         }
         LogUtils.debug("调用js参数错误");
     }
@@ -182,7 +189,7 @@ public class JavaScript {
     public void task(String taskid, String shareurl, String abc) {
         //任务里的分享 http://w.huaxi.net/14','wxSharedUserId=457157&title=test0814&memo=test0814wcj&sharedIcon=http%3a%2f%2fimg.huaxi.net%2fimages%2fm%2fhuaxi22.jpg'
 
-        Log.e("task",taskid+"--------shareurl="+shareurl+"-----abc="+abc);
+        Log.e("task", taskid + "--------shareurl=" + shareurl + "-----abc=" + abc);
         this.taskid = taskid;
         this.shareurl = shareurl;
         this.abc = abc;
@@ -191,8 +198,7 @@ public class JavaScript {
     }
 
 
-
-    public void  shareH5Data() {
+    public void shareH5Data() {
         String title[] = this.abc.split("&");
 
         String userId = title[0].substring(index(title[0]), title[0].length());
@@ -201,7 +207,7 @@ public class JavaScript {
         String sharedIcon = title[3].substring(index(title[3]), title[3].length());
         String shareType = title[4].substring(index(title[4]), title[4].length());
 
-        Log.e("shareH5Data", "-----userId=" + userId + "---strTitle=" + strTitle + "---memo=" + memo + "---sharedIcon=" + sharedIcon+"----shareType= "+shareType);
+        Log.e("shareH5Data", "-----userId=" + userId + "---strTitle=" + strTitle + "---memo=" + memo + "---sharedIcon=" + sharedIcon + "----shareType= " + shareType);
 
         ShareBean shareBean = new ShareBean();
         shareBean.setShareUrl(this.shareurl);
@@ -230,15 +236,16 @@ public class JavaScript {
         }
     }
 
-    public int index(String str){
-        return str.indexOf("=")+1;
+    public int index(String str) {
+        return str.indexOf("=") + 1;
     }
 
 
     LoginHelper loginHelper;
+
     private LoginHelper getLoginHelper(ShareBean bean) {
         if (loginHelper == null) {
-            loginHelper = new LoginHelper(activity,bean);
+            loginHelper = new LoginHelper(activity, bean);
             AppContext.setLoginHelper(loginHelper);
         }
         return loginHelper;
@@ -247,10 +254,10 @@ public class JavaScript {
 
     @JavascriptInterface
     public void history() {//返回书架
-        Log.e("history","------------history --------");
+        Log.e("history", "------------history --------");
         activity.finish();
-        if( ListenerManager.getInstance().getGoToShuJia() != null)
-        ListenerManager.getInstance().getGoToShuJia().go();
+        if (ListenerManager.getInstance().getGoToShuJia() != null)
+            ListenerManager.getInstance().getGoToShuJia().go();
     }
 
 

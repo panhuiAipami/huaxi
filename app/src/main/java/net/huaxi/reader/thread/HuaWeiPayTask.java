@@ -1,18 +1,17 @@
 package net.huaxi.reader.thread;
 
-import android.app.Activity;
-import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 
-import com.huawei.hms.api.ConnectionResult;
-import com.huawei.hms.api.HuaweiApiAvailability;
 import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.entity.pay.HwPayConstant;
 import com.huawei.hms.support.api.entity.pay.PayReq;
 import com.huawei.hms.support.api.pay.HuaweiPay;
+
+import net.huaxi.reader.R;
+import net.huaxi.reader.common.AppContext;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -24,42 +23,33 @@ import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.os.Looper.getMainLooper;
 
 /**
  * Created by panhui on 2017/8/24.
  */
 
-public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener,HuaweiApiClient.ConnectionCallbacks{
+public class HuaWeiPayTask {
     public static final String TAG = "HuaWeiPay-------->";
-    //以下常量为测试数据
-//    private final static String PRODUCT_NAME = "元宝";
-//    private final static String PRODUCT_DESC = "游戏中货币的最小计量单位";
-//    private final static double PRODUCT_PRICE = 0.01;
-
-
-
     //华为移动服务Client
     private HuaweiApiClient client;
     //支付相关信息map
     private Map<String, Object> params;
     //支付id   华为移动服务配置
-    private final static String cpId = "华为开发者联盟为开发者分配的支付id";
+    public final static String cpId = "890086000102076485";
     //appid   华为移动服务配置
-    private final static String appId = "华为开发者联盟分配的appid";
+    public final static String appId = "100073201";
 
     //开发者联盟提供的支付公钥 华为移动服务配置 替换成实际的公钥
-    public  static String publicKey ="";
-    //开发者联盟网站申请的支付私钥，请妥善保管，最好存储在服务器端 华为移动服务配置 替换成实际的私钥
-    public  static String privateKey ="";
+//    public  static String publicKey ="";
+//    //开发者联盟网站申请的支付私钥，请妥善保管，最好存储在服务器端 华为移动服务配置 替换成实际的私钥
+    private  static String privateKey ="";
     //使用加密算法规则
     public  static String SIGN_ALGORITHMS = "SHA256WithRSA";
 
@@ -69,76 +59,34 @@ public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener
     public static final int REQUEST_HMS_RESOLVE_ERROR = 1000;
 
     ResultCallback<com.huawei.hms.support.api.pay.PayResult> result;
-    private Activity activity;
 
-    public HuaWeiPayTask(Activity activity,ResultCallback<com.huawei.hms.support.api.pay.PayResult> result){
-        this.activity = activity;
+    public HuaWeiPayTask(HuaweiApiClient client,ResultCallback<com.huawei.hms.support.api.pay.PayResult> result){
         this.result = result;
-        connect();
+        this.client = client;
     }
+
 
     /**
      * 支付接口，CP可以直接参照该方法写法
      */
-    public void pay(String productName,String productDesc,double productPrice) {
+    public void pay(String privateKey,String productName,String productDesc,double productPrice,String orderId) {
         if(!client.isConnected()) {
             Log.i(TAG, "支付失败，原因：HuaweiApiClient未连接");
             client.connect();
             return;
         }
-
-        PendingResult<com.huawei.hms.support.api.pay.PayResult> payResult = HuaweiPay.HuaweiPayApi.pay(client, createPayReq(productName,productDesc,productPrice));
+        this.privateKey = privateKey;
+        PendingResult<com.huawei.hms.support.api.pay.PayResult> payResult = HuaweiPay.HuaweiPayApi.pay(client, createPayReq(productName,productDesc,productPrice,orderId));
         payResult.setResultCallback(result);
     }
 
-    public void  connect(){
-        //创建华为移动服务client实例用以实现支付功能
-        //需要指定api为HuaweiPay.PAY_API
-        //连接回调以及连接失败监听
-        client = new HuaweiApiClient.Builder(activity)
-                .addApi(HuaweiPay.PAY_API)
-                .addOnConnectionFailedListener(this)
-                .addConnectionCallbacks(this)
-                .build();
-
-        //建议在oncreate的时候连接华为移动服务
-        //业务可以根据自己业务的形态来确定client的连接和断开的时机，但是确保connect和disconnect必须成对出现
-        client.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(TAG, "HuaweiApiClient连接失败，错误码：" + connectionResult.getErrorCode());
-        if(HuaweiApiAvailability.getInstance().isUserResolvableError(connectionResult.getErrorCode())) {
-            final int errorCode = connectionResult.getErrorCode();
-            new Handler(getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    // 此方法必须在主线程调用
-                    HuaweiApiAvailability.getInstance().resolveError(activity, errorCode, REQUEST_HMS_RESOLVE_ERROR);
-                }
-            });
-        } else {
-            //其他错误码请参见开发指南或者API文档
-        }
-    }
-
-    @Override
-    public void onConnected() {
-        Log.i(TAG, "HuaweiApiClient 连接成功");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
 
     /**
      * 生成PayReq对象，用来在进行支付请求的时候携带支付相关信息
      * payReq订单参数需要商户使用在华为开发者联盟申请的RSA私钥进行签名，强烈建议将签名操作在商户服务端处理，避免私钥泄露
      */
-    private PayReq createPayReq(String productName,String productDesc,double productPrice) {
-        getPaySignInfo(productName,productDesc,productPrice);
+    private PayReq createPayReq(String productName,String productDesc,double productPrice,String orderId) {
+        getPaySignInfo(productName,productDesc,productPrice,orderId);
         PayReq payReq = new PayReq();
 
         //商品名称
@@ -194,7 +142,7 @@ public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener
      * HwPayConstant.KEY_URLVER 可选参数  回调接口版本号。如果传值则必须传2， 额外回调信息，具体参考接口文档
      * HwPayConstant.KEY_SDKCHANNEL 必选参数 渠道信息。 取值如下：0 代表自有应用，无渠道 1 代表应用市场渠道 2 代表预装渠道 3 代表游戏中心渠道
      */
-    private void getPaySignInfo(String productName,String productDesc,double productPrice) {
+    private void getPaySignInfo(String productName,String productDesc,double productPrice,String orderId) {
         if(params != null) {
             params.clear();
         } else {
@@ -207,13 +155,9 @@ public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener
         params.put(HwPayConstant.KEY_PRODUCTNAME, productName);
         params.put(HwPayConstant.KEY_PRODUCTDESC, productDesc);
 
-        DateFormat format = new java.text.SimpleDateFormat("yyyyMMddhhmmssSSS");
-        String requestId = format.format(new Date());
-        int random=(int) ((Math.random()+1)*100000);
-        requestId = requestId+random;
-        params.put(HwPayConstant.KEY_REQUESTID, requestId);
-
-        params.put(HwPayConstant.KEY_AMOUNT, productPrice);
+        params.put(HwPayConstant.KEY_REQUESTID, orderId);
+        DecimalFormat    df   = new DecimalFormat("######0.00");
+        params.put(HwPayConstant.KEY_AMOUNT, df.format(productPrice/100)+"");
 
         //币种 用于支付的获知
         params.put(HwPayConstant.KEY_CURRENCY, "CNY");
@@ -346,7 +290,7 @@ public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener
     public static boolean doCheck(String content, String sign) {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            byte[] encodedKey = Base64.decode(publicKey, Base64.DEFAULT);
+            byte[] encodedKey = Base64.decode(AppContext.context().getString(R.string.app_public_key), Base64.DEFAULT);
             PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(encodedKey));
 
             java.security.Signature signature = java.security.Signature.getInstance(SIGN_ALGORITHMS);
@@ -369,10 +313,5 @@ public class HuaWeiPayTask implements HuaweiApiClient.OnConnectionFailedListener
             Log.e(TAG, "doCheck UnsupportedEncodingException" + e);
         }
         return false;
-    }
-
-
-    public void onDestory(){
-        client.disconnect();
     }
 }

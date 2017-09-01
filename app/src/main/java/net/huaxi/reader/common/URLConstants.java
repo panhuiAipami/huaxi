@@ -16,6 +16,8 @@ public class URLConstants {
     public static final String H5PAGE_WEEKLY = url_base + "/book/weekly?1=1";
     public static final String GET_USER_HEAD_IMAGE = "http://res-image.chumang.wang/%s.jpg";
     public static final String PAY_ALIPAY = url_base + "/recharge/alipay";
+    //华为支付
+    public static final String PAY_Huawei = url_base + "/pay/apphuawei";
     /*==================================================================*/
     //充值记录 get
     public static final String PAY_ORDER_LIST = url_base + "/recharge/log?page=%d&pagenum=%d";

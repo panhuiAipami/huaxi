@@ -291,6 +291,7 @@ public class ReadPageFactory {
             mBookContentRender.drawStatePayCancas(canvas, pageContent, 0,0, autoSub);
             LogUtils.debug("pageContent....1"+pageContent.getPrice());
         } else {
+            //获取账户信息，花贝等
             String url = URLConstants.PAY_INFO + "?1=1" + CommonUtils.getPublicGetArgs();
 //            Log.i("dongyongjie", "getBalanceAndDraw: 请求路径==="+url);
             GetRequest payInfoRequest = new GetRequest(url, new Response.Listener<JSONObject>() {

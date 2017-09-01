@@ -5,6 +5,7 @@ package net.huaxi.reader.common;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -19,6 +20,7 @@ import com.tools.commonlibs.tools.ViewUtils;
 import com.tools.commonlibs.utils.JsonUtils;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.appinterface.ListenerManager;
 import net.huaxi.reader.bean.AliPayBean;
 import net.huaxi.reader.bean.QQPayBean;
 import net.huaxi.reader.bean.WXPayOrder;
@@ -30,6 +32,7 @@ import net.huaxi.reader.thread.WXPayTask;
 import net.huaxi.reader.util.EncodeUtils;
 import net.huaxi.reader.util.LoginHelper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -49,29 +52,39 @@ public class PayUtils {
     public static void HuaWeiPay(final Activity activity, final String money, String body, final String pid,
                               String checksum, final Dialog dialog) {
         Map<String, String> map = CommonUtils.getPublicPostArgs();
-        map.put("pr_id", EncodeUtils.encodeString_UTF8(pid));
-        map.put("quantity", "1");
+//        map.put("pr_id", EncodeUtils.encodeString_UTF8(pid));
+//        map.put("quantity", "1");
         map.put("total_fee", EncodeUtils.encodeString_UTF8(money));
-        map.put("body", EncodeUtils.encodeString_UTF8(body));
-        map.put("checksum", EncodeUtils.encodeString_UTF8(checksum));
-        PostRequest request = new PostRequest(URLConstants.PAY_ALIPAY, new Response
+//        map.put("body", EncodeUtils.encodeString_UTF8(body));
+//        map.put("checksum", EncodeUtils.encodeString_UTF8(checksum));
+        //URLConstants.PAY_Huawei
+        PostRequest request = new PostRequest(URLConstants.PAY_Huawei, new Response
                 .Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response)  {
-                if (!ResponseHelper.isSuccess(response)) {
-                    return;
+                Log.e("HUAWEI","--------->"+response.toString());
+                try {
+                    if (dialog != null)
+                        dialog.cancel();
+
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String data  = jsonObject.getString("data");
+                    JSONObject jsonObject2 = new JSONObject(data);
+                    double amount = jsonObject2.getInt("amount");
+                    String order_no = jsonObject2.getString("order_no");
+                    String private_key = jsonObject2.getString("private_key");
+
+                    if(ListenerManager.getInstance().getBackHuaweiPayInfo() != null) {
+                        ListenerManager.getInstance().getBackHuaweiPayInfo().info(amount, order_no, private_key);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                if (dialog != null)
-                    dialog.cancel();
-
-//                HuaWeiPayTask p = new HuaWeiPayTask(this,new PayResultCallback(REQUEST_HMS_RESOLVE_ERROR));
-//                p.pay("花溪小说","第一章",0.01);
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ViewUtils.toastShort("生成订单失败");
+                ViewUtils.toastShort("生成订单失败"+error.toString());
                 if (dialog != null)
                     dialog.cancel();
             }

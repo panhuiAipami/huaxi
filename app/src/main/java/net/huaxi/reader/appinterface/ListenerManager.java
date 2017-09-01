@@ -16,6 +16,15 @@ public class ListenerManager {
 
     ShareResult result;
     GoToShuJia goToShuJia;
+    CallBackHuaweiPayInfo backHuaweiPayInfo;
+
+    public CallBackHuaweiPayInfo getBackHuaweiPayInfo() {
+        return backHuaweiPayInfo;
+    }
+
+    public void setBackHuaweiPayInfo(CallBackHuaweiPayInfo backHuaweiPayInfo) {
+        this.backHuaweiPayInfo = backHuaweiPayInfo;
+    }
 
     public ShareResult getResult() {
         return result;

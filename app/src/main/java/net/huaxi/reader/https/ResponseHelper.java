@@ -2,8 +2,6 @@ package net.huaxi.reader.https;
 
 import android.util.Log;
 
-import com.tools.commonlibs.tools.LogUtils;
-
 import net.huaxi.reader.common.XSErrorEnum;
 
 import org.json.JSONArray;
@@ -37,13 +35,11 @@ public class ResponseHelper {
 
     //获取vdata
     public static JSONObject getVdata(JSONObject resp) {
-        LogUtils.debug("resp----->"+resp);
         JSONObject jsonObject = resp.optJSONObject(VDATA);
 //        LogUtils.debug("jsonobject--->"+jsonObject.toString());
         if (jsonObject == null) {
             jsonObject = new JSONObject();
         }
-        LogUtils.debug("jsonobject*****"+jsonObject.toString());
         return jsonObject;
 
     }

@@ -74,6 +74,7 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
         localVersion = Integer.parseInt(PhoneUtils.getVersionName().replace(".", "").replace("-debug", ""));
 
         if (localVersion >= serviceVersion) {
+            if(flag)
             Toast.makeText(AppContext.context(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
         } else if (serviceVersion > localVersion) {
             CommonDailog _dailog = new CommonDailog(caller,

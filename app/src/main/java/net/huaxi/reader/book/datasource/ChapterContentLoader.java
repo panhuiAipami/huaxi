@@ -290,14 +290,17 @@ public class ChapterContentLoader extends Thread {
                     loadListener.onLoading();
                 }
                 Request<JSONObject> request = null;
-                if (mIsPost) {//点击订阅按钮需要发post请求
+                //点击订阅按钮需要发post请求
+                if (mIsPost) {
 
 
 
                     Map<String, String> pMap = new HashMap<String, String>();
                     pMap.put(XSKEY.READER_CHAPTER.BOOKID, EncodeUtils.encodeString_UTF8(bookId));
-                    startTime = System.currentTimeMillis();
                     pMap.put(XSKEY.READER_CHAPTER.CHAPTERID, EncodeUtils.encodeString_UTF8(chapterId));
+                    if(Constants.CHANNEL_IS_HUAWEI){//华为
+                        pMap.put("consume_type", "8");
+                    }
                     pMap.putAll(CommonUtils.getPublicPostArgs());
                     LogUtils.debug("++++++++++++++ do pay interface +++++++++++++++");
                     request = new PostRequest(URLConstants.READPAGE_READ_CHAPTER_POST, new Response.Listener<JSONObject>() {

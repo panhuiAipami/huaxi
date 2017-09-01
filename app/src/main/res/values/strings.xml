@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiumQY5hDfDqN5v6Uz+BbWgtH5J/1T3OVnM0dz38WovmdMjn/4yd0VJBLFRFw6wR59D6/pCsd2KBoQ23r7cjBiY9xhGqgjDHHT/hh5VPYxBqjj2qiC6fwCdGLhIwsE5DWdJr0dEknEO1YAZn6Oce64htFHGWomalknMjMAJG+2dIhunPn/3px24SDKpOdLrhS2HKenbmmK12wfMmlgeLq1nrIQRa8AflbWvOwtvQGqCCTdy93dHQllJahguLjv91v/VRE/4UmGGxhLdGkPqiQEIqIXXkEUHdDn84Eyfcsyx0EL9huk/LyLO1IzOlOWqjZBR91XX8aIqO7t7QGwIsyRwIDAQAB</string>
+
     <string name="app_name">花溪小说</string>
     <string name="appid_bugly">900019649</string>
     <string name="loading">努力加载中\u2026</string>

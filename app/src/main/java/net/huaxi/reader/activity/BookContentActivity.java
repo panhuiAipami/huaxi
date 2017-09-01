@@ -1,17 +1,24 @@
 package net.huaxi.reader.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.huawei.hms.support.api.entity.pay.PayStatusCodes;
+import com.huawei.hms.support.api.pay.HuaweiPay;
+import com.huawei.hms.support.api.pay.PayResultInfo;
 import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.tools.LogUtils;
 import com.tools.commonlibs.tools.StringUtils;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.appinterface.CallBackHuaweiPayInfo;
+import net.huaxi.reader.appinterface.ListenerManager;
 import net.huaxi.reader.appinterface.onCatalogLoadFinished;
 import net.huaxi.reader.book.BookContentBottomView;
 import net.huaxi.reader.book.BookContentModel;
@@ -33,13 +40,21 @@ import net.huaxi.reader.db.model.ChapterTable;
 import net.huaxi.reader.dialog.RechargeDialog;
 import net.huaxi.reader.https.BookCatalogThreadLoader;
 import net.huaxi.reader.statistic.ReportUtils;
+import net.huaxi.reader.thread.HuaWeiPayTask;
+import net.huaxi.reader.util.HuaweiPayResult;
 import net.huaxi.reader.util.ScreenLightUtils;
 import net.huaxi.reader.util.UMEventAnalyze;
 import net.huaxi.reader.util.listener.ScreenUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hugo.weaving.DebugLog;
+
+import static net.huaxi.reader.thread.HuaWeiPayTask.REQ_CODE_PAY;
 
 
 /**
@@ -48,7 +63,7 @@ import hugo.weaving.DebugLog;
  * create:     15/11/11
  * modtime:
  */
-public class BookContentActivity extends BaseActivity {
+public class BookContentActivity extends BaseActivity implements CallBackHuaweiPayInfo {
     /**
      * 是否自动订阅下一章
      */
@@ -68,8 +83,7 @@ public class BookContentActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //设置无标题∑
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ListenerManager.getInstance().setBackHuaweiPayInfo(this);
         //设置全屏
         ScreenUtils.fullScreen(this);
         setContentView(R.layout.activity_bookcontent);
@@ -414,6 +428,91 @@ public class BookContentActivity extends BaseActivity {
             mBookContentModel.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_CODE_PAY) {//连接成功
+            //当返回值是-1的时候表明用户支付调用调用成功
+            if (resultCode == Activity.RESULT_OK) {
+                //获取支付完成信息
+                PayResultInfo payResultInfo = HuaweiPay.HuaweiPayApi.getPayResultInfoFromIntent(data);
+                if (payResultInfo != null) {
+                    Map<String, Object> paramsa = new HashMap<>();
+                    if (PayStatusCodes.PAY_STATE_SUCCESS == payResultInfo.getReturnCode()) {
+
+                        paramsa.put("returnCode", payResultInfo.getReturnCode());
+                        paramsa.put("userName", payResultInfo.getUserName());
+                        paramsa.put("requestId", payResultInfo.getRequestId());
+                        paramsa.put("amount", payResultInfo.getAmount());
+                        paramsa.put("time", payResultInfo.getTime());
+
+                        String orderId = payResultInfo.getOrderID();
+                        if (!TextUtils.isEmpty(orderId)) {
+                            paramsa.put("orderID", orderId);
+                        }
+                        String withholdID = payResultInfo.getWithholdID();
+                        if (!TextUtils.isEmpty(withholdID)) {
+                            paramsa.put("withholdID", withholdID);
+                        }
+                        String errMsg = payResultInfo.getErrMsg();
+                        if (!TextUtils.isEmpty(errMsg)) {
+                            paramsa.put("errMsg", errMsg);
+                        }
+
+                        String noSigna = HuaWeiPayTask.getNoSign(paramsa);
+                        boolean success = HuaWeiPayTask.doCheck(noSigna, payResultInfo.getSign());
+
+                        if (success) {
+                                //华为充值成功后，是充值状态，刷新
+                                if (ReadPageState.BOOKTYPE_RECHARGE == mBookContentModel.getBookState()) {
+                                    LogUtils.debug("开始自动订阅!" + mBookContentModel.getBookState());
+                                    gotoPay();
+                                } else {
+                                    LogUtils.debug("刷新当前页面[GET]" + mBookContentModel.getBookState());
+                                    //登录阅读
+                                    if (ReadPageState.BOOKTYPE_UNLOGIN == mBookContentModel.getBookState()) {
+                                    }
+                                    clearAndRefresh();
+                                }
+                            Log.i(HuaWeiPayTask.TAG, "支付/订阅成功");
+                        } else {
+                            //支付成功，但是签名校验失败。CP需要到服务器上查询该次支付的情况，然后再进行处理。
+                            Log.i(HuaWeiPayTask.TAG, "支付/订阅成功，但是签名验证失败");
+                        }
+
+                        Log.i(HuaWeiPayTask.TAG, "商户名称: " + payResultInfo.getUserName());
+                        if (!TextUtils.isEmpty(orderId)) {
+                            Log.i(HuaWeiPayTask.TAG, "订单编号: " + orderId);
+                        }
+                        Log.i(HuaWeiPayTask.TAG, "支付金额: " + payResultInfo.getAmount());
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+                        String time = payResultInfo.getTime();
+                        if (time != null) {
+                            try {
+                                Date curDate = new Date(Long.valueOf(time));
+                                String str = formatter.format(curDate);
+                                Log.i(HuaWeiPayTask.TAG, "交易时间: " + str);
+                            } catch (NumberFormatException e) {
+                                Log.i(HuaWeiPayTask.TAG, "交易时间解析出错 time: " + time);
+                            }
+                        }
+                        Log.i(HuaWeiPayTask.TAG, "商户订单号: " + payResultInfo.getRequestId());
+                    } else if (PayStatusCodes.PAY_STATE_CANCEL == payResultInfo.getReturnCode()) {
+                        //支付失败，原因是用户取消了支付，可能是用户取消登录，或者取消支付
+                        Log.i(HuaWeiPayTask.TAG, "1支付失败：用户取消" + payResultInfo.getErrMsg());
+                    } else {
+                        //支付失败，其他一些原因
+                        Log.i(HuaWeiPayTask.TAG, "支付失败：" + payResultInfo.getErrMsg());
+                    }
+                } else {
+                    //支付失败
+                }
+            } else {
+                //当resultCode 为0的时候表明用户未登录，则CP可以处理用户不登录事件
+                Log.i(HuaWeiPayTask.TAG, "resultCode为0, 用户未登录 CP可以处理用户不登录事件");
+            }
+        }
+
+
+
         if(UserHelper.getInstance().isLogin()){
 //            ReadPageFactory singleton = ReadPageFactory.getSingleton();
 //            singleton.getBalanceAndDraw(new Canvas(),new PageContent(),true);
@@ -426,7 +525,7 @@ public class BookContentActivity extends BaseActivity {
             //重新加载控件
             initViews();
             parseIntent(getIntent());
-        loadContent();
+
             refreshCatalog();
             //初始化阅读页面的屏幕亮度
             ScreenLightUtils.initScreenBright(this);
@@ -456,4 +555,9 @@ public class BookContentActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void info(double productPrice, String orderId, String key) {
+        HuaWeiPayTask p = new HuaWeiPayTask(MainActivity.getConnect(),new HuaweiPayResult(getActivity(),REQ_CODE_PAY));
+        p.pay(key,"花溪小说","充值",productPrice,orderId);
+    }
 }
