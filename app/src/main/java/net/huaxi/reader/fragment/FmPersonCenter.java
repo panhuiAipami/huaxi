@@ -114,6 +114,11 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     private void initView(View view) {
         //赠送记录
         complimentary= (RelativeLayout) view.findViewById(R.id.usercenter_complimentary_layout);
@@ -357,7 +362,7 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
             }
             Intent intent = new Intent(getActivity(), MyInfoActivity.class);
             startActivity(intent);
-        } else if (v.getId() == rlCharge.getId()) {
+        } else if (v.getId() == rlCharge.getId()) {//充值
             if (!UserHelper.getInstance().isLogin()) {
                 UMEventAnalyze.countEvent(getActivity(), UMEventAnalyze.USER_TO_LOGIN);
                 startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -534,4 +539,5 @@ public class FmPersonCenter extends BaseFragment implements View.OnClickListener
             }
         });
     }
+
 }
