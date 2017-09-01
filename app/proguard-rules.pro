@@ -75,6 +75,8 @@
 
     #友盟
     -keep class com.umeng.**{*;}
+    #华为支付
+    -keep  class com.huawei.hms.**{*;}
 
     #支付宝
 #    -keep class com.alipay.android.app.IAliPay{*;}
