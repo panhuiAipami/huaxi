@@ -133,7 +133,7 @@ public class AppCheckUpdateTask extends EasyTask<Activity, Void, Void, AppVersio
     private AppVersion checkVersion() {
 //        Log.i("jiejie", "checkVersion: 方法被调用");
         AppVersion appVersion = null;
-        String url = URLConstants.APP_CHECK_UPDATE_URL;
+        String url = URLConstants.APP_CHECK_UPDATE_URL+PhoneUtils.getAppMetaData(AppContext.appContext);
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         GetRequest request = new GetRequest(url, future, future);
         RequestQueueManager.addRequest(request);

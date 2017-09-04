@@ -12,6 +12,7 @@ import com.tools.commonlibs.tools.PhoneUtils;
 import com.tools.commonlibs.tools.ViewUtils;
 
 import net.huaxi.reader.bean.AppVersion;
+import net.huaxi.reader.common.AppContext;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.https.GetRequest;
 import net.huaxi.reader.model.version.AppVersionHelper;
@@ -78,7 +79,7 @@ public class AppUpdateTask extends EasyTask<Activity, Void, Void, AppVersion> {
 //        String url = "http://172.16.0.192/h1/2";
 
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL,future,future);
+        GetRequest request = new GetRequest(URLConstants.APP_CHECK_UPDATE_URL+PhoneUtils.getAppMetaData(AppContext.appContext),future,future);
         RequestQueueManager.addRequest(request);
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS);

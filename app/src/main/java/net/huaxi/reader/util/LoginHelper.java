@@ -130,6 +130,8 @@ public class LoginHelper implements ShareResult{
     private IOpenApi openApi;
     private ShareBean bean;
 
+    boolean isLogin = false;
+
     public LoginHelper(Activity activity) {
         this.activity = activity;
         mQueue = Volley.newRequestQueue(activity);
@@ -146,8 +148,9 @@ public class LoginHelper implements ShareResult{
             super.handleMessage(msg);
             switch (msg.what){
                 case 0://成功
-                    addShareInfoRequest(bean.getShareUrl(),bean.taskId,bean.shareType);
+                    addShareInfoRequest(bean.getShareUrl(),bean.getTaskId(),bean.getShareType());
                     MainActivity.getTaskStatus();
+                    if(!isLogin)
                     ViewUtils.toastLong("分享成功");
                     break;
                 case 1://失败
@@ -251,7 +254,7 @@ public class LoginHelper implements ShareResult{
 
     //微信登录
     public void WxLogin() {
-
+        isLogin = true;
         WXApi = WXAPIFactory.createWXAPI(activity, WX_APP_ID, true);
         WXApi.registerApp(WX_APP_ID);
 
@@ -508,6 +511,7 @@ public class LoginHelper implements ShareResult{
      * qq空间分享
      */
     public void shareToQzone(String httpUrl, String iconUrl, String title, String description) {
+        isLogin = false;
         isShare = true;
         if (httpUrl == null || title == null || description == null) {
             return;
@@ -569,6 +573,7 @@ public class LoginHelper implements ShareResult{
     boolean isToFriend = false;
     public void shareWxWebPage(final String httpUrl, final boolean isToFriend, final String iconUrl, final String title,
                                final String description) {
+        isLogin = false;
         if (httpUrl == null || title == null || description == null) {
             LogUtils.debug("微信分享参数问题");
             return;

@@ -80,20 +80,20 @@ public class BookContentShareDialog extends BaseDialog {
                     case R.id.ll_weixin_friend:
                         getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), true, shareBean.getImgUrl(), shareBean.getTitle(),
                                 shareBean.getDesc());
-                        shareBean.shareType=1;
+                        shareBean.setShareType(2);
                         mDialog.dismiss();
                         break;
                     case R.id.ll_weixin_circle:
                         getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), false, shareBean.getImgUrl(), shareBean.getTitle(),
                                 shareBean.getDesc());
-                        shareBean.shareType=2;
+                        shareBean.setShareType(1);
                         mDialog.dismiss();
                         break;
                     case R.id.ll_qq_qzone:
                         try {
                             getLoginHelper(shareBean).shareToQzone(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean
                                     .getDesc());
-                            shareBean.shareType=3;
+                            shareBean.setShareType(3);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -101,7 +101,7 @@ public class BookContentShareDialog extends BaseDialog {
                         break;
                     case R.id.ll_weibo:
                         getLoginHelper(shareBean).shareWb(shareBean.getShareUrl(), shareBean.getImgUrl(), shareBean.getTitle(), shareBean.getDesc());
-                        shareBean.shareType=4;
+                        shareBean.setShareType(4);
                         mDialog.dismiss();
                         break;
                     default:

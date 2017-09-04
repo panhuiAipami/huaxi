@@ -16,8 +16,25 @@ public class ShareBean implements Serializable{
     private String title;
 
     private String desc;
-    public String taskId;
-    public int shareType;
+    private String taskId;
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public int getShareType() {
+        return shareType;
+    }
+
+    public void setShareType(int shareType) {
+        this.shareType = shareType;
+    }
+
+    private int shareType;
 
     public String getShareUrl() {
         return shareUrl;

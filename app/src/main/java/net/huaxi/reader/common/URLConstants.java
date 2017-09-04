@@ -29,7 +29,7 @@ public class URLConstants {
     public static final String SEARCH_BOOK_URL = url_base + "/book/search?searchword=%s&offset=%d&limit=%d";
     public static final String SEARCH_ABOUT_RECOMMED_BOOK_URL = url_base + "/book/rcm?block=%s";
     //App检查更新
-    public static final String APP_CHECK_UPDATE_URL = "http://api.hxdrive.net/api/checkver";
+    public static final String APP_CHECK_UPDATE_URL = "http://api.hxdrive.net/api/checkver?c=";
     //数据评论接口
     public static final String APP_BOOK_COMMENT_URL = url_base + "/book/comment?bk_mid=%s&p_size=%d&p_num=%d";
 

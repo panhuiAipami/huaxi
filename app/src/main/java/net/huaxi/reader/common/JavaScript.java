@@ -207,26 +207,26 @@ public class JavaScript {
         String sharedIcon = title[3].substring(index(title[3]), title[3].length());
         String shareType = title[4].substring(index(title[4]), title[4].length());
 
-        Log.e("shareH5Data", "-----userId=" + userId + "---strTitle=" + strTitle + "---memo=" + memo + "---sharedIcon=" + sharedIcon + "----shareType= " + shareType);
+        Log.e("shareH5Data", taskid+"-----userId=" + userId + "---strTitle=" + strTitle + "---memo=" + memo + "---sharedIcon=" + sharedIcon + "----shareType= " + shareType);
 
         ShareBean shareBean = new ShareBean();
         shareBean.setShareUrl(this.shareurl);
         shareBean.setImgUrl(TextUtils.isEmpty(sharedIcon) ? UserHelper.getInstance().getUser().getImgid() : sharedIcon);
         shareBean.setTitle(strTitle);
         shareBean.setDesc(memo);
-        shareBean.taskId = this.taskid;
+        shareBean.setTaskId(taskid);
 
 
         switch (Integer.parseInt(shareType)) {
             case 1:// 微信朋友圈
-                getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), false, shareBean.getImgUrl(), shareBean.getTitle(),
+                new LoginHelper(activity, shareBean).shareWxWebPage(shareBean.getShareUrl(), false, shareBean.getImgUrl(), shareBean.getTitle(),
                         shareBean.getDesc());
-                shareBean.shareType = 2;
+                shareBean.setShareType(1);
                 break;
             case 2://微信朋友
-                getLoginHelper(shareBean).shareWxWebPage(shareBean.getShareUrl(), true, shareBean.getImgUrl(), shareBean.getTitle(),
+                new LoginHelper(activity, shareBean).shareWxWebPage(shareBean.getShareUrl(), true, shareBean.getImgUrl(), shareBean.getTitle(),
                         shareBean.getDesc());
-                shareBean.shareType = 1;
+                shareBean.setShareType(2);
                 break;
 //            case 3://ios评价
 //                break;

@@ -290,7 +290,7 @@ public class ChapterContentLoader extends Thread {
                     loadListener.onLoading();
                 }
                 Request<JSONObject> request = null;
-                //点击订阅按钮需要发post请求
+                //点击订阅按钮需要发post请求，需要扣除花贝
                 if (mIsPost) {
 
 
@@ -317,7 +317,10 @@ public class ChapterContentLoader extends Thread {
                     }, pMap, "1.2");
                 } else {//默认阅读get请求
                     boolean auto_sub = SharedPreferenceUtil.getInstanceSharedPreferenceUtil().getBooleanIsDingyue();
-                    final String url = String.format(URLConstants.READPAGE_READ_CHAPTER,EncodeUtils.encodeString_UTF8(bookId), EncodeUtils.encodeString_UTF8(chapterId),EncodeUtils.encodeString_UTF8(auto_sub?"1":"0"));
+                    String url = String.format(URLConstants.READPAGE_READ_CHAPTER,EncodeUtils.encodeString_UTF8(bookId), EncodeUtils.encodeString_UTF8(chapterId),EncodeUtils.encodeString_UTF8(auto_sub?"1":"0"));
+                    if(Constants.CHANNEL_IS_HUAWEI){//华为
+                        url += "&consume_type="+ EncodeUtils.encodeString_UTF8("8");
+                    }
                     request = new GetRequest(url + CommonUtils.getPublicGetArgs(),
                             new Response.Listener<JSONObject>() {
                         @Override
