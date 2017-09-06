@@ -60,11 +60,10 @@ public class UpdateAPKService extends Service {
 		// 获取传值
 		url = intent.getStringExtra("url");
 		LogUtils.info("启动下载   :" + url);
-//		Log.i("TTTTTT", "onStart: 新版本apk下载路径"+url);
 
 		// 创建文件
 		downloadFile = intent.getStringExtra("urlfile");
-
+		LogUtils.info("新版本apk下载路径 = "+downloadFile);
 		//获取是否需要广播
 		needBroadcast = intent.getBooleanExtra("needBroadcase", false);
 		updateIntent = new Intent(this, UpdateAPKService.class);
