@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -335,7 +334,7 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
                 @Override
                 public void run() {
                     // 此方法必须在主线程调用
-                    Toast.makeText(AppContext.context(),"请先安装华为移动服务",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AppContext.context(),"请先安装华为移动服务",Toast.LENGTH_LONG).show();
                     HuaweiApiAvailability.getInstance().resolveError(getActivity(), errorCode, REQUEST_HMS_RESOLVE_ERROR);
                 }
             });
