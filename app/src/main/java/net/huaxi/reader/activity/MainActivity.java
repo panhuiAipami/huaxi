@@ -335,12 +335,13 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
                 @Override
                 public void run() {
                     // 此方法必须在主线程调用
+                    Toast.makeText(AppContext.context(),"请先安装华为移动服务",Toast.LENGTH_LONG).show();
                     HuaweiApiAvailability.getInstance().resolveError(getActivity(), errorCode, REQUEST_HMS_RESOLVE_ERROR);
                 }
             });
         } else {
             //其他错误码请参见开发指南或者API文档
-            Toast.makeText(this,"请先安装华为云服务",Toast.LENGTH_LONG).show();
+
         }
     }
 
