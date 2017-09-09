@@ -197,6 +197,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
 
     compile 'com.huawei.android.hms:iap:2.5.2.300'
+    compile 'com.huawei.android.hms:hwid:2.5.2.300'
 }
 
 

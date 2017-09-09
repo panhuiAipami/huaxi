@@ -190,6 +190,7 @@
             android:id="@+id/login_dialog_weixin_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:drawablePadding="10dp"
             android:drawableTop="@mipmap/login_weixin"

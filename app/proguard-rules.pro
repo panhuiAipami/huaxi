@@ -78,6 +78,16 @@
     #华为支付
     -keep  class com.huawei.hms.**{*;}
 
+    -ignorewarning
+
+    -keepattributes *Annotation*
+    -keepattributes Exceptions
+    -keepattributes InnerClasses
+    -keepattributes Signature
+    -keepattributes SourceFile,LineNumberTable
+
+    -keep class com.huawei.hms.**{*;}
+
     #支付宝
 #    -keep class com.alipay.android.app.IAliPay{*;}
 #    -keep class com.alipay.android.app.IAlixPay{*;}
