@@ -132,4 +132,5 @@ public class AppContext extends CommonApp {
 //		//设置状态栏颜色
 //		window.setStatusBarColor(getResources().getColor(R.color.c01_themes_color));
 //	}
+
 }

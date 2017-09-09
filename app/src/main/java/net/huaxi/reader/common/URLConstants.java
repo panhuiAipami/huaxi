@@ -75,6 +75,8 @@ public class URLConstants {
     public static final String ADD_COMMENT = url_base + "/book/comment";
     //账号密码登录
     public static final String PHONE_LOGIN = url_base+"/user/aclogin";//登录接口 post请求
+    //华为登录
+    public static final String HUAWEI_LOGIN = url_base+"/user/hwlogin";//登录接口 post请求
 
 
 

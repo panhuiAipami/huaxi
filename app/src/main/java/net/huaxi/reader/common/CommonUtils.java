@@ -60,6 +60,7 @@ public class CommonUtils {
         result += "&apid=" + EncodeUtils.encodeString_UTF8(PhoneUtils.getPackageName());
         result += "&apnm="+EncodeUtils.encodeString_UTF8("九域文学网");
         result += "&channel_type=" + EncodeUtils.encodeString_UTF8(String.valueOf(SharePrefHelper.getSexClassify()));
+        result += "&ch=" + PhoneUtils.getAppMetaData(AppContext.appContext);
         return result;
     }
 
@@ -70,6 +71,7 @@ public class CommonUtils {
      */
     public static Map<String, String> getPublicPostArgs() {
         Map<String, String> map = new HashMap<String, String>();
+        map.put("ch", PhoneUtils.getAppMetaData(AppContext.appContext));
         map.put("sr", COMMOUNTUTILS_SR);
         //软件版本号
         if (!StringUtils.isBlank(PhoneUtils.getVersionName())) {

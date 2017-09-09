@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +25,8 @@ import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.api.HuaweiApiAvailability;
 import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.entity.pay.PayStatusCodes;
+import com.huawei.hms.support.api.hwid.HuaweiId;
+import com.huawei.hms.support.api.hwid.HuaweiIdSignInOptions;
 import com.huawei.hms.support.api.pay.HuaweiPay;
 import com.huawei.hms.support.api.pay.PayResultInfo;
 import com.tools.commonlibs.activity.BaseActivity;
@@ -238,6 +241,7 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(client != null)
         client.disconnect();
     }
 
@@ -299,6 +303,11 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
         RequestQueueManager.addRequest(request1);
     }
 
+    HuaweiIdSignInOptions signInOptions = new
+            HuaweiIdSignInOptions.Builder(HuaweiIdSignInOptions.DEFAULT_SIGN_IN)
+            .requestOpenId()
+            .build();
+
     public void connect() {
         //创建华为移动服务client实例用以实现支付功能
         //需要指定api为HuaweiPay.PAY_API
@@ -306,6 +315,7 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
         if (Constants.CHANNEL_IS_HUAWEI) {
             client = new HuaweiApiClient.Builder(getActivity())
                     .addApi(HuaweiPay.PAY_API)
+                    .addApi(HuaweiId.SIGN_IN_API, signInOptions)
                     .addOnConnectionFailedListener(this)
                     .addConnectionCallbacks(this)
                     .build();
@@ -330,6 +340,7 @@ public class MainActivity extends BaseActivity implements GoToShuJia, HuaweiApiC
             });
         } else {
             //其他错误码请参见开发指南或者API文档
+            Toast.makeText(this,"请先安装华为云服务",Toast.LENGTH_LONG).show();
         }
     }
 

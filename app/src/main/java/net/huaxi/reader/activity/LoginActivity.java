@@ -2,20 +2,31 @@ package net.huaxi.reader.activity;
 
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.huawei.hms.support.api.client.PendingResult;
+import com.huawei.hms.support.api.client.ResultCallback;
+import com.huawei.hms.support.api.hwid.HuaweiId;
+import com.huawei.hms.support.api.hwid.HuaweiIdStatusCodes;
+import com.huawei.hms.support.api.hwid.SignInHuaweiId;
+import com.huawei.hms.support.api.hwid.SignInResult;
 import com.tools.commonlibs.activity.BaseActivity;
 import com.tools.commonlibs.cache.RequestQueueManager;
 import com.tools.commonlibs.tools.LogUtils;
@@ -32,7 +43,6 @@ import net.huaxi.reader.common.SharePrefHelper;
 import net.huaxi.reader.common.URLConstants;
 import net.huaxi.reader.common.UmengHelper;
 import net.huaxi.reader.common.UserHelper;
-import net.huaxi.reader.dialog.LoginVarnDailog;
 import net.huaxi.reader.https.PostRequest;
 import net.huaxi.reader.https.ResponseHelper;
 import net.huaxi.reader.statistic.ReportUtils;
@@ -73,6 +83,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     //登录需要
     private LoginHelper loginHelper;
     private ImageView login_back_imageview1;
+
+    public  int REQUEST_SIGN_IN_UNLOGIN = 0;//登陆
+    public  int REQUEST_SIGN_IN_AUTH = 1;//需要授权
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -159,6 +172,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         btLogin = (Button) findViewById(R.id.login_login_button);
         etPassword = (EditText) findViewById(R.id.login_password_edittext);
         etUsername = (EditText) findViewById(R.id.login_username_edittext);
+
+        Drawable drawable;
+        TextView login_dialog_weixin_img = (TextView) findViewById(R.id.login_dialog_weixin_img);
+        if(Constants.CHANNEL_IS_HUAWEI){
+            login_dialog_weixin_img.setText("华为登录");
+            drawable= ContextCompat.getDrawable(this,R.mipmap.huawei_login);
+        }else{
+            login_dialog_weixin_img.setText("微信登录");
+            drawable= ContextCompat.getDrawable(this,R.mipmap.login_weixin);
+        }
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        login_dialog_weixin_img.setCompoundDrawables(null,drawable,null,null);
     }
 
     @Override
@@ -202,10 +227,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                getHelperInstance().QQLogin(listener);
 //                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_QQ);
 //                break;
-            case R.id.login_dialog_weixin_img:
-                dialogLoading = ViewUtils.showProgressDimDialog(this);
-                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_WX);
-                getHelperInstance().WxLogin();
+            case R.id.login_dialog_weixin_img://微信登陆
+                if(Constants.CHANNEL_IS_HUAWEI){
+                  signInHuawei();
+                }else {
+                    dialogLoading = ViewUtils.showProgressDimDialog(this);
+                    UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_WX);
+                    getHelperInstance().WxLogin();
+                }
                 break;
             case R.id.login_login_button:
 //                Matcher phoneMatcher = phonePattern.matcher(etUsername.getText().toString());
@@ -229,21 +258,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
 
                 break;
-//            case R.id.login_forgetpassword_textview:
-//                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_FORGET);
-//                intent = new Intent(LoginActivity.this, ForgotPasswordSendActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.login_register_textview:
-//                intent = new Intent(LoginActivity.this, RegisterSendActivity.class);
-//                startActivity(intent);
-//                UMEventAnalyze.countEvent(LoginActivity.this, UMEventAnalyze.LOGIN_REGISTER);
-//                break;
-//            case R.id.login_instructions:
-//                intent = new Intent(LoginActivity.this, SimpleWebViewActivity.class);
-//                intent.putExtra("webtype", SimpleWebViewActivity.WEBTYPE_LOGIN_INSTRUCTIONS);
-//                startActivity(intent);
-//                break;
         }
     }
 
@@ -264,6 +278,59 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         map.putAll(CommonUtils.getPublicPostArgs());
         dialogLoading = ViewUtils.showProgressDialog(LoginActivity.this);
         Request request = new PostRequest(URLConstants.PHONE_LOGIN, new Response
+                .Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                btLogin.setEnabled(true);
+                dialogLoading.cancel();
+                try {
+                    JSONObject data = new JSONObject(response.toString());
+                    int code = data.getInt("code");
+                    if (code == 10000) {
+                        ViewUtils.toastShort(getString(R.string.login_success));
+                        setCookieAndUid(response);
+                        finish();
+                    } else {//data.get("message").toString()
+                        ViewUtils.toastShort("账号或密码错误");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dialogLoading.cancel();
+                    btLogin.setEnabled(true);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialogLoading.cancel();
+                btLogin.setEnabled(true);
+                ViewUtils.toastShort(error.getMessage());
+            }
+        }, map, "1.1");
+        request.setShouldCache(false);
+        RequestQueueManager.addRequest(request);
+    }
+
+
+
+    /***
+     * 华为登录
+     * @param openid
+     * @param nickname
+     * @param avatar
+     */
+    private void huaweiLogin(String openid,String nickname,String avatar) {
+        if (!NetUtils.checkNetworkUnobstructed()) {
+            return;
+        }
+        btLogin.setEnabled(false);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("openid", openid);
+        map.put("nickname", nickname);
+        map.put("avatar", avatar);
+        map.putAll(CommonUtils.getPublicPostArgs());
+        dialogLoading = ViewUtils.showProgressDialog(LoginActivity.this);
+        Request request = new PostRequest(URLConstants.HUAWEI_LOGIN, new Response
                 .Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -319,20 +386,91 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
+    /**
+     * 登录帐号，开发者可以直接参照该方法写法
+     */
+    private void signInHuawei() {
+        if(!MainActivity.getConnect().isConnected()){
+            MainActivity.getConnect().connect();
+            return;
+        }
+        PendingResult<SignInResult> signInResult = HuaweiId.HuaweiIdApi.signIn(MainActivity.getConnect());
+        signInResult.setResultCallback(new SignInResultCallback());
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (this.loginHelper != null) {
             this.loginHelper.ActivityResult(requestCode, resultCode, data);
         }
-    }
-
-
-    private void showVarnDialog() {
-        LoginVarnDailog giveCoinsDailog = new LoginVarnDailog(this);
-        if (!giveCoinsDailog.isShowing()) {
-            giveCoinsDailog.show();
+        if (requestCode == REQUEST_SIGN_IN_UNLOGIN) {
+            //当返回值是-1的时候表明用户登录成功，需要开发者再次调用signIn
+            if(resultCode == Activity.RESULT_OK) {
+                Log.i("huawei", "用户登录 成功");
+                signInHuawei();
+            } else {
+                //当resultCode 为0的时候表明用户未登录，则开发者可以处理用户不登录事件
+                Log.i("huawei", "用户登录失败或者未登录");
+            }
+        }
+        else if (requestCode == REQUEST_SIGN_IN_AUTH) {
+            //当返回值是-1的时候表明用户确认授权，
+            if(resultCode == Activity.RESULT_OK) {
+                Log.i("huawei", "用户已经授权");
+                SignInResult result = HuaweiId.HuaweiIdApi.getSignInResultFromIntent(data);
+                if (result.isSuccess()) {
+                    // 授权成功，result.getSignInHuaweiId()获取华为帐号信息
+                    SignInHuaweiId account = result.getSignInHuaweiId();
+                    huaweiLogin(account.getOpenId(),account.getDisplayName(),account.getPhotoUrl());
+                    Log.i("huawei", "用户授权成功，直接返回帐号信息"+account.toString());
+                } else {
+                    // 授权失败，result.getStatus()获取错误原因
+                    Log.i("huawei", "授权失败 失败原因:" + result.getStatus().toString());
+                }
+            } else {
+                //当resultCode 为0的时候表明用户未授权，则开发者可以处理用户未授权事件
+                Log.i("huawei", "用户未授权");
+            }
         }
     }
+
+
+    class SignInResultCallback implements ResultCallback<SignInResult> {
+        @Override
+        public void onResult(SignInResult result) {
+            if (result.isSuccess()) {
+                //可以获取帐号的 openid，昵称，头像 at信息
+                SignInHuaweiId account = result.getSignInHuaweiId();
+                huaweiLogin(account.getOpenId(),account.getDisplayName(),account.getPhotoUrl());
+                Log.i("huawei", "登录成功" + account.toString());
+            } else {
+                //当未登录或者未授权，回调的result中包含处理该种异常的intent，开发者只需要通过getData将对应异常的intent获取出来
+                //并通过startActivityForResult启动对应的异常处理界面。再相应的页面处理完毕后返回结果后，开发者需要做相应的处理
+                if (result.getStatus().getStatusCode() == HuaweiIdStatusCodes.SIGN_IN_UNLOGIN) {
+                    Log.i("huawei", "帐号未登录");
+                    Intent intent = result.getData();
+                    if (intent != null) {
+                        startActivityForResult(intent, REQUEST_SIGN_IN_UNLOGIN);
+                    } else {
+                        //异常场景，未知原因导致的登录失败，开发者可以在这走容错处理
+                    }
+                } else if (result.getStatus().getStatusCode() == HuaweiIdStatusCodes.SIGN_IN_AUTH) {
+                    Log.i("huawei", "帐号已登录，需要用户授权");
+                    Intent intent = result.getData();
+                    if (intent != null) {
+                        startActivityForResult(intent, REQUEST_SIGN_IN_AUTH);
+                    } else {
+                        //异常场景，未知原因导致的登录失败，开发者可以在这走容错处理
+                    }
+                } else {
+                    //其他错误码，开发者可以在这走容错处理
+                }
+            }
+        }
+    }
+
+
 
     @Override
     protected void onStop() {
