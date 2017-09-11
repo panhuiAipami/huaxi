@@ -102,12 +102,12 @@ public class BookContentRender {
         //登录按钮(根据类型判断)
         int y = drawPayButton(canvas, pageContent.getBookType(), bitmap);
         //折后价格(现价)
-        String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
+        String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price),  TextUtils.isEmpty(pageContent.getPrice())?"0":pageContent.getPrice());
         int disCountToMarginX = (int) (BookContentSettings.getInstance().getScreenWidth() - (int) mPaint.measureText(price)) / 2;
         y = drawPayDiscount(canvas, price,disCountToMarginX, y);
         if (pageContent.isHasDiscount()) {
             //原价
-            String originPrice = String.format(CommonApp.context().getString(R.string.readpage_pay_originprice), pageContent.getOriginPrice());
+            String originPrice = String.format(CommonApp.context().getString(R.string.readpage_pay_originprice), TextUtils.isEmpty(pageContent.getOriginPrice())?"0":pageContent.getOriginPrice());
             y = drawPayInitialPrice(canvas, originPrice,disCountToMarginX, y);
         }
         //绘制分割线
@@ -141,7 +141,7 @@ public class BookContentRender {
 //        drawMonthlyTips(canvas, y2);
 //        }
             //折后价格(现价)
-            String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), pageContent.getPrice());
+            String price = String.format(CommonApp.context().getString(R.string.readpage_pay_price), TextUtils.isEmpty(pageContent.getPrice())?"0":pageContent.getPrice());
             p= Integer.parseInt(TextUtils.isEmpty(pageContent.getPrice())?"0":pageContent.getPrice());
 //        h=Integer.parseInt(pageContent.get)
 //        Log.i("TAG", "drawStatePayCancas: 现价="+p);
