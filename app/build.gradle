@@ -14,10 +14,10 @@ android {
         applicationId "net.huaxi.reader"
         minSdkVersion 14
         targetSdkVersion 22
-        //最新版本3 , 每次打包需要累加1;
-        versionCode 3
+        //最新版本4 , 每次打包需要累加1;
+        versionCode 4
         //版本名每次正式发包时需要修改;
-        versionName "1.0.5"
+        versionName "1.0.6"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
