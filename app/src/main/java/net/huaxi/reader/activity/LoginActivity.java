@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -76,10 +75,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     };
     private Button btLogin;
     private EditText etUsername, etPassword;
-    //正则表达式
-//    private Pattern phonePattern = Pattern.compile("^((13[0-9])|14[57]|(15[^4,\\D])|17[0-9]|" +
-//            "(18[0-9]))\\d{8}$");
-//    private Pattern passwordPattern = Pattern.compile("^\\S{6,12}$");
     //登录需要
     private LoginHelper loginHelper;
     private ImageView login_back_imageview1;
@@ -175,15 +170,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         Drawable drawable;
         TextView login_dialog_weixin_img = (TextView) findViewById(R.id.login_dialog_weixin_img);
+        TextView login_dialog_huawei_img = (TextView) findViewById(R.id.login_dialog_huawei_img);
+
         if(Constants.CHANNEL_IS_HUAWEI){
-            login_dialog_weixin_img.setText("华为登录");
-            drawable= ContextCompat.getDrawable(this,R.mipmap.huawei_login);
+            login_dialog_huawei_img.setVisibility(View.VISIBLE);
         }else{
-            login_dialog_weixin_img.setText("微信登录");
-            drawable= ContextCompat.getDrawable(this,R.mipmap.login_weixin);
+            login_dialog_huawei_img.setVisibility(View.GONE);
         }
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        login_dialog_weixin_img.setCompoundDrawables(null,drawable,null,null);
     }
 
     @Override
@@ -216,25 +209,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     Dialog dialogLoading = null;
 
-    @OnClick({login_back_imageview, R.id.login_login_button, R.id.login_dialog_weixin_img})
+    @OnClick({login_back_imageview, R.id.login_login_button, R.id.login_dialog_weixin_img,R.id.login_dialog_huawei_img})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case login_back_imageview://返回
                 onKeyBack();
                 break;
-//            case R.id.login_dialog_qq_img:
-//                getHelperInstance().QQLogin(listener);
-//                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_QQ);
-//                break;
+            case R.id.login_dialog_huawei_img://华为登录
+                signInHuawei();
+                break;
             case R.id.login_dialog_weixin_img://微信登陆
-                if(Constants.CHANNEL_IS_HUAWEI){
-                  signInHuawei();
-                }else {
-                    dialogLoading = ViewUtils.showProgressDimDialog(this);
-                    UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_WX);
-                    getHelperInstance().WxLogin();
-                }
+                dialogLoading = ViewUtils.showProgressDimDialog(this);
+                UMEventAnalyze.countEvent(this, UMEventAnalyze.LOGIN_WX);
+                getHelperInstance().WxLogin();
                 break;
             case R.id.login_login_button:
 //                Matcher phoneMatcher = phonePattern.matcher(etUsername.getText().toString());

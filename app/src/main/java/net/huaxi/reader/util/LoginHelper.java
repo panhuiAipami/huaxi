@@ -85,6 +85,7 @@ public class LoginHelper implements ShareResult{
     public static final String QQLOGIN_APP_ID = "1105023260";//真
 //    public static final String QQLOGIN_APP_ID = "100703379";//测试用
 
+    //微信appId
     public static final String WX_APP_ID = "wxdbd49a9d87fa9a19";
     public static final String WX_APP_PARTNERID = "1298708001";
 

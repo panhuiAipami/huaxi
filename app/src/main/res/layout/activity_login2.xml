@@ -186,17 +186,36 @@
             android:src="@mipmap/login_qq"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
         <TextView
             android:id="@+id/login_dialog_weixin_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
             android:drawablePadding="10dp"
             android:drawableTop="@mipmap/login_weixin"
             android:text="微信登录"
             android:textColor="#999"
             android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/login_dialog_huawei_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/huawei_login"
+                android:text="华为登录"
+                android:textColor="#999"
+                android:textSize="13dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

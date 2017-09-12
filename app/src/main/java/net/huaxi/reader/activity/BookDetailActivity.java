@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -483,9 +484,15 @@ public class BookDetailActivity extends BaseActivity implements ChapterClickList
                 > 10000 ? totalReaders /
                 10000 + getString(R.string.detail_ten_thousand_chase) : totalReaders
                 + getString(R.string.detail_one_chase);
+
         mTvDetailAttent.setText(readers);
         String score = "" + Utility.formatScene(mBookDetail.getTotalScore());
         mTvDetailStar.setText(score);
+        if(TextUtils.isEmpty(mBookDetail.getCatName())){
+            mTvDetailClassify.setVisibility(View.GONE);
+        }else{
+            mTvDetailClassify.setVisibility(View.VISIBLE);
+        }
         mTvDetailClassify.setText(mBookDetail.getCatName());
         String isEnd = mBookDetail.getIsFinish() == 0 ? getString(R.string.detail_serial) : mBookDetail.getIsFinish() == 1
                 ? getString(R.string.detail_finsh) : getString(R.string.detail_unknow);
