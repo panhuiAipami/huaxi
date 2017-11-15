@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Book Library</string>
+
+    <string name="book_reader_bookshelf">书架</string>
+    <string name="book_reader_discover">周刊</string>
+    <string name="book_reader_bookstore">书城</string>
+    <string name="book_reader_me">我</string>
+    <string name="please_check_network_info">请检查网络连接</string>
+    <string name="book_reader_pay_chapter">付费章节</string>
+    <string name="book_reader_pay_prompt">当前章节为付费章节，点击购买继续阅读</string>
+    <string name="book_reader_recharge_title">余额不足</string>
+    <string name="book_reader_recharge_message">请充值后继续阅读</string>
+    <string name="book_reader_recharge_negative_text">以后充值</string>
+    <string name="book_reader_recharge_positive_text">前往充值</string>
+
+    <string name="book_reader_auto_buy">自动购买</string>
+    <string name="book_reader_auto_buy_prompt">开启自动购买后系统将自动扣费，避免弹框打扰</string>
+    <string name="book_reader_hand_buy">每次提醒</string>
+    <string name="book_reader_buy_text">购买(消耗%s花贝)</string>
+    <string name="book_reader_buy_successful_text">购买成功</string>
+
+    <string name="book_reader_prompt">温馨提示</string>
+    <string name="book_reader_delete_book_prompt">您确定从书架上移除这本书?</string>
+    <string name="book_reader_cancel_text">取消</string>
+    <string name="book_reader_sure">确认</string>
+    <string name="book_reader_setting_text">立即开启</string>
+    <string name="book_reader_read_progress_text">阅读%d%%</string>
+    <string name="book_reader_see_all_book_text">查看全部%d本书</string>
+    <string name="book_reader_see_all_text">查看全部</string>
+
+    <!-- xlistview -->
+    <string name="xlistview_header_hint_normal">下拉可以刷新</string>
+    <string name="xlistview_header_hint_ready">松开立即刷新</string>
+    <string name="xlistview_header_hint_loading">正在刷新&#8230;</string>
+    <string name="xlistview_header_last_time">最后更新：</string>
+
+
+    <string name="listview_header_hint_normal">下拉可以刷新</string>
+    <string name="listview_header_hint_release">松开立即刷新</string>
+    <string name="nomore_loading">no more to be loaded</string>
+    <string name="refreshing">正在刷新</string>
+    <string name="refresh_done">刷新完成</string>
+    <string name="loading_done">loading done</string>
+    <string name="listview_header_last_time">last update：</string>
+
+    <string name="book_reader_sure_to_login_out">您确定要退出吗?</string>
+
+    <string name="book_reader_is_loading">登录中...</string>
+    <string name="book_reader_login_text">未登录</string>
+    <string name="book_reader_recharge_text">充值</string>
+    <string name="book_reader_reload_text">重新登录</string>
+    <string name="book_reader_recent_read_text">最近阅读</string>
+    <string name="book_reader_no_recent_read_book">无最近阅读书籍</string>
+
+    <string name="book_reader_prompt_text">提示</string>
+    <string name="book_reader_sure_to_add_shelf">是否加入书架？</string>
+</resources>

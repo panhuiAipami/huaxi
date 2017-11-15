@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="book_reader_main_color">#3385ff</color>
+    <color name="book_reader_main_night_color">#1a3c6e</color>
+
+    <color name="book_reader_main_night_press_color">#122748</color>
+
+    <color name="book_reader_white">#ffffff</color>
+    <color name="book_reader_black">#000000</color>
+
+    <color name="app_background">@color/book_reader_white</color>
+    <color name="main_bottom_color">#fafafa</color>
+    <color name="book_reader_top_bar_color">@color/book_reader_white</color>
+    <color name="book_reader_bottom_operation_view_color">@color/book_reader_white</color>
+    <color name="book_reader_container_color">#f2f2f2</color>
+    <color name="book_reader_home_bottom_text_choose_color">@color/book_reader_main_color</color>
+    <color name="book_reader_home_bottom_text_color">#858c96</color>
+    <color name="book_reader_bottom_operation_text_press_color">#8DB2EB</color>
+    <color name="book_reader_bottom_operation_text_color">@color/book_reader_main_color</color>
+    <color name="book_reader_read_page_default_background">#F5F6F8</color>
+    <color name="book_reader_divide_line_color">#e6e6e6</color>
+    <color name="book_reader_divide_line_night_color">#212121</color>
+    <color name="book_reader_half_black">#7f000000</color>
+    <color name="book_reader_common_text_color">#333333</color>
+    <color name="book_reader_read_theme_night">@color/book_reader_black</color>
+    <color name="book_reader_common_press_color">#f7f7f7</color>
+    <color name="book_reader_common_press_night_color">#1a1a1a</color>
+
+    <!--阅读页面-->
+    <color name="book_reader_reader_text_color">#333333</color>
+    <color name="book_reader_reader_text_night_color">#434343</color>
+    <color name="book_reader_read_day_background">#f6f6f8</color>
+    <color name="book_reader_read_night_background">#111113</color>
+    <color name="book_reader_read_title_color">#bbbbbb</color>
+    <color name="book_reader_read_title_night_color">#222222</color>
+    <color name="book_reader_read_bottom_night_background">#090b0d</color>
+    <color name="book_reader_chapter_item_night_color">#393939</color>
+    <color name="book_reader_chapter_night_background">#161617</color>
+    <color name="book_reader_chapter_free_text_day_color">@color/book_reader_main_color</color>
+    <color name="book_reader_chapter_free_text_night_color">@color/book_reader_main_night_color
+    </color>
+    <color name="book_reader_chapter_not_read_day_color">#aaaaaa</color>
+    <color name="book_reader_chapter_not_read_night_color">#585858</color>
+
+    <!--原生书城夜间模式-->
+    <color name="book_reader_store_container_night_background">#262626</color>
+    <color name="book_reader_pay_text_day_color">#888888</color>
+    <color name="book_reader_pay_text_night_color">#5f5f5f</color>
+    <color name="book_reader_recharge_text_night_color">@color/book_reader_main_night_color</color>
+    <color name="book_reader_divide_view_night_background">#1a1a1a</color>
+    <color name="book_reader_store_divide_line_night_color">#1a1a1a</color>
+    <color name="book_reader_book_title_night_color">#888888</color>
+    <color name="book_reader_book_author_day_color">#888888</color>
+    <color name="book_reader_book_author_night_color">#5f5f5f</color>
+    <color name="book_reader_all_book_day_color">#bbbbbb</color>
+    <color name="book_reader_all_book_night_color">#626262</color>
+    <color name="book_reader_book_line_night_color">#1a1a1a</color>
+
+</resources>

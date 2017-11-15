@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    android:background="@color/book_reader_bottom_operation_view_color"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/book_reader_bookshelf_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/book_reader_book_shelf_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_reader_bookshelf"
+            android:textColor="@color/book_reader_home_bottom_text_selector"
+            android:textSize="@dimen/book_reader_home_bottom_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/book_reader_discover_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/book_reader_discover_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_reader_discover"
+            android:textColor="@color/book_reader_home_bottom_text_selector"
+            android:textSize="@dimen/book_reader_home_bottom_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/book_reader_bookstore_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/book_reader_book_store_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_reader_bookstore"
+            android:textColor="@color/book_reader_home_bottom_text_selector"
+            android:textSize="@dimen/book_reader_home_bottom_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/book_reader_me_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/book_reader_me_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_reader_me"
+            android:textColor="@color/book_reader_home_bottom_text_selector"
+            android:textSize="@dimen/book_reader_home_bottom_text_size" />
+    </LinearLayout>
+</LinearLayout>

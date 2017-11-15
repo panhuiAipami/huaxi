@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/book_reader_bottom_layout_height"
+    android:background="@color/book_reader_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/book_reader_sub_text_view"
+        android:layout_width="55dp"
+        android:layout_height="@dimen/book_reader_bottom_layout_height"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="A"
+        android:textColor="@color/book_reader_bottom_text_selector"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/book_reader_plus_text_view"
+        android:layout_width="55dp"
+        android:layout_height="@dimen/book_reader_bottom_layout_height"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        android:text="A"
+        android:textColor="@color/book_reader_bottom_text_selector"
+        android:textSize="26sp" />
+
+    <com.spriteapp.booklibrary.widget.TextSizeView
+        android:id="@+id/book_reader_text_size_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/book_reader_plus_text_view"
+        android:layout_toRightOf="@id/book_reader_sub_text_view"
+        app:ball_color="@color/book_reader_white"
+        app:left_color="@color/book_reader_main_color"
+        app:right_color="@color/book_reader_divide_line_color" />
+</RelativeLayout>

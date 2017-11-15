@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="book_reader_divide_line_height">0.6dp</dimen>
+    <dimen name="book_reader_bottom_layout_height">50dp</dimen>
+    <dimen name="book_reader_top_bar_height">47dp</dimen>
+    <dimen name="book_reader_page_right_layout_padding">15dp</dimen>
+
+    <dimen name="book_reader_home_bottom_text_size">12sp</dimen>
+    <dimen name="book_reader_bottom_operation_text_size">12sp</dimen>
+
+    <dimen name="book_reader_horizontal_margin">15dp</dimen>
+    <dimen name="book_reader_store_vertical_margin">15dp</dimen>
+</resources>

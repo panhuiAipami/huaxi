@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="59dp">
+
+        <ImageView
+            android:id="@+id/book_reader_flower_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/book_reader_horizontal_margin"
+            android:src="@drawable/book_reader_flower_money_image" />
+
+        <TextView
+            android:id="@+id/book_reader_real_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/book_reader_flower_money"
+            android:textColor="@color/book_reader_chapter_item_night_color"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/book_reader_flower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/book_reader_real_point"
+            android:src="@drawable/book_reader_flower_image" />
+
+        <TextView
+            android:id="@+id/book_reader_false_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/book_reader_flower"
+            android:textColor="@color/book_reader_chapter_item_night_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/book_reader_recharge_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/book_reader_horizontal_margin"
+            android:background="@drawable/book_reader_recharge_text_selector"
+            android:gravity="center"
+            android:minWidth="63dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:paddingTop="2dp"
+            android:text="@string/book_reader_login_text"
+            android:textColor="@color/book_reader_bottom_text_selector"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/book_reader_divide_view"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#f2f2f2" />
+</LinearLayout>

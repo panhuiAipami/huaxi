@@ -1,0 +1,122 @@
+package com.spriteapp.booklibrary.widget;
+
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.spriteapp.booklibrary.R;
+
+/**
+ * Created by kuangxiaoguo on 2017/7/21.
+ */
+
+public class ReadRightTitleLayout extends LinearLayout {
+
+    private View mView;
+    private Context mContext;
+    private ImageView mBuyImageView;
+    private ImageView mAddShelfImageView;
+    private ImageView mHomeImageView;
+    private ImageView mRewardImageView;
+    private ImageView mMoreImageView;
+    private ReadTitleListener mTitleListener;
+
+    public ReadRightTitleLayout(Context context) {
+        this(context, null);
+    }
+
+    public ReadRightTitleLayout(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public ReadRightTitleLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        mContext = context;
+        initView();
+    }
+
+    private void initView() {
+        mView = LayoutInflater.from(mContext).inflate(R.layout.book_reader_read_title_layout, null);
+        addView(mView);
+        mBuyImageView = (ImageView) mView.findViewById(R.id.book_reader_buy_image_view);
+        mAddShelfImageView = (ImageView) mView.findViewById(R.id.book_reader_add_shelf_image_view);
+        mHomeImageView = (ImageView) mView.findViewById(R.id.book_reader_home_image_view);
+        mRewardImageView = (ImageView) mView.findViewById(R.id.book_reader_reward_image_view);
+        mMoreImageView = (ImageView) mView.findViewById(R.id.book_reader_more_image_view);
+        setListener();
+    }
+
+    private void setListener() {
+        click(mBuyImageView);
+        click(mAddShelfImageView);
+        click(mRewardImageView);
+        click(mMoreImageView);
+        click(mHomeImageView);
+    }
+
+    private void click(final View view) {
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTitleListener == null) {
+                    return;
+                }
+                if (view == mBuyImageView) {
+                    mTitleListener.clickBuy();
+                } else if (view == mAddShelfImageView) {
+                    mTitleListener.clickAddShelf();
+                } else if (view == mRewardImageView) {
+                    mTitleListener.clickReward();
+                } else if (view == mMoreImageView) {
+                    mTitleListener.clickMore();
+                } else if (view == mHomeImageView) {
+                    mTitleListener.clickHome();
+                }
+            }
+        });
+    }
+
+    public void changeMode(boolean isNight) {
+        mBuyImageView.setImageResource(isNight ? R.drawable.book_reader_buy_night_selector
+                : R.drawable.book_reader_buy_day_selector);
+        mAddShelfImageView.setImageResource(isNight ? R.drawable.book_reader_add_shelf_night_selector
+                : R.drawable.book_reader_add_shelf_day_selector);
+        mRewardImageView.setImageResource(isNight ? R.drawable.book_reader_reward_night_selector
+                : R.drawable.book_reader_reward_day_selector);
+        mMoreImageView.setImageResource(isNight ? R.drawable.book_reader_more_night_selector
+                : R.drawable.book_reader_more_day_selector);
+        mHomeImageView.setImageResource(isNight ? R.drawable.book_reader_home_night_selector
+                : R.drawable.book_reader_home_day_selector);
+    }
+
+    public interface ReadTitleListener {
+        void clickBuy();
+
+        void clickAddShelf();
+
+        void clickReward();
+
+        void clickMore();
+
+        void clickHome();
+    }
+
+    public void setAddShelfViewState(boolean hasAddShelf) {
+        if (mAddShelfImageView == null) {
+            return;
+        }
+        mAddShelfImageView.setVisibility(hasAddShelf ? GONE : VISIBLE);
+    }
+
+    public void setTitleListener(ReadTitleListener mTitleListener) {
+        this.mTitleListener = mTitleListener;
+    }
+
+    public void setBuyImageState(boolean show) {
+        mBuyImageView.setVisibility(show ? VISIBLE : GONE);
+    }
+}

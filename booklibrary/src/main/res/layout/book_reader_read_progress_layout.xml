@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/book_reader_top_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/book_reader_bottom_layout_height">
+
+        <LinearLayout
+            android:id="@+id/book_reader_name_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/book_reader_title_shape"
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp">
+
+            <TextView
+                android:id="@+id/book_reader_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="150dp"
+                android:textColor="@color/book_reader_main_color"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/book_reader_percent_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/book_reader_main_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/book_reader_triangle_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/book_reader_name_layout"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/book_reader_triangle_day_image" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/book_reader_progress_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/book_reader_bottom_layout_height"
+        android:layout_below="@id/book_reader_top_layout"
+        android:layout_marginTop="5dp"
+        android:background="@color/book_reader_white">
+
+        <ImageView
+            android:id="@+id/book_reader_sub_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/book_reader_bottom_layout_height"
+            android:layout_centerVertical="true"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:src="@drawable/book_reader_progress_sub_selector" />
+
+        <ImageView
+            android:id="@+id/book_reader_add_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/book_reader_bottom_layout_height"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:src="@drawable/book_reader_progress_add_selector" />
+
+        <SeekBar
+            android:id="@+id/book_reader_progress_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/book_reader_add_image_view"
+            android:layout_toRightOf="@+id/book_reader_sub_image_view"
+            android:maxHeight="1dp"
+            android:progressDrawable="@drawable/book_reader_read_progress_layer"
+            android:thumb="@drawable/book_reader_read_ball_selector" />
+    </RelativeLayout>
+
+</RelativeLayout>

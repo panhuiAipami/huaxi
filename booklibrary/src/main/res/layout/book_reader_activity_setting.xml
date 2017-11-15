@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="52dp"
+        android:background="@color/book_reader_white"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="自动购买"
+            android:textColor="@color/book_reader_common_text_color"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/book_reader_auto_buy_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/book_reader_white"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="仿真翻页"
+            android:textColor="@color/book_reader_common_text_color"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/book_reader_page_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/book_reader_clear_cache_layout"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/book_reader_common_press_selector"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="清理缓存"
+            android:textColor="@color/book_reader_common_text_color"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/book_reader_arrow_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/book_reader_right_arrow_image" />
+
+        <TextView
+            android:id="@+id/book_reader_cache_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/book_reader_arrow_image_view"
+            android:textColor="#7C7C7C"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/book_reader_login_out_button"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/book_reader_common_press_selector"
+        android:text="退出登录"
+        android:textColor="@color/book_reader_main_color"
+        android:textSize="18sp" />
+</LinearLayout>
