@@ -1,42 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context="com.spriteapp.huaxireader.net.spriteapp.huaxireader.MainActivity">
 
-    <net.huaxi.reader.view.UITabBottom
-        android:id="@+id/main_tools_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/c12_themes_color"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <View
-        android:id="@+id/main_split_view"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_above="@id/main_tools_bottom"
-        android:background="@color/c09_divider_color" />
-    <!--底部的蒙版-->
-    <RelativeLayout
-        android:id="@+id/main_tools_mask_backround"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:layout_alignParentBottom="true"
-        android:alpha="0.5"
-        android:background="#000"
-        android:visibility="gone">
-
-    </RelativeLayout>
-    <!--<android.support.v4.view.ViewPager-->
-    <net.huaxi.reader.view.MainViewPager
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/main_split_view" />
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

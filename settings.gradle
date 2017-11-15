@@ -1,1 +1,1 @@
-include ':app', ':xs-libs', ":volley"
+include ':app', ':booklibrary'

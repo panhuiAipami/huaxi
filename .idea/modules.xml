@@ -3,13 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/booklibrary/booklibrary.iml" filepath="$PROJECT_DIR$/booklibrary/booklibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/huaxiandroid.iml" filepath="$PROJECT_DIR$/huaxiandroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/huaxiandroid.iml" filepath="$PROJECT_DIR$/huaxiandroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
-      <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xs-libs/xs-libs.iml" filepath="$PROJECT_DIR$/xs-libs/xs-libs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xs-libs/xs-libs.iml" filepath="$PROJECT_DIR$/xs-libs/xs-libs.iml" />
     </modules>
   </component>
 </project>

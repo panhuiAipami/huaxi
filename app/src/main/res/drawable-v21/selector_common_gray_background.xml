@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><!--<selector xmlns:android="http://schemas.android.com/apk/res/android">--><!--<item android:state_pressed="true" >--><!--<color android:color="#ececec"></color>--><!--</item>--><!--<item>--><!--<color android:color="#fff"></color>--><!--</item>--><!--</selector>-->
-
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#e0e0e0">
-    <item>
-        <color android:color="@color/c12_themes_color"></color>
-    </item>
-</ripple>
