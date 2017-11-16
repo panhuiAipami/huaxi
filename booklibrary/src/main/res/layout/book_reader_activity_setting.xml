@@ -90,6 +90,19 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/app_updata"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/book_reader_common_press_selector"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="检测新版本"
+        android:textColor="@color/book_reader_common_text_color"
+        android:textSize="16sp"></TextView>
+
     <Button
         android:id="@+id/book_reader_login_out_button"
         android:layout_width="300dp"

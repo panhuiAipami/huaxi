@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,19 +13,26 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.AutoSubEnum;
 import com.spriteapp.booklibrary.enumeration.PageStyleEnum;
-import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
+import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.presenter.LoginOutPresenter;
 import com.spriteapp.booklibrary.ui.view.LoginOutView;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideCacheUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 
-import de.greenrobot.event.EventBus;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by kuangxiaoguo on 2017/7/18.
@@ -35,6 +43,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
     private static final String TAG = "SettingActivity";
     private RelativeLayout mClearCacheLayout;
     private TextView mCacheTextView;
+    private TextView app_updata;
     private Switch mAutoBuySwitch;
     private Switch mPageModeSwitch;
     private Button mLoginOutButton;
@@ -76,6 +85,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
         super.findViewId();
         mClearCacheLayout = (RelativeLayout) findViewById(R.id.book_reader_clear_cache_layout);
         mCacheTextView = (TextView) findViewById(R.id.book_reader_cache_text_view);
+        app_updata = (TextView) findViewById(R.id.app_updata);
         mAutoBuySwitch = (Switch) findViewById(R.id.book_reader_auto_buy_switch);
         mPageModeSwitch = (Switch) findViewById(R.id.book_reader_page_mode_switch);
         mLoginOutButton = (Button) findViewById(R.id.book_reader_login_out_button);
@@ -111,6 +121,46 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
             @Override
             public void onClick(View v) {
                 showLoginOutDialog();
+            }
+        });
+        app_updata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {//检测新版本
+                String appMetaData = Util.getAppMetaData(SettingActivity.this);
+                Log.d("appMetaData", appMetaData);
+                BookApi.getInstance()
+                        .service
+                        .app_Upate(com.spriteapp.booklibrary.util.Util.getAppMetaData(SettingActivity.this))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Base<AppUpDateModel>>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull Base<AppUpDateModel> appUpDateModelBase) {
+                                Log.d("update11", appUpDateModelBase.toString() + "yyy");
+                                if (appUpDateModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                                    String name = appUpDateModelBase.getData().toString();
+                                    Log.d("update11", name + "哈g哈");
+                                    Util.chechForUpdata("checkForUpdates", appUpDateModelBase.getData(), SettingActivity.this, true);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.d("update11", "失败");
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         });
     }

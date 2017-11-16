@@ -32,6 +32,41 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        yingyongbao {}//应用宝
+        huaxiweb {}//花溪服务器
+        huawei {}//华为
+        xiaomi {}//小米
+        baidu {}//百度
+        alibaba {}//阿里
+        jifeng {}//机锋
+        zhushou360 {}//360助手
+        baiduzhushou {}//百度助手
+        wandoujia {}//豌豆荚
+        anzhi {}//安智
+        yingyonghui {}//应用汇
+        sougoushichang {}//搜狗市场
+        sougouzhushou {}//搜狗助手
+        meizu {}//魅族
+        lenovo {}//联想商店
+        oppo {}//oppo
+        vivo {}//vivo
+        google_play {}//谷歌商店
+        yidianzixun {}//一点资讯
+        kuhua {}//酷划
+        xiaoyaojing {}//小妖精
+        weibo {}//微博
+        jinritoutiao {}//今日头条
+        fans {}//粉丝
+        chuizi {}//锤子
+        qzone {}//qq空间
+        kuaishou {}//快手
+        wanshengjie {}//万圣节
+    }
+    //批量配置
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [CHANNEL: name]
+    }
 }
 
 dependencies {

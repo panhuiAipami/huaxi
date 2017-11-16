@@ -9,6 +9,7 @@ import com.spriteapp.booklibrary.model.response.CommentResponse;
 import com.spriteapp.booklibrary.model.response.LoginResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
+import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 
 import java.util.List;
 
@@ -141,9 +142,8 @@ public interface BookApiService {
                                     @Query("token") String token);
 
     ///////////////////////////////////////////////////////////////////////////////
-    @GET("user_wxlogin")
-    Observable<Base<Void>> login(@Query("code") String code,
-                                 @Query("u_ctype") String u_ctype,
-                                 @Query("u_keep") String u_keep);
+    @GET("server_version")
+    Observable<Base<AppUpDateModel>> app_Upate(@Query("type") String type);
+
 
 }

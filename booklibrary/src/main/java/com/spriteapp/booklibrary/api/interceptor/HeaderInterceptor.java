@@ -2,12 +2,12 @@ package com.spriteapp.booklibrary.api.interceptor;
 
 import android.support.annotation.NonNull;
 
-import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.SignConstant;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.SignUtil;
+import com.spriteapp.booklibrary.util.Util;
 
 import java.io.IOException;
 
@@ -26,7 +26,8 @@ public class HeaderInterceptor implements Interceptor {
         Request original = chain.request();
         Request request = original.newBuilder()
                 .addHeader(Constant.USER_AGENT_KEY, AppUtil.getUserAgent())
-                .addHeader(SignConstant.HEADER_CLIENT_ID, HuaXiSDK.getInstance().getClientId())
+                .addHeader(SignConstant.HEADER_CLIENT_ID, "40")
+                .addHeader(SignConstant.MAC, Util.getMacAddr())
                 .addHeader(SignConstant.TIMESTAMP_KEY, String.valueOf(SignUtil.getCurrentTime()))
                 .addHeader(SignConstant.VERSION_KEY, Constant.VERSION)
                 .addHeader(SignConstant.SIGN_KEY, SignUtil.createSign(Constant.VERSION))

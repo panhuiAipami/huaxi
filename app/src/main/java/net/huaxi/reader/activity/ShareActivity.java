@@ -1,5 +1,6 @@
 package net.huaxi.reader.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -67,6 +68,12 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
         }
         shareDialog = new ShareDialog(this, shareBean);
         shareDialog.show();
+        shareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -74,4 +81,5 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
 }

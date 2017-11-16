@@ -10,14 +10,14 @@
     <!--去掉android5.0以上按钮的阴影效果-->
     <style name="WhiteButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">40dip</item>
-        <item name="android:background"> @drawable/selector_common_btn_white_bg</item>
+        <item name="android:background">@drawable/selector_common_btn_white_bg</item>
         <item name="android:textColor">@color/c07_themes_color</item>
 
     </style>
     <!--去掉android5.0以上按钮的阴影效果-->
     <style name="RedButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">40dip</item>
-        <item name="android:background"> @drawable/selector_common_btn_rad_bg</item>
+        <item name="android:background">@drawable/selector_common_btn_rad_bg</item>
         <item name="android:textColor">@color/c13_themes_color</item>
     </style>
     <!-- 自定义对话框样式 -->
@@ -38,15 +38,16 @@
         <item name="android:windowEnterAnimation">@anim/pop_push_up_in</item>
         <item name="android:windowExitAnimation">@anim/pop_push_down_out</item>
     </style>
+
     <style name="rewardDialog" parent="@style/popBottomDialog">
         <item name="android:windowEnterAnimation">@anim/reward_in</item>
         <item name="android:windowExitAnimation">@anim/reward_out</item>
     </style>
+
     <style name="MyDialogActivityStyle">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>

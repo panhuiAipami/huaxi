@@ -111,6 +111,7 @@ public class ShareDialog extends BaseDialog {
                             break;
                     }
                     mDialog.dismiss();
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -6,6 +6,6 @@ import net.huaxi.reader.dialog.ShareDialog;
  * Created by Administrator on 2017/11/16.
  */
 
-public interface ShareDialogShow {
-    void shareDialog(ShareDialog shareDialog);
+public interface FinishActivity {
+    void finishActivity(ShareDialog dialog);
 }

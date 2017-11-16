@@ -16,6 +16,7 @@ public class ListenerManager {
     }
     private ShareResult result;
     private ShareBeanCallBack shareBeanCallBack;
+    private FinishActivity finishActivity;
 
     public ShareResult getResult() {
         return result;
@@ -31,5 +32,13 @@ public class ListenerManager {
 
     public void setShareBeanCallBack(ShareBeanCallBack shareBeanCallBack) {
         this.shareBeanCallBack = shareBeanCallBack;
+    }
+
+    public FinishActivity getFinishActivity() {
+        return finishActivity;
+    }
+
+    public void setFinishActivity(FinishActivity finishActivity) {
+        this.finishActivity = finishActivity;
     }
 }
