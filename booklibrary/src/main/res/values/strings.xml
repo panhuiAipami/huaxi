@@ -54,4 +54,14 @@
 
     <string name="book_reader_prompt_text">提示</string>
     <string name="book_reader_sure_to_add_shelf">是否加入书架？</string>
+    <!-- 分享-->
+    <string name="weixin_share">微信</string>
+    <string name="weixin_circle">朋友圈</string>
+    <string name="weixin_shoucang">收藏</string>
+    <string name="weibo">微博</string>
+    <string name="qq">QQ</string>
+    <string name="qq_qzone">QQ空间</string>
+    <string name="not_install_wx_client">尚未安装微信客户端</string>
+    <string name="not_install_qq_client">尚未安装QQ客户端</string>
+    <string name="not_support_qq_client">需要最新版本的QQ客户端</string>
 </resources>

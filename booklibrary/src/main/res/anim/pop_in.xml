@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+fromXScale
+fromYScale
+起始时X，Y座标,
+
+pivotX
+pivotY
+
+动画起始位置，相对于屏幕的百分比,两个都为50%表示动画从屏幕中间开始
+
+toXScale
+toYScale
+动画最终缩放的倍数， 1.0为正常大小，大于1.0放大
+
+duration
+动画持续时间
+
+
+ -->
+
+    <!--透明度-->
+    <translate
+        android:duration="300"
+        android:fromXDelta="-100%p"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:toXDelta="0" />
+
+
+</set>

@@ -5,11 +5,15 @@ package com.spriteapp.booklibrary.model;
  */
 
 public class RegisterModel {
+    private static RegisterModel registerModel = null;
 
     private String userName;
     private String userId;
     private String avatar;
     private String mobile;
+    private String token = "";
+    private String user_id;
+
 
     public String getUserName() {
         return userName;
@@ -41,5 +45,21 @@ public class RegisterModel {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

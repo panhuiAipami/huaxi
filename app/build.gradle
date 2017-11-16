@@ -4,12 +4,27 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.huaxi.reader"
+        applicationId "net.huaxi.reader"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug {
+            keyAlias 'huaxi'
+            keyPassword '8daa28f6be2d187b52dc0e93214a58f9'
+            storeFile file("../huaxi_keystore2.jks")
+            storePassword '8daa28f6be2d187b52dc0e93214a58f9'
+
+        }
+        release {
+            keyAlias 'huaxi'
+            keyPassword '8daa28f6be2d187b52dc0e93214a58f9'
+            storeFile file("../huaxi_keystore2.jks")
+            storePassword '8daa28f6be2d187b52dc0e93214a58f9'
+        }
     }
     buildTypes {
         release {
@@ -24,8 +39,19 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile project(':booklibrary')
+    compile files('libs/open_sdk_r5788_lite.jar')
+    compile files('libs/SocialSDK_QQ_Full.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+    compile files('libs/weiboSDKCore.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.zhy:okhttputils:2.0.0'
     testCompile 'junit:junit:4.12'
-    compile project(':booklibrary')
 }

@@ -42,5 +42,27 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/book_reader_main_color</item>
     </style>
+    <!-- 自定义对话框样式 -->
+    <style name="popBottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#ca272a</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+    <!-- 弹出框样式 -->
+    <style name="CustomDialogTheme" parent="android:Animation">
+        <item name="android:background">@android:color/white</item>
+        <!--<item name="android:windowEnterAnimation">@anim/</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/</item>-->
+    </style>
+
+    <style name="bottomPopupDialog" parent="@style/popBottomDialog">
+        <item name="android:windowEnterAnimation">@anim/pop_push_up_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_push_down_out</item>
+    </style>
+    <style name="rewardDialog" parent="@style/popBottomDialog">
+        <item name="android:windowEnterAnimation">@anim/reward_in</item>
+        <item name="android:windowExitAnimation">@anim/reward_out</item>
+    </style>
 
 </resources>

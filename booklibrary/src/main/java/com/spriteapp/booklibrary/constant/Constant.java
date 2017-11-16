@@ -16,7 +16,7 @@ public class Constant {
     public static final String BOOK_WEEKLY_URL = BASE_URL + "book_weekly";
     public static final String BOOK_SEARCH_URL = BASE_URL + "book_search";
     //签到
-    public static final String CHECK_IN_URL = BASE_URL + "user_signin";
+    public static final String CHECK_IN_URL = BASE_URL + "user_signin";//签到
 
     public static final String VERSION = "1.0";
     public static final String USER_AGENT_KEY = "User-Agent";
@@ -40,5 +40,8 @@ public class Constant {
 
     //是否初始化书架fragment
     public static final String HAS_INIT_BOOK_SHELF = "hua_xi_has_init_book_shelf";
-
+    /**
+     * 微信登录
+     */
+    public static final String USER_WELOGIN = BASE_URL + "/user/wxlogin";
 }

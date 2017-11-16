@@ -140,4 +140,10 @@ public interface BookApiService {
     Observable<Base<Void>> loginOut(@Query("sn") String sn,
                                     @Query("token") String token);
 
+    ///////////////////////////////////////////////////////////////////////////////
+    @GET("user_wxlogin")
+    Observable<Base<Void>> login(@Query("code") String code,
+                                 @Query("u_ctype") String u_ctype,
+                                 @Query("u_keep") String u_keep);
+
 }

@@ -26,7 +26,10 @@
     <color name="book_reader_read_theme_night">@color/book_reader_black</color>
     <color name="book_reader_common_press_color">#f7f7f7</color>
     <color name="book_reader_common_press_night_color">#1a1a1a</color>
-
+    <!--简介文字-->
+    <color name="c05_themes_color">#666666</color>
+    <!--底色-->
+    <color name="c13_themes_color">#ffffff</color>
     <!--阅读页面-->
     <color name="book_reader_reader_text_color">#333333</color>
     <color name="book_reader_reader_text_night_color">#434343</color>

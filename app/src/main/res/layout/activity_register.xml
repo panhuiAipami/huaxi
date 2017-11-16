@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c13_themes_color"
+    android:orientation="vertical"
+    tools:context="net.huaxi.reader.activity.RegisterActivity">
+
+    <include layout="@layout/title_layout"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableLeft="@mipmap/login_phonenum_label"
+                    android:drawablePadding="8dp"
+                    android:hint="请输入手机号"
+                    android:maxLength="11"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/c08_themes_color"></View>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/send_btn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/send_num"
+                android:gravity="center"
+                android:text="发送验证码"
+                android:textColor="@color/c13_themes_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/ednum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/c08_themes_color"></View>
+
+        <EditText
+            android:id="@+id/edpassword_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@null"
+            android:hint="请输入6-12位字母或数字密码"
+            android:maxLength="12"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/c08_themes_color"></View>
+
+        <EditText
+            android:id="@+id/password_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@null"
+            android:hint="确认密码"
+            android:maxLength="12"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/c08_themes_color"></View>
+
+        <TextView
+            android:id="@+id/complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/zhuce"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="完成"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*注册即视为同意" />
+
+            <TextView
+                android:id="@+id/agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="用户许可协议"
+                android:textColor="@color/c00_themes_color" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
