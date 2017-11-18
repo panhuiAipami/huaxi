@@ -17,4 +17,6 @@ public class SignConstant {
     public static final String HEADER_CLIENT_ID = "client-id";
     public static final String HUA_XI_TOKEN_KEY = "hua_xi_token";
     public static final String MAC = "mac";
+    public static final String IMEI = "imei";
+    public static final String OS = "os";
 }

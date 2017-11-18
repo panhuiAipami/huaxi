@@ -29,6 +29,8 @@ public class HeaderInterceptor implements Interceptor {
                 .addHeader(Constant.USER_AGENT_KEY, AppUtil.getUserAgent())
                 .addHeader(SignConstant.HEADER_CLIENT_ID, "40")
                 .addHeader(SignConstant.MAC, Util.getMacAddr())
+                .addHeader(SignConstant.IMEI, Util.getid())
+                .addHeader(SignConstant.OS, android.os.Build.VERSION.RELEASE)
                 .addHeader(SignConstant.TIMESTAMP_KEY, String.valueOf(SignUtil.getCurrentTime()))
                 .addHeader(SignConstant.VERSION_KEY, Constant.VERSION)
                 .addHeader(SignConstant.SIGN_KEY, SignUtil.createSign(Constant.VERSION))
