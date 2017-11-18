@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.SignConstant;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -90,13 +90,17 @@ public class ReaderWebView extends WebView {
     public void loadPage(String url, WebViewClient client) {
         setClient(client);
         Map<String, String> headerMap = new HashMap<>();
-        headerMap.put(SignConstant.HEADER_CLIENT_ID, HuaXiSDK.getInstance().getClientId());
+        headerMap.put(SignConstant.HEADER_CLIENT_ID, "40");
         headerMap.put(SignConstant.TIMESTAMP_KEY, String.valueOf(SignUtil.getCurrentTime()));
         headerMap.put(SignConstant.VERSION_KEY, Constant.VERSION);
         headerMap.put(SignConstant.SIGN_KEY, SignUtil.createSign(Constant.VERSION));
         headerMap.put(SignConstant.SN_KEY, AppUtil.getHeaderSnValue());
         headerMap.put(SignConstant.TOKEN_KEY, SharedPreferencesUtil.getInstance()
                 .getString(SignConstant.HUA_XI_TOKEN_KEY));
+        Log.d("userToken", "token===" + SharedPreferencesUtil.getInstance()
+                .getString(SignConstant.HUA_XI_TOKEN_KEY));
+        Log.d("userToken", "sn===" + AppUtil.getHeaderSnValue());
+        Log.d("userToken", "url===" + url);
         loadUrl(url, headerMap);
     }
 

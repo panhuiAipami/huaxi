@@ -45,6 +45,7 @@ import com.spriteapp.booklibrary.ui.adapter.ChapterAdapter;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.DialogUtil;
@@ -1009,6 +1010,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mWidget != null) {
             mWidget.setCurrentChapter();
         }
+        if (AppUtil.isLogin())//同学
+            return;
         HuaXiSDK.getInstance().toLoginPage(mContext);
     }
 

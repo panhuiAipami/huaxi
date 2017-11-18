@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
@@ -33,6 +34,7 @@ public class MeFragment extends BaseFragment {
             return;
         }
         mWebView.loadPage(Constant.BOOK_ME_URL);
+
     }
 
     @Override
@@ -67,6 +69,7 @@ public class MeFragment extends BaseFragment {
                     || updateEnum == UpdaterPayEnum.UPDATE_LOGIN_OUT) {
                 mWebView.loadPage(Constant.BOOK_ME_URL);
             } else if (updateEnum == UpdaterPayEnum.UPDATE_PAY_RESULT) {
+                Log.d("me===", "url===" + Constant.BOOK_ME_URL);
                 mWebView.reload();
             }
         }

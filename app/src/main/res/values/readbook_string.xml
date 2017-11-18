@@ -2,78 +2,27 @@
 <resources>
 
     <!-- title -->
-    <dimen name="page_battery_border_width">20dp</dimen>
-    <dimen name="page_battery_border_height">8dp</dimen>
-    <dimen name="page_battery_border_stroke_width">1dp</dimen>
-    <dimen name="page_battery_head_width">2dp</dimen>
-    <dimen name="page_text_size">12dp</dimen>
-    <dimen name="page_padding_left">18dp</dimen>
-    <dimen name="page_padding_right">18dp</dimen>
-    <dimen name="page_padding_bottom">10dp</dimen>
-    <dimen name="page_time_text_margin_left">4dp</dimen>
-    <dimen name="page_text_margin_top">5dp</dimen>
-    <dimen name="page_text_margin_top_1">10dp</dimen>
-    <dimen name="page_pay_balance_to_origin">8dp</dimen>
-    <dimen name="page_auto_subscribe_to_button">20dp</dimen>
-    <dimen name="page_pay_discount_to_button">30dp</dimen>
-    <dimen name="page_blance_to_line">30dp</dimen>
-    <dimen name="page_pay_button_radius">20dp</dimen>
-    <dimen name="page_pay_button_height">40dp</dimen>
-    <dimen name="page_pay_button_width">300dp</dimen>
-
-    <dimen name="left_round_width">84dp</dimen>
-    <dimen name="left_round_height">28dp</dimen>
-    <dimen name="left_round_radius">14dp</dimen>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- content -->
     <!-- 正文默认字号 -->
-    <dimen name="bookcontent_default_text_size">20dp</dimen>
-    <dimen name="bookcontent_text_size_change">2dp</dimen>
     <!-- 正文最大字号 -->
-    <dimen name="bookcontent_text_size_max">32dp</dimen>
     <!-- 正文最小字号 -->
-    <dimen name="bookcontent_text_size_min">14dp</dimen>
 
     <!-- 标题默认字号 -->
-    <dimen name="title_default_text_size">26dp</dimen>
-    <dimen name="title_text_size_change">2dp</dimen>
     <!-- 标题最小字号 -->
-    <dimen name="title_text_size_min">20dp</dimen>
 
     <!-- 默认标题与正文间距 -->
-    <dimen name="title_default_space">60dp</dimen>
-    <dimen name="title_space_change">2dp</dimen>
     <!-- 标题与正文间距最小 -->
-    <dimen name="title_space_min_default">54dp</dimen>
-    <dimen name="title_space_min_small">35dp</dimen>
-    <dimen name="title_space_min_big">70dp</dimen>
 
     <!-- 行间距默认 -->
-    <dimen name="line_default_space">10dp</dimen>
-    <dimen name="line_space_change">1dp</dimen>
     <!-- 行间距最小 -->
-    <dimen name="line_space_min_default">7dp</dimen>
-    <dimen name="line_space_min_small">3dp</dimen>
-    <dimen name="line_space_min_big">15dp</dimen>
 
     <!-- 段间距默认 -->
-    <dimen name="paragraph_default_space">14dp</dimen>
-    <dimen name="paragraph_space_change">1dp</dimen>
     <!-- 段间距最小 -->
-    <dimen name="paragraph_space_min_default">11dp</dimen>
-    <dimen name="paragraph_space_min_small">9dp</dimen>
-    <dimen name="paragraph_space_min_big">14dp</dimen>
 
     <!--版权页面边距-->
-    <dimen name="copyright_title_to_topbar">150dp</dimen>
-    <dimen name="copyright_author_to_title">180dp</dimen>
-    <dimen name="copyright_cr_to_bottom">22dp</dimen>
-    <dimen name="copyright_cr_desc_margin">11dp</dimen>
 
     <!-- 版权首页字体-->
-    <dimen name="copyright_book_name_size">22dp</dimen>
-    <dimen name="copyright_book_author_size">16dp</dimen>
-    <dimen name="copyright_cr_size">14dp</dimen>
 </resources>

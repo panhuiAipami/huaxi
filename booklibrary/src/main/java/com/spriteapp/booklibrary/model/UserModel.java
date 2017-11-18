@@ -1,7 +1,5 @@
 package com.spriteapp.booklibrary.model;
 
-import com.spriteapp.booklibrary.recyclerView.factory.TypeFactory;
-
 import java.io.Serializable;
 
 /**
@@ -85,4 +83,17 @@ public class UserModel implements Serializable {
         this.user_vip_class = user_vip_class;
     }
 
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "user_id='" + user_id + '\'' +
+                ", user_nickname='" + user_nickname + '\'' +
+                ", user_gender=" + user_gender +
+                ", user_mobile='" + user_mobile + '\'' +
+                ", user_avatar='" + user_avatar + '\'' +
+                ", user_real_point=" + user_real_point +
+                ", user_false_point=" + user_false_point +
+                ", user_vip_class=" + user_vip_class +
+                '}';
+    }
 }

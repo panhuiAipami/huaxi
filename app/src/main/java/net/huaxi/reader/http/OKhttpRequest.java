@@ -386,7 +386,7 @@ public class OKhttpRequest {
         String url = "http://gazhi.hxdrive.net/";
         StringBuilder bd = new StringBuilder();
         try {
-            bd.append("client_id=13");
+            bd.append("client_id=40");
             bd.append("&timestamp=" + System.currentTimeMillis() / 1000 + "");
             bd.append("&url=" + URLEncoder.encode(url, "UTF-8"));
             bd.append("&version=" + Util.getVersionName());

@@ -1,30 +1,11 @@
 <resources>
-    <string name="app_name">HuaXiReader</string>
+    <string name="app_name">花溪小说</string>
     <!-- 登录相关-->
 
-
-    <string name="login_to_sync">登录后享受云同步</string>
-
-    <string name="need_login">请登录后评论</string>
-
-    <string name="login">登录</string>
-
-    <string name="please_input_phonenum">请输入手机号</string>
 
     <string name="please_input_username">请输入用户名/手机号/邮箱</string>
 
     <string name="please_input_password">请输入密码</string>
 
-    <string name="please_input_verification_code">请输入验证码</string>
-
-    <string name="login_lock_count_down">还有%d次该用户将被锁定</string>
-
-    <string name="login_fail">登录失败</string>
-
-    <string name="login_success">登录成功</string>
-
-    <string name="login_user_name_null">请输入用户名</string>
-
-    <string name="login_user_password_null">请输入密码</string>
     <string name="text_loading">加载中...</string>
 </resources>

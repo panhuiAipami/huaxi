@@ -89,19 +89,34 @@ public interface BookApiService {
                                                              @Query("auto_sub") int autoSub);
 
     /**
-     * 渠道用户登录
-     *
-     * @param channelId 渠道号
-     * @param userId    用户id
-     * @param nickName  昵称
-     * @param avatar    头像
+     * @param code 微信code
+     * @return
      */
-    @GET("login_channel?")
-    Call<Base<LoginResponse>> getLoginInfo(@Query("channel_id") int channelId,
-                                           @Query("user_id") String userId,
-                                           @Query("nickname") String nickName,
-                                           @Query("avatar") String avatar,
-                                           @Query("mobile") String mobile);
+    @GET("login_wxchat")
+    Call<Base<LoginResponse>> getLogin_Wx(@Query("code") String code);
+
+    /**
+     * @param mobile   手机号
+     * @param captcha  验证码
+     * @param password 密码
+     * @param u_action 动作
+     * @return
+     */
+    @GET("login_register")
+    Call<Base<LoginResponse>> getLogin_Phone(@Query("mobile") String mobile,
+                                             @Query("captcha") String captcha,
+                                             @Query("password") String password,
+                                             @Query("u_action") String u_action);
+
+
+    /**
+     * @param account  账号
+     * @param password 密码
+     * @return
+     */
+    @GET("login_account")
+    Call<Base<LoginResponse>> getLogin_Zhuce(@Query("account") String account,
+                                             @Query("password") String password);
 
 
     @GET("book_shelf")
@@ -135,7 +150,7 @@ public interface BookApiService {
     Call<BookStoreResponse> getBookStore(@Query("format") String type);
 
     @GET("user_info")
-    Observable<Base<UserModel>> getUserInfo(@Query("format") String type);
+    Observable<Base<UserModel>> getUserInfo(@Query("format") String format);
 
     @GET("login_logout")
     Observable<Base<Void>> loginOut(@Query("sn") String sn,

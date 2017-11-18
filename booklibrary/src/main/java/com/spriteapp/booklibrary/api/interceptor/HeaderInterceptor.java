@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.api.interceptor;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.SignConstant;
@@ -35,6 +36,9 @@ public class HeaderInterceptor implements Interceptor {
                 .addHeader(SignConstant.TOKEN_KEY, SharedPreferencesUtil.getInstance()
                         .getString(SignConstant.HUA_XI_TOKEN_KEY))
                 .build();
+
+        Log.d("header", "USER_AGENT_KEY===" + AppUtil.getUserAgent() +
+                "token" + SharedPreferencesUtil.getInstance().getString(SignConstant.HUA_XI_TOKEN_KEY));
         return chain.proceed(request);
     }
 }

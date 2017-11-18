@@ -1,6 +1,9 @@
 package com.spriteapp.booklibrary.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
@@ -11,8 +14,15 @@ import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.enumeration.LoginStateEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
+
+import static com.spriteapp.booklibrary.util.Util.PREFS_DEVICE_ID;
+import static com.spriteapp.booklibrary.util.Util.PREFS_FILE;
 
 public class AppUtil {
 
@@ -46,15 +56,43 @@ public class AppUtil {
         return true;
     }
 
+    protected static UUID uuid;
+
     /**
      * 获取请求头sn
      */
     public static String getHeaderSnValue() {
-        String snValue = DeviceUtil.getDeviceId(mContext);
-        if (StringUtil.isEmpty(snValue)) {
-            snValue = DeviceUtil.getMacAddress(mContext);
+//        String snValue = DeviceUtil.getDeviceId(mContext);
+//        if (StringUtil.isEmpty(snValue)) {
+//            snValue = DeviceUtil.getMacAddress(mContext);
+//        }
+//        return MD5Util.encryptMD5(snValue);
+        if (uuid == null) {
+            final SharedPreferences prefs = HomeActivity.libContent.getSharedPreferences(PREFS_FILE, 0);
+            final String id = prefs.getString(PREFS_DEVICE_ID, null);
+            if (id != null) {
+                // Use the ids previously computed and stored in the prefs file
+                uuid = UUID.fromString(id);
+            } else {
+                final String androidId = Settings.Secure.getString(HomeActivity.libContent.getContentResolver(), Settings.Secure.ANDROID_ID);
+                // Use the Android ID unless it's broken, in which case fallback on deviceId,
+                // unless it's not available, then fallback on a random number which we store
+                // to a prefs file
+                try {
+                    if (!"9774d56d682e549c".equals(androidId)) {
+                        uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
+                    } else {
+                        final String deviceId = ((TelephonyManager) HomeActivity.libContent.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                        uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                // Write the value out to the prefs file
+                prefs.edit().putString(PREFS_DEVICE_ID, uuid.toString()).commit();
+            }
         }
-        return MD5Util.encryptMD5(snValue);
+        return uuid.toString();
     }
 
     public static boolean isLogin() {

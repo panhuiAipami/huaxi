@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -29,7 +28,6 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -42,9 +40,10 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.spriteapp.booklibrary.MyApplication;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.dialog.AppUpdateDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -98,17 +97,6 @@ public class Util {
         return s;
     }
 
-    /**
-     * 拨打电话
-     *
-     * @param phone
-     */
-    public static void call(String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL,
-                Uri.parse("tel:" + phone));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().startActivity(intent);
-    }
 
     /**
      * dip转像素
@@ -176,7 +164,7 @@ public class Util {
     public static int getVersionCode() {
         int code = 0;
         try {
-            PackageInfo info = MyApplication.getInstance().getPackageManager().getPackageInfo(MyApplication.getInstance().getPackageName(), 0);
+            PackageInfo info = HomeActivity.libContent.getPackageManager().getPackageInfo(HomeActivity.libContent.getPackageName(), 0);
             code = info.versionCode;
             return code;
         } catch (Exception e) {
@@ -193,7 +181,7 @@ public class Util {
     public static String getVersionName() {
         String name = null;
         try {
-            PackageInfo info = MyApplication.getInstance().getPackageManager().getPackageInfo(MyApplication.getInstance().getPackageName(), 0);
+            PackageInfo info = HomeActivity.libContent.getPackageManager().getPackageInfo(HomeActivity.libContent.getPackageName(), 0);
             name = info.versionName;
             return name;
         } catch (Exception e) {
@@ -1140,7 +1128,7 @@ public class Util {
      * @return
      */
     public static Drawable getDrawable(int i) {
-        return MyApplication.getInstance().getResources().getDrawable(i);
+        return HomeActivity.libContent.getResources().getDrawable(i);
 
     }
 
@@ -1152,12 +1140,12 @@ public class Util {
 
     public synchronized static String getid() {
         String id = null;
-        TelephonyManager TelephonyMgr = (TelephonyManager) MyApplication.getInstance().getSystemService(TELEPHONY_SERVICE);
+        TelephonyManager TelephonyMgr = (TelephonyManager) HomeActivity.libContent.getSystemService(TELEPHONY_SERVICE);
         if (TelephonyMgr.getDeviceId() != null)
             id = TelephonyMgr.getDeviceId();
         else {
             if (TextUtils.isEmpty(PreferenceHelper.getString("imei", ""))) {
-                id = Settings.Secure.getString(MyApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
+                id = Settings.Secure.getString(HomeActivity.libContent.getContentResolver(), Settings.Secure.ANDROID_ID);
                 PreferenceHelper.putString("imei", id);
             } else {
                 id = PreferenceHelper.getString("imei", "");
@@ -1173,13 +1161,13 @@ public class Util {
 
     public synchronized static UUID getUUid() {
         if (uuid == null) {
-            final SharedPreferences prefs = MyApplication.getInstance().getSharedPreferences(PREFS_FILE, 0);
+            final SharedPreferences prefs = HomeActivity.libContent.getSharedPreferences(PREFS_FILE, 0);
             final String id = prefs.getString(PREFS_DEVICE_ID, null);
             if (id != null) {
                 // Use the ids previously computed and stored in the prefs file
                 uuid = UUID.fromString(id);
             } else {
-                final String androidId = Settings.Secure.getString(MyApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
+                final String androidId = Settings.Secure.getString(HomeActivity.libContent.getContentResolver(), Settings.Secure.ANDROID_ID);
                 // Use the Android ID unless it's broken, in which case fallback on deviceId,
                 // unless it's not available, then fallback on a random number which we store
                 // to a prefs file
@@ -1187,7 +1175,7 @@ public class Util {
                     if (!"9774d56d682e549c".equals(androidId)) {
                         uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
                     } else {
-                        final String deviceId = ((TelephonyManager) MyApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                        final String deviceId = ((TelephonyManager) HomeActivity.libContent.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
                         uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
                     }
                 } catch (UnsupportedEncodingException e) {
@@ -1333,7 +1321,7 @@ public class Util {
 
     //此方法，如果显示则隐藏，如果隐藏则显示
     public static void hintKbOne() {
-        InputMethodManager imm = (InputMethodManager) MyApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) HomeActivity.libContent.getSystemService(Context.INPUT_METHOD_SERVICE);
         // 得到InputMethodManager的实例
         if (imm.isActive()) {
             // 如果开启
@@ -1344,7 +1332,7 @@ public class Util {
     }
 
     public static void hintKbTwo(Activity act) {
-        InputMethodManager imm = (InputMethodManager) MyApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) HomeActivity.libContent.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(act.getWindow().getDecorView().getWindowToken(),
                     0);
@@ -1397,16 +1385,16 @@ public class Util {
                 } else {
                     versionName = Integer.parseInt(vn);
                 }
-                String versionName1 = Util.getVersionName();
-                Log.d("version", versionName1);
+//                String versionName1 = Util.getVersionName();
+//                Log.d("version", versionName1);
                 int localVersion = Integer.parseInt(Util.getVersionName().replace(".", "").replace("-debug", ""));
                 Log.d("daxiao", "versionName===" + versionName + "localVersion===" + localVersion);
                 if (versionName > localVersion) {
 
                     final String url = appUpDateModel.getUrl();
 
-//                    AppUpdateDialog dialog = new AppUpdateDialog(a, desc,url);
-//                    dialog.show();
+                    AppUpdateDialog dialog = new AppUpdateDialog(a, desc, url);
+                    dialog.show();
 
                 } else {
                     if (isHint)

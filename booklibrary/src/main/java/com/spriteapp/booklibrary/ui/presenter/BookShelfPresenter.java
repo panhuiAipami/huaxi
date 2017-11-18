@@ -1,11 +1,14 @@
 package com.spriteapp.booklibrary.ui.presenter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.constant.SignConstant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.LoginStateEnum;
 import com.spriteapp.booklibrary.enumeration.UpdateTextStateEnum;
@@ -18,6 +21,7 @@ import com.spriteapp.booklibrary.model.response.LoginResponse;
 import com.spriteapp.booklibrary.ui.view.BookShelfView;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.NetworkUtil;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 
 import java.util.List;
 
@@ -112,49 +116,101 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
         if (mView == null) {
             return;
         }
-        if (!AppUtil.isNetAvailable(mView.getMyContext())) {
-            return;
+//        if (!AppUtil.isNetAvailable(mView.getMyContext())) {
+//            return;
+//        }
+//        if (isShowDialog) {
+//            mView.showNetWorkProgress();
+//        }
+//        mLoginCall = BookApi.getInstance().service.getLoginInfo("format");
+//        HuaXiSDK.mLoginState = LoginStateEnum.LOADING;
+//        EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
+        if (model != null) {
+//            if (isShowDialog) {
+//                mView.disMissProgress();
+//            }
+            HuaXiSDK.mLoginState = LoginStateEnum.SUCCESS;
+            EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setUser_vip_class(model.getUser_vip_class());
+            loginResponse.setUser_avatar(model.getUser_avatar());
+            loginResponse.setUser_gender(model.getUser_gender());
+            loginResponse.setUser_false_point(model.getUser_false_point());
+            loginResponse.setUser_real_point(model.getUser_real_point());
+            loginResponse.setUser_id(model.getUser_id());
+            loginResponse.setUser_mobile(model.getUser_mobile());
+            loginResponse.setUser_nickname(model.getUserName());
+            SharedPreferencesUtil.getInstance().putString(SignConstant.HUA_XI_TOKEN_KEY, model.getToken());
+            Log.i("getLoginInfo", "getLoginInfo: " + model.getToken());
+            mView.setLoginInfo(loginResponse);
         }
-        if (isShowDialog) {
-            mView.showNetWorkProgress();
-        }
-        mLoginCall = BookApi.getInstance().service.getLoginInfo(HuaXiSDK.getInstance()
-                .getChannelId(), model.getUserId(), model.getUserName(), model.getAvatar(), model.getMobile());
-        HuaXiSDK.mLoginState = LoginStateEnum.LOADING;
-        EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
-        mLoginCall.enqueue(new Callback<Base<LoginResponse>>() {
-            @Override
-            public void onResponse(Call<Base<LoginResponse>> call, Response<Base<LoginResponse>> response) {
-                HuaXiSDK.mLoginState = LoginStateEnum.SUCCESS;
-                EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
-                if (mView == null) {
-                    return;
-                }
-                if (isShowDialog) {
-                    mView.disMissProgress();
-                }
-                Base<LoginResponse> body = response.body();
-                if (body == null) {
-                    return;
-                }
-                LoginResponse data = body.getData();
-                if (data != null) {
-                    mView.setLoginInfo(data);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Base<LoginResponse>> call, Throwable t) {
-                if (mView != null && isShowDialog) {
-                    mView.disMissProgress();
-                }
-                if (mView != null) {
-                    mView.onError(t);
-                }
-                HuaXiSDK.mLoginState = LoginStateEnum.FAILED;
-                EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
-            }
-        });
+//        用户信息
+//
+//        BookApi.getInstance()
+//                .service
+//                .getUserInfo("format")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Base<UserModel>>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull Base<UserModel> userModelBase) {
+//                        if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+//                            String name = userModelBase.getData().toString();
+//                            Log.d("update11", name + "哈g哈");
+//                            if(userModelBase!=null&&userModelBase.getData()!=null){
+//                                mView.setLoginInfo(userModelBase.getData());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                })
+//        mLoginCall.enqueue(new Callback<Base<LoginResponse>>() {
+//            @Override
+//            public void onResponse(Call<Base<LoginResponse>> call, Response<Base<LoginResponse>> response) {
+//                HuaXiSDK.mLoginState = LoginStateEnum.SUCCESS;
+//                EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
+//                if (mView == null) {
+//                    return;
+//                }
+//                if (isShowDialog) {
+//                    mView.disMissProgress();
+//                }
+//                Base<LoginResponse> body = response.body();
+//                if (body == null) {
+//                    return;
+//                }
+//                LoginResponse data = body.getData();
+//                if (data != null) {
+//                    mView.setLoginInfo(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Base<LoginResponse>> call, Throwable t) {
+//                if (mView != null && isShowDialog) {
+//                    mView.disMissProgress();
+//                }
+//                if (mView != null) {
+//                    mView.onError(t);
+//                }
+//                HuaXiSDK.mLoginState = LoginStateEnum.FAILED;
+//                EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
+//            }
+//        });
     }
 
     public void deleteBook(int bookId) {
@@ -340,6 +396,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
     }
 
     public void getUserInfo() {
+        Log.d("userInfo", "用户信息");
         if (mView == null) {
             return;
         }
@@ -370,10 +427,12 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
 
                     @Override
                     public void onNext(Base<UserModel> userModelBase) {
+                        Log.d("userInfo", userModelBase.getData().toString());
                         if (mView == null) {
                             return;
                         }
                         if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                            Log.d("userInfo", userModelBase.getData().toString());
                             mView.setUserInfo(userModelBase.getData());
                         } else {
                             mView.setUserInfo(null);

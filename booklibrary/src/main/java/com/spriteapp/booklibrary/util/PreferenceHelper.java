@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-import com.spriteapp.booklibrary.MyApplication;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 
 
 public class PreferenceHelper {
@@ -20,58 +20,58 @@ public class PreferenceHelper {
 
 	public static boolean getBoolean(String key, boolean defValue) {
 
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance());
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent);
 		return settings.getBoolean(key, defValue);
 	}
 
 	public static void putBoolean(String key, boolean value) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).edit();
 		editor.putBoolean(key, value);
 		editor.commit();
 	}
 
 	public static int getInt(String key, int defValue) {
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance());
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent);
 		return settings.getInt(key, defValue);
 	}
 
 	public static void putInt(String key, int value) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).edit();
 		editor.putInt(key, value);
 		editor.commit();
 	}
 
 	public static long getLong(String key, long defValue) {
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance());
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent);
 		return settings.getLong(key, defValue);
 	}
 
 	public static void putLong(String key, long value) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).edit();
 		editor.putLong(key, value);
 		editor.commit();
 	}
 
 	public static String getString(String key, String defValue) {
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance());
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent);
 		return settings.getString(key, defValue);
 	}
 
 	public static void putString(String key, String value) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).edit();
 		editor.putString(key, value);
 		editor.commit();
 	}
 
 	public static void remove(String key) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).edit();
 		editor.remove(key);
 		editor.commit();
 	}
 
 	public static void registerOnPrefChangeListener(OnSharedPreferenceChangeListener listener) {
 		try {
-			PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).registerOnSharedPreferenceChangeListener(listener);
+			PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).registerOnSharedPreferenceChangeListener(listener);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -79,7 +79,7 @@ public class PreferenceHelper {
 
 	public static void unregisterOnPrefChangeListener(OnSharedPreferenceChangeListener listener) {
 		try {
-			PreferenceManager.getDefaultSharedPreferences(MyApplication.getInstance()).unregisterOnSharedPreferenceChangeListener(listener);
+			PreferenceManager.getDefaultSharedPreferences(HomeActivity.libContent).unregisterOnSharedPreferenceChangeListener(listener);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

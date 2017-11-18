@@ -1,5 +1,7 @@
 package net.huaxi.reader;
 
+import android.app.Application;
+
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -9,7 +11,7 @@ import net.huaxi.reader.utils.LoginHelper;
  * Created by Administrator on 2017/11/15.
  */
 
-public class MyApplication extends com.spriteapp.booklibrary.MyApplication {
+public class MyApplication extends Application {
     private static MyApplication mInstance;
     private LoginActivity.MyHandler handler = null;
 

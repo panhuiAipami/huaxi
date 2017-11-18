@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.enumeration.LoginStateEnum;
+import com.spriteapp.booklibrary.enumeration.UpdateTextStateEnum;
 import com.spriteapp.booklibrary.model.RegisterModel;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -31,6 +33,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 import static com.spriteapp.booklibrary.util.ToastUtil.showToast;
 
@@ -193,6 +197,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         params.put("code", code);
         request.get("login_wechat", UrlUtils.LOGIN_WECHAT, params);
     }
+//    public void login1(String code){
+//        BookApi.getInstance()
+//                .service
+//                .getLogin_Wx(code)
+//    }
 
     public void loginPhone() {
         if (params.size() != 0) params.clear();
@@ -205,6 +214,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void handleActionError(String actionName, Object object) {
         dismissDialog();
+        HuaXiSDK.mLoginState = LoginStateEnum.FAILED;
+        EventBus.getDefault().post(UpdateTextStateEnum.UPDATE_TEXT_STATE);
 
     }
 
@@ -214,16 +225,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             dismissDialog();
             JSONObject jsonObject = null;
             try {
+
                 jsonObject = new JSONObject(object.toString());
                 JSONObject user = jsonObject.getJSONObject("data");
                 RegisterModel model = new RegisterModel();
                 model.setUserName(user.getString("user_nickname"));
                 model.setUserId(user.getString("user_id"));
                 model.setToken(jsonObject.getString("token"));
-//                    UserInfo.getInstance().setUser_nickname(user.getString("user_nickname"));
-//                    UserInfo.getInstance().setUser_id(user.getString("user_id"));
-//                    UserInfo.getInstance().setToken(jsonObject.getString("token"));
-//                    UserInfo.getInstance().commit();
+                model.setUser_gender(user.getInt("user_gender"));
+                model.setUser_avatar(user.getString("user_avatar"));
+                model.setUser_false_point(user.getInt("user_false_point"));
+                model.setUser_real_point(user.getInt("user_real_point"));
+                model.setUser_vip_class(user.getInt("user_vip_class"));
                 HuaXiSDK.getInstance().syncLoginStatus(model);
                 setResult(RESULT_OK);
                 finish();

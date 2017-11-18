@@ -131,12 +131,18 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             JSONObject jsonObject = null;
             try {
+
                 jsonObject = new JSONObject(object.toString());
                 JSONObject user = jsonObject.getJSONObject("data");
                 RegisterModel model = new RegisterModel();
                 model.setUserName(user.getString("user_nickname"));
                 model.setUserId(user.getString("user_id"));
                 model.setToken(jsonObject.getString("token"));
+                model.setUser_gender(user.getInt("user_gender"));
+                model.setUser_avatar(user.getString("user_avatar"));
+                model.setUser_false_point(user.getInt("user_false_point"));
+                model.setUser_real_point(user.getInt("user_real_point"));
+                model.setUser_vip_class(user.getInt("user_vip_class"));
                 HuaXiSDK.getInstance().syncLoginStatus(model);
                 setResult(RESULT_OK);
                 finish();

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@mipmap/setting_sunscription_toggle_button_on"></item>
-    <item android:drawable="@mipmap/setting_subscription_toggle_button_off"></item>
-</selector>

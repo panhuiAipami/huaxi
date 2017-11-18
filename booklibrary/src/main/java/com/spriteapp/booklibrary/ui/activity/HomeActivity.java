@@ -59,6 +59,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private List<Fragment> mFragmentList;
     private ViewPagerAdapter mAdapter;
     private Context mContext;
+    public static Context libContent;
 
     @Override
     public void initData() {
@@ -69,6 +70,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         setAdapter();
         setListener();
         appUpdate();
+        libContent = getApplicationContext();//获取lib上下文
+        requestPermissions();
     }
 
     public void appUpdate() {
@@ -336,5 +339,18 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     break;
             }
         }
+    }
+    public void requestPermissions() {
+        ArrayList<String> permissions = new ArrayList<String>();
+        permissions.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);// 读sd卡
+        permissions.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);// 写sd卡
+        doRequestPermissions(new PermissionRequestObj(permissions) {
+
+            public void callback(boolean allGranted, List<String> list, TitleActivity.PermissionRequestObj pro) {
+                if (allGranted) {
+
+                }
+            }
+        });
     }
 }
