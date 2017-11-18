@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
         int statusBarColor = config.getStatusBarColor();
         if (statusBarColor == 0) {
-            statusBarColor = getResources().getColor(R.color.book_reader_black);
+            statusBarColor = ContextCompat.getColor(this,R.color.book_reader_black);
         }
         StatusBarUtil.setWindowStatusBarColor(this, statusBarColor);
     }

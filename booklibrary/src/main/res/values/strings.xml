@@ -64,5 +64,6 @@
     <string name="not_install_wx_client">尚未安装微信客户端</string>
     <string name="not_install_qq_client">尚未安装QQ客户端</string>
     <string name="not_support_qq_client">需要最新版本的QQ客户端</string>
+    <string name="edittext_type">0123456789qwertyuiopasdfghjklzxcvbnm</string>
     <string name="download_progress">正在下载中，请稍后\u2026(%1$s%%)</string>
 </resources>

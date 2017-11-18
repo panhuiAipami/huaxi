@@ -93,6 +93,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void proveNum() {//验证信息
+        showLoadingDialog();
         if (params.size() != 0) params.clear();
         params.put("mobile", phone);
         params.put("captcha", num);
@@ -112,6 +113,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
         } else if (actionName.equals("proveNum")) {
+            dismissDialog();
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(object.toString());
@@ -128,10 +130,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             send_btn.setEnabled(false);
             mHandler.sendEmptyMessage(0);
         } else if (actionName.equals("proveNum")) {
-
+            dismissDialog();
             JSONObject jsonObject = null;
             try {
-
                 jsonObject = new JSONObject(object.toString());
                 JSONObject user = jsonObject.getJSONObject("data");
                 RegisterModel model = new RegisterModel();

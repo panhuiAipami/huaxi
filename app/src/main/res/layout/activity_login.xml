@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c12_themes_color"
     android:fitsSystemWindows="false">
     <!--顶部图片背景-->
     <RelativeLayout

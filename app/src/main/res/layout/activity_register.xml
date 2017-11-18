@@ -32,11 +32,12 @@
                 <EditText
                     android:id="@+id/edphone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:background="@null"
                     android:drawableLeft="@mipmap/login_phonenum_label"
                     android:drawablePadding="8dp"
                     android:hint="请输入手机号"
+                    android:inputType="phone"
                     android:maxLength="11"
                     android:textSize="14sp" />
 
@@ -64,10 +65,11 @@
         <EditText
             android:id="@+id/ednum"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
             android:background="@null"
             android:hint="请输入验证码"
+            android:inputType="number"
             android:textSize="14sp" />
 
         <View
@@ -79,10 +81,12 @@
         <EditText
             android:id="@+id/edpassword_one"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
             android:background="@null"
+            android:digits="@string/edittext_type"
             android:hint="请输入6-12位字母或数字密码"
+            android:inputType="textPassword"
             android:maxLength="12"
             android:textSize="14sp" />
 
@@ -95,10 +99,12 @@
         <EditText
             android:id="@+id/password_two"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
             android:background="@null"
+            android:digits="@string/edittext_type"
             android:hint="确认密码"
+            android:inputType="textPassword"
             android:maxLength="12"
             android:textSize="14sp" />
 
