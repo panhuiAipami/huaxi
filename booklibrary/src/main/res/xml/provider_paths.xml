@@ -3,6 +3,8 @@
 <paths>
     <external-path
         name="app"
-        path="huaxi/app_update/" />
-
+        path="app_update/" />
+    <root-path
+        name="root_path"
+        path="."></root-path>
 </paths>

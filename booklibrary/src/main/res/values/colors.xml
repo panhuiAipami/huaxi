@@ -26,10 +26,6 @@
     <color name="book_reader_read_theme_night">@color/book_reader_black</color>
     <color name="book_reader_common_press_color">#f7f7f7</color>
     <color name="book_reader_common_press_night_color">#1a1a1a</color>
-    <!--简介文字-->
-    <color name="c05_themes_color">#666666</color>
-    <!--底色-->
-    <color name="c13_themes_color">#ffffff</color>
     <!--阅读页面-->
     <color name="book_reader_reader_text_color">#333333</color>
     <color name="book_reader_reader_text_night_color">#434343</color>
@@ -65,5 +61,36 @@
     <color name="two_font_color">#404149</color>
     <!--提示描述字体颜色-->
     <color name="three_font_color">#90909c</color>
-
+    <!--遮罩-->
+    <color name="c00_themes_color">#000000</color>
+    <!--主题高亮色-->
+    <!--<color name="c01_themes_color">#f9494d</color>-->
+    <color name="c01_themes_color">#212A3C</color>
+    <!--高亮提示色-->
+    <color name="c02_themes_color">#ffc333</color>
+    <!--辅助提示色-->
+    <color name="c03_themes_color">#99664b</color>
+    <!--标题文字-->
+    <color name="c04_themes_color">#333333</color>
+    <!--简介文字-->
+    <color name="c05_themes_color">#666666</color>
+    <!--作者名字，部分简介-->
+    <color name="c06_themes_color">#888888</color>
+    <!--标签名字-->
+    <color name="c07_themes_color">#999999</color>
+    <!--辅助提示文字-->
+    <color name="c08_themes_color">#c8c8c8</color>
+    <!--分割线-->
+    <color name="c09_divider_color">#e1e1e1</color>
+    <!--分割块色-->
+    <color name="c10_themes_color">#f2f2f2</color>
+    <!--弹窗背景色-->
+    <color name="c11_themes_color">#f8f8fd</color>
+    <!--背景色-->
+    <color name="c12_themes_color">#f9f9f9</color>
+    <!--底色-->
+    <color name="c13_themes_color">#ffffff</color>
+    <!--按键不可点击时的text颜色-->
+    <color name="c14_themes_color">#99ffffff</color>
+    <color name="colorPrimaryDark">#F9494D</color>
 </resources>

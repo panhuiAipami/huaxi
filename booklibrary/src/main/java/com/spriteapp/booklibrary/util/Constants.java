@@ -12,7 +12,7 @@ public class Constants {
      */
     public static final String SDROOTPath = Environment.getExternalStorageDirectory().getPath();
     /**
-     * 外部存储设备的根路径下面的gazhi文件夹
+     * 外部存储设备的根路径下面的huaxi文件夹
      */
     public static final String SDPath = SDROOTPath + "/huaxi";
     /**

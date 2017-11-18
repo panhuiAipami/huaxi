@@ -227,13 +227,15 @@ public class UpdateAPKService extends Service {
                     Uri uri;
                     Intent installIntent = new Intent(Intent.ACTION_VIEW);
                     installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Log.d("updateFile",updateFile.toString());
+                    Log.d("updateFile", updateFile.toString());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        uri = FileProvider.getUriForFile(HomeActivity.libContent, "huaxi", updateFile);
-                        Log.d("update_uri",uri.toString());
+                        uri = FileProvider.getUriForFile(HomeActivity.libContent, "net.huaxi.reader.provider", updateFile);
+                        installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        Log.d("update_uri-", uri.toString());
                     } else {
                         uri = Uri.fromFile(updateFile);
                     }
+                    Log.d("update_uri", uri.toString());
                     installIntent.setDataAndType(uri, "application/vnd.android.package-archive");
                     startActivity(installIntent);
 

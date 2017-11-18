@@ -6,7 +6,7 @@
         <service android:name=".service.UpdateAPKService" />
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="huaxi"
+            android:authorities="net.huaxi.reader.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

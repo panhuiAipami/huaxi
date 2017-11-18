@@ -71,7 +71,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         setListener();
         appUpdate();
         libContent = getApplicationContext();//获取lib上下文
-        requestPermissions();
+//        requestPermissions();
     }
 
     public void appUpdate() {

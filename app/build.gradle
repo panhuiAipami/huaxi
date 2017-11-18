@@ -73,13 +73,13 @@ android {
             if (variant.buildType.name.equals('release')) {
                 def outputFile = output.outputFile
                 if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                    def fileName = "gazhi_release_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                    def fileName = "huaxi_release_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
             } else if (variant.buildType.name.equals('debug')) {
                 def outputFile = output.outputFile
                 if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                    def fileName = "gazhi_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                    def fileName = "huaxi_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
             }

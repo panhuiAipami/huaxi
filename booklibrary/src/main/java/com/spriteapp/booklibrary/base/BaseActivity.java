@@ -111,4 +111,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             dialog = null;
         }
     }
+
 }

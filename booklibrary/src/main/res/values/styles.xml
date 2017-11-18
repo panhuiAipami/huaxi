@@ -37,8 +37,16 @@
     <style name="HuaXiAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/book_reader_main_color</item>
         <item name="colorPrimaryDark">@color/book_reader_black</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
     </style>
-
+    <!--自定义activity进出样式-->
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Animation.Activity.Style" parent="android:Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_out</item>
+    </style>
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/book_reader_main_color</item>
     </style>

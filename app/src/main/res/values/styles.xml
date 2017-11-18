@@ -6,6 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/book_reader_black</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
+    </style>
+    <!--自定义activity进出样式-->
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Animation.Activity.Style" parent="android:Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_stop</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_out</item>
     </style>
     <!--去掉android5.0以上按钮的阴影效果-->
     <style name="WhiteButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
