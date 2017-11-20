@@ -61,7 +61,6 @@ android {
         chuizi {}//锤子
         qzone {}//qq空间
         kuaishou {}//快手
-        wanshengjie {}//万圣节
     }
     //批量配置
     productFlavors.all { flavor ->

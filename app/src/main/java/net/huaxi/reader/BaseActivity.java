@@ -73,4 +73,14 @@ public class BaseActivity extends FragmentActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

@@ -383,14 +383,14 @@ public class OKhttpRequest {
      * @return
      */
     public String sign() {//http%3A%2F%2Fgazhi.hxdrive.net%2F
-        String url = "http://gazhi.hxdrive.net/";
+        String url = "http://s.hxdrive.net/";
         StringBuilder bd = new StringBuilder();
         try {
             bd.append("client_id=40");
             bd.append("&timestamp=" + System.currentTimeMillis() / 1000 + "");
             bd.append("&url=" + URLEncoder.encode(url, "UTF-8"));
             bd.append("&version=" + Util.getVersionName());
-            bd.append("bpgbwtj6xlhdlz8g8jtlo5i11ljdr4548sxz2l");
+            bd.append("fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6");
         } catch (Exception e) {
             e.printStackTrace();
         }

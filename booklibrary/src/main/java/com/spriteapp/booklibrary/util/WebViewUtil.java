@@ -16,6 +16,7 @@ public class WebViewUtil {
     private static final String TAG = "WebViewUtil";
     private WebViewCallback mWebViewCallback;
     private static WebViewUtil mWebViewUtil;
+    private String readUrl = "";
 
     /*
     setting	设置	huaxi://app?action=setting
@@ -50,6 +51,7 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
         if (StringUtil.isEmpty(url)) {
             return false;
         }
+        readUrl = url;
         Uri uri = Uri.parse(url);
         String scheme = uri.getScheme();
         if (StringUtil.isEmpty(scheme)) {
@@ -64,18 +66,18 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                 }
 
                 switch (action) {
-                    case WebConstant.OPEN_PAGE_AUTHORITY:
+                    case WebConstant.OPEN_PAGE_AUTHORITY://书籍详情界面
                         jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
                         ActivityUtil.toWebViewActivity(context, jumpUrl);
                         break;
-                    case WebConstant.BOOK_READ_AUTHORITY:
+                    case WebConstant.BOOK_READ_AUTHORITY://免费阅读按钮
                         String bookId = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
                         String chapterId = uri.getQueryParameter(WebConstant.CHAPTER_ID_QUERY);
                         if (mWebViewCallback != null) {
                             mWebViewCallback.freeRead(Integer.parseInt(bookId), Integer.parseInt(chapterId));
                         }
                         break;
-                    case WebConstant.ADD_SHELF_AUTHORITY:
+                    case WebConstant.ADD_SHELF_AUTHORITY://加入书架按钮
                         String addBookId = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
                         if (mWebViewCallback != null) {
                             mWebViewCallback.addBookToShelf(Integer.valueOf(addBookId));
