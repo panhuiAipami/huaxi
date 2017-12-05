@@ -202,6 +202,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     proveNum();
                 }
                 break;
+            case R.id.agreement:
+//                if (params.size() != 0) params.clear();
+//                params.put("book_id", "732");
+//                request.get("name", "book_details", params);
+                break;
         }
     }
 }

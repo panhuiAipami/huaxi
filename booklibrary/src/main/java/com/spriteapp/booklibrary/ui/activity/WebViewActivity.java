@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -167,6 +168,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         @Override
         public void freeRead(int bookId, int chapterId) {
             BookDetailResponse detail = new BookDetailResponse();
+            Log.d("bookdetails", "bookId===" + bookId);
             detail.setBook_id(bookId);
             detail.setChapter_id(chapterId);
             ActivityUtil.toReadActivity(mContext, detail);

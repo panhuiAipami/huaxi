@@ -42,7 +42,6 @@ import android.widget.Toast;
 
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
-import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.spriteapp.booklibrary.ui.dialog.AppUpdateDialog;
 
 import java.io.ByteArrayOutputStream;
@@ -164,7 +163,7 @@ public class Util {
     public static int getVersionCode() {
         int code = 0;
         try {
-            PackageInfo info = HomeActivity.libContent.getPackageManager().getPackageInfo(HomeActivity.libContent.getPackageName(), 0);
+            PackageInfo info = AppUtil.getAppContext().getPackageManager().getPackageInfo(AppUtil.getAppContext().getPackageName(), 0);
             code = info.versionCode;
             return code;
         } catch (Exception e) {
@@ -181,7 +180,7 @@ public class Util {
     public static String getVersionName() {
         String name = null;
         try {
-            PackageInfo info = HomeActivity.libContent.getPackageManager().getPackageInfo(HomeActivity.libContent.getPackageName(), 0);
+            PackageInfo info = AppUtil.getAppContext().getPackageManager().getPackageInfo(AppUtil.getAppContext().getPackageName(), 0);
             name = info.versionName;
             return name;
         } catch (Exception e) {
@@ -1128,7 +1127,7 @@ public class Util {
      * @return
      */
     public static Drawable getDrawable(int i) {
-        return HomeActivity.libContent.getResources().getDrawable(i);
+        return AppUtil.getAppContext().getResources().getDrawable(i);
 
     }
 
@@ -1140,12 +1139,12 @@ public class Util {
 
     public synchronized static String getid() {
         String id = null;
-        TelephonyManager TelephonyMgr = (TelephonyManager) HomeActivity.libContent.getSystemService(TELEPHONY_SERVICE);
+        TelephonyManager TelephonyMgr = (TelephonyManager) AppUtil.getAppContext().getSystemService(TELEPHONY_SERVICE);
         if (TelephonyMgr.getDeviceId() != null)
             id = TelephonyMgr.getDeviceId();
         else {
             if (TextUtils.isEmpty(PreferenceHelper.getString("imei", ""))) {
-                id = Settings.Secure.getString(HomeActivity.libContent.getContentResolver(), Settings.Secure.ANDROID_ID);
+                id = Settings.Secure.getString(AppUtil.getAppContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 PreferenceHelper.putString("imei", id);
             } else {
                 id = PreferenceHelper.getString("imei", "");
@@ -1161,13 +1160,13 @@ public class Util {
 
     public synchronized static UUID getUUid() {
         if (uuid == null) {
-            final SharedPreferences prefs = HomeActivity.libContent.getSharedPreferences(PREFS_FILE, 0);
+            final SharedPreferences prefs = AppUtil.getAppContext().getSharedPreferences(PREFS_FILE, 0);
             final String id = prefs.getString(PREFS_DEVICE_ID, null);
             if (id != null) {
                 // Use the ids previously computed and stored in the prefs file
                 uuid = UUID.fromString(id);
             } else {
-                final String androidId = Settings.Secure.getString(HomeActivity.libContent.getContentResolver(), Settings.Secure.ANDROID_ID);
+                final String androidId = Settings.Secure.getString(AppUtil.getAppContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 // Use the Android ID unless it's broken, in which case fallback on deviceId,
                 // unless it's not available, then fallback on a random number which we store
                 // to a prefs file
@@ -1175,7 +1174,7 @@ public class Util {
                     if (!"9774d56d682e549c".equals(androidId)) {
                         uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
                     } else {
-                        final String deviceId = ((TelephonyManager) HomeActivity.libContent.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                        final String deviceId = ((TelephonyManager) AppUtil.getAppContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
                         uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
                     }
                 } catch (UnsupportedEncodingException e) {
@@ -1321,7 +1320,7 @@ public class Util {
 
     //此方法，如果显示则隐藏，如果隐藏则显示
     public static void hintKbOne() {
-        InputMethodManager imm = (InputMethodManager) HomeActivity.libContent.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) AppUtil.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         // 得到InputMethodManager的实例
         if (imm.isActive()) {
             // 如果开启
@@ -1332,7 +1331,7 @@ public class Util {
     }
 
     public static void hintKbTwo(Activity act) {
-        InputMethodManager imm = (InputMethodManager) HomeActivity.libContent.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) AppUtil.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(act.getWindow().getDecorView().getWindowToken(),
                     0);

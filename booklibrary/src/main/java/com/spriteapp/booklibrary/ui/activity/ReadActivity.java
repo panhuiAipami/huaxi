@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -45,7 +46,6 @@ import com.spriteapp.booklibrary.ui.adapter.ChapterAdapter;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
 import com.spriteapp.booklibrary.util.ActivityUtil;
-import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.DialogUtil;
@@ -170,10 +170,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         initChapterAdapter();
         openChapter();
         if (mOldBookDetail == null) {
+            Log.d("IsHttp", "http请求");
             mPresenter.getBookDetail(mBookId);
         } else {
+            Log.d("IsHttp", "http不请求");
             mRecentBookDb.insert(mOldBookDetail);
-            int lastUpdateBookTime = mOldBookDetail.getLast_update_book_datetime();
+            long lastUpdateBookTime = mOldBookDetail.getLast_update_book_datetime();
             int hour = TimeUtil.getTimeInterval(lastUpdateBookTime);
             //书籍详情更新时间超过3小时需再次更新
             if (hour >= Constant.UPDATE_BOOK_DETAIL_INTERVAL) {
@@ -214,6 +216,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     private void judgeChapterNeedLoad() {
         if (CollectionUtil.isEmpty(mChapterList) || mOldBookDetail == null) {
+            Log.d("bookIds", "bookId=====" + mBookId);
             mPresenter.getChapter(mBookId);
         } else {
             //判断是否完结
@@ -222,7 +225,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 return;
             }
             // 判断章节时间差是否大于六小时
-            int time = mOldBookDetail.getLast_update_chapter_datetime();
+            long time = mOldBookDetail.getLast_update_chapter_datetime();
             int hour = TimeUtil.getTimeInterval(time);
             if (hour >= Constant.UPDATE_CHAPTER_INTERVAL) {
                 mPresenter.getChapter(mBookId, false);
@@ -928,6 +931,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ThemeManager.isNull();
         EventBus.getDefault().unregister(this);
         try {
             unregisterReceiver(mReadReceiver);
@@ -1010,8 +1014,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mWidget != null) {
             mWidget.setCurrentChapter();
         }
-        if (AppUtil.isLogin())//同学
-            return;
         HuaXiSDK.getInstance().toLoginPage(mContext);
     }
 
@@ -1023,8 +1025,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
             return;
         }
+//        Log.d("book_details1", data.toString());
         mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
         mRecentBookDb.insert(data);
     }
+
 
 }

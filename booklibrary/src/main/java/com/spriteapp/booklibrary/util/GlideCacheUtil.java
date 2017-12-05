@@ -119,7 +119,8 @@ public class GlideCacheUtil {
                 if (file.isDirectory()) {
                     File files[] = file.listFiles();
                     for (File file1 : files) {
-                        deleteFolderFile(file1.getAbsolutePath(), true);
+                        if (file1.getAbsolutePath() != null)
+                            deleteFolderFile(file1.getAbsolutePath(), true);
                     }
                 }
                 if (deleteThisPath) {

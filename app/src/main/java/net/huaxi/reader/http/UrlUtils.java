@@ -10,7 +10,7 @@ public class UrlUtils {
     //打华为包需为true，否则为false（华为渠道需要用华为支付）
     public static final boolean CHANNEL_IS_HUAWEI = true;
     //域名
-    public static final String BASE_URL = "http://s.hxdrive.net/";
+    public static final String BASE_URL = "https://s.hxdrive.net/";
     /**
      * 微信登录
      */

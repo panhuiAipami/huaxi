@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 5
         versionName "2.0.0"
 
@@ -35,16 +35,15 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile "com.squareup.retrofit2:adapter-rxjava2:2.2.0"
-
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
-//    compile files('libs/alipaySdk-20170710.jar')
+    compile files('libs/alipaySdk-20170710.jar')
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 }

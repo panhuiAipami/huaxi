@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -340,10 +341,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
             }
         }
     }
+
     public void requestPermissions() {
         ArrayList<String> permissions = new ArrayList<String>();
         permissions.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);// 读sd卡
         permissions.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);// 写sd卡
+        permissions.add(Manifest.permission.READ_PHONE_STATE);// 允许程序访问电话状态
         doRequestPermissions(new PermissionRequestObj(permissions) {
 
             public void callback(boolean allGranted, List<String> list, TitleActivity.PermissionRequestObj pro) {

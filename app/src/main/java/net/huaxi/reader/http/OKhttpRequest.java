@@ -3,6 +3,7 @@ package net.huaxi.reader.http;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.spriteapp.booklibrary.util.SignUtil;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -366,7 +367,7 @@ public class OKhttpRequest {
         map.put("client-id", "40");
         map.put("timestamp", System.currentTimeMillis() / 1000 + "");
         map.put("version", Util.getVersionName());
-        map.put("sign", sign());
+        map.put("sign", SignUtil.createSign(Util.getVersionName()));
         map.put("sn", Util.getUUid().toString());
         map.put(tokenName ? "access_token" : "access_token", token == null ? "" : token);
         map.put("imei", Util.getid());
@@ -383,7 +384,7 @@ public class OKhttpRequest {
      * @return
      */
     public String sign() {//http%3A%2F%2Fgazhi.hxdrive.net%2F
-        String url = "http://s.hxdrive.net/";
+        String url = "https://s.hxdrive.net/";
         StringBuilder bd = new StringBuilder();
         try {
             bd.append("client_id=40");

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.spriteapp.booklibrary.widget.loading.CustomDialog;
+import com.umeng.analytics.MobclickAgent;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -72,5 +73,17 @@ public abstract class BaseFragment extends Fragment {
             dialog.dismiss();
             dialog = null;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getActivity().getLocalClassName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getActivity().getLocalClassName());
     }
 }

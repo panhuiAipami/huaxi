@@ -12,7 +12,8 @@ public class CacheManager {
 
     public static void saveNativeBookStore(String data) {
         File file = FileUtils.getNativeStoreFile();
-        FileUtils.writeFile(file.getAbsolutePath(), data);
+        if (file.getAbsolutePath() != null)
+            FileUtils.writeFile(file.getAbsolutePath(), data);
     }
 
     public static String readNativeBookStore() {

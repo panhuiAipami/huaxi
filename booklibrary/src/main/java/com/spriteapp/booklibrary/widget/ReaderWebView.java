@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.SslErrorHandler;
@@ -48,6 +49,9 @@ public class ReaderWebView extends WebView {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDisplayZoomControls(false);
+        if (Build.VERSION.SDK_INT >= 21) {//5.0之后的https图片不显示
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
     }
 
     public void setClient(final WebViewClient client) {

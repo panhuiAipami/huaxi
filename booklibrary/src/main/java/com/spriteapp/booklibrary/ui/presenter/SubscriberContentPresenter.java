@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.ui.presenter;
 
+import android.util.Log;
+
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
@@ -75,6 +77,7 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
                         if (mView != null) {
                             mView.disMissProgress();
                         }
+                        Log.d("book_content", "请求完成");
                     }
 
                     @Override
@@ -87,10 +90,12 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
                         if (mView != null) {
                             mView.disMissProgress();
                         }
+                        Log.d("book_content", "请求失败");
                     }
 
                     @Override
                     public void onNext(Base<SubscriberContent> subscriberContentBase) {
+                        Log.d("book_content", "请求成功");
                         if (mView == null) {
                             return;
                         }
@@ -165,12 +170,15 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
         if (isShowDialog) {
             mView.showNetWorkProgress();
         }
+        Log.d("getInstance_bookId", "bookId===" + bookId);
         BookApi.getInstance().
-                service.getBookDetail(bookId).subscribeOn(Schedulers.io())
+                service.getBookDetail(bookId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<BookDetailResponse>>() {
                     @Override
                     public void onComplete() {
+                        Log.d("book_details", "date完成");
                         if (mView != null) {
                             mView.disMissProgress();
                         }
@@ -183,6 +191,7 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("book_details", "date失败");
                         if (mView != null) {
                             mView.disMissProgress();
                         }
@@ -190,9 +199,16 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
 
                     @Override
                     public void onNext(Base<BookDetailResponse> bookDetailResponseBase) {
+//                        Gson gson = new Gson();
+//                        String to = gson.toJson(bookDetailResponseBase);
+//                        Log.d("yuanjson","json==="+to);
+//                        Log.d("book_details", "date成功===code===" + bookDetailResponseBase.getCode());
+//                        Log.d("book_details", "date成功===code===" + bookDetailResponseBase.toString());
                         if (bookDetailResponseBase.getCode() ==
                                 ApiCodeEnum.SUCCESS.getValue() && mView != null) {
+//                            Log.d("book_details", "bookdetails===" + bookDetailResponseBase.getData());
                             mView.setBookDetail(bookDetailResponseBase.getData());
+//                            Log.d("book_details", "date" + bookDetailResponseBase.getData());
                         }
                     }
                 });

@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.util;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.callback.WebViewCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
@@ -73,6 +74,7 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                     case WebConstant.BOOK_READ_AUTHORITY://免费阅读按钮
                         String bookId = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
                         String chapterId = uri.getQueryParameter(WebConstant.CHAPTER_ID_QUERY);
+                        Log.d("jumpread", "bookId===" + bookId + "chapterId===" + chapterId);
                         if (mWebViewCallback != null) {
                             mWebViewCallback.freeRead(Integer.parseInt(bookId), Integer.parseInt(chapterId));
                         }

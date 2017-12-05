@@ -9,7 +9,7 @@ import com.spriteapp.booklibrary.util.FileUtils;
 
 public class Constant {
 
-    public static final String BASE_URL = "http://s.hxdrive.net/";
+    public static final String BASE_URL = "https://s.hxdrive.net/";
     public static final String BOOK_STORE_URL = BASE_URL + "book_store";
     public static final String BOOK_ME_URL = BASE_URL + "user_index";
     public static final String H5_PAY_URL = BASE_URL + "user_recharge";

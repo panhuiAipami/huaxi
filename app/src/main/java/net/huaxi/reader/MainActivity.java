@@ -19,8 +19,8 @@ import net.huaxi.reader.utils.LoginHelper;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    public static final String SIGN_SECRET = "jm6j32avpdkfd1s3o5gnnqs9my5vuujco2zv37";
-    public static final int CLIENT_ID = 8;
+    public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
+    public static final int CLIENT_ID = 40;
     private static final int CHANNEL_ID = 2;
     public static final String SHAREDATA = "share_data";
     private ShareDialog shareDialog;
@@ -42,19 +42,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {
 //                        Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
-                        shareBean = new ShareBean();
-                        shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
-                        shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
-                        shareBean.setImgUrl(shareDetail.getBook_image().isEmpty() ? "" : shareDetail.getBook_image());
-                        shareBean.setShareUrl(shareDetail.getBook_share_url().isEmpty() ? "" : shareDetail.getBook_share_url());
-                        shareBean.setNid(shareDetail.getBook_id());
+                        if(shareDetail!=null){
+                            shareBean = new ShareBean();
+                            shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
+                            shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
+                            shareBean.setImgUrl(shareDetail.getBook_image().isEmpty() ? "" : shareDetail.getBook_image());
+                            shareBean.setShareUrl(shareDetail.getBook_share_url().isEmpty() ? "" : shareDetail.getBook_share_url());
+                            shareBean.setNid(shareDetail.getBook_id());
 
 //                        ListenerManager.getInstance().getShareBeanCallBack().getShareBean(shareBean);
-                        Intent intent = new Intent(MainActivity.this, ShareActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable(SHAREDATA, shareBean);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                            Intent intent = new Intent(MainActivity.this, ShareActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(SHAREDATA, shareBean);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+
                     }
                 })
                 .setChannelId(CHANNEL_ID)

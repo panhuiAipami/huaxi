@@ -15,19 +15,45 @@ public class ThemeManager {
 
     public static final int NORMAL = 0;
     public static final int NIGHT = 1;
+    private static Bitmap bitmapDay, bitmapNight, defaultbitmap;
 
     public static Bitmap getThemeDrawable(int theme) {
-        Bitmap bmp = Bitmap.createBitmap(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(), Bitmap.Config.ARGB_8888);
+//        Bitmap bmp = Bitmap.createBitmap(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(), Bitmap.Config.RGB_565);//原为ARGB_8888改为RGB_565
         switch (theme) {
             case NORMAL:
-                bmp.eraseColor(AppUtil.getAppContext().getResources().getColor(R.color.book_reader_read_day_background));
-                break;
+                if (bitmapDay == null)
+                    bitmapDay = Bitmap.createBitmap(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(), Bitmap.Config.RGB_565);
+                bitmapDay.eraseColor(ContextCompat.getColor(AppUtil.getAppContext(), R.color.book_reader_read_day_background));
+                return bitmapDay;
             case NIGHT:
-                bmp.eraseColor(AppUtil.getAppContext().getResources().getColor(R.color.book_reader_read_night_background));
-                break;
+                if (bitmapNight == null)
+                    bitmapNight = Bitmap.createBitmap(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(), Bitmap.Config.RGB_565);
+                bitmapNight.eraseColor(ContextCompat.getColor(AppUtil.getAppContext(), R.color.book_reader_read_night_background));
+                return bitmapNight;
             default:
                 break;
         }
-        return bmp;
+        if (defaultbitmap == null)
+            defaultbitmap = Bitmap.createBitmap(ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(), Bitmap.Config.RGB_565);
+        defaultbitmap.eraseColor(ContextCompat.getColor(AppUtil.getAppContext(), R.color.book_reader_read_day_background));
+        return defaultbitmap;
+    }
+
+    public static void isNull() {
+        if (bitmapDay != null) {
+            bitmapDay.recycle();
+            bitmapDay = null;
+        }
+
+        if (bitmapNight != null) {
+            bitmapNight.recycle();
+            bitmapNight = null;
+        }
+
+        if (defaultbitmap != null) {
+            defaultbitmap.recycle();
+            defaultbitmap = null;
+        }
+
     }
 }

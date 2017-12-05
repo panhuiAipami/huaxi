@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.api;
 
+import android.util.Log;
+
 import com.spriteapp.booklibrary.api.interceptor.HeaderInterceptor;
 import com.spriteapp.booklibrary.api.interceptor.ResponseInterceptor;
 import com.spriteapp.booklibrary.constant.Constant;
@@ -7,6 +9,7 @@ import com.spriteapp.booklibrary.constant.Constant;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,6 +23,13 @@ public class BookApi {
     private static final int TIME_OUT = 8;
     private static BookApi instance;
     public BookApiService service;
+    private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+        @Override
+        public void log(String message) {
+            Log.d("retrofitBack", message);
+
+        }
+    });
 
     private BookApi(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
@@ -35,6 +45,7 @@ public class BookApi {
         if (instance == null) {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                    .addInterceptor(interceptor)
                     .addInterceptor(new HeaderInterceptor())
                     .addInterceptor(new ResponseInterceptor())
                     .build();

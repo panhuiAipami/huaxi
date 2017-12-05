@@ -28,18 +28,17 @@ public class BookDetailResponse implements Serializable {
     private String author_name;
     private String author_avatar;
     private int last_update_chapter_id;
-    private int last_update_chapter_datetime;
+    private long last_update_chapter_datetime;
     private String last_update_chapter_title;
     private String last_update_chapter_intro;
-    private int lastReadTime;
+    private long lastReadTime;
 
     /**
      * 当前阅读章节
      */
     private int chapter_id;
-
     private int chapter_index;
-    private int last_update_book_datetime;
+    private long last_update_book_datetime;
     private int book_add_shelf;
     private int is_recommend_book;
 
@@ -187,11 +186,11 @@ public class BookDetailResponse implements Serializable {
         this.last_update_chapter_id = last_update_chapter_id;
     }
 
-    public int getLast_update_chapter_datetime() {
+    public long getLast_update_chapter_datetime() {
         return last_update_chapter_datetime;
     }
 
-    public void setLast_update_chapter_datetime(int last_update_chapter_datetime) {
+    public void setLast_update_chapter_datetime(long last_update_chapter_datetime) {
         this.last_update_chapter_datetime = last_update_chapter_datetime;
     }
 
@@ -219,11 +218,11 @@ public class BookDetailResponse implements Serializable {
         this.chapter_id = chapter_id;
     }
 
-    public int getLastReadTime() {
+    public long getLastReadTime() {
         return lastReadTime;
     }
 
-    public void setLastReadTime(int lastReadTime) {
+    public void setLastReadTime(long lastReadTime) {
         this.lastReadTime = lastReadTime;
     }
 
@@ -235,11 +234,11 @@ public class BookDetailResponse implements Serializable {
         this.chapter_index = last_chapter_index;
     }
 
-    public int getLast_update_book_datetime() {
+    public long getLast_update_book_datetime() {
         return last_update_book_datetime;
     }
 
-    public void setLast_update_book_datetime(int last_update_book_datetime) {
+    public void setLast_update_book_datetime(long last_update_book_datetime) {
         this.last_update_book_datetime = last_update_book_datetime;
     }
 
@@ -257,6 +256,39 @@ public class BookDetailResponse implements Serializable {
 
     public void setIs_recommend_book(int is_recommend_book) {
         this.is_recommend_book = is_recommend_book;
+    }
+
+    @Override
+    public String toString() {
+        return "BookDetailResponse{" +
+                "book_id=" + book_id +
+                ", book_name='" + book_name + '\'' +
+                ", book_image='" + book_image + '\'' +
+                ", book_intro='" + book_intro + '\'' +
+                ", book_share_url='" + book_share_url + '\'' +
+                ", book_total_score='" + book_total_score + '\'' +
+                ", book_total_reads=" + book_total_reads +
+                ", book_finish_flag=" + book_finish_flag +
+                ", book_is_vip=" + book_is_vip +
+                ", book_content_byte=" + book_content_byte +
+                ", book_chapter_total=" + book_chapter_total +
+                ", book_keywords=" + book_keywords +
+                ", book_price=" + book_price +
+                ", book_updatetime=" + book_updatetime +
+                ", author_id=" + author_id +
+                ", author_name='" + author_name + '\'' +
+                ", author_avatar='" + author_avatar + '\'' +
+                ", last_update_chapter_id=" + last_update_chapter_id +
+                ", last_update_chapter_datetime=" + last_update_chapter_datetime +
+                ", last_update_chapter_title='" + last_update_chapter_title + '\'' +
+                ", last_update_chapter_intro='" + last_update_chapter_intro + '\'' +
+                ", lastReadTime=" + lastReadTime +
+                ", chapter_id=" + chapter_id +
+                ", chapter_index=" + chapter_index +
+                ", last_update_book_datetime=" + last_update_book_datetime +
+                ", book_add_shelf=" + book_add_shelf +
+                ", is_recommend_book=" + is_recommend_book +
+                '}';
     }
 
     @Override

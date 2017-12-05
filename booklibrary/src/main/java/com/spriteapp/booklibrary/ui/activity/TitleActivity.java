@@ -16,6 +16,7 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -259,5 +260,17 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
 
         public void onSettingGoto() {
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
