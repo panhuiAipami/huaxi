@@ -9,15 +9,25 @@ import android.view.WindowManager;
 
 import net.huaxi.reader.MainActivity;
 import net.huaxi.reader.R;
+import net.huaxi.reader.utils.PreferenceHelper;
+
+import static net.huaxi.reader.MainActivity.SEXTIME;
 
 public class SplashActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            Intent intent;
             switch (msg.what) {
                 case 0:
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    boolean sex_first = PreferenceHelper.getBoolean(SEXTIME, true);
+                    if (sex_first) {
+                        intent = new Intent(SplashActivity.this, SexActivity.class);
+                    } else {
+                        intent = new Intent(SplashActivity.this, MainActivity.class);
+
+                    }
                     startActivity(intent);
                     finish();
                     break;

@@ -8,7 +8,8 @@
 
     <color name="book_reader_white">#ffffff</color>
     <color name="book_reader_black">#000000</color>
-
+    <!--popwindow-->
+    <color name="pop_back">#00000000</color>
     <color name="app_background">@color/book_reader_white</color>
     <color name="main_bottom_color">#fafafa</color>
     <color name="book_reader_top_bar_color">@color/book_reader_white</color>

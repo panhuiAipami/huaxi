@@ -15,9 +15,12 @@ import net.huaxi.reader.activity.ShareActivity;
 import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.dialog.ShareDialog;
 import net.huaxi.reader.utils.LoginHelper;
+import net.huaxi.reader.utils.PreferenceHelper;
+
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String SEXTIME = "sextime";
     private static final String TAG = "MainActivity";
     public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
     public static final int CLIENT_ID = 40;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PreferenceHelper.putBoolean(SEXTIME, false);//存入本地性别选择
         HuaXiConfig config = new HuaXiConfig.Builder().setContext(this)
                 .setChannelListener(new ChannelListener() {
                     @Override
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {
 //                        Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
-                        if(shareDetail!=null){
+                        if (shareDetail != null) {
                             shareBean = new ShareBean();
                             shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
                             shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
@@ -57,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
-
                     }
                 })
                 .setChannelId(CHANNEL_ID)
                 .setClientId(CLIENT_ID)
+                .setSex(PreferenceHelper.getInt(SEX, 0))//性别
                 .setSignSecret(SIGN_SECRET).build();
         HuaXiSDK.getInstance().init(config);
         startActivity(new Intent(this, HomeActivity.class));

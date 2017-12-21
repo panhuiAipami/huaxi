@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,15 +21,18 @@ import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.CateBean;
+import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
-import com.spriteapp.booklibrary.ui.fragment.BookstoreFragment;
-import com.spriteapp.booklibrary.ui.fragment.DiscoverFragment;
+import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
 import com.spriteapp.booklibrary.ui.fragment.MeFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
+import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
@@ -40,6 +44,8 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYPE;
+
 /**
  * Created by kuangxiaoguo on 2017/7/7.
  */
@@ -47,6 +53,7 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeActivity extends TitleActivity implements View.OnClickListener {
 
     private static final String TAG = "HomeActivity";
+    public static final String SEX = "sex";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
     private static final int BOOKSTORE_POSITION = 2;
@@ -61,18 +68,79 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private ViewPagerAdapter mAdapter;
     private Context mContext;
     public static Context libContent;
+    private List<StoreBean> sy = new ArrayList<>();
+    private List<StoreBean> shu = new ArrayList<>();
+    private HomePageFragment homePageFragment1;
+    private HomePageFragment homePageFragment2;
 
     @Override
     public void initData() {
         mContext = this;
-        setTitle("书架");
-        addFreeTextView();
+        int fisrtSex=SharedPreferencesUtil.getInstance().getInt(SEX,0);
+        if(fisrtSex==0){
+            SharedPreferencesUtil.getInstance().putInt(SEX, HuaXiSDK.getInstance().getSex());
+        }
+        setTitle("精选");
+//        addFreeTextView();
+        addSearchView();
         initFragment();
         setAdapter();
         setListener();
         appUpdate();
+        addFlag();
         libContent = getApplicationContext();//获取lib上下文
 //        requestPermissions();
+    }
+
+    public void addFlag() {
+        BookApi.getInstance()
+                .service
+                .app_cate()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<CateBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<CateBean> appUpDateModelBase) {
+                        Log.d("cate11", appUpDateModelBase.toString() + "yyy");
+                        if (appUpDateModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+//                            String name = appUpDateModelBase.getData().toString();
+//                            Log.d("cate11", name + "哈g哈");
+//                            Gson gson = new Gson();
+//                            String s = gson.toJson(appUpDateModelBase.getData());
+//                            Log.d("cate1111", s + "哈g哈");
+                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
+                                sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
+                                if (homePageFragment1 != null) {
+                                    homePageFragment1.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                                }
+                                if (homePageFragment2 != null) {
+                                    homePageFragment2.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                                }
+                            }
+                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getChosen() != null && appUpDateModelBase.getData().getTop_menu().getChosen().size() != 0) {
+                                shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
+                                FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("cate11", "失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     public void appUpdate() {
@@ -92,7 +160,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                         Log.d("update11", appUpDateModelBase.toString() + "yyy");
                         if (appUpDateModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
                             String name = appUpDateModelBase.getData().toString();
-                            Log.d("update11", name + "哈g哈");
+//                            Log.d("update11", name + "哈g哈");
                             Util.chechForUpdata("checkForUpdates", appUpDateModelBase.getData(), HomeActivity.this, false);
                         }
 
@@ -127,10 +195,22 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     private void initFragment() {
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(new BookshelfFragment());
+//        mFragmentList.add(new BookshelfFragment());
 //        mFragmentList.add(new NativeBookStoreFragment());
-        mFragmentList.add(new DiscoverFragment());
-        mFragmentList.add(new BookstoreFragment());
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        homePageFragment1 = new HomePageFragment();
+        homePageFragment2 = new HomePageFragment();
+        Bundle bundle1 = new Bundle();
+        Bundle bundle2 = new Bundle();
+        bundle1.putInt(FRAGMENTTYPE, 1);
+        bundle2.putInt(FRAGMENTTYPE, 2);
+        homePageFragment1.setArguments(bundle1);
+        homePageFragment2.setArguments(bundle2);
+        mFragmentList.add(homePageFragment1);
+        mFragmentList.add(homePageFragment2);
+//        mFragmentList.add(new DiscoverFragment());
+//        mFragmentList.add(new BookstoreFragment());
+        mFragmentList.add(new BookshelfFragment());
         mFragmentList.add(new MeFragment());
     }
 
@@ -138,6 +218,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     public void configViews() {
         super.configViews();
         gone(mBackImageView);
+        gone(mTitleLayout);
+        setViewpagerTopMargin(0);
     }
 
     @Override
@@ -223,22 +305,25 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         public void onPageSelected(int position) {
             switch (position) {
                 case BOOKSHELF_POSITION:
-                    addFreeTextView();
-                    setTitle(R.string.book_reader_bookshelf);
+//                    addFreeTextView();
+                    addSearchView();
+                    setTitle(R.string.book_reader_book_selector);
                     setSelectView(BOOKSHELF_POSITION);
-                    visible(mTitleLayout);
-                    setViewpagerTopMargin(TOP_BAR_HEIGHT);
+                    gone(mTitleLayout);
+                    setViewpagerTopMargin(0);
                     break;
                 case DISCOVER_POSITION:
                     mRightLayout.removeAllViews();
-                    setTitle(R.string.book_reader_discover);
-                    setSelectView(DISCOVER_POSITION);
-                    visible(mTitleLayout);
-                    setViewpagerTopMargin(TOP_BAR_HEIGHT);
-                    break;
-                case BOOKSTORE_POSITION:
                     setTitle(R.string.book_reader_bookstore);
                     addSearchView();
+                    setSelectView(DISCOVER_POSITION);
+                    gone(mTitleLayout);
+                    setViewpagerTopMargin(0);
+                    break;
+                case BOOKSTORE_POSITION:
+                    setTitle(R.string.book_reader_bookshelf);
+//                    addSearchView();
+                    addFreeTextView();
                     setSelectView(BOOKSTORE_POSITION);
                     visible(mTitleLayout);
                     setViewpagerTopMargin(TOP_BAR_HEIGHT);

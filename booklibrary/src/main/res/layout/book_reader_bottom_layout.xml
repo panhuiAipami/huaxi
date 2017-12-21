@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/book_reader_bookshelf"
+            android:text="@string/book_reader_book_selector"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/book_reader_discover"
+            android:text="@string/book_reader_bookstore"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/book_reader_bookstore"
+            android:text="@string/book_reader_bookshelf"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>

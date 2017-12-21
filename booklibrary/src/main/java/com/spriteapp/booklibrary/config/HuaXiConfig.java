@@ -24,6 +24,7 @@ public class HuaXiConfig {
     final int backImageResource;
     final int statusBarColor;
     final boolean isNightMode;
+    int sex;
 
     private HuaXiConfig(Builder builder) {
         this.channelId = builder.channelId;
@@ -38,6 +39,7 @@ public class HuaXiConfig {
         this.backImageResource = builder.backImageResource;
         this.statusBarColor = builder.statusBarColor;
         this.isNightMode = builder.isNightMode;
+        this.sex = builder.sex;
         this.resultListener = builder.resultListener;
     }
 
@@ -53,11 +55,18 @@ public class HuaXiConfig {
         private int bottomBackground;
         private int backImageResource;
         private int statusBarColor;
+        private int sex;
         private boolean isNightMode;
         private ActivityResultListener resultListener;
 
         public Builder setChannelId(int channelId) {
             this.channelId = channelId;
+            return this;
+        }
+
+
+        public Builder setSex(int sex) {
+            this.sex = sex;
             return this;
         }
 
@@ -132,6 +141,10 @@ public class HuaXiConfig {
 
     public int getChannelId() {
         return channelId;
+    }
+
+    public int getSex() {
+        return sex;
     }
 
     public int getClientId() {

@@ -7,8 +7,8 @@ android {
         applicationId "net.huaxi.reader"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 5
-        versionName "2.0.0"
+        versionCode 6
+        versionName "2.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -61,7 +61,7 @@ android {
         chuizi {}//锤子
         qzone {}//qq空间
         kuaishou {}//快手
-        her_community{}//她社区
+        her_community {}//她社区
     }
     //批量配置
     productFlavors.all { flavor ->

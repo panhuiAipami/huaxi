@@ -19,4 +19,5 @@ public class SignConstant {
     public static final String MAC = "mac";
     public static final String IMEI = "imei";
     public static final String OS = "os";
+    public static final String  G_GENDER= "g-gender";
 }

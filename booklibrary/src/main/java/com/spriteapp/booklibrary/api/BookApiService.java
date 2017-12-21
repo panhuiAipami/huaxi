@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
@@ -159,6 +160,10 @@ public interface BookApiService {
     ///////////////////////////////////////////////////////////////////////////////
     @GET("server_version")
     Observable<Base<AppUpDateModel>> app_Upate(@Query("type") String type);
+
+
+    @GET("server_check")
+    Observable<Base<CateBean>> app_cate();
 
 
 }

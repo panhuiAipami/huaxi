@@ -16,6 +16,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
+
 /**
  * Created by kuangxiaoguo on 2017/7/10.
  */
@@ -35,6 +37,7 @@ public class HeaderInterceptor implements Interceptor {
                 .addHeader(SignConstant.OS, android.os.Build.VERSION.RELEASE)
                 .addHeader(SignConstant.MAC, Util.getMacAddr())
                 .addHeader(SignConstant.IMEI, Util.getid())
+                .addHeader(SignConstant.G_GENDER, SharedPreferencesUtil.getInstance().getInt(SEX, 0) + "")
                 .addHeader(SignConstant.TOKEN_KEY, SharedPreferencesUtil.getInstance()
                         .getString(SignConstant.HUA_XI_TOKEN_KEY))
                 .build();

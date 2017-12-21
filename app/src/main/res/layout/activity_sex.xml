@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.huaxi.reader.activity.SexActivity">
+
+    <ImageView
+        android:id="@+id/close_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="12dp"
+        android:src="@mipmap/close_sex" />
+
+    <LinearLayout
+        android:id="@+id/sex_ii"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/close_sex"
+        android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择你的阅读偏好"
+            android:textColor="@color/c01_themes_color"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="— 我们将为您推荐最适合的作品 —"
+            android:textColor="@color/c07_themes_color"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sex_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawablePadding="5dp"
+            android:drawableTop="@mipmap/man_head"
+            android:gravity="center_horizontal"
+            android:text="男生小说"
+            android:textColor="@color/book_reader_common_text_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/sex_woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:drawablePadding="5dp"
+            android:drawableTop="@mipmap/woman_head"
+            android:gravity="center_horizontal"
+            android:text="女生小说"
+            android:textColor="@color/book_reader_common_text_color"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

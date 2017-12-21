@@ -121,6 +121,13 @@ public class HuaXiSDK {
         }
         return String.valueOf(mConfig.clientId);
     }
+    public int getSex() {
+        if (mConfig == null) {
+            throw new NullPointerException("HuaXiConfig 不能为空");
+        }
+        return mConfig.sex;
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mConfig == null) {

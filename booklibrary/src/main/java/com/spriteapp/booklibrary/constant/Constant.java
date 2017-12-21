@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.constant;
 
+import android.os.Environment;
+
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.FileUtils;
 
@@ -8,6 +10,16 @@ import com.spriteapp.booklibrary.util.FileUtils;
  */
 
 public class Constant {
+    /**
+     * SD卡根目录
+     */
+    public static final String SDROOTPath = Environment.getExternalStorageDirectory().getPath();
+    public static final String SDPath = SDROOTPath + "/huaxi";
+//    public static final String PathTitle = SDPath + "/title";
+    /**
+     * 首页书籍列表缓存文件名fragment
+     */
+    public final static String PathTitle = "path_title";
 
     public static final String BASE_URL = "https://s.hxdrive.net/";
     public static final String BOOK_STORE_URL = BASE_URL + "book_store";
@@ -18,7 +30,7 @@ public class Constant {
     //签到
     public static final String CHECK_IN_URL = BASE_URL + "user_signin";//签到
 
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "2.1.0";
     public static final String USER_AGENT_KEY = "User-Agent";
 
     public static final String JSON_TYPE = "json";
@@ -26,6 +38,7 @@ public class Constant {
     public static String PATH_DATA = FileUtils.createRootPath(AppUtil.getAppContext()) + "HuaXi/cache";
 
     public static String PATH_TXT = PATH_DATA + "/book/";
+    public static String PATH_TITLE = PATH_DATA + "/title/";
 
     public static final String IS_NIGHT_MODE = "hua_xi_is_night_mode";
     public static final String READ_TEXT_SIZE_POSITION = "hua_xi_read_text_size_position";

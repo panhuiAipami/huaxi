@@ -22,6 +22,8 @@ import com.spriteapp.booklibrary.util.WebViewUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
+
 /**
  * Created by kuangxiaoguo on 2017/7/13.
  */
@@ -99,13 +101,15 @@ public class ReaderWebView extends WebView {
         headerMap.put(SignConstant.TIMESTAMP_KEY, String.valueOf(SignUtil.getCurrentTime()));
         headerMap.put(SignConstant.VERSION_KEY, Constant.VERSION);
         headerMap.put(SignConstant.SIGN_KEY, SignUtil.createSign(Constant.VERSION));
+        headerMap.put(SignConstant.G_GENDER, SharedPreferencesUtil.getInstance().getInt(SEX, 0) + "");
         headerMap.put(SignConstant.SN_KEY, AppUtil.getHeaderSnValue());
         headerMap.put(SignConstant.TOKEN_KEY, SharedPreferencesUtil.getInstance()
                 .getString(SignConstant.HUA_XI_TOKEN_KEY));
         Log.d("userToken", "token===" + SharedPreferencesUtil.getInstance()
                 .getString(SignConstant.HUA_XI_TOKEN_KEY));
         Log.d("userToken", "sn===" + AppUtil.getHeaderSnValue());
-        Log.d("userToken", "url===" + url);
+        Log.d("user_url", "url===" + url);
+        Log.d("sexh5", "性别===" + SharedPreferencesUtil.getInstance().getInt(SEX, 0) + "");
         loadUrl(url, headerMap);
     }
 
