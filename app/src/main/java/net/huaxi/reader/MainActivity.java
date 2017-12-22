@@ -9,7 +9,11 @@ import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.listener.ChannelListener;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.switfpass.pay.MainApplication;
+import com.switfpass.pay.activity.PayPlugin;
+import com.switfpass.pay.bean.RequestMsg;
 
 import net.huaxi.reader.activity.ShareActivity;
 import net.huaxi.reader.bean.ShareBean;
@@ -18,6 +22,7 @@ import net.huaxi.reader.utils.LoginHelper;
 import net.huaxi.reader.utils.PreferenceHelper;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.libActivity;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SEXTIME = "sextime";
@@ -62,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     }
+
+                    @Override
+                    public void toWXPay(PayResponse response) {
+                        if (response == null) {
+                            return;
+                        }
+                        wxPay(response);
+                    }
                 })
                 .setChannelId(CHANNEL_ID)
                 .setClientId(CLIENT_ID)
@@ -81,5 +94,28 @@ public class MainActivity extends AppCompatActivity {
         }
         shareDialog = new ShareDialog(this, shareBean);
         shareDialog.show();
+    }
+
+    public void wxPay(PayResponse response) {//微信支付
+//        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
+//        WXApi.registerApp(LoginHelper.WX_APP_ID);
+//        PayReq req = new PayReq();
+//        req.appId = LoginHelper.WX_APP_ID;
+//        req.partnerId = response.getParams().getApp_id();
+//        req.extData = response.getAmount() + "";
+//        req.signType = response.getParams().getSign_type();
+//        req.sign = response.getParams().getSign();
+//        req.timeStamp = response.getParams().getTimestamp();
+//        req.nonceStr = response.getParams().getCharset();
+//        if (WXApi.isWXAppInstalled()) {
+//            WXApi.sendReq(req);
+//        } else {
+//            showToast("请先安装微信");
+//        }
+        RequestMsg msg = new RequestMsg();
+//        msg.setTokenId(result.get("token_id"));
+        msg.setTradeType(MainApplication.WX_APP_TYPE);
+        msg.setAppId(LoginHelper.WX_APP_ID);
+        PayPlugin.unifiedAppPay(libActivity, msg);
     }
 }

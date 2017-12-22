@@ -51,6 +51,8 @@
 -dontwarn okhttp3.logging.**
 -dontwarn okio.**
 -keep class okhttp3.internal.**{*;}
+-dontwarn com.switfpass.pay.**
+-keep class com.switfpass.pay.** {*;}
 
 # Retrofit
 -dontwarn retrofit2.**

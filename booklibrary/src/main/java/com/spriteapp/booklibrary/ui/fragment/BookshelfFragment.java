@@ -7,13 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
-import com.spriteapp.booklibrary.constant.DbConstants;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.database.ContentDb;
@@ -62,6 +62,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
     private ContentDb mContentDb;
     private BookShelfPresenter mPresenter;
     private List<BookDetailResponse> mBookList;
+    private List<BookDetailResponse> mFlagList;
     private RecyclerView mRecyclerView;
     private BookShelfAdapter mAdapter;
     private int mDeleteBookId;
@@ -82,7 +83,13 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         mBookDb = new BookDb(getContext());
         mContentDb = new ContentDb(getMyContext());
         mBookList = new ArrayList<>();
+//        mFlagList = new ArrayList<>();
+//        mFlagList = mBookDb.queryBookData();
         mBookList = mBookDb.queryBookData();
+//        Collections.reverse(mBookList);//倒叙
+        for (int i = 0; i < mBookList.size(); i++) {//测试
+            Log.d("mBookList", mBookList.get(i).toString());
+        }
         mChapterDb = new ChapterDb(getMyContext());
         mPresenter = new BookShelfPresenter();
         DialogUtil.setDialogListener(mDeleteListener);
@@ -400,6 +407,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
     private void synchronizeMyBook(List<BookDetailResponse> serverData) {
         //服务器比本地数据多
         if (mBookList.size() < serverData.size()) {
+            Log.d("messageOne", "服务器比本地数据多");
             List<BookDetailResponse> diffBookList = CollectionUtil.getDiffBook(mBookList, serverData);
             mBookList.addAll(diffBookList);
             mBookDb.insert(diffBookList, BookEnum.ADD_SHELF, BookEnum.MY_BOOK);
@@ -407,6 +415,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
             //本地数据比服务器数据多
             List<BookDetailResponse> differList = new ArrayList<>();
             differList.addAll(mBookList);
+            Log.d("messageOne", "本地数据比服务器数据多");
             differList = CollectionUtil.getDiffBook(serverData, differList);
             mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(differList));
         }
@@ -442,7 +451,14 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         if (bookDetailResponse.getIs_recommend_book() == BookEnum.RECOMMEND_BOOK.getValue()) {
             return;
         }
+        Log.d("messageOne", "添加书籍");
         mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(mBookList));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+//        synchronizeBookProgress();
     }
 
     @Override

@@ -8,6 +8,15 @@ import java.util.List;
 
 public class CateBean {
     private Top_menu top_menu;
+    private String hello_messages;
+
+    public String getHello_messages() {
+        return hello_messages;
+    }
+
+    public void setHello_messages(String hello_messages) {
+        this.hello_messages = hello_messages;
+    }
 
     public Top_menu getTop_menu() {
         return top_menu;
@@ -45,7 +54,6 @@ public class CateBean {
                     '}';
         }
     }
-
 
 
     @Override

@@ -10,6 +10,7 @@ import com.spriteapp.booklibrary.enumeration.UpdateNightMode;
 import com.spriteapp.booklibrary.manager.NightModeManager;
 import com.spriteapp.booklibrary.model.RegisterModel;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.FileUtils;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
@@ -69,6 +70,16 @@ public class HuaXiSDK {
             return;
         }
         mConfig.channelListener.toLoginPage(context);
+    }
+    public void toWXPay(PayResponse response) {
+        if (mConfig.channelListener == null) {
+            throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
+        }
+//        if (mLoginState == LoginStateEnum.LOADING) {
+//            ToastUtil.showSingleToast("登录中");
+//            return;
+//        }
+        mConfig.channelListener.toWXPay(response);
     }
 
     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {

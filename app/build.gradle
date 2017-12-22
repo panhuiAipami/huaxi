@@ -102,4 +102,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:okhttputils:2.0.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/wftsdk5.0.jar')
 }

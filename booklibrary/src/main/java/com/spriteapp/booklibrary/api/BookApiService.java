@@ -142,6 +142,10 @@ public interface BookApiService {
     @GET("pay_appalipay")
     Observable<Base<PayResponse>> getAliPayRequest(@Query("product_id") String productId);
 
+    //威富通
+    @GET("appswiftpassg")
+    Observable<Base<PayResponse>> getWeChatRequest(@Query("product_id") String productId);
+
     @FormUrlEncoded
     @POST("book_comment")
     Observable<Base<Void>> addComment(@Field("book_id") int bookId,

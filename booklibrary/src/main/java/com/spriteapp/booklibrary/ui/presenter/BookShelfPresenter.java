@@ -95,6 +95,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
                         if (mView == null) {
                             return;
                         }
+                        Log.d("addBook", listBase.toString());
                         mView.setData(listBase);
                     }
 
@@ -286,6 +287,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
                         if (mView == null) {
                             return;
                         }
+                        Log.d("addBook", "添加书架成功11");
                         if (result.getCode() == ApiCodeEnum.SUCCESS.getValue() && isAdd) {
                             mView.setAddShelfResponse();
                         }
@@ -355,6 +357,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
 
                     @Override
                     public void onNext(Base<Void> result) {
+                        Log.d("addBook", "添加书籍成功");
                     }
                 });
     }

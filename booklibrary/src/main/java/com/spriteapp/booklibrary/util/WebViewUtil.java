@@ -91,6 +91,9 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                         break;
                     case WebConstant.PAY_AUTHORITY:
                         String productId = uri.getQueryParameter(WebConstant.PRODUCT_ID_QUERY);
+                        String type = uri.getQueryParameter(WebConstant.PRODUCT_TYPE);
+                        //区分微信或者支付宝支付
+                        Log.d("alipay", "productId===" + productId + "type===" + type);
                         if (mWebViewCallback != null) {
                             mWebViewCallback.getAliPay(productId);
                         }

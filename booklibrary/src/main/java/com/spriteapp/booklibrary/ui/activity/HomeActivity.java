@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.ui.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
+import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private ViewPagerAdapter mAdapter;
     private Context mContext;
     public static Context libContent;
+    public static Activity libActivity;
     private List<StoreBean> sy = new ArrayList<>();
     private List<StoreBean> shu = new ArrayList<>();
     private HomePageFragment homePageFragment1;
@@ -76,8 +79,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     @Override
     public void initData() {
         mContext = this;
-        int fisrtSex=SharedPreferencesUtil.getInstance().getInt(SEX,0);
-        if(fisrtSex==0){
+        int fisrtSex = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
+        if (fisrtSex == 0) {
             SharedPreferencesUtil.getInstance().putInt(SEX, HuaXiSDK.getInstance().getSex());
         }
         setTitle("精选");
@@ -89,6 +92,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         appUpdate();
         addFlag();
         libContent = getApplicationContext();//获取lib上下文
+        libActivity = this;
 //        requestPermissions();
     }
 
@@ -113,6 +117,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 //                            Gson gson = new Gson();
 //                            String s = gson.toJson(appUpDateModelBase.getData());
 //                            Log.d("cate1111", s + "哈g哈");
+                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getHello_messages() != null && !appUpDateModelBase.getData().getHello_messages().isEmpty()) {
+                                ToastUtil.showLongToast(appUpDateModelBase.getData().getHello_messages());
+                            }
                             if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
                                 sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
                                 if (homePageFragment1 != null) {
@@ -390,8 +397,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         }
         Fragment currentFragment = getCurrentFragment();
         if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
-            mHomeViewPager.setCurrentItem(BOOKSHELF_POSITION);
-            setSelectView(BOOKSHELF_POSITION);
+            mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+            setSelectView(BOOKSTORE_POSITION);
             return;
         }
         super.onBackPressed();

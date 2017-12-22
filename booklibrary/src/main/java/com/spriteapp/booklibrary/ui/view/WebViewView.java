@@ -10,4 +10,5 @@ import com.spriteapp.booklibrary.model.response.PayResponse;
 public interface WebViewView extends BaseView<Void> {
 
     void setAliPayResult(PayResponse result);
+    void setWechatPayResult(PayResponse result);
 }

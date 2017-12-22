@@ -103,6 +103,20 @@ public class PayResponse {
         public void setSign(String sign) {
             this.sign = sign;
         }
+
+        @Override
+        public String toString() {
+            return "PayParams{" +
+                    "app_id='" + app_id + '\'' +
+                    ", method='" + method + '\'' +
+                    ", charset='" + charset + '\'' +
+                    ", sign_type='" + sign_type + '\'' +
+                    ", timestamp='" + timestamp + '\'' +
+                    ", version='" + version + '\'' +
+                    ", notify_url='" + notify_url + '\'' +
+                    ", sign='" + sign + '\'' +
+                    '}';
+        }
     }
 
     public String getTransaction_id() {
@@ -151,5 +165,17 @@ public class PayResponse {
 
     public void setParams(PayParams params) {
         this.params = params;
+    }
+
+    @Override
+    public String toString() {
+        return "PayResponse{" +
+                "transaction_id='" + transaction_id + '\'' +
+                ", pay_str='" + pay_str + '\'' +
+                ", amount=" + amount +
+                ", return_code='" + return_code + '\'' +
+                ", order_no='" + order_no + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

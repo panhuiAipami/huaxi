@@ -5,6 +5,7 @@ package com.spriteapp.booklibrary.callback;
  */
 
 public interface WebViewCallback {
+    void getWeChatPay(String productId);
 
     void getAliPay(String productId);
 

@@ -154,6 +154,11 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
     private WebViewCallback mWebViewCallback = new WebViewCallback() {
         @Override
+        public void getWeChatPay(String productId) {//微信回调
+            mPresenter.requestWeChatPay(productId);
+        }
+
+        @Override
         public void getAliPay(String productId) {
             mPresenter.requestAliPay(productId);
         }
@@ -229,6 +234,31 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+    }
+
+    @Override
+    public void setWechatPayResult(PayResponse result) {
+        //微信支付
+//        if (result == null) {
+//            return;
+//        }
+//        final String orderInfo = result.getPay_str();
+//        Runnable payRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                PayTask alipay = new PayTask(WebViewActivity.this);
+//                Map<String, String> result = alipay.payV2(orderInfo, true);
+//
+//                Message msg = new Message();
+//                msg.what = SDK_PAY_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+//            }
+//        };
+//
+//        Thread payThread = new Thread(payRunnable);
+//        payThread.start();
+
     }
 
     public void onEventMainThread(UpdateCommentEnum commentEnum) {

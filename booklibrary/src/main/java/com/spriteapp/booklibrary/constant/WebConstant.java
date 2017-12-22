@@ -27,6 +27,7 @@ public class WebConstant {
     public static final String BOOK_ID_QUERY = "book_id";
     public static final String CHAPTER_ID_QUERY = "chapter_id";
     public static final String PRODUCT_ID_QUERY = "product_id";
+    public static final String PRODUCT_TYPE = "type";
     /*
     setting	设置	huaxi://app?action=setting
 add_shelf	添加到书架，会带其他参数	huaxi://app?action=add_shelf&book_id=14&chapter_id=16422
