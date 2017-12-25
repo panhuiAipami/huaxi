@@ -27,8 +27,11 @@ public class ResponseInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         String url = request.url().toString();
         String head = request.headers().toString();
+//        String body = response.body().string();
         Log.d("-->>", url);
         Log.d("-->>", "头部参数===" + head);
+//        Log.d("-->>", "返回结果===" + body);
+
         boolean hasToken = url.contains(LoginModeEnum.CHANNEL_LOGIN.getValue())
                 || url.contains(LoginModeEnum.WECHAT_LOGIN.getValue())
                 || url.contains(LoginModeEnum.QQ_LOGIN.getValue())

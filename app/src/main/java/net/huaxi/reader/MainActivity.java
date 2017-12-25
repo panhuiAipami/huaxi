@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.listener.ChannelListener;
+import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
-import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.switfpass.pay.MainApplication;
 import com.switfpass.pay.activity.PayPlugin;
 import com.switfpass.pay.bean.RequestMsg;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import net.huaxi.reader.activity.ShareActivity;
 import net.huaxi.reader.bean.ShareBean;
@@ -23,6 +25,7 @@ import net.huaxi.reader.utils.PreferenceHelper;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.libActivity;
+import static com.spriteapp.booklibrary.util.ToastUtil.showToast;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SEXTIME = "sextime";
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void toWXPay(PayResponse response) {
+                    public void toWXPay(WeChatBean response) {
                         if (response == null) {
                             return;
                         }
@@ -96,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         shareDialog.show();
     }
 
-    public void wxPay(PayResponse response) {//微信支付
-//        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
+    public void wxPay(WeChatBean response) {//微信支付
+        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
 //        WXApi.registerApp(LoginHelper.WX_APP_ID);
 //        PayReq req = new PayReq();
 //        req.appId = LoginHelper.WX_APP_ID;
@@ -107,15 +110,15 @@ public class MainActivity extends AppCompatActivity {
 //        req.sign = response.getParams().getSign();
 //        req.timeStamp = response.getParams().getTimestamp();
 //        req.nonceStr = response.getParams().getCharset();
-//        if (WXApi.isWXAppInstalled()) {
-//            WXApi.sendReq(req);
-//        } else {
-//            showToast("请先安装微信");
-//        }
-        RequestMsg msg = new RequestMsg();
-//        msg.setTokenId(result.get("token_id"));
-        msg.setTradeType(MainApplication.WX_APP_TYPE);
-        msg.setAppId(LoginHelper.WX_APP_ID);
-        PayPlugin.unifiedAppPay(libActivity, msg);
+        if (WXApi.isWXAppInstalled()) {
+            RequestMsg msg = new RequestMsg();
+            msg.setTokenId(response.getToken_id());
+            msg.setTradeType(MainApplication.WX_APP_TYPE);
+            msg.setAppId(LoginHelper.WX_APP_ID);
+            PayPlugin.unifiedAppPay(libActivity, msg);
+        } else {
+            showToast("请先安装微信");
+        }
+
     }
 }

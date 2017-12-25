@@ -105,6 +105,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SexActivity"></activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

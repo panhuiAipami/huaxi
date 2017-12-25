@@ -7,6 +7,7 @@ import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -91,7 +92,7 @@ public class WebViewPresenter implements BasePresenter<WebViewView> {
                 .getWeChatRequest(productId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Base<PayResponse>>() {
+                .subscribe(new Observer<Base<WeChatBean>>() {
                     @Override
                     public void onComplete() {
                         if (mView != null) {
@@ -107,15 +108,18 @@ public class WebViewPresenter implements BasePresenter<WebViewView> {
                     @Override
                     public void onError(Throwable e) {
                         if (mView != null) {
+                            Log.d("PayResponse", "微信订单请求失败");
+//                            PayResponse response = new PayResponse();
+//                            HuaXiSDK.getInstance().toWXPay(response);
                             mView.onError(e);
                         }
                     }
 
                     @Override
-                    public void onNext(Base<PayResponse> payResponseBase) {//微信wechat
+                    public void onNext(Base<WeChatBean> payResponseBase) {//微信wechat
+                        Log.d("PayResponse", payResponseBase.toString());
                         if (payResponseBase.getCode() == ApiCodeEnum.SUCCESS.getValue() && mView != null) {
-                            PayResponse data = payResponseBase.getData();
-
+                            WeChatBean data = payResponseBase.getData();
 //                            mView.setWechatPayResult(data);
                             if (AppUtil.isLogin()) {
                                 HuaXiSDK.getInstance().toWXPay(data);

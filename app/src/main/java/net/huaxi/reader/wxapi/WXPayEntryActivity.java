@@ -80,10 +80,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 
             if (code == 0) {
                 intent.putExtra("success", 1);
+                Log.d("success","支付成功");
             } else {
                 intent.putExtra("success", 0);
                 if(code == -1){
+                    Log.d("success","支付失败");
                 } else if (code == -2) {//用户取消
+                    Log.d("success","用户取消");
                 }
 
             }

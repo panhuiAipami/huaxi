@@ -8,6 +8,7 @@ public class AddBookModel {
 
     private int bookId;
     private int chapterId;
+    private boolean isAddShelf = false;
 
     public int getBookId() {
         return bookId;
@@ -23,5 +24,13 @@ public class AddBookModel {
 
     public void setChapterId(int chapterId) {
         this.chapterId = chapterId;
+    }
+
+    public boolean isAddShelf() {
+        return isAddShelf;
+    }
+
+    public void setAddShelf(boolean addShelf) {
+        isAddShelf = addShelf;
     }
 }

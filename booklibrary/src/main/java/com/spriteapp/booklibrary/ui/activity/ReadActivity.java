@@ -46,6 +46,7 @@ import com.spriteapp.booklibrary.ui.adapter.ChapterAdapter;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.DialogUtil;
@@ -471,6 +472,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
         BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
         if (bookDetail == null || BookUtil.isBookAddShelf(bookDetail)) {
+            if (AppUtil.isLogin()) {
+                addToShelf();//书架中已存在但要刷新顺序
+            }
             finish();
             return;
         }
@@ -625,6 +629,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         AddBookModel model = new AddBookModel();
         model.setBookId(mBookId);
         model.setChapterId(mCurrentChapter);
+        model.setAddShelf(true);//刷新纪录的标识
         EventBus.getDefault().post(model);
     }
 

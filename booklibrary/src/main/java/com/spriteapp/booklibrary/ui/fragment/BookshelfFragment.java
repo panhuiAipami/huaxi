@@ -347,8 +347,14 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
             mBookList.clear();
             mBookList.addAll(bookDetailList);
             mAdapter.notifyDataSetChanged();
-            ToastUtil.showSingleToast("书架中已存在");
-            return;
+            Log.d("addBook", "添加书架中1");
+            if (model != null && model.isAddShelf()) {
+
+            } else {
+                ToastUtil.showSingleToast("书架中已存在");
+                return;
+            }
+
         }
         if (bookDetail != null &&
                 bookDetail.getIs_recommend_book() == BookEnum.RECOMMEND_BOOK.getValue()) {
@@ -358,7 +364,9 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         mPresenter.addToShelf(mAddBookId, "add", bookDetail == null ? 0 : bookDetail.getChapter_id());
         if (bookDetail != null) {
             mBookDb.deleteRecommendBook();
-            ToastUtil.showSingleToast("加入书架成功");
+            if (!model.isAddShelf()) {
+                ToastUtil.showSingleToast("加入书架成功");
+            }
             mBookDb.updateAddShelfTag(mAddBookId, BookEnum.ADD_SHELF);
             onEventMainThread(UpdaterShelfEnum.UPDATE_SHELF);
             return;

@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.api;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.UserModel;
+import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.BookStoreResponse;
@@ -143,8 +144,8 @@ public interface BookApiService {
     Observable<Base<PayResponse>> getAliPayRequest(@Query("product_id") String productId);
 
     //威富通
-    @GET("appswiftpassg")
-    Observable<Base<PayResponse>> getWeChatRequest(@Query("product_id") String productId);
+    @GET("pay_appswiftpassg")
+    Observable<Base<WeChatBean>> getWeChatRequest(@Query("product_id") String productId);
 
     @FormUrlEncoded
     @POST("book_comment")

@@ -271,6 +271,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
                 .subscribe(new Observer<Base<Void>>() {
                     @Override
                     public void onComplete() {
+                        Log.d("addBook", "添加书架请求完成");
                     }
 
                     @Override
@@ -280,6 +281,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("addBook", "添加书架失败");
                     }
 
                     @Override
@@ -290,6 +292,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
                         Log.d("addBook", "添加书架成功11");
                         if (result.getCode() == ApiCodeEnum.SUCCESS.getValue() && isAdd) {
                             mView.setAddShelfResponse();
+                            Log.d("addBook", "添加书架成功end");
                         }
                     }
                 });
@@ -336,6 +339,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
         if (!NetworkUtil.isAvailable(mView.getMyContext())) {
             return;
         }
+        Log.d("bookJson", "bookJson==" + bookJson);
         BookApi.getInstance().
                 service
                 .addBook("multi", bookJson)

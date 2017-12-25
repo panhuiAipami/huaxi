@@ -28,6 +28,7 @@ public class PayResponse {
     private float amount;
     private String return_code;
     private String order_no;
+    private String token_id;
     private PayParams params;
 
     public static class PayParams {
@@ -157,6 +158,14 @@ public class PayResponse {
 
     public void setOrder_no(String order_no) {
         this.order_no = order_no;
+    }
+
+    public String getToken_id() {
+        return token_id;
+    }
+
+    public void setToken_id(String token_id) {
+        this.token_id = token_id;
     }
 
     public PayParams getParams() {

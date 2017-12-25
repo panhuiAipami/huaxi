@@ -7,6 +7,7 @@ import android.util.Log;
 import com.spriteapp.booklibrary.callback.WebViewCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.WebConstant;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 
 /**
  * Created by kuangxiaoguo on 2017/7/13.
@@ -28,6 +29,10 @@ book_catalog	书籍目录，会带其他参数	huaxi://app?action=book_catalog&b
 add_comment	写评论，会带其他参数	huaxi://app?action=add_comment&book_id=14&chapter_id=16422
 pay	支付，会带其他参数	huaxi://app?action=pay&product_id=net.huaxi.1yuan
 openpage	通过app代理打开网页，参数url就是需要打开的网页	huaxi://app?action=openpage&url=https%3a%2f%2fw.huaxi.net%2f7
+     */
+
+    /**
+     * huaxi://app?action=pay&product_id=com.spriteapp.baisibdj.hb12&type=appwechat||appalipay||appapple
      */
 
     public static WebViewUtil getInstance() {
@@ -69,7 +74,19 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                 switch (action) {
                     case WebConstant.OPEN_PAGE_AUTHORITY://书籍详情界面
                         jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-                        ActivityUtil.toWebViewActivity(context, jumpUrl);
+                        Uri uri1 = Uri.parse(jumpUrl);//拦截url中的参数并装换为uri
+                        Log.d("jumpread", "jumpUrl===" + jumpUrl);
+
+                        String bookId1 = uri1.getQueryParameter(WebConstant.BOOK_ID_QUERY);
+                        if (bookId1 != null && !bookId1.isEmpty()) {//看书
+                            BookDetailResponse detail = new BookDetailResponse();
+                            detail.setBook_id(Integer.parseInt(bookId1));
+                            detail.setChapter_id(0);
+                            ActivityUtil.toReadActivity(context, detail);
+                        } else {//充值
+                            ActivityUtil.toWebViewActivity(context, jumpUrl);//打开WebViewActivity
+                        }
+
                         break;
                     case WebConstant.BOOK_READ_AUTHORITY://免费阅读按钮
                         String bookId = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
@@ -95,7 +112,13 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                         //区分微信或者支付宝支付
                         Log.d("alipay", "productId===" + productId + "type===" + type);
                         if (mWebViewCallback != null) {
-                            mWebViewCallback.getAliPay(productId);
+                            if (type != null && type.equals("appalipay")) {
+                                mWebViewCallback.getAliPay(productId);//支付宝
+                            } else if (type != null && type.equals("appswiftpassg")) {
+                                mWebViewCallback.getWeChatPay(productId);//微信
+                            }
+//                            mWebViewCallback.getAliPay(productId);//支付宝
+//                            mWebViewCallback.getWeChatPay(productId);//微信
                         }
                         break;
                     case WebConstant.SETTING_AUTHORITY:

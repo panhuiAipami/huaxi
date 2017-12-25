@@ -9,8 +9,8 @@ import com.spriteapp.booklibrary.enumeration.LoginStateEnum;
 import com.spriteapp.booklibrary.enumeration.UpdateNightMode;
 import com.spriteapp.booklibrary.manager.NightModeManager;
 import com.spriteapp.booklibrary.model.RegisterModel;
+import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
-import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.FileUtils;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
@@ -71,7 +71,7 @@ public class HuaXiSDK {
         }
         mConfig.channelListener.toLoginPage(context);
     }
-    public void toWXPay(PayResponse response) {
+    public void toWXPay(WeChatBean response) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }

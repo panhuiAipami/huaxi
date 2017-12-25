@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -438,6 +439,7 @@ public class NativeBookStoreFragment extends BaseFragment implements BookShelfVi
             mBookList.addAll(bookDetailList);
             mMyBook.setDetailResponseList(mBookList);
             setAdapter();
+            Log.d("addBook","添加书架中2");
             ToastUtil.showSingleToast("书架中已存在");
             return;
         }
