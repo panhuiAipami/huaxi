@@ -63,7 +63,8 @@ public class BookstoreFragment extends BaseFragment {
             e.toString();
         }
         if (type == 1) {
-            mWebView.loadPage(storeBeen.get(0).getUrl());
+            if (storeBeen.size() >= 1)
+                mWebView.loadPage(storeBeen.get(0).getUrl());
         } else {
             if (storeBeen.size() >= 2)
                 mWebView.loadPage(storeBeen.get(1).getUrl());
@@ -74,9 +75,11 @@ public class BookstoreFragment extends BaseFragment {
     public void reLoadH5() {
         if (mWebView != null) {
             if (type == 1) {
-                mWebView.loadPage(storeBeen.get(0).getUrl());
+                if (storeBeen.size() >= 1)
+                    mWebView.loadPage(storeBeen.get(0).getUrl());
             } else {
-                mWebView.loadPage(storeBeen.get(1).getUrl());
+                if (storeBeen.size() >= 2)
+                    mWebView.loadPage(storeBeen.get(1).getUrl());
             }
 
         }

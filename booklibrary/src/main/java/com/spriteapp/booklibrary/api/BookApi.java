@@ -45,7 +45,7 @@ public class BookApi {
         if (instance == null) {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)
+                    .addInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
                     .addInterceptor(new HeaderInterceptor())
                     .addInterceptor(new ResponseInterceptor())
                     .build();

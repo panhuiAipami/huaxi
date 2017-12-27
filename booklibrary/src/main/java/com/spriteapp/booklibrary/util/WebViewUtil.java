@@ -112,11 +112,11 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                         //区分微信或者支付宝支付
                         Log.d("alipay", "productId===" + productId + "type===" + type);
                         if (mWebViewCallback != null) {
-                            if (type != null && type.equals("appalipay")) {
+//                            if (type != null && type.equals("appalipay")) {
                                 mWebViewCallback.getAliPay(productId);//支付宝
-                            } else if (type != null && type.equals("appswiftpassg")) {
-                                mWebViewCallback.getWeChatPay(productId);//微信
-                            }
+//                            } else if (type != null && type.equals("appswiftpassg")) {
+//                                mWebViewCallback.getWeChatPay(productId);//微信
+//                            }
 //                            mWebViewCallback.getAliPay(productId);//支付宝
 //                            mWebViewCallback.getWeChatPay(productId);//微信
                         }

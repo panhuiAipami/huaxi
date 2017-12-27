@@ -14,11 +14,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/image_one"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_book_shelf_selector" />
 
         <TextView
+            android:id="@+id/text_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/book_reader_book_selector"
@@ -35,11 +37,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/image_two"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_discover_selector" />
 
         <TextView
+            android:id="@+id/text_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/book_reader_bookstore"
@@ -56,11 +60,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/image_three"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_book_store_selector" />
 
         <TextView
+            android:id="@+id/text_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/book_reader_bookshelf"
@@ -77,11 +83,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/image_four"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_me_selector" />
 
         <TextView
+            android:id="@+id/text_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/book_reader_me"

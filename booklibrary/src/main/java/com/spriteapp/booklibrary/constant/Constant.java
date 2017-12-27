@@ -20,6 +20,8 @@ public class Constant {
      * 首页书籍列表缓存文件名fragment
      */
     public final static String PathTitle = "path_title";
+    public final static String NAVIGATION = "navigation";
+    public final static String START_PAGE = "start_page";
 
     public static final String BASE_URL = "https://s.hxdrive.net/";
     public static final String BOOK_STORE_URL = BASE_URL + "book_store";

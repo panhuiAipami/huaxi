@@ -4,15 +4,23 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +32,7 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.StoreBean;
+import com.spriteapp.booklibrary.model.TabBar;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
@@ -32,6 +41,7 @@ import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.FileHelper;
+import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -75,6 +85,30 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private List<StoreBean> shu = new ArrayList<>();
     private HomePageFragment homePageFragment1;
     private HomePageFragment homePageFragment2;
+    private ImageView image_one, image_two, image_three, image_four;
+    private TextView text_one, text_two, text_three, text_four;
+    private Drawable[] drawables = new Drawable[8];
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Drawable drawable = (Drawable) msg.obj;
+            switch (msg.what) {
+                case 0:
+                    image_one.setImageDrawable(drawable);
+                    break;
+                case 1:
+                    image_two.setImageDrawable(drawable);
+                    break;
+                case 2:
+                    image_three.setImageDrawable(drawable);
+                    break;
+                case 3:
+                    image_four.setImageDrawable(drawable);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void initData() {
@@ -117,22 +151,31 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 //                            Gson gson = new Gson();
 //                            String s = gson.toJson(appUpDateModelBase.getData());
 //                            Log.d("cate1111", s + "哈g哈");
-                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getHello_messages() != null && !appUpDateModelBase.getData().getHello_messages().isEmpty()) {
-                                ToastUtil.showLongToast(appUpDateModelBase.getData().getHello_messages());
-                            }
-                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
-                                sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
-                                if (homePageFragment1 != null) {
-                                    homePageFragment1.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                            if (appUpDateModelBase.getData() != null) {
+                                if (appUpDateModelBase.getData().getHello_messages() != null && !appUpDateModelBase.getData().getHello_messages().isEmpty()) {
+                                    ToastUtil.showLongToast(appUpDateModelBase.getData().getHello_messages());
                                 }
-                                if (homePageFragment2 != null) {
-                                    homePageFragment2.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
+                                    sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
+                                    if (homePageFragment1 != null) {
+                                        homePageFragment1.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                                    }
+                                    if (homePageFragment2 != null) {
+                                        homePageFragment2.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+                                    }
+                                }
+                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getChosen() != null && appUpDateModelBase.getData().getTop_menu().getChosen().size() != 0) {
+                                    shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
+                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
+                                }
+                                if (appUpDateModelBase.getData().getTabbar() != null) {
+                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.NAVIGATION, appUpDateModelBase.getData().getTabbar());
+                                }
+                                if (appUpDateModelBase.getData().getSplashscreen() != null && !appUpDateModelBase.getData().getSplashscreen().isEmpty()) {
+                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE, appUpDateModelBase.getData().getSplashscreen());
                                 }
                             }
-                            if (appUpDateModelBase.getData() != null && appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getChosen() != null && appUpDateModelBase.getData().getTop_menu().getChosen().size() != 0) {
-                                shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
-                                FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
-                            }
+
                         }
 
 
@@ -243,7 +286,83 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mDiscoverLayout = (LinearLayout) findViewById(R.id.book_reader_discover_layout);
         mBookstoreLayout = (LinearLayout) findViewById(R.id.book_reader_bookstore_layout);
         mMeLayout = (LinearLayout) findViewById(R.id.book_reader_me_layout);
+        image_one = (ImageView) findViewById(R.id.image_one);
+        image_two = (ImageView) findViewById(R.id.image_two);
+        image_three = (ImageView) findViewById(R.id.image_three);
+        image_four = (ImageView) findViewById(R.id.image_four);
+        text_one = (TextView) findViewById(R.id.text_one);
+        text_two = (TextView) findViewById(R.id.text_two);
+        text_three = (TextView) findViewById(R.id.text_three);
+        text_four = (TextView) findViewById(R.id.text_four);
+        setIcon();
         mBookshelfLayout.setSelected(true);
+    }
+
+    public void setIcon() {
+        List<TextView> textViewList = new ArrayList<>();
+        List<ImageView> imageViewList = new ArrayList<>();
+        textViewList.add(text_one);
+        textViewList.add(text_two);
+        textViewList.add(text_three);
+        textViewList.add(text_four);
+        imageViewList.add(image_one);
+        imageViewList.add(image_two);
+        imageViewList.add(image_three);
+        imageViewList.add(image_four);
+        try {
+            TabBar tabBar = FileHelper.readObjectFromJsonFile(this, Constant.NAVIGATION, TabBar.class);
+            if (AppUtil.isNetAvailable(this)) {
+                if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
+                    Log.d("textViewColor", "进入修改颜色的方法");
+                    setTextColor(tabBar, tabBar.getColor(), tabBar.getColor_on(), textViewList);
+                }
+                if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
+                    Log.d("textViewColor", "进入修改icon的方法");
+                    setImageIcon(imageViewList, tabBar);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTextColor(TabBar tab, String normalColor, String seletorColor, List<TextView> text) {
+        for (int i = 0; i < text.size(); i++) {
+            Log.d("textViewColor", tab.getLists().get(i).getText());
+            int[] colors = new int[]{Color.parseColor(normalColor), Color.parseColor(seletorColor), Color.parseColor(normalColor)};
+            int[][] states = new int[3][];
+            states[0] = new int[]{-android.R.attr.state_selected};
+            states[1] = new int[]{android.R.attr.state_selected};
+            states[2] = new int[]{};
+            ColorStateList colorStateList = new ColorStateList(states, colors);
+            text.get(i).setTextColor(colorStateList);//修改文本颜色
+            text.get(i).setText(tab.getLists().get(i).getText());//修改文本
+            Log.d("textViewColor", tab.getLists().get(i).getText());
+        }
+    }
+
+    public void setImageIcon(final List<ImageView> image, final TabBar tab) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DisplayMetrics dm = getResources().getDisplayMetrics();
+                int dpi = dm.densityDpi;
+                int icon_type = dpi > 320 ? 3 : 2;
+                for (int i = 0; i < image.size(); i++) {
+                    //修改底部图标
+                    StateListDrawable drawable = new StateListDrawable();
+                    drawable.addState(new int[]{android.R.attr.state_selected}, GlideUtils.loadImageFromNetwork(icon_type == 2 ? tab.getLists().get(i).getIcon_on().get_$2x() : tab.getLists().get(i).getIcon_on().get_$3x()));
+                    drawable.addState(new int[]{-android.R.attr.state_pressed}, GlideUtils.loadImageFromNetwork(icon_type == 2 ? tab.getLists().get(i).getIcon().get_$2x() : tab.getLists().get(i).getIcon().get_$3x()));
+                    Message message = new Message();
+                    message.obj = drawable;
+                    message.what = i;
+                    handler.sendMessage(message);
+                    Log.d("textViewColor", tab.getLists().get(i).getIcon_on().get_$2x());
+                }
+            }
+        }).start();
     }
 
     @Override

@@ -24,6 +24,7 @@ public class DbConstants {
     //用于是否请求书籍详情接口，只有3小时外才更新
     public static final String LAST_UPDATE_BOOK_DATETIME = "last_update_book_datetime";
     public static final String LAST_UPDATE_CHAPTER_DATETIME = "last_update_chapter_datetime";
+    public static final String UPDATE_TIME = "update_time";
     public static final String BOOK_FINISH_FLAG = "book_finish_flag";
     public static final String BOOK_IS_VIP = "book_is_vip";
     public static final String BOOK_IS_RECOMMEND_DATA = "book_is_recommend_data";

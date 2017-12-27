@@ -86,10 +86,10 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
 //        mFlagList = new ArrayList<>();
 //        mFlagList = mBookDb.queryBookData();
         mBookList = mBookDb.queryBookData();
-//        Collections.reverse(mBookList);//倒叙
-        for (int i = 0; i < mBookList.size(); i++) {//测试
-            Log.d("mBookList", mBookList.get(i).toString());
+        for (int i = 0; i < mBookList.size(); i++) {
+            Log.d("queryBookData1", mBookList.get(i).toString());
         }
+//        Collections.reverse(mBookList);//倒叙
         mChapterDb = new ChapterDb(getMyContext());
         mPresenter = new BookShelfPresenter();
         DialogUtil.setDialogListener(mDeleteListener);
@@ -460,6 +460,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
             return;
         }
         Log.d("messageOne", "添加书籍");
+        Log.d("messageOne", BookUtil.getBookJson(mBookList));
         mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(mBookList));
     }
 

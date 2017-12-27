@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -33,20 +32,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
-import android.support.design.widget.TabLayout;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.util.NetworkUtil;
 
 import net.huaxi.reader.MyApplication;
 
@@ -56,7 +52,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
@@ -734,6 +729,17 @@ public class Util {
             netConnect = true;
         }
         return netConnect;
+    }
+    /**
+     * 带有Toast的网络判断
+     * 如果不需要可调用 {@link NetworkUtil#isAvailable(Context)}
+     */
+    public static boolean isNetAvailable(Context context) {
+        if (!NetworkUtil.isAvailable(context)) {
+//            ToastUtil.showShort(R.string.please_check_network_info);
+            return false;
+        }
+        return true;
     }
 
     /**

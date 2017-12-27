@@ -6,9 +6,27 @@ import java.util.List;
  * Created by Administrator on 2017/12/20.
  */
 
-public class CateBean {
+public class CateBean{
     private Top_menu top_menu;
     private String hello_messages;
+    private TabBar tabbar;
+    private String splashscreen;
+
+    public TabBar getTabbar() {
+        return tabbar;
+    }
+
+    public void setTabbar(TabBar tabbar) {
+        this.tabbar = tabbar;
+    }
+
+    public String getSplashscreen() {
+        return splashscreen;
+    }
+
+    public void setSplashscreen(String splashscreen) {
+        this.splashscreen = splashscreen;
+    }
 
     public String getHello_messages() {
         return hello_messages;

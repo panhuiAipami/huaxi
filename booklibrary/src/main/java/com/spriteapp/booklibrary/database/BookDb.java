@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.constant.DbConstants;
 import com.spriteapp.booklibrary.enumeration.BookEnum;
@@ -70,9 +71,10 @@ public class BookDb {
                 values.put(DbConstants.LAST_CHAPTER_ID, model.getChapter_id());
                 values.put(DbConstants.LAST_CHAPTER_INDEX, model.getLast_chapter_index());
                 values.put(DbConstants.TOTAL_CHAPTER, model.getBook_chapter_total());
-                values.put(DbConstants.LAST_READ_TIME, System.currentTimeMillis() / 1000);
+                values.put(DbConstants.LAST_READ_TIME, model.getUpdate_time());
+                Log.d("currentTimeMillis", "当前时间" + model.getUpdate_time());
                 values.put(DbConstants.LAST_UPDATE_BOOK_DATETIME, System.currentTimeMillis() / 1000);
-                values.put(DbConstants.LAST_UPDATE_CHAPTER_DATETIME, System.currentTimeMillis() / 1000);
+                values.put(DbConstants.LAST_UPDATE_CHAPTER_DATETIME, model.getLast_update_chapter_datetime());
                 values.put(DbConstants.BOOK_FINISH_FLAG, model.getBook_finish_flag());
                 values.put(DbConstants.BOOK_IS_VIP, model.getBook_is_vip());
                 if (tyEnum != null) {
@@ -206,11 +208,13 @@ public class BookDb {
         synchronized (BookDatabaseHelper.dbLock) {
             openDB();
             List<BookDetailResponse> modelList = new ArrayList<>();
+            //"last_read_time desc"
             Cursor cursor = db.query(DbConstants.BOOK_TABLE_NAME, null, "book_add_shelf = ?",
                     new String[]{String.valueOf(BookEnum.ADD_SHELF.getValue())}, null, null, "last_read_time desc");
             if (cursor.getColumnCount() != 0) {
                 while (cursor.moveToNext()) {
                     BookDetailResponse model = new BookDetailResponse();
+                    Log.d("readTime", "阅读时间排序" + cursor.getColumnIndex(DbConstants.LAST_READ_TIME));
                     model.setBook_id(cursor.getInt(cursor.getColumnIndex(DbConstants.BOOK_ID)));
                     model.setBook_name(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_NAME)));
                     model.setBook_image(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_IMAGE)));

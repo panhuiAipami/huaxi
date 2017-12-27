@@ -1,7 +1,6 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
@@ -57,11 +56,11 @@ public class DiscoverFragment extends BaseFragment {
             e.toString();
         }
         if (type == 1) {
-            mWebView.loadPage(storeBeen.get(0).getUrl());
-            Log.d("url-->", storeBeen.get(0).getUrl());
+            if (storeBeen.size() >= 1)
+                mWebView.loadPage(storeBeen.get(0).getUrl());
         } else {
-            mWebView.loadPage(storeBeen.get(1).getUrl());
-            Log.d("url-->", storeBeen.get(1).getUrl());
+            if (storeBeen.size() >= 2)
+                mWebView.loadPage(storeBeen.get(1).getUrl());
         }
 
     }
@@ -69,9 +68,11 @@ public class DiscoverFragment extends BaseFragment {
     public void reLoadH5() {
         if (mWebView != null) {
             if (type == 1) {
-                mWebView.loadPage(storeBeen.get(0).getUrl());
+                if (storeBeen.size() >= 1)
+                    mWebView.loadPage(storeBeen.get(0).getUrl());
             } else {
-                mWebView.loadPage(storeBeen.get(1).getUrl());
+                if (storeBeen.size() >= 2)
+                    mWebView.loadPage(storeBeen.get(1).getUrl());
             }
 
         }

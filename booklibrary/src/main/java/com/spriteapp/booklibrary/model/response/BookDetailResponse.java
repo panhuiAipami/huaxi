@@ -32,6 +32,7 @@ public class BookDetailResponse implements Serializable {
     private String last_update_chapter_title;
     private String last_update_chapter_intro;
     private long lastReadTime;
+    private long update_time;
 
     /**
      * 当前阅读章节
@@ -41,6 +42,14 @@ public class BookDetailResponse implements Serializable {
     private long last_update_book_datetime;
     private int book_add_shelf;
     private int is_recommend_book;
+
+    public long getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(long update_time) {
+        this.update_time = update_time;
+    }
 
     public int getBook_id() {
         return book_id;

@@ -333,6 +333,7 @@ public class NativeBookStoreFragment extends BaseFragment implements BookShelfVi
         if (bookDetailResponse.getIs_recommend_book() == BookEnum.RECOMMEND_BOOK.getValue()) {
             return;
         }
+        Log.d("book___json", BookUtil.getBookJson(mBookList));
         mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(mBookList));
     }
 
@@ -347,6 +348,7 @@ public class NativeBookStoreFragment extends BaseFragment implements BookShelfVi
             List<BookDetailResponse> differList = new ArrayList<>();
             differList.addAll(mBookList);
             differList = CollectionUtil.getDiffBook(serverData, differList);
+            Log.d("book___json", BookUtil.getBookJson(differList));
             mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(differList));
         }
     }
@@ -439,7 +441,7 @@ public class NativeBookStoreFragment extends BaseFragment implements BookShelfVi
             mBookList.addAll(bookDetailList);
             mMyBook.setDetailResponseList(mBookList);
             setAdapter();
-            Log.d("addBook","添加书架中2");
+            Log.d("addBook", "添加书架中2");
             ToastUtil.showSingleToast("书架中已存在");
             return;
         }
