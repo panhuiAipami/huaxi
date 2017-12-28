@@ -97,7 +97,8 @@
         <activity
             android:name=".activity.ShareActivity"
             android:theme="@style/MyDialogActivityStyle" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/StartAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

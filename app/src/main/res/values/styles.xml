@@ -23,6 +23,10 @@
         <item name="android:textColor">@color/c07_themes_color</item>
 
     </style>
+    <style name="StartAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/splash</item>
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
     <!--去掉android5.0以上按钮的阴影效果-->
     <style name="RedButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">40dip</item>
