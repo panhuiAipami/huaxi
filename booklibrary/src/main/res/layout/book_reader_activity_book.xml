@@ -12,6 +12,7 @@
         android:layout_weight="1" />
 
     <View
+        android:id="@+id/icon_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/book_reader_divide_line_height"
         android:background="@color/book_reader_divide_line_color" />

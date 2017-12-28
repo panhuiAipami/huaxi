@@ -87,7 +87,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private HomePageFragment homePageFragment2;
     private ImageView image_one, image_two, image_three, image_four;
     private TextView text_one, text_two, text_three, text_four;
-    private Drawable[] drawables = new Drawable[8];
+    private LinearLayout icon_layout;
+    private View icon_line;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -285,6 +286,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mBookshelfLayout = (LinearLayout) findViewById(R.id.book_reader_bookshelf_layout);
         mDiscoverLayout = (LinearLayout) findViewById(R.id.book_reader_discover_layout);
         mBookstoreLayout = (LinearLayout) findViewById(R.id.book_reader_bookstore_layout);
+        icon_layout = (LinearLayout) findViewById(R.id.icon_layout);
+        icon_line = findViewById(R.id.icon_line);
         mMeLayout = (LinearLayout) findViewById(R.id.book_reader_me_layout);
         image_one = (ImageView) findViewById(R.id.image_one);
         image_two = (ImageView) findViewById(R.id.image_two);
@@ -312,8 +315,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         try {
             TabBar tabBar = FileHelper.readObjectFromJsonFile(this, Constant.NAVIGATION, TabBar.class);
             if (AppUtil.isNetAvailable(this)) {
-                if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
+                if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && tabBar.getBackground_color() != null && !tabBar.getBackground_color().isEmpty() && tabBar.getBorder_style() != null && !tabBar.getBorder_style().isEmpty() && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
                     Log.d("textViewColor", "进入修改颜色的方法");
+                    icon_layout.setBackgroundColor(Color.parseColor("#" + tabBar.getBackground_color()));
+                    icon_line.setBackgroundColor(Color.parseColor("#" + tabBar.getBorder_style()));
                     setTextColor(tabBar, tabBar.getColor(), tabBar.getColor_on(), textViewList);
                 }
                 if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
@@ -330,7 +335,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     public void setTextColor(TabBar tab, String normalColor, String seletorColor, List<TextView> text) {
         for (int i = 0; i < text.size(); i++) {
             Log.d("textViewColor", tab.getLists().get(i).getText());
-            int[] colors = new int[]{Color.parseColor(normalColor), Color.parseColor(seletorColor), Color.parseColor(normalColor)};
+            int[] colors = new int[]{Color.parseColor("#" + normalColor), Color.parseColor("#" + seletorColor), Color.parseColor("#" + normalColor)};
             int[][] states = new int[3][];
             states[0] = new int[]{-android.R.attr.state_selected};
             states[1] = new int[]{android.R.attr.state_selected};
