@@ -62,6 +62,7 @@ android {
         qzone {}//qq空间
         kuaishou {}//快手
         her_community {}//她社区
+        samsung {}//三星
     }
     //批量配置
     productFlavors.all { flavor ->

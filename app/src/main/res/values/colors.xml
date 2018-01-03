@@ -21,7 +21,8 @@
     <!--search-acitivity-dailog-->
     <!--弹出框背景颜色-->
     <!--性别分类按钮颜色-->
-
+    <!--分割块色2，灰色背景用这个 -->
+    <color name="c10_themes_color2">#e1e1e1</color>
 
     <!--遮罩-->
     <color name="c00_themes_color">#000000</color>

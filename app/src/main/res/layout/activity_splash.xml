@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -13,4 +13,19 @@
         android:scaleType="centerCrop"
         android:visibility="visible"
         />
-</LinearLayout>
+    <TextView
+        android:id="@+id/skip_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_alignParentRight="true"
+        android:textSize="13sp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone"
+        android:textColor="@color/c10_themes_color2"
+        android:background="@drawable/ad_black_bg"
+        android:text="跳过3"/>
+</RelativeLayout>
