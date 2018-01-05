@@ -35,6 +35,7 @@ import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.TabBar;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
+import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
 import com.spriteapp.booklibrary.ui.fragment.MeFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -68,14 +69,16 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     public static final String SEX = "sex";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
-    private static final int BOOKSTORE_POSITION = 2;
-    private static final int ME_POSITION = 3;
+    private static final int COMMUNITY_POSITION = 2;
+    private static final int BOOKSTORE_POSITION = 3;
+    private static final int ME_POSITION = 4;
     private static final int TOP_BAR_HEIGHT = 47;
     ViewPager mHomeViewPager;
     LinearLayout mBookshelfLayout;
     LinearLayout mDiscoverLayout;
     LinearLayout mBookstoreLayout;
     LinearLayout mMeLayout;
+    LinearLayout mCommunityLayout;
     private List<Fragment> mFragmentList;
     private ViewPagerAdapter mAdapter;
     private Context mContext;
@@ -85,8 +88,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private List<StoreBean> shu = new ArrayList<>();
     private HomePageFragment homePageFragment1;
     private HomePageFragment homePageFragment2;
-    private ImageView image_one, image_two, image_three, image_four;
-    private TextView text_one, text_two, text_three, text_four;
+    private ImageView image_one, image_two, image_three, image_four, image_five;
+    private TextView text_one, text_two, text_three, text_four, text_five;
     private LinearLayout icon_layout;
     private View icon_line;
     private Handler handler = new Handler() {
@@ -236,10 +239,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mDiscoverLayout.setOnClickListener(this);
         mBookstoreLayout.setOnClickListener(this);
         mMeLayout.setOnClickListener(this);
+        mCommunityLayout.setOnClickListener(this);
     }
 
     private void setAdapter() {
-        mHomeViewPager.setOffscreenPageLimit(3);
+        mHomeViewPager.setOffscreenPageLimit(5);//viewpager缓存
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mHomeViewPager.setAdapter(mAdapter);
     }
@@ -260,7 +264,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mFragmentList.add(homePageFragment1);
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
-//        mFragmentList.add(new BookstoreFragment());
+        mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new BookshelfFragment());
         mFragmentList.add(new MeFragment());
     }
@@ -289,14 +293,17 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         icon_layout = (LinearLayout) findViewById(R.id.icon_layout);
         icon_line = findViewById(R.id.icon_line);
         mMeLayout = (LinearLayout) findViewById(R.id.book_reader_me_layout);
+        mCommunityLayout = (LinearLayout) findViewById(R.id.book_reader_community_layout);
         image_one = (ImageView) findViewById(R.id.image_one);
         image_two = (ImageView) findViewById(R.id.image_two);
         image_three = (ImageView) findViewById(R.id.image_three);
         image_four = (ImageView) findViewById(R.id.image_four);
+        image_five = (ImageView) findViewById(R.id.image_five);
         text_one = (TextView) findViewById(R.id.text_one);
         text_two = (TextView) findViewById(R.id.text_two);
         text_three = (TextView) findViewById(R.id.text_three);
         text_four = (TextView) findViewById(R.id.text_four);
+        text_five = (TextView) findViewById(R.id.text_five);
         setIcon();
         mBookshelfLayout.setSelected(true);
     }
@@ -378,6 +385,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         } else if (v == mDiscoverLayout) {
             mHomeViewPager.setCurrentItem(DISCOVER_POSITION);
             setSelectView(DISCOVER_POSITION);
+        } else if (v == mCommunityLayout) {//社区
+            mHomeViewPager.setCurrentItem(COMMUNITY_POSITION);
+            setSelectView(COMMUNITY_POSITION);
         } else if (v == mBookstoreLayout) {
             mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
             setSelectView(BOOKSTORE_POSITION);
@@ -387,23 +397,27 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         }
     }
 
-    private void setSelectView(int position) {
+    private void setSelectView(int position) {//view的选中状态
         switch (position) {
             case BOOKSHELF_POSITION:
                 mBookshelfLayout.setSelected(true);
-                setSelectFalse(mDiscoverLayout, mBookstoreLayout, mMeLayout);
+                setSelectFalse(mDiscoverLayout, mBookstoreLayout, mMeLayout, mCommunityLayout);
                 break;
             case DISCOVER_POSITION:
                 mDiscoverLayout.setSelected(true);
-                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout);
+                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mCommunityLayout);
+                break;
+            case COMMUNITY_POSITION:
+                mCommunityLayout.setSelected(true);
+                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mDiscoverLayout);
                 break;
             case BOOKSTORE_POSITION:
                 mBookstoreLayout.setSelected(true);
-                setSelectFalse(mBookshelfLayout, mDiscoverLayout, mMeLayout);
+                setSelectFalse(mBookshelfLayout, mDiscoverLayout, mMeLayout, mCommunityLayout);
                 break;
             case ME_POSITION:
                 mMeLayout.setSelected(true);
-                setSelectFalse(mBookshelfLayout, mDiscoverLayout, mBookstoreLayout);
+                setSelectFalse(mBookshelfLayout, mDiscoverLayout, mBookstoreLayout, mCommunityLayout);
                 break;
         }
     }
@@ -448,6 +462,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     setTitle(R.string.book_reader_bookstore);
                     addSearchView();
                     setSelectView(DISCOVER_POSITION);
+                    gone(mTitleLayout);
+                    setViewpagerTopMargin(0);
+                    break;
+                case COMMUNITY_POSITION:
+                    mRightLayout.removeAllViews();
+                    setTitle(R.string.book_reader_community);
+                    addSearchView();
+                    setSelectView(COMMUNITY_POSITION);
                     gone(mTitleLayout);
                     setViewpagerTopMargin(0);
                     break;

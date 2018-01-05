@@ -412,4 +412,5 @@ public abstract class BaseReadView extends View {
             mNextPageBitmap = null;
         }
     }
+
 }

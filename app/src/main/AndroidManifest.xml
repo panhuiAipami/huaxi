@@ -109,6 +109,7 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"></activity>
+
     </application>
 
 </manifest>

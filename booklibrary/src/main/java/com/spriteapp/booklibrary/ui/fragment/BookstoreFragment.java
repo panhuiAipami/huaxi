@@ -1,9 +1,12 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
@@ -64,10 +67,10 @@ public class BookstoreFragment extends BaseFragment {
         }
         if (type == 1) {
             if (storeBeen.size() >= 1)
-                mWebView.loadPage(storeBeen.get(0).getUrl());
+                mWebView.loadPage(storeBeen.get(0).getUrl(), mWebViewClient);
         } else {
             if (storeBeen.size() >= 2)
-                mWebView.loadPage(storeBeen.get(1).getUrl());
+                mWebView.loadPage(storeBeen.get(1).getUrl(), mWebViewClient);
         }
 //        mWebView.loadPage(Constant.BOOK_STORE_URL);
     }
@@ -76,10 +79,10 @@ public class BookstoreFragment extends BaseFragment {
         if (mWebView != null) {
             if (type == 1) {
                 if (storeBeen.size() >= 1)
-                    mWebView.loadPage(storeBeen.get(0).getUrl());
+                    mWebView.loadPage(storeBeen.get(0).getUrl(), mWebViewClient);
             } else {
                 if (storeBeen.size() >= 2)
-                    mWebView.loadPage(storeBeen.get(1).getUrl());
+                    mWebView.loadPage(storeBeen.get(1).getUrl(), mWebViewClient);
             }
 
         }
@@ -93,9 +96,9 @@ public class BookstoreFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 if (type == 1) {
-                    mWebView.loadUrl(storeBeen.get(0).getUrl());
+                    mWebView.loadPage(storeBeen.get(0).getUrl(), mWebViewClient);
                 } else {
-                    mWebView.loadUrl(storeBeen.get(1).getUrl());
+                    mWebView.loadPage(storeBeen.get(1).getUrl(), mWebViewClient);
                 }
 
             }
@@ -112,6 +115,21 @@ public class BookstoreFragment extends BaseFragment {
                     mSwipeLayout.setRefreshing(false);
                 }
             }
+        }
+    };
+    WebViewClient mWebViewClient = new WebViewClient() {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            Log.d("dialog1", "show___");
+            showDialog();
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            Log.d("dialog1", "dismiss___");
+            dismissDialog();
         }
     };
 

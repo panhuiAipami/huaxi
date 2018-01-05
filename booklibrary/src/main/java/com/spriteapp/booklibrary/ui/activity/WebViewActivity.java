@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -21,18 +23,19 @@ import com.spriteapp.booklibrary.callback.WebViewCallback;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdateCommentEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.PayResult;
-import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.presenter.WebViewPresenter;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
-import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.WebViewUtil;
 import com.spriteapp.booklibrary.widget.ReaderWebView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -141,6 +144,38 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             dismissDialog();
         }
 
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d("webViewUrl", "url===" + url);
+            if (url == null) return false;
+            try {
+                if (url.startsWith("http:") || url.startsWith("https:")) {
+                    return false;
+                } else {
+                    Log.d("webViewUrl", "url111===" + url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+            } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
+                return false;
+            }
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            if (url.startsWith("weixin://")) {
+                WebResourceResponse response = null;
+                try {
+                    InputStream logo = getAssets().open("splash.png");
+                    response = new WebResourceResponse("image/png", "UTF-8", logo);
+                    return response;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return super.shouldInterceptRequest(view, url);
+        }
     };
 
     WebChromeClient mChromeClient = new WebChromeClient() {
@@ -172,11 +207,16 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
         @Override
         public void freeRead(int bookId, int chapterId) {
-            BookDetailResponse detail = new BookDetailResponse();
-            Log.d("bookdetails", "bookId===" + bookId);
-            detail.setBook_id(bookId);
-            detail.setChapter_id(chapterId);
-            ActivityUtil.toReadActivity(mContext, detail);
+            //销毁readActivity
+            if (ListenerManager.getInstance().getReadActivityFinish() != null) {
+                ListenerManager.getInstance().getReadActivityFinish();
+            }
+            finish();
+//            BookDetailResponse detail = new BookDetailResponse();
+//            Log.d("bookdetails", "bookId===" + bookId);
+//            detail.setBook_id(bookId);
+//            detail.setChapter_id(chapterId);
+//            ActivityUtil.toReadActivity(mContext, detail);
         }
     };
 
@@ -239,25 +279,25 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     @Override
     public void setWechatPayResult(PayResponse result) {
         //微信支付
-//        if (result == null) {
-//            return;
-//        }
-//        final String orderInfo = result.getPay_str();
-//        Runnable payRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                PayTask alipay = new PayTask(WebViewActivity.this);
-//                Map<String, String> result = alipay.payV2(orderInfo, true);
-//
-//                Message msg = new Message();
-//                msg.what = SDK_PAY_FLAG;
-//                msg.obj = result;
-//                mHandler.sendMessage(msg);
-//            }
-//        };
-//
-//        Thread payThread = new Thread(payRunnable);
-//        payThread.start();
+        if (result == null) {
+            return;
+        }
+        final String orderInfo = result.getPay_str();
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(WebViewActivity.this);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
 
     }
 

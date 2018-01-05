@@ -75,6 +75,7 @@ public class ReaderWebView extends WebView {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (client != null) {
+                    Log.d("dialog1", "show0");
                     client.onPageStarted(view, url, favicon);
                 }
             }
@@ -82,6 +83,7 @@ public class ReaderWebView extends WebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if (client != null) {
+                    Log.d("dialog1", "dismiss0");
                     client.onPageFinished(view, url);
                 }
             }

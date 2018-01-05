@@ -5,6 +5,7 @@
     <string name="book_reader_discover">周刊</string>
     <string name="book_reader_bookstore">书城</string>
     <string name="book_reader_me">我的</string>
+    <string name="book_reader_community">社区</string>
     <string name="please_check_network_info">请检查网络连接</string>
     <string name="book_reader_pay_chapter">付费章节</string>
     <string name="book_reader_pay_prompt">当前章节为付费章节，点击购买继续阅读</string>

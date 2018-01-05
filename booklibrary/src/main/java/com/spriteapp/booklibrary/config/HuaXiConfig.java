@@ -135,6 +135,7 @@ public class HuaXiConfig {
         }
     }
 
+
     public Context getContext() {
         return context;
     }

@@ -5,16 +5,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
@@ -34,6 +39,8 @@ import com.spriteapp.booklibrary.enumeration.PageStyleEnum;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
 import com.spriteapp.booklibrary.listener.DialogListener;
+import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.listener.ReadActivityFinish;
 import com.spriteapp.booklibrary.listener.ReadDialogListener;
 import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.manager.ThemeManager;
@@ -83,7 +90,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by kuangxiaoguo on 2017/7/10.
  */
 
-public class ReadActivity extends TitleActivity implements SubscriberContentView {
+public class ReadActivity extends TitleActivity implements SubscriberContentView, ReadActivityFinish {
 
     private static final String TAG = "ReadActivity";
     public static final String BOOK_DETAIL_TAG = "BookDetailTag";
@@ -135,6 +142,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     //判断是否是通过点击dialog购买章节,购买成功后进行toast提示
     private boolean isClickPayChapter;
     private RecentBookDb mRecentBookDb;
+    PopupWindow popupWindow;//书籍详情与分享
 
     @Override
     public void initData() {
@@ -198,6 +206,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(mReadReceiver, intentFilter);
+    }
+
+    @Override
+    public void setActivityFinish() {
+//        finish();
     }
 
     class ReadReceiver extends BroadcastReceiver {
@@ -373,6 +386,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     private void setListener() {
+        ListenerManager.getInstance().setReadActivityFinish(this);
         mChapterLayout.setOnClickListener(this);
         mProgressLayout.setOnClickListener(this);
         mModeLayout.setOnClickListener(this);
@@ -423,6 +437,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             public void onDrawerStateChanged(int newState) {
             }
         });
+
     }
 
     @Override
@@ -617,11 +632,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                 @Override
                 public void clickMore() {
-                    BookDetailResponse shareDetail = mNewBookDetail != null ?
-                            mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-                    if (shareDetail != null) {
-                        HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
-                    }
+//                    BookDetailResponse shareDetail = mNewBookDetail != null ?
+//                            mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+//                    if (shareDetail != null) {
+//                        HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
+//                    }
+                    //弹出pop
+                    showpopWindow(mRightTitleLayout);
                 }
             };
 
@@ -631,6 +648,53 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         model.setChapterId(mCurrentChapter);
         model.setAddShelf(true);//刷新纪录的标识
         EventBus.getDefault().post(model);
+    }
+
+    public void showpopWindow(View v) {
+        View layout = View.inflate(this, R.layout.share_deatils_layout, null);
+        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(this, R.color.pop_back));
+        popupWindow.setBackgroundDrawable(dw);
+        popupWindow.showAsDropDown(v, 30, 0, Gravity.LEFT);
+        viewClick(layout);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
+    }
+
+    public void viewClick(View item) {
+        ImageView book_details, book_share;
+        book_details = (ImageView) item.findViewById(R.id.book_details);
+        book_share = (ImageView) item.findViewById(R.id.book_share);
+        book_details.setOnClickListener(new View.OnClickListener() {//书籍详情
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                BookDetailResponse shareDetail = mNewBookDetail != null ?
+                        mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+                if (shareDetail != null) {
+                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=235", false);
+                }
+
+
+            }
+        });
+        book_share.setOnClickListener(new View.OnClickListener() {//书籍分享
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                BookDetailResponse shareDetail = mNewBookDetail != null ?
+                        mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+                if (shareDetail != null) {
+                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
+                }
+            }
+        });
+
     }
 
     private OnReadStateChangeListener mReadListener = new OnReadStateChangeListener() {
@@ -1035,5 +1099,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mRecentBookDb.insert(data);
     }
 
+    public void IsActive() {
+        finish();
+    }
 
 }

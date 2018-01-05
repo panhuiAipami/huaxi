@@ -101,15 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void wxPay(WeChatBean response) {//微信支付
         IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
-//        WXApi.registerApp(LoginHelper.WX_APP_ID);
-//        PayReq req = new PayReq();
-//        req.appId = LoginHelper.WX_APP_ID;
-//        req.partnerId = response.getParams().getApp_id();
-//        req.extData = response.getAmount() + "";
-//        req.signType = response.getParams().getSign_type();
-//        req.sign = response.getParams().getSign();
-//        req.timeStamp = response.getParams().getTimestamp();
-//        req.nonceStr = response.getParams().getCharset();
         if (WXApi.isWXAppInstalled()) {
             RequestMsg msg = new RequestMsg();
             msg.setTokenId(response.getToken_id());

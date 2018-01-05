@@ -15,7 +15,6 @@
  */
 package com.spriteapp.booklibrary.widget.loading;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ public class CustomDialog extends Dialog {
         super(context, themeResId);
     }
 
-    public static CustomDialog instance(Activity activity) {
+    public static CustomDialog instance(Context activity) {
         CustomDialog dialog = new CustomDialog(activity, R.style.loading_dialog);
         dialog.setContentView(new ProgressBar(activity, null, android.R.attr.progressBarStyle),
                 new ViewGroup.LayoutParams(ScreenUtil.dpToPxInt(40),

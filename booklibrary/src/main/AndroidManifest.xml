@@ -32,7 +32,15 @@
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HuaXiAppTheme" />
+            android:theme="@style/HuaXiAppTheme">
+            <intent-filter>
+                <data android:scheme="weixin" /> <!-- 自定义的scheme -->
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.SettingActivity"
             android:screenOrientation="portrait"
@@ -53,6 +61,19 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.NativeActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:screenOrientation="behind">
+            <intent-filter>
+                <data android:scheme="weixin" /> <!-- 自定义的scheme -->
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
 
         <meta-data
             android:name="UMENG_APPKEY"

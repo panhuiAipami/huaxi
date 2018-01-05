@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 7
-        versionName "2.1.0"
+        versionCode 8
+        versionName "2.2.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -47,4 +47,5 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.android.support:design:25.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.makeramen:roundedimageview:2.2.1'
 }

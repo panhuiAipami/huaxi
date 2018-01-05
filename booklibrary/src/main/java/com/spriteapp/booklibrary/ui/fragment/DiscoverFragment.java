@@ -1,6 +1,10 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
@@ -37,6 +41,8 @@ public class DiscoverFragment extends BaseFragment {
         if (!AppUtil.isNetAvailable(getContext())) {
             return;
         }
+//        mWebView.setWebViewClient(mWebViewClient);
+//        mWebView.setClient(mWebViewClient);
         Bundle bundle = getArguments();
         type = bundle.getInt(FRAGMENTTYPE, 0);
         try {
@@ -57,22 +63,37 @@ public class DiscoverFragment extends BaseFragment {
         }
         if (type == 1) {
             if (storeBeen.size() >= 1)
-                mWebView.loadPage(storeBeen.get(0).getUrl());
+                mWebView.loadPage(storeBeen.get(0).getUrl(), mWebViewClient);
         } else {
             if (storeBeen.size() >= 2)
-                mWebView.loadPage(storeBeen.get(1).getUrl());
+                mWebView.loadPage(storeBeen.get(1).getUrl(), mWebViewClient);
         }
 
     }
+
+    WebViewClient mWebViewClient = new WebViewClient() {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            showDialog();
+            Log.d("dialog", "show_dialog");
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            dismissDialog();
+        }
+    };
 
     public void reLoadH5() {
         if (mWebView != null) {
             if (type == 1) {
                 if (storeBeen.size() >= 1)
-                    mWebView.loadPage(storeBeen.get(0).getUrl());
+                    mWebView.loadPage(storeBeen.get(0).getUrl(), mWebViewClient);
             } else {
                 if (storeBeen.size() >= 2)
-                    mWebView.loadPage(storeBeen.get(1).getUrl());
+                    mWebView.loadPage(storeBeen.get(1).getUrl(), mWebViewClient);
             }
 
         }

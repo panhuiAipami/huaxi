@@ -7,7 +7,6 @@ import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
-import com.spriteapp.booklibrary.ui.activity.RecentReadActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
 
@@ -19,6 +18,10 @@ public class ActivityUtil {
 
     public static void toWebViewActivity(Context context, String url) {
         toWebViewActivity(context, url, false);
+    }
+
+    public static void toWebViewActivity(Context context, String url, boolean isH5, int type) {
+        toWebViewActivity(context, url, isH5);
     }
 
     public static void toWebViewActivity(Context context, String url, boolean isH5Pay) {
