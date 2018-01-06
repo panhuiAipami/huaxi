@@ -199,16 +199,10 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
 
                     @Override
                     public void onNext(Base<BookDetailResponse> bookDetailResponseBase) {
-//                        Gson gson = new Gson();
-//                        String to = gson.toJson(bookDetailResponseBase);
-//                        Log.d("yuanjson","json==="+to);
-//                        Log.d("book_details", "date成功===code===" + bookDetailResponseBase.getCode());
-//                        Log.d("book_details", "date成功===code===" + bookDetailResponseBase.toString());
                         if (bookDetailResponseBase.getCode() ==
                                 ApiCodeEnum.SUCCESS.getValue() && mView != null) {
-//                            Log.d("book_details", "bookdetails===" + bookDetailResponseBase.getData());
                             mView.setBookDetail(bookDetailResponseBase.getData());
-//                            Log.d("book_details", "date" + bookDetailResponseBase.getData());
+
                         }
                     }
                 });
