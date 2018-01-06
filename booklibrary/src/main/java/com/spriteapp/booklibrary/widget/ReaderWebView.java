@@ -102,6 +102,9 @@ public class ReaderWebView extends WebView {
         headerMap.put(SignConstant.HEADER_CLIENT_ID, HuaXiSDK.getInstance().getClientId());
         headerMap.put(SignConstant.TIMESTAMP_KEY, String.valueOf(SignUtil.getCurrentTime()));
         headerMap.put(SignConstant.VERSION_KEY, Constant.VERSION);
+
+        headerMap.put("Referer", "http://wxpay.wxutil.com");
+
         headerMap.put(SignConstant.SIGN_KEY, SignUtil.createSign(Constant.VERSION));
         headerMap.put(SignConstant.G_GENDER, SharedPreferencesUtil.getInstance().getInt(SEX, 0) + "");
         headerMap.put(SignConstant.SN_KEY, AppUtil.getHeaderSnValue());

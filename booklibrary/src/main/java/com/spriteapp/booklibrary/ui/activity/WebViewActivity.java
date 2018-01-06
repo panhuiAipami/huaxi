@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -34,8 +33,6 @@ import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.WebViewUtil;
 import com.spriteapp.booklibrary.widget.ReaderWebView;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -55,6 +52,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     private WebViewPresenter mPresenter;
     private static final int SDK_PAY_FLAG = 1;
     private boolean isH5Pay;
+    private String WXURL = "";
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -108,6 +106,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             return;
         }
         mWebView.setWebChromeClient(mChromeClient);
+//        mWebView.setWebViewClient(mClient);//试一试
         mWebView.loadPage(mUrl, mClient);
         WebViewUtil.getInstance().setWebViewCallback(mWebViewCallback);
     }
@@ -146,15 +145,24 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("webViewUrl", "url===" + url);
             if (url == null) return false;
             try {
                 if (url.startsWith("http:") || url.startsWith("https:")) {
-                    return false;
+                    Log.d("webViewUrl", "url000===" + url);
+                    if (url.startsWith("https://statecheck.swiftpass.cn/pay/wappay") || url.startsWith("http://statecheck.swiftpass.cn/pay/wappay")) {
+                        WXURL = url;
+                    }
+                    return true;
                 } else {
                     Log.d("webViewUrl", "url111===" + url);
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
+                    if (url.startsWith("weixin://")) {
+                        if (WXURL != null && !WXURL.isEmpty())
+                            view.loadUrl(WXURL);
+//                        view.goBack();
+
+                    }
                     return true;
                 }
             } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
@@ -162,20 +170,6 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             }
         }
 
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            if (url.startsWith("weixin://")) {
-                WebResourceResponse response = null;
-                try {
-                    InputStream logo = getAssets().open("splash.png");
-                    response = new WebResourceResponse("image/png", "UTF-8", logo);
-                    return response;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return super.shouldInterceptRequest(view, url);
-        }
     };
 
     WebChromeClient mChromeClient = new WebChromeClient() {

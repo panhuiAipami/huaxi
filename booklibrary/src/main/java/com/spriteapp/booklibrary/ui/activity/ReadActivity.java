@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
@@ -111,6 +112,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private ChapterDb mChapterDb;
     private ChapterAdapter mChapterAdapter;
     private TextSizeLayout mTextSizeLayout;
+    private TextView book_reader_title_textView;
 
     /**
      * 是否开始阅读章节
@@ -164,6 +166,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             return;
         }
         mBookId = bookDetail.getBook_id();
+
         mOldBookDetail = mBookDb.queryBook(mBookId);
         mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
         mChapterList = mChapterDb.queryCatalog(mBookId);
@@ -191,6 +194,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mPresenter.getBookDetail(mBookId, false);
             } else {
                 judgeChapterNeedLoad();
+                //添加标题
+                BookDetailResponse shareDetail = mNewBookDetail != null ?
+                        mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+                if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
+                    book_reader_title_textView.setText(shareDetail.getBook_name());
+                }
             }
         }
         int textSizePosition = SharedPreferencesUtil.getInstance().getInt(Constant.READ_TEXT_SIZE_POSITION);
@@ -354,6 +363,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mDrawerLayout = (DrawerLayout) findViewById(R.id.book_reader_drawer_layout);
         mReadProgressLayout = (ReadProgressLayout) findViewById(R.id.book_reader_read_progress_layout);
         mTextSizeLayout = (TextSizeLayout) findViewById(R.id.book_reader_text_size_layout);
+        book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
         mShowView = mBottomLayout;
         mDismissView = mBottomLayout;
         mTextSizeLayout.setCallBack(mTextSizeCallback);
@@ -677,7 +687,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
-                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=235", false);
+                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=" + shareDetail.getBook_id(), false);
                 }
 
 
@@ -722,6 +732,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     showPayChapterDialog();
                 }
                 mRightTitleLayout.setBuyImageState(!needAutoLoad);
+                if (!needAutoLoad) {//
+                    book_reader_title_textView.setMaxEms(4);
+                }
             } else {
                 mRightTitleLayout.setBuyImageState(false);
             }
@@ -1024,7 +1037,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mChapterList.addAll(catalogList);
         saveChapterToDb();
         mChapterAdapter.notifyDataSetChanged();
-
+        //添加标题
+        BookDetailResponse shareDetail = mNewBookDetail != null ?
+                mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+        if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
+            book_reader_title_textView.setText(shareDetail.getBook_name());
+        }
         if (mOldBookDetail != null || mNewBookDetail != null) {
             mBookDb.updateChapterTime(mBookId);
         }

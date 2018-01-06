@@ -45,6 +45,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/more"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
@@ -53,8 +54,104 @@
 
     <TextView
         android:id="@+id/user_speak"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="111111111111111111111111111111111111111111111111111111111111111" />
+
+    <LinearLayout
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/man_head" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/man_head" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/head1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/deafultheadicon" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/head2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-10dp"
+                android:background="@mipmap/deafultheadicon" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/head3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-10dp"
+                android:background="@mipmap/deafultheadicon" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/read_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:text="+222万次预览"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+
+            <TextView
+                android:id="@+id/comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="评论" />
+
+            <TextView
+                android:id="@+id/support_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/comment_num"
+                android:text="点赞" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

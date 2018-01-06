@@ -33,13 +33,13 @@
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HuaXiAppTheme">
-            <intent-filter>
-                <data android:scheme="weixin" /> <!-- 自定义的scheme -->
-                <action android:name="android.intent.action.VIEW" />
+            <!--<intent-filter>-->
+                <!--<data android:scheme="weixin" android:host="wap" /> &lt;!&ndash; 自定义的scheme &ndash;&gt;-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".ui.activity.SettingActivity"
@@ -65,13 +65,13 @@
             android:name=".ui.activity.NativeActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:screenOrientation="behind">
-            <intent-filter>
-                <data android:scheme="weixin" /> <!-- 自定义的scheme -->
-                <action android:name="android.intent.action.VIEW" />
+            <!--<intent-filter>-->
+                <!--<data android:scheme="weixin" /> &lt;!&ndash; 自定义的scheme &ndash;&gt;-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+            <!--</intent-filter>-->
         </activity>
 
 

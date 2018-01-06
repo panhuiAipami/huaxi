@@ -9,6 +9,7 @@
         android:id="@+id/book_reader_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/c13_themes_color"
         android:scrollbars="none"
         android:layout_marginTop="@dimen/book_reader_top_bar_height" />
 </LinearLayout>

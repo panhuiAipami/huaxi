@@ -15,14 +15,23 @@ import java.util.List;
 
 public class HomePageTabAdapter extends FragmentStatePagerAdapter {
     private List<StoreBean> titles;
+    private List<String> title;
     private List<Fragment> fragments;
     public RecyclerView comment_listView;
-//    private LinearLayout no_comment_layout;
+    //    private LinearLayout no_comment_layout;
+    private int type = 0;
 
     public HomePageTabAdapter(FragmentManager fm, List<StoreBean> titles, List<Fragment> fragments) {
         super(fm);
         this.titles = titles;
         this.fragments = fragments;
+    }
+
+    public HomePageTabAdapter(FragmentManager fm, List<String> titles, List<Fragment> fragments, int type) {
+        super(fm);
+        this.title = titles;
+        this.fragments = fragments;
+        this.type = type;
     }
 
     public HomePageTabAdapter(FragmentManager fm, List<Fragment> fragments) {
@@ -42,7 +51,10 @@ public class HomePageTabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles != null ? titles.get(position).getName() : null;
+        if (type == 0)
+            return titles != null ? titles.get(position).getName() : null;
+        else
+            return title != null ? title.get(position) : null;
     }
 
 }

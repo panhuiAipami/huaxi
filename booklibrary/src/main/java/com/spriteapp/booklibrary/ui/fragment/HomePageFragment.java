@@ -449,7 +449,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         if (type == 1 && syTitles.size() > 1) {
             tabLayout.setVisibility(View.VISIBLE);
         }
-        if (type == 2 && syTitles.size() > 1) {
+        if (type == 2 && shuTitles.size() > 1) {
             tabLayout.setVisibility(View.VISIBLE);
         }
     }

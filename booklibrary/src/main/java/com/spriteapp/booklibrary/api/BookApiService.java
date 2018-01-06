@@ -166,9 +166,13 @@ public interface BookApiService {
     @GET("server_version")
     Observable<Base<AppUpDateModel>> app_Upate(@Query("type") String type);
 
-
+    //检查更新
     @GET("server_check")
     Observable<Base<CateBean>> app_cate();
+
+    //广场列表
+    @GET("square_index")
+    Observable<Base<CateBean>> square_index(@Query("page") String page);
 
 
 }

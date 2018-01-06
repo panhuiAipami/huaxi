@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 
@@ -24,6 +25,7 @@ public class ReadRightTitleLayout extends LinearLayout {
     private ImageView mRewardImageView;
     private ImageView mMoreImageView;
     private ReadTitleListener mTitleListener;
+    private TextView read_book_title;
 
     public ReadRightTitleLayout(Context context) {
         this(context, null);
@@ -47,6 +49,7 @@ public class ReadRightTitleLayout extends LinearLayout {
         mHomeImageView = (ImageView) mView.findViewById(R.id.book_reader_home_image_view);
         mRewardImageView = (ImageView) mView.findViewById(R.id.book_reader_reward_image_view);
         mMoreImageView = (ImageView) mView.findViewById(R.id.book_reader_more_image_view);
+        read_book_title = (TextView) mView.findViewById(R.id.read_book_title);
         setListener();
     }
 
@@ -118,5 +121,10 @@ public class ReadRightTitleLayout extends LinearLayout {
 
     public void setBuyImageState(boolean show) {
         mBuyImageView.setVisibility(show ? VISIBLE : GONE);
+    }
+
+    public void setTitleName(String name) {
+        if (name != null)
+            read_book_title.setText(name);
     }
 }
