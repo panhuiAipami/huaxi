@@ -15,12 +15,22 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.custom.SpaceGridDecoration;
+import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.ui.adapter.PhotoSelectedListAdapter;
+import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -36,7 +46,7 @@ public class CreateDynamicActivity extends TitleActivity {
     RecyclerView recycler_view_photo;
     PhotoSelectedListAdapter adapter;
     List<LocalMedia> selectList = new ArrayList<>();
-    private ImageView iv_back,add_photo;
+    private ImageView iv_back, add_photo;
 
 
     public void initViewFromXML() throws Exception {
@@ -53,12 +63,11 @@ public class CreateDynamicActivity extends TitleActivity {
     }
 
 
-    public void initData(){
+    public void initData() {
         adapter = new PhotoSelectedListAdapter(this);
         recycler_view_photo.setAdapter(adapter);
         recycler_view_photo.setLayoutManager(new GridLayoutManager(this, 3));
     }
-
 
 
     public void initListener() throws Exception {
@@ -95,8 +104,7 @@ public class CreateDynamicActivity extends TitleActivity {
             initListener();
 
 
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -105,19 +113,58 @@ public class CreateDynamicActivity extends TitleActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if(v==iv_back){
+        if (v == iv_back) {
             finish();
-        }else if(v==add_photo){//添加照片
+        } else if (v == add_photo) {//添加照片
             PictureSelector.create(CreateDynamicActivity.this)
                     .openGallery(PictureMimeType.ofImage())
                     .selectionMedia(selectList)
                     .compress(true)
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
-        }else if(v==iv_submit){//发布
+        } else if (v == iv_submit) {//发布
+            String content = input_text.getText().toString().trim();
+            String url = "";
+            if (content.isEmpty()) {
+                ToastUtil.showLongToast("请输入内容");
+                return;
+            }
+            if (selectList.size() != 0) {
+                url = selectList.toString();
+            }
+
 
         }
 
+    }
+
+    public void sendSquare(String content, String url) {
+        BookApi.getInstance()
+                .service
+                .square_add(content, url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<SquareBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<SquareBean> squareBeanBase) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

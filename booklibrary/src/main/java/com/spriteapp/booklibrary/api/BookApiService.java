@@ -181,8 +181,10 @@ public interface BookApiService {
                                                @Query("squareid") String squareid);
 
     //添加广场帖子
-    @GET("square_add")
-    Observable<Base<SquareBean>> square_add(@Query("subject") String content);
+    @FormUrlEncoded
+    @POST("square_add")
+    Observable<Base<SquareBean>> square_add(@Field("subject") String content,
+                                            @Field("subject") String pic_url);
 
 
 }
