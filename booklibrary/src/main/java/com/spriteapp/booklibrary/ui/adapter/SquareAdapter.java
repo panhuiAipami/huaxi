@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.model.SquareBean;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int IMAGE2 = 2;//两张图片
     private final int IMAGE3 = 3;//三张及以上图片
     private Context context;
-    private List<String> list;
+    private List<SquareBean> list;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

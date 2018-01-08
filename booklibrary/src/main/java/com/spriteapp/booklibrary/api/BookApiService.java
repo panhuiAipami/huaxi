@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
+import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
@@ -172,7 +173,16 @@ public interface BookApiService {
 
     //广场列表
     @GET("square_index")
-    Observable<Base<CateBean>> square_index(@Query("page") String page);
+    Observable<Base<SquareBean>> square_index(@Query("page") String page);
+
+    //广场列表详情
+    @GET("square_detail")
+    Observable<Base<SquareBean>> square_detail(@Query("page_index") String page,
+                                               @Query("squareid") String squareid);
+
+    //添加广场帖子
+    @GET("square_add")
+    Observable<Base<SquareBean>> square_add(@Query("subject") String content);
 
 
 }

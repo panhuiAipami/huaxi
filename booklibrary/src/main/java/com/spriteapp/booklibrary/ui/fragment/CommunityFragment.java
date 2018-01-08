@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class CommunityFragment extends BaseFragment {
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<TextView> textViewList = new ArrayList<>();
+    private int page = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +86,12 @@ public class CommunityFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(1);
+            }
+        });
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtil.toCreateDynamicActivity(getActivity());
             }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -144,5 +152,7 @@ public class CommunityFragment extends BaseFragment {
             }
         }
     }
+
+
 
 }

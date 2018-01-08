@@ -13,7 +13,7 @@ public class Base<T> implements Serializable {
     private String status;
     private int code;
     private String message;
-    @SerializedName(value = "data", alternate = {"lists"})
+    @SerializedName(value = "data", alternate = {"lists", "squarelist"})//分别适应不同名称的集合
     private T data;
 
     public String getStatus() {

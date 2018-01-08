@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.util;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,9 +18,9 @@ public class GlideUtils {
     public static void loadImage(ImageView imageView, String url, Context context) {
         Glide.with(context)
                 .load(url)
-                .centerCrop()
                 .into(imageView);
     }
+
     public static Drawable loadImageFromNetwork(String imageUrl) {
         Drawable drawable = null;
         try {
@@ -33,5 +34,18 @@ public class GlideUtils {
             new Throwable(new NullPointerException("drawable is null"));
         }
         return drawable;
+    }
+
+    /**
+     * 加载本地图片
+     *
+     * @param v
+     * @param url
+     */
+    public static void loadLocalImage(final ImageView v, String url) {
+        if (TextUtils.isEmpty(url))
+            return;
+        Glide.with(AppUtil.getAppContext()).load(url).into(v);
+
     }
 }

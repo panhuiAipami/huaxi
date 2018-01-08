@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.RecentBookDb;
@@ -100,9 +99,6 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Shel
         holder.mShadowLayout.setLayoutParams(params);
         Glide.with(mContext)
                 .load(detail.getBook_image())
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .centerCrop()
                 .into(holder.logoImageView);
         if (!StringUtil.isEmpty(detail.getBook_name())) {
             holder.titleTextView.setText(detail.getBook_name());

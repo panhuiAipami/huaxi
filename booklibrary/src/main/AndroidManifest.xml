@@ -65,14 +65,8 @@
             android:name=".ui.activity.NativeActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:screenOrientation="behind">
-            <!--<intent-filter>-->
-                <!--<data android:scheme="weixin" /> &lt;!&ndash; 自定义的scheme &ndash;&gt;-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-            <!--</intent-filter>-->
         </activity>
+        <activity android:name=".ui.activity.CreateDynamicActivity"></activity>
 
 
         <meta-data

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -17,11 +18,17 @@ import com.spriteapp.booklibrary.widget.loading.CustomDialog;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private CustomDialog dialog;//进度条
+    public static int deviceWidth;
+    public static int deviceHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
+        WindowManager mWindowManager = BaseActivity.this.getWindowManager();
+        Display display = mWindowManager.getDefaultDisplay();
+        deviceWidth = display.getWidth();
+        deviceHeight = display.getHeight();
         setStatusBarColor();
         findViewId();
         initData();

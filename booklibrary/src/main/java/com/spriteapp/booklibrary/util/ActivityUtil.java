@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
@@ -34,6 +35,10 @@ public class ActivityUtil {
     public static void toReadActivity(Context context, BookDetailResponse detail) {
         Intent intent = new Intent(context, ReadActivity.class);
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
+        context.startActivity(intent);
+    }
+    public static void toCreateDynamicActivity(Context context){
+        Intent intent = new Intent(context, CreateDynamicActivity.class);
         context.startActivity(intent);
     }
 

@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 读取日志 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MyApplication"

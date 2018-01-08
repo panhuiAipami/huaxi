@@ -7,14 +7,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.RecentBookDb;
@@ -81,9 +79,6 @@ public class BookStoreAdapter extends RecyclerView.Adapter<BookStoreAdapter.Book
         final BookDetailResponse detail = mDetailList.get(position);
         Glide.with(mContext)
                 .load(detail.getBook_image())
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .centerCrop()
                 .into(holder.bookLogoImageView);
         String bookName = detail.getBook_name();
         if (!StringUtil.isEmpty(bookName)) {
