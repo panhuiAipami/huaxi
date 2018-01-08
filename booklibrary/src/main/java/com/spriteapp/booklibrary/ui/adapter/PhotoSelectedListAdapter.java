@@ -64,7 +64,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
                 });
             } else {
                 myViewHolder.delete_img.setVisibility(View.VISIBLE);
-                GlideUtils.loadLocalImage(myViewHolder.imageView, list.get(position).getCompressPath());
+                GlideUtils.loadLocalImage(context,myViewHolder.imageView, list.get(position).getCompressPath());
             }
 
             //点击单个预览

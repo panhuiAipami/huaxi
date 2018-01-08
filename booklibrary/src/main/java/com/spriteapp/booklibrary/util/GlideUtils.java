@@ -42,10 +42,10 @@ public class GlideUtils {
      * @param v
      * @param url
      */
-    public static void loadLocalImage(final ImageView v, String url) {
+    public static void loadLocalImage(Context context,final ImageView v, String url) {
         if (TextUtils.isEmpty(url))
             return;
-        Glide.with(AppUtil.getAppContext()).load(url).into(v);
+        Glide.with(context).load(url).into(v);
 
     }
 }
