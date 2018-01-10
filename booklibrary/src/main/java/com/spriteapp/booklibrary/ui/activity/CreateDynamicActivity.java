@@ -93,8 +93,7 @@ public class CreateDynamicActivity extends TitleActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                num = input_text.getText().length();
-                text_length.setText(num + "/140");
+                text_length.setText((start + count)+"/140");
             }
 
             @Override
