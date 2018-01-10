@@ -71,7 +71,7 @@ public class HuaXiSDK {
         }
         mConfig.channelListener.toLoginPage(context);
     }
-    public void toWXPay(WeChatBean response) {
+    public void toWXPay(WeChatBean response,String push_id) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }
@@ -79,7 +79,7 @@ public class HuaXiSDK {
 //            ToastUtil.showSingleToast("登录中");
 //            return;
 //        }
-        mConfig.channelListener.toWXPay(response);
+        mConfig.channelListener.toWXPay(response,push_id);
     }
 
     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {

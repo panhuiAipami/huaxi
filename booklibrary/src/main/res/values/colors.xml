@@ -18,6 +18,7 @@
     <color name="book_reader_home_bottom_text_choose_color">@color/book_reader_main_color</color>
     <color name="book_reader_home_bottom_text_color">#858c96</color>
     <color name="book_reader_bottom_operation_text_press_color">#8DB2EB</color>
+    <color name="night_title">#1a3c6e</color>
     <color name="book_reader_bottom_operation_text_color">@color/book_reader_main_color</color>
     <color name="book_reader_read_page_default_background">#F5F6F8</color>
     <color name="book_reader_divide_line_color">#e6e6e6</color>
@@ -94,6 +95,19 @@
     <!--按键不可点击时的text颜色-->
     <color name="c14_themes_color">#99ffffff</color>
     <color name="colorPrimaryDark">#F9494D</color>
+    <!--登录背景颜色-->
+    <color name="login_bg_color">#76E4E4</color>
     <!--分割块色2，灰色背景用这个 -->
     <color name="c10_themes_color2">#e1e1e1</color>
+    <!--广场颜色标注-->
+    <!--用户文本-->
+    <color name="square_user_speak">#414870</color>
+    <!--描述-->
+    <color name="square_introduce">#8083a0</color>
+    <!--小字体文本颜色-->
+    <color name="square_small">#b4b2c8</color>
+    <!--点赞后-->
+    <color name="square_support_selector">#ff74ac</color>
+    <!--评论后-->
+    <color name="square_comment_selector">#a785ff</color>
 </resources>

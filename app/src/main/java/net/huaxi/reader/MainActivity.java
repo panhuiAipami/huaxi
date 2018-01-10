@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void toWXPay(WeChatBean response) {
-                        if (response == null) {
-                            return;
+                    public void toWXPay(WeChatBean response, String push_id) {
+                        if (response == null && push_id != null && !push_id.isEmpty()) {
+                            MyApplication.umengNotificClick(push_id);//回调友盟
                         }
-                        wxPay(response);
+//                        wxPay(response);
                     }
                 })
                 .setChannelId(CHANNEL_ID)

@@ -9,6 +9,7 @@ android {
         targetSdkVersion 22
         versionCode 8
         versionName "2.2.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -98,6 +99,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile project(':PushSDK')
     compile project(':booklibrary')
     compile files('libs/open_sdk_r5788_lite.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
@@ -109,4 +111,5 @@ dependencies {
     compile 'com.zhy:okhttputils:2.0.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/wftsdk5.0.jar')
+
 }

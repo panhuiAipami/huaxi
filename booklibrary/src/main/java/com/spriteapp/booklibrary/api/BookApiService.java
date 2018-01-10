@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.api;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
@@ -15,13 +16,17 @@ import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 /**
@@ -173,18 +178,25 @@ public interface BookApiService {
 
     //广场列表
     @GET("square_index")
-    Observable<Base<SquareBean>> square_index(@Query("page") String page);
+    Observable<Base<List<SquareBean>>> square_index(@Query("page_index") String page,
+                                                    @Query("reset") String reset);
 
     //广场列表详情
     @GET("square_detail")
-    Observable<Base<SquareBean>> square_detail(@Query("page_index") String page,
-                                               @Query("squareid") String squareid);
+    Observable<Base<SquareBean>> square_detail(@Query("page_index") int page,
+                                               @Query("squareid") int squareid);
 
     //添加广场帖子
     @FormUrlEncoded
     @POST("square_add")
     Observable<Base<SquareBean>> square_add(@Field("subject") String content,
-                                            @Field("subject") String pic_url);
+                                            @Field("pic_url") String pic_url);
+
+    //上传图片
+    @Multipart
+    @POST("uploadfile_multi")
+    Observable<Base<UpLoadImgBean>> uploadfile_multi(@Query("field_name") String field_name,
+                                                     @PartMap Map<String, RequestBody> image);
 
 
 }

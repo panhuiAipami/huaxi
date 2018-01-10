@@ -23,4 +23,12 @@ public class UrlUtils {
      * 手机号登录
      */
     public static final String LOGIN_ACCOUNT = "login_account";
+    /**
+     * 上报推送token
+     */
+    public static final String PUSH_GET = "push_token";
+    /**
+     * 上报推送id
+     */
+    public static final String PUSH_CALL = "push_call";
 }

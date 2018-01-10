@@ -1,13 +1,17 @@
 package net.huaxi.reader;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.umeng.message.PushAgent;
 
 /**
  * Created by Administrator on 2017/11/15.
@@ -26,15 +30,24 @@ public class BaseActivity extends FragmentActivity {
             }
         }
     };
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
+    }
+
     /**
      * 处理handler消息
      *
      * @param msg
      */
+
     protected void handleMessage(Message msg) throws Exception {
 
 
     }
+
     public void showLoadingDialog() {
         showLoadingDialog(BaseActivity.this.getString(R.string.text_loading));
     }

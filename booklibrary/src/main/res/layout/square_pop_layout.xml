@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@color/square_comment_selector"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/guanzhu"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="关注"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/c13_themes_color"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"></View>
+
+        <TextView
+            android:id="@+id/pingbi"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="屏蔽"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/c13_themes_color"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"></View>
+
+        <TextView
+            android:id="@+id/jubao"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="举报"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="10dp"></View>
+
+
+</LinearLayout>

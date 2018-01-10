@@ -48,7 +48,7 @@
                 android:maxLength="8"
                 android:maxLines="1"
                 android:maxWidth="150dp"
-                android:textColor="@color/book_reader_home_bottom_text_choose_color"
+                android:textColor="#333333"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>

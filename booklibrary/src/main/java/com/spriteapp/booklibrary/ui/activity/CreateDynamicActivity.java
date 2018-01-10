@@ -17,20 +17,29 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.custom.SpaceGridDecoration;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.ui.adapter.PhotoSelectedListAdapter;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 /**
@@ -41,12 +50,14 @@ public class CreateDynamicActivity extends TitleActivity {
     TextView title;
     ImageView iv_submit;
     TextView text_length;
+    int num = 0;
 
     EditText input_text;
     RecyclerView recycler_view_photo;
     PhotoSelectedListAdapter adapter;
     List<LocalMedia> selectList = new ArrayList<>();
     private ImageView iv_back, add_photo;
+    private List<String> imageUrl = new ArrayList<>();
 
 
     public void initViewFromXML() throws Exception {
@@ -82,11 +93,8 @@ public class CreateDynamicActivity extends TitleActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 0) {
-                    text_length.setText((start + count) + "/140");
-                } else {
-                    text_length.setText("0/140");
-                }
+                num = input_text.getText().length();
+                text_length.setText(num + "/140");
             }
 
             @Override
@@ -123,14 +131,31 @@ public class CreateDynamicActivity extends TitleActivity {
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
         } else if (v == iv_submit) {//发布
+            if (!AppUtil.isLogin()) {
+                HuaXiSDK.getInstance().toLoginPage(this);
+                return;
+            }
             String content = input_text.getText().toString().trim();
             String url = "";
             if (content.isEmpty()) {
                 ToastUtil.showLongToast("请输入内容");
                 return;
             }
+
             if (selectList.size() != 0) {
-                url = selectList.toString();
+                Map<String, RequestBody> part = new HashMap<>();
+                for (int i = 0; i < selectList.size(); i++) {
+                    File file = new File(selectList.get(i).getCompressPath());
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    String substring = selectList.get(i).getCompressPath().substring(selectList.get(i).getCompressPath().lastIndexOf("/") + 1, selectList.get(i).getCompressPath().length());
+                    part.put("imgfile[]\"; filename=\"" + substring, requestBody);
+                }
+
+                addImage(part);
+//                Log.d("send_imageUrl", url);
+            } else {
+                sendSquare(content, url);
+
             }
 
 
@@ -138,6 +163,43 @@ public class CreateDynamicActivity extends TitleActivity {
 
     }
 
+
+    public void addImage(Map<String, RequestBody> imageFile) {
+        BookApi.getInstance()
+                .service
+                .uploadfile_multi("imgfile", imageFile)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<UpLoadImgBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<UpLoadImgBean> squareBeanBase) {
+                        int resultCode = squareBeanBase.getCode();
+                        if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+//                            sendSquare(content, url);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * @param content 帖子文本
+     * @param url     图片url
+     */
     public void sendSquare(String content, String url) {
         BookApi.getInstance()
                 .service
@@ -152,7 +214,13 @@ public class CreateDynamicActivity extends TitleActivity {
 
                     @Override
                     public void onNext(@NonNull Base<SquareBean> squareBeanBase) {
+                        int resultCode = squareBeanBase.getCode();
+                        if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                            ToastUtil.showToast("发布成功");
+                            setResult(RESULT_OK);
+                            finish();
 
+                        }
                     }
 
                     @Override

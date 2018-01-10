@@ -26,7 +26,7 @@ public class BookApi {
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            Log.d("retrofitBack", message);
+            Log.d(">>>", message);
 
         }
     });

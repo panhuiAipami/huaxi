@@ -1543,4 +1543,12 @@ public class Util {
         }
         return result;
     }
+    public static String getFloat(int num) {//评论点赞超过一千加k
+        if (num >= 10000) {
+            float sum = (((float) num) / 10000);
+            DecimalFormat decimalFormat = new DecimalFormat(".0");
+            return decimalFormat.format(sum) + "万";
+        }
+        return num + "";
+    }
 }

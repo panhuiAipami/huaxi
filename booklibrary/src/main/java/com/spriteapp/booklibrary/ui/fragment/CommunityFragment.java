@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -153,6 +154,11 @@ public class CommunityFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        fragmentList.get(0).onActivityResult(requestCode, resultCode, data);
+        fragmentList.get(1).onActivityResult(requestCode, resultCode, data);
 
-
+    }
 }

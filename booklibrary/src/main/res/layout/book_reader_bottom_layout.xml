@@ -51,13 +51,15 @@
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/book_reader_community_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/image_five"

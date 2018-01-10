@@ -13,6 +13,7 @@ import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.util.StatusBarUtil;
 import com.spriteapp.booklibrary.widget.loading.CustomDialog;
+import com.umeng.message.PushAgent;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResId());
         WindowManager mWindowManager = BaseActivity.this.getWindowManager();
         Display display = mWindowManager.getDefaultDisplay();
+        PushAgent.getInstance(this).onAppStart();
         deviceWidth = display.getWidth();
         deviceHeight = display.getHeight();
         setStatusBarColor();

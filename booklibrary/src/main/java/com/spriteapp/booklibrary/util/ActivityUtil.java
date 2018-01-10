@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,6 +10,7 @@ import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
+import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
 
 /**
@@ -16,13 +18,11 @@ import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
  */
 
 public class ActivityUtil {
+    public static final int TOCREATEDYNAMICACTIVITY = 0;//跳转到发广播activity的result
+    public static final String SQUAREID = "squareid";//跳转到帖子详情activity的id
 
     public static void toWebViewActivity(Context context, String url) {
         toWebViewActivity(context, url, false);
-    }
-
-    public static void toWebViewActivity(Context context, String url, boolean isH5, int type) {
-        toWebViewActivity(context, url, isH5);
     }
 
     public static void toWebViewActivity(Context context, String url, boolean isH5Pay) {
@@ -37,9 +37,10 @@ public class ActivityUtil {
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
         context.startActivity(intent);
     }
-    public static void toCreateDynamicActivity(Context context){
+
+    public static void toCreateDynamicActivity(Activity context) {
         Intent intent = new Intent(context, CreateDynamicActivity.class);
-        context.startActivity(intent);
+        context.startActivityForResult(intent, TOCREATEDYNAMICACTIVITY);
     }
 
     public static void toSettingActivity(Context context) {
@@ -60,5 +61,12 @@ public class ActivityUtil {
     public static void toCommonActivity(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         context.startActivity(intent);
+    }
+
+    public static void toSquareDetailsActivity(Context context, int squareid) {
+        Intent intent = new Intent(context, SquareDetailsActivity.class);
+        intent.putExtra(SQUAREID, squareid);
+        context.startActivity(intent);
+
     }
 }
