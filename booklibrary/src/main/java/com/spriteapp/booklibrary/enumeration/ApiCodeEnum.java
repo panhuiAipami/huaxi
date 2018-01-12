@@ -6,8 +6,11 @@ package com.spriteapp.booklibrary.enumeration;
 
 public enum ApiCodeEnum {
 
-    SUCCESS(10000);
-
+    SUCCESS(10000),
+    //点赞,阅读数失败
+    FAILURE(10001),
+    //点赞,阅读曾经点过或阅读过
+    EVER(10002);
     private int value;
 
     ApiCodeEnum(int value) {
@@ -17,4 +20,5 @@ public enum ApiCodeEnum {
     public int getValue() {
         return value;
     }
+
 }

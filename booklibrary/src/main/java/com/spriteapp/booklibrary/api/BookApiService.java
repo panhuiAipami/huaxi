@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
+import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserModel;
@@ -128,7 +129,7 @@ public interface BookApiService {
 
 
     @GET("book_shelf")
-    Observable<Base<List<BookDetailResponse>>> getBookShelf();
+    Observable<Base<List<BookDetailResponse>>> getBookShelf(@Query("row_count") String row_count);
 
     @FormUrlEncoded
     @POST("book_shelf")
@@ -178,25 +179,65 @@ public interface BookApiService {
 
     //广场列表
     @GET("square_index")
-    Observable<Base<List<SquareBean>>> square_index(@Query("page_index") String page,
-                                                    @Query("reset") String reset);
+    Observable<Base<List<SquareBean>>> square_index(@Query("page_index") int page,
+                                                    @Query("platform_id") int platform_id);
 
     //广场列表详情
     @GET("square_detail")
     Observable<Base<SquareBean>> square_detail(@Query("page_index") int page,
-                                               @Query("squareid") int squareid);
+                                               @Query("squareid") int squareid,
+                                               @Query("platform_id") int platform_id);
+
+    //广场详情翻页
+    @GET("square_detail")
+    Observable<Base<CommentDetailsBean>> square_detail(@Query("page_index") int page,
+                                                       @Query("squareid") int squareid,
+                                                       @Query("act") String act,
+                                                       @Query("platform_id") int platform_id);
+
+    //广场帖子评论回复详情页翻页
+    @GET("square_detail")
+    Observable<Base<SquareBean>> square_detail(@Query("page_index") int page,
+                                               @Query("squareid") int squareid,
+                                               @Query("id") int id,
+                                               @Query("platform_id") int platform_id);
 
     //添加广场帖子
     @FormUrlEncoded
     @POST("square_add")
     Observable<Base<SquareBean>> square_add(@Field("subject") String content,
-                                            @Field("pic_url") String pic_url);
+                                            @Field("pic_url") String pic_url,
+                                            @Field("platform_id") int platform_id);
 
     //上传图片
     @Multipart
     @POST("uploadfile_multi")
-    Observable<Base<UpLoadImgBean>> uploadfile_multi(@Query("field_name") String field_name,
-                                                     @PartMap Map<String, RequestBody> image);
+    Observable<Base<List<UpLoadImgBean>>> uploadfile_multi(@Query("field_name") String field_name,
+                                                           @PartMap Map<String, RequestBody> image,
+                                                           @Query("platform_id") int platform_id);
 
+    //广场添加评论
+    @FormUrlEncoded
+    @POST("square_addcomment")
+    Observable<Base> square_addcomment(@Field("content") String content,
+                                       @Field("squareid") int squareid,
+                                       @Field("platform_id") int platform_id);
+
+    //广场回复评论
+    @FormUrlEncoded
+    @POST("square_addcomment")
+    Observable<Base<SquareBean>> square_addcomment(@Field("content") String content,
+                                                   @Field("squareid") int squareid,
+                                                   @Field("content") String replyto,
+                                                   @Field("platform_id") int platform_id);
+
+
+
+
+    //广场帖子阅读数与点赞 act:readnum代表阅读,supportnum代表点赞
+    @GET("square_actcmt")
+    Observable<Base> square_actcmt(@Query("squareid") int squareid,
+                                   @Query("act") String act,
+                                   @Query("platform_id") int platform_id);
 
 }

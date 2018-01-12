@@ -45,6 +45,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.AppUpdateDialog;
@@ -61,6 +63,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -1503,6 +1506,7 @@ public class Util {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
     public static void setIndicator(TabLayout tabs, int leftDip, int rightDip) {//修改tablayout的下划线长度
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;
@@ -1533,6 +1537,7 @@ public class Util {
             child.invalidate();
         }
     }
+
     public static String toUtf8(String str) {
         String result = null;
         try {
@@ -1543,6 +1548,7 @@ public class Util {
         }
         return result;
     }
+
     public static String getFloat(int num) {//评论点赞超过一千加k
         if (num >= 10000) {
             float sum = (((float) num) / 10000);
@@ -1550,5 +1556,52 @@ public class Util {
             return decimalFormat.format(sum) + "万";
         }
         return num + "";
+    }
+
+    /**
+     * 判断一个Activity是否正在运行
+     *
+     * @param pkg
+     * @param cls
+     * @param context
+     * @return
+     */
+    public static boolean isClsRunning(String pkg, String cls, Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(2);
+        if (tasks.size() >= 2) {
+            ActivityManager.RunningTaskInfo task = tasks.get(1);
+            if (task != null) {
+                Log.d("RunningTaskInfo", task.topActivity.getPackageName());
+                return TextUtils.equals(task.topActivity.getPackageName(), pkg) && TextUtils.equals(task.topActivity.getClassName(), cls);
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public static List<LocalMedia> getPreViewPath(List<String> pic_url) {
+        List<LocalMedia> medias = new ArrayList<>();
+        for (int i = 0; i < pic_url.size(); i++) {
+            LocalMedia localMedia = new LocalMedia();
+            localMedia.setPath(pic_url.get(i));
+            medias.add(localMedia);
+        }
+        return medias;
+    }
+
+    /**
+     * 图片放大
+     *
+     * @param
+     */
+    public static void ImageClick(View v, final List<String> url, final int position, final Activity context) {
+        if (url == null) return;
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureSelector.create(context).externalPicturePreview(position, getPreViewPath(url));
+            }
+        });
     }
 }

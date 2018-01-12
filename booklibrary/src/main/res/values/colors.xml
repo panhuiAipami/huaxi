@@ -110,4 +110,5 @@
     <color name="square_support_selector">#ff74ac</color>
     <!--评论后-->
     <color name="square_comment_selector">#a785ff</color>
+    <color name="comment_title">#5c44c4</color>
 </resources>

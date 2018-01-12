@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.Util;
 
 import java.util.List;
 
@@ -18,10 +21,10 @@ import java.util.List;
 
 public class SquareImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int IMGPOS = 0;
-    private Context context;
+    private Activity context;
     private List<String> list;
 
-    public SquareImageAdapter(Context context, List<String> list) {
+    public SquareImageAdapter(Activity context, List<String> list) {
         this.context = context;
         this.list = list;
     }
@@ -42,12 +45,24 @@ public class SquareImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ImageViewHolder) {
-            ImageViewHolder viewHolder = (ImageViewHolder) holder;
+            final ImageViewHolder viewHolder = (ImageViewHolder) holder;
             if (list.get(position).isEmpty()) return;
+            int height;
+            if (list.size() == 4) {
+                height = (BaseActivity.deviceWidth - (Util.dp2px(context, 32))) / 2;
+            } else {
+                height = (BaseActivity.deviceWidth - (Util.dp2px(context, 38))) / 3;
+            }
+            ViewGroup.LayoutParams layoutParams = viewHolder.imageView.getLayoutParams();
+            layoutParams.height = height;
+            viewHolder.imageView.setLayoutParams(layoutParams);
             GlideUtils.loadImage(viewHolder.imageView, list.get(position), context);
+            Util.ImageClick(viewHolder.imageView, list, position, context);//查看大图
+
         }
 
     }
+
 
     @Override
     public int getItemCount() {

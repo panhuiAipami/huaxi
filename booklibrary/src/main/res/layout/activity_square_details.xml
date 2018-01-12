@@ -2,31 +2,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/square_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c13_themes_color"
     android:orientation="vertical"
     tools:context="com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/book_reader_top_bar_height"
         android:orientation="vertical">
 
-        <include layout="@layout/follow_item_layout"></include>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_comment"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_comment"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-    </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/follow_item_layout"></include>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/default_comment"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:text="默认\n●"
+                        android:textColor="@color/comment_title_text"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/new_comment"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:enabled="true"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:text="最新\n"
+                        android:textColor="@color/comment_title_text"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/hot_comment"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:enabled="true"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:text="热门\n"
+                        android:textColor="@color/comment_title_text"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/send_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <include
+                android:id="@+id/bottom_send"
+                layout="@layout/send_square_layout"
+                android:visibility="gone"></include>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

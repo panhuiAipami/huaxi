@@ -73,10 +73,10 @@
         <item name="android:windowExitAnimation">@anim/reward_out</item>
     </style>
     <style name="MyEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlActivated">@color/login_bg_color</item>
+        <item name="colorControlActivated">@color/square_comment_selector</item>
         <item name="colorAccent">@color/c10_themes_color</item>
         <item name="colorControlNormal">@color/c10_themes_color</item>
-        <item name="colorControlHighlight">@color/login_bg_color</item>
+        <item name="colorControlHighlight">@color/square_comment_selector</item>
     </style>
 
 </resources>

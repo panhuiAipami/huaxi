@@ -2,7 +2,6 @@ package com.spriteapp.booklibrary.util;
 
 import android.net.Uri;
 
-import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.SignConstant;
 
@@ -25,12 +24,12 @@ public class SignUtil {
      */
     public static String createSign(String version) {
         Map<String, String> signMap = new TreeMap<>();
-        signMap.put(SignConstant.CLIENT_ID_KEY, HuaXiSDK.getInstance().getClientId());
+        signMap.put(SignConstant.CLIENT_ID_KEY, 40 + "");
         signMap.put(SignConstant.URL_KEY, Uri.encode(Constant.BASE_URL));
         signMap.put(SignConstant.TIMESTAMP_KEY, String.valueOf(currentTime));
         signMap.put(SignConstant.VERSION_KEY, version);
         String signValue = getSignValue(signMap);
-        return MD5Util.encryptMD5(signValue + HuaXiSDK.getInstance().getSignSecret());
+        return MD5Util.encryptMD5(signValue + "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6");
     }
 
     /**

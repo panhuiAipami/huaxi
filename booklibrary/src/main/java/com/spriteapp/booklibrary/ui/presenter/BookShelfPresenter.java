@@ -80,7 +80,7 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
         }
         BookApi.getInstance()
                 .service
-                .getBookShelf()
+                .getBookShelf("100")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<BookDetailResponse>>>() {

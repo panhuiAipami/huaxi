@@ -25,9 +25,11 @@ import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.PayResult;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.presenter.WebViewPresenter;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.WebViewUtil;
@@ -46,6 +48,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     private static final String TAG = "WebViewActivity";
     public static final String LOAD_URL_TAG = "LoadUrlTag";
     public static final String IS_H5_PAY_TAG = "isH5PayTag";
+    public static final String IS_READ = "isRead";
     private ReaderWebView mWebView;
     private String mUrl;
     private Context mContext;
@@ -53,6 +56,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     private static final int SDK_PAY_FLAG = 1;
     private boolean isH5Pay;
     private String WXURL = "";
+    private int IsRead = 0;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -118,6 +122,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         }
         mUrl = intent.getStringExtra(LOAD_URL_TAG);
         isH5Pay = intent.getBooleanExtra(IS_H5_PAY_TAG, false);
+        IsRead = intent.getIntExtra(IS_READ, 0);
     }
 
     @Override
@@ -161,7 +166,6 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
                         if (WXURL != null && !WXURL.isEmpty())
                             view.loadUrl(WXURL);
 //                        view.goBack();
-
                     }
                     return true;
                 }
@@ -205,12 +209,19 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             if (ListenerManager.getInstance().getReadActivityFinish() != null) {
                 ListenerManager.getInstance().getReadActivityFinish();
             }
-            finish();
-//            BookDetailResponse detail = new BookDetailResponse();
-//            Log.d("bookdetails", "bookId===" + bookId);
-//            detail.setBook_id(bookId);
-//            detail.setChapter_id(chapterId);
-//            ActivityUtil.toReadActivity(mContext, detail);
+            if (IsRead == 0) {
+                Log.d("jump_book", "jump");
+                BookDetailResponse detail = new BookDetailResponse();
+                Log.d("bookdetails", "bookId===" + bookId);
+                detail.setBook_id(bookId);
+                detail.setChapter_id(chapterId);
+                ActivityUtil.toReadActivity(mContext, detail);
+            } else {
+                Log.d("jump_book", "finish");
+                finish();
+            }
+
+
         }
     };
 

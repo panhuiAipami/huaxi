@@ -24,7 +24,7 @@ import java.util.List;
  * 九宫格图片适配器
  */
 public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final int MAX_COUNTS = 5;
+    private final int MAX_COUNTS = 9;
     private Activity context;
     private List<LocalMedia> list;
 

@@ -2,23 +2,23 @@ package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.ui.dialog.FollowPop;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -26,6 +26,14 @@ import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
 
 /**
  * Created by Administrator on 2018/1/6.
@@ -38,7 +46,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int IMAGE3 = 3;//三张及以上图片
     private Activity context;
     private List<SquareBean> list;
-    PopupWindow popupWindow;
+    FollowPop popupWindow;
 
     public SquareAdapter(Activity context, List<SquareBean> list) {
         this.context = context;
@@ -67,21 +75,24 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (squareBean.getPic_url() != null) {
                 if (position == list.size() - 1) viewHolder.line.setVisibility(View.GONE);
                 if (squareBean.getPic_url().size() == 1) {//一张图片
-                    viewHolder.image2.setVisibility(View.GONE);
+                    viewHolder.image2.setVisibility(View.INVISIBLE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
+                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
                 } else if (squareBean.getPic_url().size() == 2) {//两张图片
-                    viewHolder.image2.setVisibility(View.GONE);
+                    viewHolder.image2.setVisibility(View.VISIBLE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
                     GlideUtils.loadImage(viewHolder.image2, squareBean.getPic_url().get(1), context);
+                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
+                    Util.ImageClick(viewHolder.image2, squareBean.getPic_url(), 1, context);
                 } else if (squareBean.getPic_url().size() > 2) {//两张图片以上
                     viewHolder.image1.setVisibility(View.GONE);
                     viewHolder.image2.setVisibility(View.GONE);
                     viewHolder.image_recyclerview.setVisibility(View.VISIBLE);
-                    viewHolder.image_recyclerview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                    viewHolder.image_recyclerview.setLayoutManager(new GridLayoutManager(context, squareBean.getPic_url().size() == 4 ? 2 : 3));
                     viewHolder.image_recyclerview.setAdapter(new SquareImageAdapter(context, squareBean.getPic_url()));//嵌套列表
                 } else {//没有图片
                     viewHolder.image1.setVisibility(View.GONE);
@@ -93,11 +104,13 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.user_name.setText(squareBean.getUsername());
             viewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(squareBean.getAddtime() + "000")) + "  来自" + squareBean.getLocation());
             viewHolder.user_speak.setText(squareBean.getSubject());
+            viewHolder.support_num.setEnabled(true);
             viewHolder.read_num.setText(Util.getFloat(squareBean.getReadnum()) + "次预览");
             viewHolder.comment_num.setText(Util.getFloat(squareBean.getCommentnum()));
             viewHolder.support_num.setText(Util.getFloat(squareBean.getSupportnum()));
             itemClick(viewHolder, squareBean);//item点击
             moreImageClick(viewHolder.more);//更多点击
+            goSupport(viewHolder.support_num, squareBean);//点赞
             if (squareBean.getReadhistory() != null) {
                 List<ImageView> imageView = new ArrayList<>();
                 imageView.add(viewHolder.head1);
@@ -148,16 +161,11 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    /**
-     * @param holder SquareViewHolder
-     * @param bean   SquareBean
-     */
     public void itemClick(SquareViewHolder holder, final SquareBean bean) {
         if (bean == null) return;
         holder.item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//帖子id
-                Log.d("square_id", bean.getId() + "");
                 ActivityUtil.toSquareDetailsActivity(context, bean.getId());
             }
         });
@@ -170,57 +178,114 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showpopWindow(more);//更多操作
+//                showpopWindow(more);//更多操作
+                popupWindow = new FollowPop(context, more);
             }
         });
     }
 
-    public void showpopWindow(View v) {
-        View layout = View.inflate(context, R.layout.square_pop_layout, null);
-        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(context, R.color.pop_back));
-        popupWindow.setBackgroundDrawable(dw);
-        popupWindow.showAsDropDown(v, 30, 0, Gravity.LEFT);
-        viewClick(layout);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//    public void showpopWindow(View v) {
+//        View layout = View.inflate(context, R.layout.square_pop_layout, null);
+//        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+//        popupWindow.setFocusable(true);
+//        popupWindow.setOutsideTouchable(true);
+//        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(context, R.color.pop_back));
+//        popupWindow.setBackgroundDrawable(dw);
+//        popupWindow.showAsDropDown(v, 30, 0, Gravity.LEFT);
+//        viewClick(layout);
+//        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//            @Override
+//            public void onDismiss() {
+//            }
+//        });
+//    }
+//
+//    public void viewClick(View item) {
+//        TextView guanzhu, jubao, pingbi;
+//        guanzhu = (TextView) item.findViewById(R.id.guanzhu);
+//        jubao = (TextView) item.findViewById(R.id.jubao);
+//        pingbi = (TextView) item.findViewById(R.id.pingbi);
+//
+//        guanzhu.setOnClickListener(new View.OnClickListener() {//关注
+//            @Override
+//            public void onClick(View v) {
+//                popupWindow.dismiss();
+//                ToastUtil.showToast("关注");
+//
+//
+//            }
+//        });
+//        pingbi.setOnClickListener(new View.OnClickListener() {//屏蔽
+//            @Override
+//            public void onClick(View v) {
+//                popupWindow.dismiss();
+//                ToastUtil.showToast("屏蔽");
+//            }
+//        });
+//        jubao.setOnClickListener(new View.OnClickListener() {//举报
+//            @Override
+//            public void onClick(View v) {
+//                popupWindow.dismiss();
+//                ToastUtil.showToast("举报");
+//            }
+//        });
+//
+//    }
+
+    public void goComment(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDismiss() {
+            public void onClick(View v) {
+
             }
         });
     }
 
-    public void viewClick(View item) {
-        TextView guanzhu, jubao, pingbi;
-        guanzhu = (TextView) item.findViewById(R.id.guanzhu);
-        jubao = (TextView) item.findViewById(R.id.jubao);
-        pingbi = (TextView) item.findViewById(R.id.pingbi);
-
-        guanzhu.setOnClickListener(new View.OnClickListener() {//关注
+    public void goSupport(final TextView view, final SquareBean squareBean) {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ToastUtil.showToast("关注");
+            public void onClick(final View v) {
+                if (!AppUtil.isLogin(context)) {
+                    return;
+                }
+                BookApi.getInstance()
+                        .service
+                        .square_actcmt(squareBean.getId(), "supportnum",PLATFORM_ID)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Base>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
 
+                            }
 
+                            @Override
+                            public void onNext(@NonNull Base squareBeanBase) {
+                                int resultCode = squareBeanBase.getCode();
+                                if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                    ToastUtil.showToast("点赞成功");
+                                    view.setEnabled(false);//图标颜色
+                                    squareBean.setSupportnum(squareBean.getSupportnum() + 1);//改变数量
+                                    view.setText(squareBean.getSupportnum() + "");
+                                } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
+                                    ToastUtil.showToast("点赞失败");
+                                } else if (resultCode == ApiCodeEnum.EVER.getValue()) {//曾经点过
+                                    ToastUtil.showToast("您已经点过");
+                                }
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         });
-        pingbi.setOnClickListener(new View.OnClickListener() {//屏蔽
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ToastUtil.showToast("屏蔽");
-            }
-        });
-        jubao.setOnClickListener(new View.OnClickListener() {//举报
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                ToastUtil.showToast("举报");
-            }
-        });
-
     }
 
 
@@ -242,6 +307,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private ImageView head1, head2, head3;
         private TextView comment1, comment2;
         private View line;
+        private TextView follow_btn;
 
         public SquareViewHolder(View itemView) {
             super(itemView);
@@ -265,6 +331,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             item_layout = (LinearLayout) itemView.findViewById(R.id.item_layout);
             comment1 = (TextView) itemView.findViewById(R.id.comment1);
             comment2 = (TextView) itemView.findViewById(R.id.comment2);
+            follow_btn = (TextView) itemView.findViewById(R.id.follow_btn);
             line = itemView.findViewById(R.id.line);
         }
     }

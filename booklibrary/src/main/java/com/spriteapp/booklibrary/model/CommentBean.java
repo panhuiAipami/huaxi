@@ -29,7 +29,7 @@ public class CommentBean {
     private String username;
     private String supportnum;
     private String replyto;
-    private Object replyusername;
+    private String replyusername;
     private String user_avatar;
 
     public String getId() {
@@ -104,11 +104,11 @@ public class CommentBean {
         this.replyto = replyto;
     }
 
-    public Object getReplyusername() {
+    public String getReplyusername() {
         return replyusername;
     }
 
-    public void setReplyusername(Object replyusername) {
+    public void setReplyusername(String replyusername) {
         this.replyusername = replyusername;
     }
 

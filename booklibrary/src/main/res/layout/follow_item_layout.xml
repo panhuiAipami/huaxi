@@ -47,16 +47,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="两天前  来自湖南长沙"
-                    android:textColor="@color/square_small" />
+                    android:drawableLeft="@mipmap/send_time_img"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/square_small"
+                    android:textSize="12sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/follow_btn"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/follow_btn_bg"
+                android:gravity="center"
+                android:text="+关注"
+                android:textColor="@color/square_comment_selector"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/more"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:background="@color/colorPrimaryDark" />
+                android:padding="12dp"
+                android:src="@mipmap/square_more_img" />
         </LinearLayout>
 
         <TextView
@@ -75,21 +91,29 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/image1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:src="@mipmap/man_head"
-                android:visibility="gone" />
+                android:adjustViewBounds="true"
+                android:maxHeight="200dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:riv_corner_radius="10dp" />
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/image2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
                 android:layout_weight="1"
-                android:src="@mipmap/man_head"
-                android:visibility="gone" />
+                android:adjustViewBounds="true"
+                android:maxHeight="200dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:riv_corner_radius="10dp" />
 
         </LinearLayout>
 
@@ -140,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
-                android:text="+222万次预览"
+                android:text=""
                 android:textColor="@color/square_small"
                 android:textSize="12sp" />
 
@@ -155,17 +179,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="评论"
-                    android:textColor="@color/square_small" />
+                    android:drawableLeft="@mipmap/square_comment_img"
+                    android:drawablePadding="3dp"
+                    android:padding="10dp"
+                    android:text="0"
+                    android:textColor="@color/square_small"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/support_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="25dp"
                     android:layout_toLeftOf="@id/comment_num"
-                    android:text="点赞"
-                    android:textColor="@color/square_small" />
+                    android:drawableLeft="@drawable/support_bg"
+                    android:drawablePadding="3dp"
+                    android:padding="10dp"
+                    android:text="0"
+                    android:textColor="@color/support_text_color"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -176,7 +208,7 @@
             android:id="@+id/comment_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -185,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="1111"
+                android:text=""
                 android:visibility="gone" />
 
             <TextView
@@ -193,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="222"
+                android:text=""
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
@@ -203,7 +235,6 @@
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
         android:background="@color/c10_themes_color2"></View>
 
 </LinearLayout>

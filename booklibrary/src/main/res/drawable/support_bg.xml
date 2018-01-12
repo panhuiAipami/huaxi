@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/square_support_img" android:state_enabled="true"></item>
+    <item android:drawable="@mipmap/support_after_img" android:state_enabled="false"></item>
+
+</selector>

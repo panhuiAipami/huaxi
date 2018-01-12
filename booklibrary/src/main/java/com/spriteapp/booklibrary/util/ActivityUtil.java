@@ -32,6 +32,14 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
+    public static void toWebViewActivity(Context context, String url, boolean isH5Pay, int IsRead) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.LOAD_URL_TAG, url);
+        intent.putExtra(WebViewActivity.IS_H5_PAY_TAG, isH5Pay);
+        intent.putExtra(WebViewActivity.IS_READ, IsRead);
+        context.startActivity(intent);
+    }
+
     public static void toReadActivity(Context context, BookDetailResponse detail) {
         Intent intent = new Intent(context, ReadActivity.class);
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);

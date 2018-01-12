@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
-import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class CommunityFragment extends BaseFragment {
         tabLayout.post(new Runnable() {//修改下划线的长度
             @Override
             public void run() {
-                Util.setIndicator(tabLayout, Util.dp2px(getActivity(), 19), Util.dp2px(getActivity(), 19));
+                Util.setIndicator(tabLayout, 40, 40);
             }
         });
         listener();
@@ -92,7 +92,11 @@ public class CommunityFragment extends BaseFragment {
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtil.toCreateDynamicActivity(getActivity());
+                ToastUtil.showToast("搜索");
+//                if (!AppUtil.isLogin(getActivity())) {
+//                    return;
+//                }
+//                ActivityUtil.toCreateDynamicActivity(getActivity());
             }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

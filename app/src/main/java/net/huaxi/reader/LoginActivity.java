@@ -63,6 +63,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         setListener();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);//设置返回给我们最新的intent
+    }
 
     public class MyHandler extends Handler {
         @Override

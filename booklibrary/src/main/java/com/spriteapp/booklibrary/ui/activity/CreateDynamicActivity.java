@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -17,7 +18,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
-import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.custom.SpaceGridDecoration;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
@@ -41,14 +41,16 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
+
 
 /**
  * 发动态
  */
 public class CreateDynamicActivity extends TitleActivity {
-    private final int MAX_COUNTS = 5;
+    private final int MAX_COUNTS = 9;
     TextView title;
-    ImageView iv_submit;
+    TextView iv_submit;
     TextView text_length;
     int num = 0;
 
@@ -58,13 +60,14 @@ public class CreateDynamicActivity extends TitleActivity {
     List<LocalMedia> selectList = new ArrayList<>();
     private ImageView iv_back, add_photo;
     private List<String> imageUrl = new ArrayList<>();
+    private String content;
 
 
     public void initViewFromXML() throws Exception {
         setContentView(R.layout.activity_create_dynamic);
         title = (TextView) findViewById(R.id.title);
         text_length = (TextView) findViewById(R.id.text_length);
-        iv_submit = (ImageView) findViewById(R.id.iv_submit);
+        iv_submit = (TextView) findViewById(R.id.iv_submit);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         add_photo = (ImageView) findViewById(R.id.add_photo);
         input_text = (EditText) findViewById(R.id.input_text);
@@ -93,7 +96,13 @@ public class CreateDynamicActivity extends TitleActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                text_length.setText((start + count)+"/140");
+                num = input_text.getText().length();
+                text_length.setText(num + "/140");
+                if (num == 0) {
+                    iv_submit.setEnabled(false);
+                } else {
+                    iv_submit.setEnabled(true);
+                }
             }
 
             @Override
@@ -130,11 +139,10 @@ public class CreateDynamicActivity extends TitleActivity {
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
         } else if (v == iv_submit) {//发布
-            if (!AppUtil.isLogin()) {
-                HuaXiSDK.getInstance().toLoginPage(this);
+            if (!AppUtil.isLogin(this)) {
                 return;
             }
-            String content = input_text.getText().toString().trim();
+            content = input_text.getText().toString().trim();
             String url = "";
             if (content.isEmpty()) {
                 ToastUtil.showLongToast("请输入内容");
@@ -162,24 +170,35 @@ public class CreateDynamicActivity extends TitleActivity {
 
     }
 
-
-    public void addImage(Map<String, RequestBody> imageFile) {
+    /**
+     * @param imageFile RequestBody集合
+     */
+    public void addImage(Map<String, RequestBody> imageFile) {//上传图片
+        showDialog();
         BookApi.getInstance()
                 .service
-                .uploadfile_multi("imgfile", imageFile)
+                .uploadfile_multi("imgfile", imageFile, PLATFORM_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Base<UpLoadImgBean>>() {
+                .subscribe(new Observer<Base<List<UpLoadImgBean>>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull Base<UpLoadImgBean> squareBeanBase) {
+                    public void onNext(@NonNull Base<List<UpLoadImgBean>> squareBeanBase) {
                         int resultCode = squareBeanBase.getCode();
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-//                            sendSquare(content, url);
+                            if (squareBeanBase.getData() != null && squareBeanBase.getData().size() != 0) {
+                                String strArr[] = new String[squareBeanBase.getData().size()];
+                                for (int i = 0; i < squareBeanBase.getData().size(); i++) {
+                                    strArr[i] = squareBeanBase.getData().get(i).getSrc();
+                                }
+                                sendSquare(content, new Gson().toJson(strArr));//发布带有图片的帖子
+//                                Log.d("send_square_img", imageUrl.toString());
+                            }
+
                         }
                     }
 
@@ -190,7 +209,7 @@ public class CreateDynamicActivity extends TitleActivity {
 
                     @Override
                     public void onComplete() {
-
+                        dismissDialog();
                     }
                 });
     }
@@ -200,9 +219,10 @@ public class CreateDynamicActivity extends TitleActivity {
      * @param url     图片url
      */
     public void sendSquare(String content, String url) {
+        showDialog();
         BookApi.getInstance()
                 .service
-                .square_add(content, url)
+                .square_add(content, url, PLATFORM_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<SquareBean>>() {
@@ -218,7 +238,8 @@ public class CreateDynamicActivity extends TitleActivity {
                             ToastUtil.showToast("发布成功");
                             setResult(RESULT_OK);
                             finish();
-
+                        } else {
+                            ToastUtil.showToast("发布失败");
                         }
                     }
 
@@ -229,7 +250,7 @@ public class CreateDynamicActivity extends TitleActivity {
 
                     @Override
                     public void onComplete() {
-
+                        dismissDialog();
                     }
                 });
     }

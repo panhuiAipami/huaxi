@@ -399,7 +399,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
                 display = AppUtil.getAppContext().getResources().getDisplayMetrics();
                 int kuan = display.widthPixels;
                 Log.d("kuan", "分辨率===" + kuan);
-                Util.setIndicator(tabLayout, Util.dp2px(getActivity(), 19), Util.dp2px(getActivity(), 19));
+                Util.setIndicator(tabLayout, 40, 40);
 //                if (kuan < 400) {
 //                    Util.setIndicator(tabLayout, 40, 40);
 //                }else if(kuan==400){

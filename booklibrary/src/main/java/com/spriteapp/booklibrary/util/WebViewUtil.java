@@ -53,6 +53,7 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
      * @return 跳转url
      */
     public boolean getJumpUrl(Context context, String url) {
+        Log.d("alipay11", "uri===" + url);
         String jumpUrl = "";
         if (StringUtil.isEmpty(url)) {
             return false;

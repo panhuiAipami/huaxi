@@ -100,6 +100,17 @@ public class AppUtil {
         return !StringUtil.isEmpty(token);
     }
 
+    public static boolean isLogin(Context context) {
+        String token = SharedPreferencesUtil.getInstance()
+                .getString(SignConstant.HUA_XI_TOKEN_KEY);
+        if (!StringUtil.isEmpty(token)) {
+            return true;
+        } else {//直接跳登录页面
+            HuaXiSDK.getInstance().toLoginPage(context);
+            return false;
+        }
+    }
+
     public static String getToken() {
         return SharedPreferencesUtil.getInstance().getString(SignConstant.HUA_XI_TOKEN_KEY);
     }

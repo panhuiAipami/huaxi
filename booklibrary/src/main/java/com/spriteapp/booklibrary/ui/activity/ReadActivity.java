@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.callback.ProgressCallback;
 import com.spriteapp.booklibrary.callback.TextSizeCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
@@ -87,6 +88,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * Created by kuangxiaoguo on 2017/7/10.
  */
@@ -145,6 +148,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private boolean isClickPayChapter;
     private RecentBookDb mRecentBookDb;
     PopupWindow popupWindow;//书籍详情与分享
+    private int chapter = 0;
 
     @Override
     public void initData() {
@@ -156,12 +160,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         Intent intent = getIntent();
         String bookid = intent.getStringExtra("book_id");
         String push_id = intent.getStringExtra("push_id");
+        String chapter_id = intent.getStringExtra("chapter_id");
         BookDetailResponse bookDetail;
-        if (bookid != null && !bookid.isEmpty()) {
+        if (bookid != null && !bookid.isEmpty()) {//推送
             bookDetail = new BookDetailResponse();
-            bookDetail.setBook_id(Integer.parseInt(bookid));
-            if (push_id != null && !push_id.isEmpty()) {
+            bookDetail.setBook_id(parseInt(bookid));
+            if (push_id != null && !push_id.isEmpty()) {//push_id,回调
                 HuaXiSDK.getInstance().toWXPay(null, push_id);
+            }
+            if (chapter_id != null && !chapter_id.isEmpty()) {//推送有章节id
+                chapter = Integer.parseInt(chapter_id);
+                mCurrentChapter = chapter;//赋值给当前章节id
             }
 
         } else {
@@ -184,7 +193,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
         mChapterList = mChapterDb.queryCatalog(mBookId);
         int lastChapterId = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), 0);
-        mCurrentChapter = bookDetail.getChapter_id();
+        if (chapter == 0) {
+            mCurrentChapter = bookDetail.getChapter_id();
+        } else {
+            mCurrentChapter = chapter;//使用推送的章节id
+        }
+
         if (mCurrentChapter == 0) {
             mCurrentChapter = lastChapterId;
         } else {
@@ -233,6 +247,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     public void setActivityFinish() {
 //        finish();
+        Log.d("setActivityFinish", "setActivityFinish");
     }
 
     class ReadReceiver extends BroadcastReceiver {
@@ -702,7 +717,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
-                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=" + shareDetail.getBook_id(), false);
+                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=" + shareDetail.getBook_id(), false, 1);
                 }
 
 
@@ -747,8 +762,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     showPayChapterDialog();
                 }
                 mRightTitleLayout.setBuyImageState(!needAutoLoad);
-                if (!needAutoLoad) {//
-                    book_reader_title_textView.setMaxEms(4);
+                if (!needAutoLoad) {
+                    if (BaseActivity.deviceWidth >= 1080) {
+                        book_reader_title_textView.setMaxEms(4);
+                    } else if (BaseActivity.deviceWidth < 1080 && BaseActivity.deviceWidth >= 720) {
+                        book_reader_title_textView.setMaxEms(2);
+                    } else if (BaseActivity.deviceWidth < 720) {
+                        book_reader_title_textView.setMaxEms(1);
+                    }
                 }
             } else {
                 mRightTitleLayout.setBuyImageState(false);

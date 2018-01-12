@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.spriteapp.booklibrary.R;
@@ -19,6 +18,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.ui.adapter.SquareAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 
 import java.util.ArrayList;
@@ -31,6 +31,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
+import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
+
 
 /**
  * Created by Administrator on 2018/1/5.
@@ -40,13 +42,12 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     private View mView;
     private URecyclerView recyclerView;//list列表
     private SwipeRefreshLayout swipe_refresh;//刷新
+    private ImageView send_square;//去发帖子
     private LinearLayoutManager linearLayoutManager;//管理者
     private SquareAdapter adapter;//适配器
-    private int page = 1;//页数
-    private int lastPage = 1;
+    private int page = 0;//页数
+    private int lastPage = 0;
     private List<SquareBean> squareBeanList = new ArrayList<>();//帖子详情集合
-    private EditText send_edit;
-    private ImageView send_share, send_comment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,12 +74,19 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void findViewId() {
         recyclerView = (URecyclerView) mView.findViewById(R.id.square_recycler_view);
         swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
-        send_edit = (EditText) mView.findViewById(R.id.send_edit);
-        send_share = (ImageView) mView.findViewById(R.id.send_share);
-        send_comment = (ImageView) mView.findViewById(R.id.send_comment);
+        send_square = (ImageView) mView.findViewById(R.id.send_square);
         swipe_refresh.setColorSchemeResources(R.color.colorPrimaryDark);
         swipe_refresh.setOnRefreshListener(this);
         recyclerView.setLoadingListener(this);
+        send_square.setOnClickListener(new View.OnClickListener() {//发帖子
+            @Override
+            public void onClick(View v) {
+                if (!AppUtil.isLogin(getActivity())) {
+                    return;
+                }
+                ActivityUtil.toCreateDynamicActivity(getActivity());
+            }
+        });
         setHttp();
     }
 
@@ -94,7 +102,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void setHttp() {//加载数据
         BookApi.getInstance()
                 .service
-                .square_index(page + "", "1")
+                .square_index(page, PLATFORM_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<SquareBean>>>() {
@@ -109,7 +117,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                             int resultCode = squareBeanBase.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (squareBeanBase.getData().size() != 0) {
-                                    if (page == 1) {
+                                    if (page == 0) {
                                         squareBeanList.clear();//刷新清空
                                     }
                                     page++;
@@ -137,8 +145,8 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {//刷新
-        lastPage = 1;
-        page = 1;
+        lastPage = 0;
+        page = 0;
         setHttp();
     }
 
@@ -158,6 +166,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ActivityUtil.TOCREATEDYNAMICACTIVITY://发帖子成功自动跳转
+                    Log.d("onActivityResult", "刷新");
                     onRefresh();//调用刷新
                     break;
             }
