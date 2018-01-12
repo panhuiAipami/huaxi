@@ -23,32 +23,32 @@ public class CommentReply {
      * replay : {"data":[{"id":"16","squareid":"21","pid":"4","content":"4444","addtime":"1515149040","userid":"153","username":"小肥羊","supportnum":"0","replyto":"163","replyusername":"冷暖自知","user_avatar":"https://img.huaxi.net/userhead/153.jpg"},{"id":"15","squareid":"21","pid":"4","content":"4444","addtime":"1515149015","userid":"1","username":"1","supportnum":"0","replyto":"163","replyusername":"冷暖自知","user_avatar":"https://img.huaxi.net/userhead/1.jpg"}],"total":11}
      */
 
-    private String id;
-    private String squareid;
+    private int id;
+    private int squareid;
     private String content;
-    private String addtime;
-    private String updatetime;
-    private String userid;
+    private long addtime;
+    private long updatetime;
+    private int userid;
     private String username;
-    private String supportnum;
-    private String replyto;
+    private int supportnum;
+    private int replyto;
     private Object replyusername;
     private String user_avatar;
-    private ReplayBean replay;
+    private List<ReplayBean> replay;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getSquareid() {
+    public int getSquareid() {
         return squareid;
     }
 
-    public void setSquareid(String squareid) {
+    public void setSquareid(int squareid) {
         this.squareid = squareid;
     }
 
@@ -60,27 +60,27 @@ public class CommentReply {
         this.content = content;
     }
 
-    public String getAddtime() {
+    public long getAddtime() {
         return addtime;
     }
 
-    public void setAddtime(String addtime) {
+    public void setAddtime(long addtime) {
         this.addtime = addtime;
     }
 
-    public String getUpdatetime() {
+    public long getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(String updatetime) {
+    public void setUpdatetime(long updatetime) {
         this.updatetime = updatetime;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
@@ -92,19 +92,19 @@ public class CommentReply {
         this.username = username;
     }
 
-    public String getSupportnum() {
+    public int getSupportnum() {
         return supportnum;
     }
 
-    public void setSupportnum(String supportnum) {
+    public void setSupportnum(int supportnum) {
         this.supportnum = supportnum;
     }
 
-    public String getReplyto() {
+    public int getReplyto() {
         return replyto;
     }
 
-    public void setReplyto(String replyto) {
+    public void setReplyto(int replyto) {
         this.replyto = replyto;
     }
 
@@ -124,11 +124,11 @@ public class CommentReply {
         this.user_avatar = user_avatar;
     }
 
-    public ReplayBean getReplay() {
+    public List<ReplayBean> getReplay() {
         return replay;
     }
 
-    public void setReplay(ReplayBean replay) {
+    public void setReplay(List<ReplayBean> replay) {
         this.replay = replay;
     }
 
@@ -172,23 +172,23 @@ public class CommentReply {
              * user_avatar : https://img.huaxi.net/userhead/153.jpg
              */
 
-            private String id;
+            private int id;
             private String squareid;
-            private String pid;
+            private int pid;
             private String content;
-            private String addtime;
-            private String userid;
+            private long addtime;
+            private int userid;
             private String username;
             private String supportnum;
-            private String replyto;
+            private int replyto;
             private String replyusername;
             private String user_avatar;
 
-            public String getId() {
+            public int getId() {
                 return id;
             }
 
-            public void setId(String id) {
+            public void setId(int id) {
                 this.id = id;
             }
 
@@ -200,11 +200,11 @@ public class CommentReply {
                 this.squareid = squareid;
             }
 
-            public String getPid() {
+            public int getPid() {
                 return pid;
             }
 
-            public void setPid(String pid) {
+            public void setPid(int pid) {
                 this.pid = pid;
             }
 
@@ -216,19 +216,19 @@ public class CommentReply {
                 this.content = content;
             }
 
-            public String getAddtime() {
+            public long getAddtime() {
                 return addtime;
             }
 
-            public void setAddtime(String addtime) {
+            public void setAddtime(long addtime) {
                 this.addtime = addtime;
             }
 
-            public String getUserid() {
+            public int getUserid() {
                 return userid;
             }
 
-            public void setUserid(String userid) {
+            public void setUserid(int userid) {
                 this.userid = userid;
             }
 
@@ -248,11 +248,11 @@ public class CommentReply {
                 this.supportnum = supportnum;
             }
 
-            public String getReplyto() {
+            public int getReplyto() {
                 return replyto;
             }
 
-            public void setReplyto(String replyto) {
+            public void setReplyto(int replyto) {
                 this.replyto = replyto;
             }
 

@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.CommentReply;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.ui.adapter.CommentDetailsAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SquareImageAdapter;
 import com.spriteapp.booklibrary.ui.dialog.FollowPop;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -51,7 +53,7 @@ public class SquareDetailsActivity extends TitleActivity {
     private TextView comment1, comment2;
     private View line;
     private int square_id;
-    private int page = 1;
+    private int page = 0;
     private int comment_page = 0;
     private RecyclerView recycler_view_comment;
     private NestedScrollView scroll_view;
@@ -64,6 +66,8 @@ public class SquareDetailsActivity extends TitleActivity {
     private TextView follow_btn, default_comment, new_comment, hot_comment;
     private List<TextView> textViews = new ArrayList<>();
     private List<CommentReply> commentList = new ArrayList<>();
+    private CommentDetailsAdapter adapter;
+    private LinearLayoutManager manager;
 
 
     @Override
@@ -71,6 +75,7 @@ public class SquareDetailsActivity extends TitleActivity {
         setTitle("帖子详情");
         Intent intent = getIntent();
         square_id = intent.getIntExtra(ActivityUtil.SQUAREID, 0);
+        initList();
         getDetails();
         listener();
     }
@@ -122,6 +127,13 @@ public class SquareDetailsActivity extends TitleActivity {
         textViews.add(default_comment);
         textViews.add(new_comment);
         textViews.add(hot_comment);
+    }
+
+    public void initList() {
+        manager = new LinearLayoutManager(this);
+        recycler_view_comment.setLayoutManager(manager);
+        adapter = new CommentDetailsAdapter(this, commentList);
+        recycler_view_comment.setAdapter(adapter);
     }
 
     public void listener() {
@@ -212,6 +224,7 @@ public class SquareDetailsActivity extends TitleActivity {
             textViews.get(2).setText("热门\n●");
         }
         ACT = act;
+        getCommentDetails();
     }
 
     public void getDetails() {//获取帖子详情
@@ -234,9 +247,11 @@ public class SquareDetailsActivity extends TitleActivity {
                             if (squareBeanBase != null && squareBeanBase.getData() != null) {
                                 squareBean = squareBeanBase.getData();
                                 setData(squareBeanBase.getData());//填充界面
-//                                if (squareBeanBase.getData().getComments().) {
-//
-//                                }
+                                if (squareBeanBase.getData().getCommentReply() != null && squareBeanBase.getData().getCommentReply().size() != 0) {
+                                    if (commentList.size() != 0) commentList.clear();
+                                    commentList.addAll(squareBeanBase.getData().getCommentReply());
+                                    adapter.notifyDataSetChanged();
+                                }
                             }
 
                         }
@@ -311,6 +326,7 @@ public class SquareDetailsActivity extends TitleActivity {
                             if (commentDetailsBean != null && commentDetailsBean.getData() != null && commentDetailsBean.getData().getCommentList() != null && commentDetailsBean.getData().getCommentList().size() != 0) {
                                 if (comment_page == 0) commentList.clear();//刷新则清空集合
                                 commentList.addAll(commentDetailsBean.getData().getCommentList());
+                                adapter.notifyDataSetChanged();
                             }
 
                         }

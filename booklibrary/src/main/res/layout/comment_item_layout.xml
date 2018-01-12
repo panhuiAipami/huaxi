@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/comment_num"
+                android:id="@+id/support_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

@@ -96,7 +96,7 @@ public class CreateDynamicActivity extends TitleActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                num = input_text.getText().length();
+                num = input_text.getText().toString().trim().length();
                 text_length.setText(num + "/140");
                 if (num == 0) {
                     iv_submit.setEnabled(false);

@@ -158,4 +158,11 @@ public class SquareBean {
         this.comments = comments;
     }
 
+    public List<CommentReply> getCommentReply() {
+        return commentReply;
+    }
+
+    public void setCommentReply(List<CommentReply> commentReply) {
+        this.commentReply = commentReply;
+    }
 }
