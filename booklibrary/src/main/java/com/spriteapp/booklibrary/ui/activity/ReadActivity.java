@@ -235,6 +235,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         setBatteryState();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        Log.d("onNewIntent","执行read_onNewIntent");
+    }
+
     private void setBatteryState() {
         mDateFormat = new SimpleDateFormat("HH:mm");
         mReadReceiver = new ReadReceiver();

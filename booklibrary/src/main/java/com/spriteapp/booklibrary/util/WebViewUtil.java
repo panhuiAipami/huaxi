@@ -79,12 +79,13 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                         Log.d("jumpread", "jumpUrl===" + jumpUrl);
 
                         String bookId1 = uri1.getQueryParameter(WebConstant.BOOK_ID_QUERY);
-                        if (bookId1 != null && !bookId1.isEmpty()) {//看书
+                        if (bookId1 != null && !bookId1.isEmpty() && (jumpUrl.contains("book_detail") || jumpUrl.contains("book_info"))) {//看书
                             BookDetailResponse detail = new BookDetailResponse();
                             detail.setBook_id(Integer.parseInt(bookId1));
                             detail.setChapter_id(0);
                             ActivityUtil.toReadActivity(context, detail);
                         } else {//充值
+                            Log.d("jumpread", "执行跳转" + jumpUrl);
                             ActivityUtil.toWebViewActivity(context, jumpUrl);//打开WebViewActivity
                         }
 

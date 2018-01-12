@@ -112,6 +112,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         mWebView.setWebChromeClient(mChromeClient);
 //        mWebView.setWebViewClient(mClient);//试一试
         mWebView.loadPage(mUrl, mClient);
+        Log.d("murl", mUrl);
         WebViewUtil.getInstance().setWebViewCallback(mWebViewCallback);
     }
 

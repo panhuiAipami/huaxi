@@ -196,6 +196,21 @@ public class SquareDetailsActivity extends TitleActivity {
                 textViews.get(i).setEnabled(true);
             }
         }
+        if (pos == 0) {
+            textViews.get(0).setText("默认\n●");
+            textViews.get(1).setText("最新\n");
+            textViews.get(2).setText("热门\n");
+        }
+        if (pos == 1) {
+            textViews.get(0).setText("默认\n");
+            textViews.get(1).setText("最新\n●");
+            textViews.get(2).setText("热门\n");
+        }
+        if (pos == 2) {
+            textViews.get(0).setText("默认\n");
+            textViews.get(1).setText("最新\n");
+            textViews.get(2).setText("热门\n●");
+        }
         ACT = act;
     }
 
@@ -216,9 +231,12 @@ public class SquareDetailsActivity extends TitleActivity {
                     public void onNext(@NonNull Base<SquareBean> squareBeanBase) {
                         int resultCode = squareBeanBase.getCode();
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-                            if (squareBeanBase != null) {
+                            if (squareBeanBase != null && squareBeanBase.getData() != null) {
                                 squareBean = squareBeanBase.getData();
                                 setData(squareBeanBase.getData());//填充界面
+//                                if (squareBeanBase.getData().getComments().) {
+//
+//                                }
                             }
 
                         }
