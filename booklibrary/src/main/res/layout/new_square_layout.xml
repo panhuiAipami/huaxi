@@ -38,7 +38,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="30dp"
-        android:src="@mipmap/to_send_square_big" />
+        android:src="@mipmap/to_send_square_big"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

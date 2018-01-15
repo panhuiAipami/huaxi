@@ -11,12 +11,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CommentReply;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.TimeUtil;
+import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
 
 /**
  * Created by Administrator on 2018/1/11.
@@ -26,6 +39,7 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final int COMMENTPOS = 0;
     private Activity context;
     private List<CommentReply> list;
+    OnItemClickListener onItemClickListener;
 
     public CommentDetailsAdapter(Activity context, List<CommentReply> list) {
         this.context = context;
@@ -46,17 +60,87 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof CommentViewHolder) {
-            CommentReply commentReply = list.get(position);
+            final CommentReply commentReply = list.get(position);
             if (commentReply == null) return;
             CommentViewHolder commentViewHolder = (CommentDetailsAdapter.CommentViewHolder) holder;
             GlideUtils.loadImage(commentViewHolder.user_head, commentReply.getUser_avatar(), context);
             commentViewHolder.user_name.setText(commentReply.getUsername());
             commentViewHolder.user_speak.setText(commentReply.getContent());
-            commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(commentReply.getAddtime()+"000")));
+            commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(commentReply.getAddtime() + "000")));
             commentViewHolder.support_num.setText(Util.getFloat(commentReply.getSupportnum()));
+            toSupport(commentViewHolder.support_num, commentReply);//评论点赞
+            if (onItemClickListener != null) {
+                commentViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickListener.setOnItemClickListener(position, commentReply);
+                    }
+                });
+            }
         }
+    }
+
+    public void toSupport(final TextView view, final CommentReply reply) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                supportHttp(view, reply);
+            }
+        });
+
+    }
+
+    public void supportHttp(final TextView view, final CommentReply reply) {
+        if (!AppUtil.isLogin(context)) {
+            return;
+        }
+        BookApi.getInstance()
+                .service
+                .square_addcontentsupport(reply.getId(), PLATFORM_ID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base squareBeanBase) {
+                        int resultCode = squareBeanBase.getCode();
+                        if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                            ToastUtil.showToast("点赞成功");
+                            view.setEnabled(false);//图标颜色
+                            reply.setSupportnum(reply.getSupportnum() + 1);//改变数量
+                            view.setText(reply.getSupportnum() + "");
+                        } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
+                            ToastUtil.showToast("点赞失败");
+                        } else if (resultCode == ApiCodeEnum.EVER.getValue()) {//曾经点过
+                            ToastUtil.showToast("您已经点过");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void itemClick(CommentViewHolder holder) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -88,5 +172,13 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             reply_comment1 = (TextView) itemView.findViewById(R.id.reply_comment1);
             reply_comment2 = (TextView) itemView.findViewById(R.id.reply_comment2);
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void setOnItemClickListener(int postion, CommentReply commentReply);
     }
 }

@@ -228,10 +228,9 @@ public interface BookApiService {
     @POST("square_addcomment")
     Observable<Base<SquareBean>> square_addcomment(@Field("content") String content,
                                                    @Field("squareid") int squareid,
-                                                   @Field("content") String replyto,
+                                                   @Field("pid") int pid,
+                                                   @Field("replyto") int replyto,
                                                    @Field("platform_id") int platform_id);
-
-
 
 
     //广场帖子阅读数与点赞 act:readnum代表阅读,supportnum代表点赞
@@ -239,5 +238,10 @@ public interface BookApiService {
     Observable<Base> square_actcmt(@Query("squareid") int squareid,
                                    @Query("act") String act,
                                    @Query("platform_id") int platform_id);
+
+    //评论点赞
+    @GET("square_addcontentsupport")
+    Observable<Base> square_addcontentsupport(@Query("id") int comment_id,
+                                              @Query("platform_id") int platform_id);
 
 }

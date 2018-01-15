@@ -91,16 +91,23 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:padding="13dp"
                 android:src="@mipmap/search" />
+
+            <ImageView
+                android:id="@+id/to_send"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="13dp"
+                android:src="@mipmap/new_send_square_img" />
         </RelativeLayout>
 
     </LinearLayout>

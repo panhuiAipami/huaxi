@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
+import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
@@ -28,7 +30,7 @@ import java.util.List;
 public class CommunityFragment extends BaseFragment {
     private View mView;
     private TextView tab_one, tab_two;//title标题
-    private ImageView search_btn;//搜索按钮
+    private ImageView search_btn, to_send;//搜索按钮
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private FollowFragment followFragment;
@@ -64,6 +66,7 @@ public class CommunityFragment extends BaseFragment {
         tab_one = (TextView) mView.findViewById(R.id.tab_one);
         tab_two = (TextView) mView.findViewById(R.id.tab_two);
         search_btn = (ImageView) mView.findViewById(R.id.search_btn);
+        to_send = (ImageView) mView.findViewById(R.id.to_send);
         viewPager = (ViewPager) mView.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) mView.findViewById(R.id.tabLayout);
         tabLayout.post(new Runnable() {//修改下划线的长度
@@ -97,6 +100,15 @@ public class CommunityFragment extends BaseFragment {
 //                    return;
 //                }
 //                ActivityUtil.toCreateDynamicActivity(getActivity());
+            }
+        });
+        to_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AppUtil.isLogin(getActivity())) {
+                    return;
+                }
+                ActivityUtil.toCreateDynamicActivity(getActivity());
             }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

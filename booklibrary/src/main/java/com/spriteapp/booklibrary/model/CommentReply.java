@@ -34,7 +34,7 @@ public class CommentReply {
     private int replyto;
     private Object replyusername;
     private String user_avatar;
-    private List<ReplayBean> replay;
+    private ReplayBean replay;
 
     public int getId() {
         return id;
@@ -124,13 +124,14 @@ public class CommentReply {
         this.user_avatar = user_avatar;
     }
 
-    public List<ReplayBean> getReplay() {
+    public ReplayBean getReplay() {
         return replay;
     }
 
-    public void setReplay(List<ReplayBean> replay) {
+    public void setReplay(ReplayBean replay) {
         this.replay = replay;
     }
+
 
     public static class ReplayBean {
         /**
@@ -181,7 +182,7 @@ public class CommentReply {
             private String username;
             private String supportnum;
             private int replyto;
-            private String replyusername;
+            private Object replyusername;
             private String user_avatar;
 
             public int getId() {
@@ -256,11 +257,11 @@ public class CommentReply {
                 this.replyto = replyto;
             }
 
-            public String getReplyusername() {
+            public Object getReplyusername() {
                 return replyusername;
             }
 
-            public void setReplyusername(String replyusername) {
+            public void setReplyusername(Object replyusername) {
                 this.replyusername = replyusername;
             }
 

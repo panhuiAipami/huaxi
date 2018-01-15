@@ -14,7 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:paddingLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
         android:paddingBottom="10dp"
-        android:src="@mipmap/close_book_edit" />
+        android:paddingLeft="10dp"
+        android:src="@mipmap/del_img" />
 </RelativeLayout>

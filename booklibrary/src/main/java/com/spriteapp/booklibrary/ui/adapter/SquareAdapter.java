@@ -250,7 +250,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
                 BookApi.getInstance()
                         .service
-                        .square_actcmt(squareBean.getId(), "supportnum",PLATFORM_ID)
+                        .square_actcmt(squareBean.getId(), "supportnum", PLATFORM_ID)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Base>() {

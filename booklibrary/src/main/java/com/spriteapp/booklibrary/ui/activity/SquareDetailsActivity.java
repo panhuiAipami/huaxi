@@ -42,7 +42,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class SquareDetailsActivity extends TitleActivity {
+public class SquareDetailsActivity extends TitleActivity implements CommentDetailsAdapter.OnItemClickListener {
     public static final int PLATFORM_ID = 1;//社区接口添加来区分花溪与嘎吱
     private String ACT = "default";//获取评论的act
     private ImageView user_head, more, image1, image2;
@@ -68,6 +68,8 @@ public class SquareDetailsActivity extends TitleActivity {
     private List<CommentReply> commentList = new ArrayList<>();
     private CommentDetailsAdapter adapter;
     private LinearLayoutManager manager;
+    private int type = 1;//默认为1,帖子评论,2为评论回复
+    private int comment_id = 0, user_id = 0;
 
 
     @Override
@@ -137,6 +139,7 @@ public class SquareDetailsActivity extends TitleActivity {
     }
 
     public void listener() {
+        adapter.setOnItemClickListener(this);
         more.setOnClickListener(this);
         support_num.setOnClickListener(this);
         comment_num.setOnClickListener(this);
@@ -176,7 +179,7 @@ public class SquareDetailsActivity extends TitleActivity {
             }
         } else if (v == comment_num) {//评论
             if (squareBean != null && bottom_send.getVisibility() == View.GONE) {
-                bottom_send.setVisibility(View.VISIBLE);//显示评论条
+                showCommentView();//帖子回复
             }
         } else if (v == square_layout) {//隐藏comment
             if (bottom_send.getVisibility() == View.VISIBLE)
@@ -188,7 +191,12 @@ public class SquareDetailsActivity extends TitleActivity {
                 ToastUtil.showToast("请输入内容");
                 return;
             }
-            sendComment(content);
+            if (type == 1) {//评论
+                sendComment(content);
+            } else if (type == 2) {//回复
+                sendCommentReply(content);
+            }
+
         } else if (v == yuan_support) {
 
         } else if (v == default_comment) {//默认评论
@@ -306,6 +314,43 @@ public class SquareDetailsActivity extends TitleActivity {
                 });
     }
 
+    public void sendCommentReply(String content) {
+        showDialog();
+        BookApi.getInstance()
+                .service
+                .square_addcomment(content, square_id, comment_id, user_id, PLATFORM_ID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base squareBeanBase) {
+                        int resultCode = squareBeanBase.getCode();
+                        if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                            ToastUtil.showToast("评论成功");
+                            send_edit.setText("");
+                            bottom_send.setVisibility(View.GONE);
+                        } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
+                            ToastUtil.showToast("评论失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+                });
+    }
+
     public void getCommentDetails() {
         showDialog();
         BookApi.getInstance()
@@ -347,6 +392,7 @@ public class SquareDetailsActivity extends TitleActivity {
     public void setData(SquareBean squareBean) {//顶部帖子详情填充
         if (squareBean == null) return;
         item_layout.setVisibility(View.VISIBLE);//加载出来显示布局
+        Log.d("setData","setData");
         if (squareBean.getPic_url() != null) {
             if (squareBean.getPic_url().size() == 1) {//一张图片
                 image2.setVisibility(View.INVISIBLE);
@@ -479,4 +525,30 @@ public class SquareDetailsActivity extends TitleActivity {
     }
 
 
+    @Override
+    public void setOnItemClickListener(int postion, CommentReply commentReply) {//评论回复
+        ToastUtil.showToast("回复");
+        if (commentReply == null) return;
+        type = 2;
+        showCommentView(commentReply);
+    }
+
+    public void showCommentView() {//帖子评论
+        type = 1;
+        showCommentView(null);
+
+    }
+
+    /**
+     * @param commentReply 评论实体类
+     */
+    public void showCommentView(CommentReply commentReply) {
+        bottom_send.setVisibility(View.VISIBLE);
+        if (type == 2) {
+            send_edit.setHint("回复:" + commentReply.getUsername());
+            comment_id = commentReply.getId();
+            user_id = commentReply.getReplyto();
+        }
+
+    }
 }
