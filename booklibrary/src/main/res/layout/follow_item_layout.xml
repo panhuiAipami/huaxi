@@ -91,35 +91,26 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <ImageView
                 android:id="@+id/image1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:maxHeight="200dp"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
-                app:riv_corner_radius="10dp" />
+                android:visibility="gone" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <ImageView
                 android:id="@+id/image2"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:maxHeight="200dp"
+                android:layout_marginLeft="5dp"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
-                app:riv_corner_radius="10dp" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/image_recyclerview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"></android.support.v7.widget.RecyclerView>
 

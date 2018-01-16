@@ -23,6 +23,8 @@ public class SquareImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int IMGPOS = 0;
     private Activity context;
     private List<String> list;
+    int space = 30;
+    int spanCount = 3;
 
     public SquareImageAdapter(Activity context, List<String> list) {
         this.context = context;
@@ -48,13 +50,10 @@ public class SquareImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final ImageViewHolder viewHolder = (ImageViewHolder) holder;
             if (list.get(position).isEmpty()) return;
             int height;
-            if (list.size() == 4) {
-                height = (BaseActivity.deviceWidth - (Util.dp2px(context, 32))) / 2;
-            } else {
-                height = (BaseActivity.deviceWidth - (Util.dp2px(context, 38))) / 3;
-            }
+            height = (BaseActivity.deviceWidth - (Util.dp2px(context, space))) / spanCount;
             ViewGroup.LayoutParams layoutParams = viewHolder.imageView.getLayoutParams();
             layoutParams.height = height;
+            layoutParams.width = layoutParams.height;
             viewHolder.imageView.setLayoutParams(layoutParams);
             GlideUtils.loadImage(viewHolder.imageView, list.get(position), context);
             Util.ImageClick(viewHolder.imageView, list, position, context);//查看大图

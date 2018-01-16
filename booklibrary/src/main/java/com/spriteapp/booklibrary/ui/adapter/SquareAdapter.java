@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.ui.dialog.FollowPop;
@@ -75,7 +76,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (squareBean.getPic_url() != null) {
                 if (position == list.size() - 1) viewHolder.line.setVisibility(View.GONE);
                 if (squareBean.getPic_url().size() == 1) {//一张图片
-                    viewHolder.image2.setVisibility(View.INVISIBLE);
+                    viewHolder.image2.setVisibility(View.GONE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
@@ -88,6 +89,13 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     GlideUtils.loadImage(viewHolder.image2, squareBean.getPic_url().get(1), context);
                     Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
                     Util.ImageClick(viewHolder.image2, squareBean.getPic_url(), 1, context);
+
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.image1.getLayoutParams();
+                    layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(context, 30)) / 3;
+                    layoutParams.width = layoutParams.height;
+                    layoutParams.rightMargin = Util.dp2px(context, 5);
+                    viewHolder.image1.setLayoutParams(layoutParams);
+                    viewHolder.image2.setLayoutParams(layoutParams);
                 } else if (squareBean.getPic_url().size() > 2) {//两张图片以上
                     viewHolder.image1.setVisibility(View.GONE);
                     viewHolder.image2.setVisibility(View.GONE);
