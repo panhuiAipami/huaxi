@@ -1,7 +1,6 @@
 package com.spriteapp.booklibrary.model.response;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 书籍详情
@@ -21,7 +20,7 @@ public class BookDetailResponse implements Serializable {
     private int book_is_vip;
     private long book_content_byte;
     private int book_chapter_total;
-    private List<String> book_keywords;
+//    private List<String> book_keywords;
     private int book_price;
     private long book_updatetime;
     private int author_id;
@@ -139,13 +138,13 @@ public class BookDetailResponse implements Serializable {
         this.book_chapter_total = book_chapter_total;
     }
 
-    public List<String> getBook_keywords() {
-        return book_keywords;
-    }
-
-    public void setBook_keywords(List<String> book_keywords) {
-        this.book_keywords = book_keywords;
-    }
+//    public List<String> getBook_keywords() {
+//        return book_keywords;
+//    }
+//
+//    public void setBook_keywords(List<String> book_keywords) {
+//        this.book_keywords = book_keywords;
+//    }
 
     public int getBook_price() {
         return book_price;
@@ -281,7 +280,6 @@ public class BookDetailResponse implements Serializable {
                 ", book_is_vip=" + book_is_vip +
                 ", book_content_byte=" + book_content_byte +
                 ", book_chapter_total=" + book_chapter_total +
-                ", book_keywords=" + book_keywords +
                 ", book_price=" + book_price +
                 ", book_updatetime=" + book_updatetime +
                 ", author_id=" + author_id +

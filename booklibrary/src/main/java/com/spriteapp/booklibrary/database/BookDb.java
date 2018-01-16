@@ -211,10 +211,10 @@ public class BookDb {
             //"last_read_time desc"
             Cursor cursor = db.query(DbConstants.BOOK_TABLE_NAME, null, "book_add_shelf = ?",
                     new String[]{String.valueOf(BookEnum.ADD_SHELF.getValue())}, null, null, "last_read_time desc");
-            if (cursor.getColumnCount() != 0) {
-                while (cursor.moveToNext()) {
+            if (cursor.getColumnCount() != 0) {                while (cursor.moveToNext()) {
+
                     BookDetailResponse model = new BookDetailResponse();
-                    Log.d("readTime", "阅读时间排序" + cursor.getColumnIndex(DbConstants.LAST_READ_TIME));
+//                    Log.d("readTime", "阅读时间排序" + cursor.getColumnIndex(DbConstants.LAST_READ_TIME));
                     model.setBook_id(cursor.getInt(cursor.getColumnIndex(DbConstants.BOOK_ID)));
                     model.setBook_name(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_NAME)));
                     model.setBook_image(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_IMAGE)));

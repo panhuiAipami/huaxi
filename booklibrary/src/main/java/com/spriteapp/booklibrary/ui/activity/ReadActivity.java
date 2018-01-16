@@ -157,7 +157,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             EventBus.getDefault().register(this);
 //            IsRegister = !IsRegister;
         }
-
         mRightTitleLayout = new ReadRightTitleLayout(this);
         mRightLayout.addView(mRightTitleLayout);
         mRightTitleLayout.setTitleListener(mTitleListener);
@@ -255,6 +254,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (mPresenter != null) {
                 mPresenter.detachView();
             }
+            mCurrentChapter = 0;
+            mBookId = 0;
+            mLoadChapterId = 0;
+            mOldBookDetail = null;
+            mNewBookDetail = null;
+            mChapterList.clear();
+
             addContentView();
             findViewId();
             initData();
