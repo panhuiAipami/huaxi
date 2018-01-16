@@ -17,9 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.CommentReply;
@@ -439,6 +442,14 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 image1.setVisibility(View.VISIBLE);
                 GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
                 GlideUtils.loadImage(image2, squareBean.getPic_url().get(1), this);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image1.getLayoutParams();
+                layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(this, 30)) / 3;
+                layoutParams.width = layoutParams.height;
+                layoutParams.rightMargin = Util.dp2px(this, 5);
+                image1.setLayoutParams(layoutParams);
+                image2.setLayoutParams(layoutParams);
+
                 Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
                 Util.ImageClick(image2, squareBean.getPic_url(), 1, this);
             } else if (squareBean.getPic_url().size() > 2) {//两张图片以上
@@ -597,5 +608,37 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         }
         send_edit.requestFocus();//获取焦点
         imm.showSoftInput(send_edit, InputMethodManager.SHOW_FORCED);
+    }
+
+
+    /**
+     * 获取图片地址
+     *
+     * @param pic_url
+     * @return
+     */
+    public List<LocalMedia> getPreViewPath(List<String> pic_url) {
+        List<LocalMedia> medias = new ArrayList<>();
+        for (int i = 0; i < pic_url.size(); i++) {
+            LocalMedia localMedia = new LocalMedia();
+            localMedia.setPath(pic_url.get(i));
+            medias.add(localMedia);
+        }
+        return medias;
+    }
+
+    /**
+     * 图片放大
+     *
+     * @param bean SquareBean
+     */
+    public void ImageClick(View v, final SquareBean bean, final int position) {
+        if (bean == null) return;
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureSelector.create(SquareDetailsActivity.this).externalPicturePreview(position, getPreViewPath(bean.getPic_url()));
+            }
+        });
     }
 }
