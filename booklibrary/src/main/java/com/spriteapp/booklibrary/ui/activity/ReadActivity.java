@@ -260,7 +260,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mOldBookDetail = null;
             mNewBookDetail = null;
             mChapterList.clear();
-
             addContentView();
             findViewId();
             initData();
