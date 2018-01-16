@@ -428,7 +428,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         Log.d("setData", "setData");
         if (squareBean.getPic_url() != null) {
             if (squareBean.getPic_url().size() == 1) {//一张图片
-                image2.setVisibility(View.INVISIBLE);
+                image2.setVisibility(View.GONE);
                 image_recyclerview.setVisibility(View.GONE);
                 image1.setVisibility(View.VISIBLE);
                 GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
