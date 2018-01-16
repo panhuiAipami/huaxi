@@ -19,6 +19,7 @@ import com.alipay.sdk.app.PayTask;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.callback.WebViewCallback;
+import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdateCommentEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
@@ -37,6 +38,7 @@ import com.spriteapp.booklibrary.widget.ReaderWebView;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+
 
 /**
  * Created by kuangxiaoguo on 2017/7/13.
@@ -94,6 +96,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
         ;
     };
+    private String bookId;
 
     @Override
     public void initData() {
@@ -123,12 +126,32 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         mUrl = intent.getStringExtra(LOAD_URL_TAG);
         isH5Pay = intent.getBooleanExtra(IS_H5_PAY_TAG, false);
         IsRead = intent.getIntExtra(IS_READ, 0);
+        if (IsRead == 1 && mUrl != null && !mUrl.isEmpty()) {
+            Uri uri = Uri.parse(mUrl);
+            bookId = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
+        }
     }
 
     @Override
     public void findViewId() {
         super.findViewId();
         mWebView = (ReaderWebView) findViewById(R.id.book_reader_web_view);
+//        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (IsRead == 1) {
+//                    if (IsRead == 1 && bookId != null && !bookId.isEmpty()) {
+//                        BookDetailResponse bookDetailResponse = new BookDetailResponse();
+//                        bookDetailResponse.setBook_id(Integer.parseInt(bookId));
+//                        bookDetailResponse.setChapter_id(0);
+//                        ActivityUtil.toReadActivity(WebViewActivity.this, bookDetailResponse, true);
+//                        return;
+//                    }
+//                } else if (IsRead == 0) {
+//                    finish();
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -207,12 +230,13 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         public void freeRead(int bookId, int chapterId) {
             //销毁readActivity
             if (IsRead == 0) {
-                Log.d("jump_book", "jump");
-                BookDetailResponse detail = new BookDetailResponse();
-                Log.d("bookdetails", "bookId===" + bookId);
-                detail.setBook_id(bookId);
-                detail.setChapter_id(chapterId);
-                ActivityUtil.toReadActivity(mContext, detail);
+            Log.d("jump_book", "jump");
+            BookDetailResponse detail = new BookDetailResponse();
+            Log.d("bookdetails", "bookId===" + bookId);
+            detail.setBook_id(bookId);
+            detail.setChapter_id(chapterId);
+            ActivityUtil.toReadActivity(mContext, detail);
+            finish();
             } else {
                 Log.d("jump_book", "finish");
                 finish();
@@ -228,6 +252,14 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             mWebView.goBack();
             return;
         }
+//        if (IsRead == 1 && bookId != null && !bookId.isEmpty()) {
+//            BookDetailResponse bookDetailResponse = new BookDetailResponse();
+//            bookDetailResponse.setBook_id(Integer.parseInt(bookId));
+//            bookDetailResponse.setChapter_id(0);
+//            ActivityUtil.toReadActivity(this, bookDetailResponse, true);
+//            finish();
+//            return;
+//        }
         super.onBackPressed();
     }
 
@@ -316,4 +348,5 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         EventBus.getDefault().unregister(this);
         mPresenter.detachView();
     }
+
 }

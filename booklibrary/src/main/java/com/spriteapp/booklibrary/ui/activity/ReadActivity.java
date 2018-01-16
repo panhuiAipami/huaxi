@@ -162,6 +162,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mRightTitleLayout.setTitleListener(mTitleListener);
         mContext = this;
         Intent intent = getIntent();
+        Log.d("getNotification", "跳转");
         String bookid = intent.getStringExtra("book_id");
         String push_id = intent.getStringExtra("push_id");
         String chapter_id = intent.getStringExtra("chapter_id");
@@ -175,8 +176,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (chapter_id != null && !chapter_id.isEmpty()) {//推送有章节id
                 chapter = Integer.parseInt(chapter_id);
                 mCurrentChapter = chapter;//赋值给当前章节id
+//                bookDetail.setChapter_id(parseInt(chapter_id));
             }
-
+//            ActivityUtil.toReadActivity(this, bookDetail);
+//            finish();
+//            return;
         } else {
             bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
         }
@@ -204,12 +208,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
 
         if (mCurrentChapter == 0) {
+            Log.d("mCurrentChapter", lastChapterId + "上一次chapter_id");
             mCurrentChapter = lastChapterId;
         } else {
             if (mCurrentChapter != lastChapterId) {
                 SettingManager.getInstance().saveReadProgress(String.valueOf(mBookId), mCurrentChapter, 0, 0);
             }
         }
+        Log.d("IsHttp", "setMode");
         initChapterAdapter();
         openChapter();
         if (mOldBookDetail == null) {
@@ -259,7 +265,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mLoadChapterId = 0;
             mOldBookDetail = null;
             mNewBookDetail = null;
-            mChapterList.clear();
+            mChapterList = null;
+            mWidget = null;
             addContentView();
             findViewId();
             initData();
@@ -271,33 +278,47 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     private void setBatteryState() {
-        mDateFormat = new SimpleDateFormat("HH:mm");
-        mReadReceiver = new ReadReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);
-        registerReceiver(mReadReceiver, intentFilter);
+        try {
+            mDateFormat = new SimpleDateFormat("HH:mm");
+            mReadReceiver = new ReadReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            intentFilter.addAction(Intent.ACTION_TIME_TICK);
+            registerReceiver(mReadReceiver, intentFilter);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void setActivityFinish() {
-//        if (!this.isFinishing())
+//        if (!this.isFinishing()) {
 //            finish();
-        Log.d("setActivityFinish", "setActivityFinish");
+//            Log.d("getNotification", "setActivityFinish");
+//            Log.d("setActivityFinish", "setActivityFinish1");
+//        }
+//        Log.d("setActivityFinish", "setActivityFinish");
     }
 
     class ReadReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (mWidget != null) {
-                if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
-                    int level = intent.getIntExtra("level", 0);
-                    mWidget.setBattery(100 - level);
-                } else if (Intent.ACTION_TIME_TICK.equals(action)) {
-                    mWidget.setTime(mDateFormat.format(new Date()));
+            try {
+                String action = intent.getAction();
+                if (mWidget != null) {
+                    if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
+                        int level = intent.getIntExtra("level", 0);
+                        mWidget.setBattery(100 - level);
+                    } else if (Intent.ACTION_TIME_TICK.equals(action)) {
+                        mWidget.setTime(mDateFormat.format(new Date()));
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -602,10 +623,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     private void setMode() {
+        Log.d("setMode", "isNight===" + isNight);
         mTextSizeLayout.changeMode(isNight);
         mReadProgressLayout.changeMode(isNight);
         mBottomLayout.changeMode(isNight);
         mRightTitleLayout.changeMode(isNight);
+
         mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL);
         mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_night_color
                         : R.color.book_reader_reader_text_color),
@@ -754,6 +777,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
                     ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=" + shareDetail.getBook_id(), false, 1);
+//                    finish();//销毁ReadActivity
                 }
 
 

@@ -164,6 +164,16 @@ public abstract class BaseReadView extends View {
                         }
                     }
                     listener.onFlip();
+                    //判断是否为空
+                    try {
+                        if (mCurPageBitmap == null)
+                            mCurPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.RGB_565);
+                        if (mNextPageBitmap == null)
+                            mNextPageBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.RGB_565);
+                    } catch (OutOfMemoryError o) {
+                        o.printStackTrace();
+                    }
+
                     setBitmaps(mCurPageBitmap, mNextPageBitmap);
                 }
                 break;
