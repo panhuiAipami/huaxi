@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.CommentReply;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.ui.adapter.CommentDetailsAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SquareImageAdapter;
 import com.spriteapp.booklibrary.ui.dialog.FollowPop;
@@ -69,7 +72,8 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     private CommentDetailsAdapter adapter;
     private LinearLayoutManager manager;
     private int type = 1;//默认为1,帖子评论,2为评论回复
-    private int comment_id = 0, user_id = 0;
+    private int comment_id = 0, user_id = 0, pos = -1;
+    private InputMethodManager imm;
 
 
     @Override
@@ -129,6 +133,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         textViews.add(default_comment);
         textViews.add(new_comment);
         textViews.add(hot_comment);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public void initList() {
@@ -150,6 +155,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         default_comment.setOnClickListener(this);
         new_comment.setOnClickListener(this);
         hot_comment.setOnClickListener(this);
+        onScrollRefreshOrLoadMore();
         send_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -183,7 +189,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
             }
         } else if (v == square_layout) {//隐藏comment
             if (bottom_send.getVisibility() == View.VISIBLE)
-                bottom_send.setVisibility(View.GONE);
+                goneCommentView();
         } else if (v == yuan_share) {
             if (!AppUtil.isLogin(this)) return;
             String content = send_edit.getText().toString().trim();
@@ -218,17 +224,17 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         }
         if (pos == 0) {
             textViews.get(0).setText("默认\n●");
-            textViews.get(1).setText("最新\n");
-            textViews.get(2).setText("热门\n");
+            textViews.get(1).setText("最新\n ");
+            textViews.get(2).setText("热门\n ");
         }
         if (pos == 1) {
-            textViews.get(0).setText("默认\n");
+            textViews.get(0).setText("默认\n ");
             textViews.get(1).setText("最新\n●");
-            textViews.get(2).setText("热门\n");
+            textViews.get(2).setText("热门\n ");
         }
         if (pos == 2) {
-            textViews.get(0).setText("默认\n");
-            textViews.get(1).setText("最新\n");
+            textViews.get(0).setText("默认\n ");
+            textViews.get(1).setText("最新\n ");
             textViews.get(2).setText("热门\n●");
         }
         ACT = act;
@@ -296,7 +302,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                             ToastUtil.showToast("评论成功");
                             send_edit.setText("");
-                            bottom_send.setVisibility(View.GONE);
+                            goneCommentView();
                         } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
                             ToastUtil.showToast("评论失败");
                         }
@@ -314,7 +320,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 });
     }
 
-    public void sendCommentReply(String content) {
+    public void sendCommentReply(final String content) {
         showDialog();
         BookApi.getInstance()
                 .service
@@ -333,7 +339,33 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                             ToastUtil.showToast("评论成功");
                             send_edit.setText("");
-                            bottom_send.setVisibility(View.GONE);
+                            goneCommentView();
+                            if (pos != -1) {//本地手动添加回复
+                                CommentReply.ReplayBean.DataBean bean = new CommentReply.ReplayBean.DataBean();
+                                if (UserBean.getInstance().getUser_nickname() == null) {
+                                    bean.setUsername("未知");
+                                    Util.getUserInfo();
+                                } else {
+                                    bean.setUsername(UserBean.getInstance().getUser_nickname());
+                                }
+
+                                bean.setContent(content);
+                                Log.d("commentReply", "pos===" + pos + "username===" + UserBean.getInstance().getUser_nickname() + "content===" + content);
+                                commentList.get(pos).getReplay().setTotal(commentList.get(pos).getReplay().getTotal() + 1);
+                                commentList.get(pos).getReplay().getData().add(0, bean);
+                                adapter.notifyItemChanged(pos);
+                            } else if (pos == -1) {//本地添加评论
+                                CommentReply reply = new CommentReply();
+                                if (UserBean.getInstance().getUser_nickname() != null)
+                                    reply.setUsername(UserBean.getInstance().getUser_nickname());
+                                if (UserBean.getInstance().getUser_avatar() != null)
+                                    reply.setUser_avatar(UserBean.getInstance().getUser_avatar());
+                                reply.setAddtime(System.currentTimeMillis() / 1000);
+                                reply.setContent(content);
+                                reply.setSupportnum(0);
+                                commentList.add(0, reply);
+                                adapter.notifyDataSetChanged();
+                            }
                         } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
                             ToastUtil.showToast("评论失败");
                         }
@@ -355,7 +387,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         showDialog();
         BookApi.getInstance()
                 .service
-                .square_detail(comment_page, square_id, ACT, PLATFORM_ID)
+                .square_detailpage(comment_page, square_id, ACT, PLATFORM_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<CommentDetailsBean>>() {
@@ -372,6 +404,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                 if (comment_page == 0) commentList.clear();//刷新则清空集合
                                 commentList.addAll(commentDetailsBean.getData().getCommentList());
                                 adapter.notifyDataSetChanged();
+                                Log.d("notifyDataSetChanged", "改变集合");
                             }
 
                         }
@@ -392,7 +425,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     public void setData(SquareBean squareBean) {//顶部帖子详情填充
         if (squareBean == null) return;
         item_layout.setVisibility(View.VISIBLE);//加载出来显示布局
-        Log.d("setData","setData");
+        Log.d("setData", "setData");
         if (squareBean.getPic_url() != null) {
             if (squareBean.getPic_url().size() == 1) {//一张图片
                 image2.setVisibility(View.INVISIBLE);
@@ -511,6 +544,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         scroll_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (bottom_send.getVisibility() == View.VISIBLE) goneCommentView();
                 View childView = v.getChildAt(0);
                 if (childView.getMeasuredHeight() <= scrollY + scroll_view.getHeight()) {
                     Log.d("firstPage", "滑动到底部");
@@ -527,28 +561,41 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
 
     @Override
     public void setOnItemClickListener(int postion, CommentReply commentReply) {//评论回复
-        ToastUtil.showToast("回复");
         if (commentReply == null) return;
         type = 2;
+        pos = postion;
         showCommentView(commentReply);
     }
 
     public void showCommentView() {//帖子评论
         type = 1;
+        pos = -1;
         showCommentView(null);
 
+    }
+
+    public void goneCommentView() {
+//        bottom_send.setVisibility(View.GONE);
+
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(send_edit.getWindowToken(), 0);
+            Log.d("goneCommentView", "关闭键盘");
+        }
+        gone(bottom_send);
     }
 
     /**
      * @param commentReply 评论实体类
      */
     public void showCommentView(CommentReply commentReply) {
-        bottom_send.setVisibility(View.VISIBLE);
+//        bottom_send.setVisibility(View.VISIBLE);
+        visible(bottom_send);
         if (type == 2) {
             send_edit.setHint("回复:" + commentReply.getUsername());
             comment_id = commentReply.getId();
             user_id = commentReply.getReplyto();
         }
-
+        send_edit.requestFocus();//获取焦点
+        imm.showSoftInput(send_edit, InputMethodManager.SHOW_FORCED);
     }
 }

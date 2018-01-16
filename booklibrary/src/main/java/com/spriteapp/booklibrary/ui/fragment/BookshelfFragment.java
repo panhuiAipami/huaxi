@@ -39,6 +39,7 @@ import com.spriteapp.booklibrary.util.DialogUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.recyclerview.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -259,8 +260,14 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
     public void setLoginInfo(LoginResponse response) {
         ToastUtil.showSingleToast("登录成功");
         mPresenter.getBookShelf();
+//        getUserInfo();
         EventBus.getDefault().post(UpdaterPayEnum.UPDATE_LOGIN_INFO);
     }
+
+    public void getUserInfo() {
+        Util.getUserInfo();
+    }
+
 
     @Override
     public void setDeleteBookResponse() {

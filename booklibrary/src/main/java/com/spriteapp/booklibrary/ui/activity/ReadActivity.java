@@ -149,10 +149,15 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private RecentBookDb mRecentBookDb;
     PopupWindow popupWindow;//书籍详情与分享
     private int chapter = 0;
+    private boolean IsRegister = true;
 
     @Override
     public void initData() {
-        EventBus.getDefault().register(this);
+        if (IsRegister) {
+            EventBus.getDefault().register(this);
+//            IsRegister = !IsRegister;
+        }
+
         mRightTitleLayout = new ReadRightTitleLayout(this);
         mRightLayout.addView(mRightTitleLayout);
         mRightTitleLayout.setTitleListener(mTitleListener);
@@ -239,7 +244,25 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        Log.d("onNewIntent","执行read_onNewIntent");
+        Log.d("onNewIntent", "执行read_onNewIntent");
+        try {
+            ThemeManager.isNull();
+            EventBus.getDefault().unregister(this);
+            try {
+                unregisterReceiver(mReadReceiver);
+            } catch (Exception e) {
+            }
+            if (mPresenter != null) {
+                mPresenter.detachView();
+            }
+            addContentView();
+            findViewId();
+            initData();
+            configViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void setBatteryState() {
@@ -253,7 +276,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void setActivityFinish() {
-//        finish();
+//        if (!this.isFinishing())
+//            finish();
         Log.d("setActivityFinish", "setActivityFinish");
     }
 
@@ -1056,6 +1080,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("onDestroy", "执行onDestroy");
         ThemeManager.isNull();
         EventBus.getDefault().unregister(this);
         try {

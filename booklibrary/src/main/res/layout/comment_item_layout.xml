@@ -80,6 +80,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
                         android:drawableLeft="@mipmap/send_time_img"
+                        android:drawablePadding="3dp"
                         android:text="两天前"
                         android:textColor="@color/square_small"
                         android:textSize="12sp" />
@@ -97,7 +98,7 @@
                 android:drawableRight="@drawable/support_bg"
                 android:padding="10dp"
                 android:text="0"
-                android:textColor="@color/square_small"
+                android:textColor="@color/support_text_color"
                 android:textSize="12sp" />
         </LinearLayout>
 

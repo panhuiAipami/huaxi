@@ -31,7 +31,6 @@
         <activity
             android:name=".ui.activity.ReadActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"
             android:theme="@style/HuaXiAppTheme" />
         <activity
             android:name=".ui.activity.WebViewActivity"
@@ -59,6 +58,7 @@
         <activity
             android:name=".ui.activity.RecentReadActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/HuaXiAppTheme" />
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

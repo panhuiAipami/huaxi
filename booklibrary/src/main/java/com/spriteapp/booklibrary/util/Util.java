@@ -47,7 +47,12 @@ import android.widget.Toast;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.AppUpdateDialog;
 
@@ -75,6 +80,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 
@@ -1603,5 +1614,42 @@ public class Util {
                 PictureSelector.create(context).externalPicturePreview(position, getPreViewPath(url));
             }
         });
+    }
+
+    public static void getUserInfo() {
+        Log.d("userInfo", "用户信息");
+        if (!AppUtil.isLogin())
+            return;
+        BookApi.getInstance().
+                service
+                .getUserBean(Constant.JSON_TYPE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<UserBean>>() {
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Base<UserBean> userModelBase) {
+                        Log.d("userInfo", userModelBase.getData().toString());
+
+                        if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                            Log.d("userInfo", userModelBase.getData().toString());
+                            UserBean user = userModelBase.getData();
+
+                        }
+                    }
+                });
     }
 }

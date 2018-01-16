@@ -70,6 +70,34 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             commentViewHolder.user_speak.setText(commentReply.getContent());
             commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(commentReply.getAddtime() + "000")));
             commentViewHolder.support_num.setText(Util.getFloat(commentReply.getSupportnum()));
+            if (commentReply.getReplay() != null && commentReply.getReplay().getData() != null && commentReply.getReplay().getData().size() != 0) {//此条评论有回复
+
+                if (commentReply.getReplay().getTotal() == 1) {
+                    commentViewHolder.comment_layout.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment1.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment2.setVisibility(View.GONE);
+                    commentViewHolder.more_reply.setVisibility(View.GONE);
+                    commentViewHolder.reply_comment1.setText(commentReply.getReplay().getData().get(0).getUsername() + ":" + commentReply.getReplay().getData().get(0).getContent());
+                } else if (commentReply.getReplay().getTotal() == 2) {
+                    commentViewHolder.comment_layout.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment1.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment2.setVisibility(View.VISIBLE);
+                    commentViewHolder.more_reply.setVisibility(View.GONE);
+                    commentViewHolder.reply_comment1.setText(commentReply.getReplay().getData().get(0).getUsername() + ":" + commentReply.getReplay().getData().get(0).getContent());
+                    commentViewHolder.reply_comment2.setText(commentReply.getReplay().getData().get(1).getUsername() + ":" + commentReply.getReplay().getData().get(1).getContent());
+                } else if (commentReply.getReplay().getTotal() > 2) {
+                    commentViewHolder.comment_layout.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment1.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment2.setVisibility(View.VISIBLE);
+                    commentViewHolder.more_reply.setVisibility(View.VISIBLE);
+                    commentViewHolder.reply_comment1.setText(commentReply.getReplay().getData().get(0).getUsername() + ":" + commentReply.getReplay().getData().get(0).getContent());
+                    commentViewHolder.reply_comment2.setText(commentReply.getReplay().getData().get(1).getUsername() + ":" + commentReply.getReplay().getData().get(1).getContent());
+                    commentViewHolder.more_reply.setText("...共" + commentReply.getReplay().getTotal() + "条");
+                    moreClick(commentViewHolder.more_reply, commentReply);//查看更多回复
+
+                }
+
+            }
             toSupport(commentViewHolder.support_num, commentReply);//评论点赞
             if (onItemClickListener != null) {
                 commentViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -134,11 +162,11 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 });
     }
 
-    public void itemClick(CommentViewHolder holder) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+    public void moreClick(View view, CommentReply reply) {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ToastUtil.showToast("去更多");
             }
         });
     }
@@ -157,7 +185,7 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private ImageView user_head;
         private LinearLayout comment_layout;
         private TextView user_name, user_label, build_num, send_time, support_num;
-        private TextView user_speak, reply_comment1, reply_comment2;
+        private TextView user_speak, reply_comment1, reply_comment2, more_reply;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -171,6 +199,7 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             user_speak = (TextView) itemView.findViewById(R.id.user_speak);
             reply_comment1 = (TextView) itemView.findViewById(R.id.reply_comment1);
             reply_comment2 = (TextView) itemView.findViewById(R.id.reply_comment2);
+            more_reply = (TextView) itemView.findViewById(R.id.more_reply);
         }
     }
 

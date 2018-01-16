@@ -5,6 +5,7 @@ import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
@@ -164,6 +165,8 @@ public interface BookApiService {
 
     @GET("user_info")
     Observable<Base<UserModel>> getUserInfo(@Query("format") String format);
+    @GET("user_info")
+    Observable<Base<UserBean>> getUserBean(@Query("format") String format);
 
     @GET("login_logout")
     Observable<Base<Void>> loginOut(@Query("sn") String sn,
@@ -189,11 +192,11 @@ public interface BookApiService {
                                                @Query("platform_id") int platform_id);
 
     //广场详情翻页
-    @GET("square_detail")
-    Observable<Base<CommentDetailsBean>> square_detail(@Query("page_index") int page,
-                                                       @Query("squareid") int squareid,
-                                                       @Query("act") String act,
-                                                       @Query("platform_id") int platform_id);
+    @GET("square_detailpage")
+    Observable<Base<CommentDetailsBean>> square_detailpage(@Query("page_index") int page,
+                                                           @Query("squareid") int squareid,
+                                                           @Query("act") String act,
+                                                           @Query("platform_id") int platform_id);
 
     //广场帖子评论回复详情页翻页
     @GET("square_detail")

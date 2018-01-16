@@ -32,7 +32,7 @@ public class CommentReply {
     private String username;
     private int supportnum;
     private int replyto;
-    private Object replyusername;
+    private String replyusername;
     private String user_avatar;
     private ReplayBean replay;
 
@@ -85,7 +85,12 @@ public class CommentReply {
     }
 
     public String getUsername() {
-        return username;
+        if (username == null)
+            return "";
+        else
+            return username;
+
+
     }
 
     public void setUsername(String username) {
@@ -108,11 +113,16 @@ public class CommentReply {
         this.replyto = replyto;
     }
 
-    public Object getReplyusername() {
-        return replyusername;
+    public String getReplyusername() {
+        if (replyusername == null)
+            return "";
+        else
+            return replyusername;
+
+
     }
 
-    public void setReplyusername(Object replyusername) {
+    public void setReplyusername(String replyusername) {
         this.replyusername = replyusername;
     }
 

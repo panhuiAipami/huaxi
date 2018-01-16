@@ -35,7 +35,6 @@ import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.TabBar;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
-import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
 import com.spriteapp.booklibrary.ui.fragment.MeFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -69,9 +68,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     public static final String SEX = "sex";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
-    private static final int COMMUNITY_POSITION = 2;
-    private static final int BOOKSTORE_POSITION = 3;
-    private static final int ME_POSITION = 4;
+//    private static final int COMMUNITY_POSITION = 2;
+    private static final int BOOKSTORE_POSITION = 2;
+    private static final int ME_POSITION = 3;
     private static final int TOP_BAR_HEIGHT = 47;
     ViewPager mHomeViewPager;
     LinearLayout mBookshelfLayout;
@@ -132,6 +131,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         libContent = getApplicationContext();//获取lib上下文
         libActivity = this;
 //        requestPermissions();
+    }
+
+    public void getUserInfo() {
+        Util.getUserInfo();
     }
 
     public void addFlag() {
@@ -243,7 +246,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     }
 
     private void setAdapter() {
-        mHomeViewPager.setOffscreenPageLimit(5);//viewpager缓存
+        mHomeViewPager.setOffscreenPageLimit(4);//viewpager缓存
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mHomeViewPager.setAdapter(mAdapter);
     }
@@ -264,7 +267,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mFragmentList.add(homePageFragment1);
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
-        mFragmentList.add(new CommunityFragment());//社区分类
+//        mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new BookshelfFragment());
         mFragmentList.add(new MeFragment());
     }
@@ -385,9 +388,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         } else if (v == mDiscoverLayout) {
             mHomeViewPager.setCurrentItem(DISCOVER_POSITION);
             setSelectView(DISCOVER_POSITION);
-        } else if (v == mCommunityLayout) {//社区
-            mHomeViewPager.setCurrentItem(COMMUNITY_POSITION);
-            setSelectView(COMMUNITY_POSITION);
         } else if (v == mBookstoreLayout) {
             mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
             setSelectView(BOOKSTORE_POSITION);
@@ -406,10 +406,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
             case DISCOVER_POSITION:
                 mDiscoverLayout.setSelected(true);
                 setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mCommunityLayout);
-                break;
-            case COMMUNITY_POSITION:
-                mCommunityLayout.setSelected(true);
-                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mDiscoverLayout);
                 break;
             case BOOKSTORE_POSITION:
                 mBookstoreLayout.setSelected(true);
@@ -462,14 +458,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     setTitle(R.string.book_reader_bookstore);
                     addSearchView();
                     setSelectView(DISCOVER_POSITION);
-                    gone(mTitleLayout);
-                    setViewpagerTopMargin(0);
-                    break;
-                case COMMUNITY_POSITION:
-                    mRightLayout.removeAllViews();
-                    setTitle(R.string.book_reader_community);
-                    addSearchView();
-                    setSelectView(COMMUNITY_POSITION);
                     gone(mTitleLayout);
                     setViewpagerTopMargin(0);
                     break;

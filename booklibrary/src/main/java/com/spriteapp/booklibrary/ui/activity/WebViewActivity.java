@@ -22,7 +22,6 @@ import com.spriteapp.booklibrary.callback.WebViewCallback;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdateCommentEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
-import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.PayResult;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
@@ -207,9 +206,6 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         @Override
         public void freeRead(int bookId, int chapterId) {
             //销毁readActivity
-            if (ListenerManager.getInstance().getReadActivityFinish() != null) {
-                ListenerManager.getInstance().getReadActivityFinish();
-            }
             if (IsRead == 0) {
                 Log.d("jump_book", "jump");
                 BookDetailResponse detail = new BookDetailResponse();

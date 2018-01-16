@@ -1,7 +1,5 @@
 package com.spriteapp.booklibrary.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -42,8 +40,7 @@ public class SquareBean {
     private String user_avatar;
     private List<ReadHistoryBean> readhistory;
     private List<CommentBean> comments;
-    @SerializedName("default")
-    private List<CommentReply> commentReply;
+    private List<CommentReply> commentList;
 
 
     public int getId() {
@@ -127,7 +124,10 @@ public class SquareBean {
     }
 
     public String getUsername() {
-        return username;
+        if (username == null)
+            return "";
+        else
+            return username;
     }
 
     public void setUsername(String username) {
@@ -159,10 +159,10 @@ public class SquareBean {
     }
 
     public List<CommentReply> getCommentReply() {
-        return commentReply;
+        return commentList;
     }
 
-    public void setCommentReply(List<CommentReply> commentReply) {
-        this.commentReply = commentReply;
+    public void setCommentReply(List<CommentReply> commentList) {
+        this.commentList = commentList;
     }
 }

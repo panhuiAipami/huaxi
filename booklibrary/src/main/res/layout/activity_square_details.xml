@@ -54,7 +54,7 @@
                         android:enabled="true"
                         android:gravity="center"
                         android:lineSpacingMultiplier="0.8"
-                        android:text="最新\n"
+                        android:text="最新\n "
                         android:textColor="@color/comment_title_text"
                         android:textSize="18sp" />
 
@@ -66,7 +66,7 @@
                         android:enabled="true"
                         android:gravity="center"
                         android:lineSpacingMultiplier="0.8"
-                        android:text="热门\n"
+                        android:text="热门\n "
                         android:textColor="@color/comment_title_text"
                         android:textSize="18sp" />
                 </LinearLayout>

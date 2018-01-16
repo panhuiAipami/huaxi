@@ -730,6 +730,7 @@ public class Util {
         }
         return netConnect;
     }
+
     /**
      * 带有Toast的网络判断
      * 如果不需要可调用 {@link NetworkUtil#isAvailable(Context)}
@@ -1439,9 +1440,6 @@ public class Util {
     }
 
 
-
-
-
     /**
      * 获取mac地址
      *
@@ -1505,13 +1503,14 @@ public class Util {
 
     /**
      * convert dp to its equivalent px
-     *
+     * <p>
      * 将dp转换为与之相等的px
      */
     public static int dp2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
+
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
@@ -1519,5 +1518,7 @@ public class Util {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import com.spriteapp.booklibrary.callback.WebViewCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.WebConstant;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 
 /**
@@ -80,6 +81,10 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
 
                         String bookId1 = uri1.getQueryParameter(WebConstant.BOOK_ID_QUERY);
                         if (bookId1 != null && !bookId1.isEmpty() && (jumpUrl.contains("book_detail") || jumpUrl.contains("book_info"))) {//看书
+                            if (ListenerManager.getInstance().getReadActivityFinish() != null) {//销毁ReadActivity
+                                Log.d("readActivity", "销毁ReadActivity");
+                                ListenerManager.getInstance().getReadActivityFinish().setActivityFinish();
+                            }
                             BookDetailResponse detail = new BookDetailResponse();
                             detail.setBook_id(Integer.parseInt(bookId1));
                             detail.setChapter_id(0);
