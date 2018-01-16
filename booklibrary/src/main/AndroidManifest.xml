@@ -31,7 +31,6 @@
         <activity
             android:name=".ui.activity.ReadActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
             android:theme="@style/HuaXiAppTheme" />
         <activity
             android:name=".ui.activity.WebViewActivity"

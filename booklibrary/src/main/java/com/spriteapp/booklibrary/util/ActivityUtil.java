@@ -46,6 +46,14 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
+    public static void toReadActivity(Activity context, BookDetailResponse detail, boolean hua) {
+        Intent intent = new Intent(context, ReadActivity.class);
+        intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
+        context.startActivity(intent);
+//        context.overridePendingTransition(R.anim.activity_out, R.anim.activity_in);
+
+    }
+
     public static void toCreateDynamicActivity(Activity context) {
         Intent intent = new Intent(context, CreateDynamicActivity.class);
         context.startActivityForResult(intent, TOCREATEDYNAMICACTIVITY);

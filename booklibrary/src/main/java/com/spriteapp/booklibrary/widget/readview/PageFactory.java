@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -187,9 +188,11 @@ public class PageFactory {
         }
         int y = marginHeight;
         // 绘制背景
-        if (mBookPageBg != null) {
+        if (mBookPageBg != null && !mBookPageBg.isRecycled() && rectF != null) {
             canvas.drawBitmap(mBookPageBg, null, rectF, null);
+            Log.d("mBookPageBg", "mBookPageBg不为空");
         } else {
+            Log.d("mBookPageBg", "mBookPageBg为空");
             canvas.drawColor(AppUtil.getAppContext().getResources().
                     getColor(R.color.book_reader_read_page_default_background));
         }
@@ -602,6 +605,7 @@ public class PageFactory {
     }
 
     public void setBgBitmap(Bitmap BG) {
+        Log.d("setBgBitmap", "BG===" + BG);
         mBookPageBg = BG;
     }
 

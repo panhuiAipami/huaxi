@@ -1,9 +1,15 @@
 package net.huaxi.reader;
 
 import android.app.Application;
+import android.app.Notification;
+import android.content.Context;
 
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
@@ -36,11 +42,45 @@ public class MyApplication extends Application {
         //注册推送服务，每次调用register方法都会回调该接口
         try {
             mPushAgent.register(callback);
+//            mPushAgent.setNotificationClickHandler(notificationClickHandler);
+            mPushAgent.setMessageHandler(messageHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    UmengMessageHandler messageHandler = new UmengMessageHandler() {
+        @Override
+        public Notification getNotification(Context context, UMessage msg) {
+
+            switch (msg.builder_id) {
+                default:
+                    android.util.Log.d("getNotification", "通知点击");
+                    //默认为0，若填写的builder_id并不存在，也使用默认。
+                    return super.getNotification(context, msg);
+            }
+        }
+
+        @Override
+        public void setPrevMessage(UMessage uMessage) {
+
+            android.util.Log.d("getNotification", "通知点击777");
+            if (ListenerManager.getInstance().getReadActivityFinish() != null) {//销毁readActivity
+                ListenerManager.getInstance().getReadActivityFinish().setActivityFinish();
+            }
+            super.setPrevMessage(uMessage);
+        }
+    };
+
+    UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+        @Override
+        public void dealWithCustomAction(Context context, UMessage msg) {
+//            Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+            android.util.Log.d("dealWithCustomAction", "通知点击");
+//            ToastUtil.showToast("通知点击");
+        }
+    };
     IUmengRegisterCallback callback = new IUmengRegisterCallback() {
         @Override
         public void onSuccess(String deviceToken) {
@@ -66,6 +106,7 @@ public class MyApplication extends Application {
 
         }
     };
+
     public static void umengNotificClick(String push_id) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("push_id", push_id);
