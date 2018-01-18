@@ -23,6 +23,7 @@ import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
  */
 
 public class HeaderInterceptor implements Interceptor {
+    private static String UserToken = "";
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
@@ -42,6 +43,8 @@ public class HeaderInterceptor implements Interceptor {
                         .getString(SignConstant.HUA_XI_TOKEN_KEY))
                 .build();
 //        Log.d("versionname", "versionname===" + Util.getVersionName());
+//        HuaXiSDK.getInstance().toWXPay(null, "token" + SharedPreferencesUtil.getInstance()
+//                .getString(SignConstant.HUA_XI_TOKEN_KEY));
         return chain.proceed(request);
     }
 }

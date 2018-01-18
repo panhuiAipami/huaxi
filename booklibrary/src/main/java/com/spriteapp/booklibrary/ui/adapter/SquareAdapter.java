@@ -16,7 +16,10 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.CommentBean;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.model.UserBean;
+import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
 import com.spriteapp.booklibrary.ui.dialog.FollowPop;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -48,10 +51,13 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Activity context;
     private List<SquareBean> list;
     FollowPop popupWindow;
+    private CommentDialog commentDialog;
+    private int commentPos = -1;
 
     public SquareAdapter(Activity context, List<SquareBean> list) {
         this.context = context;
         this.list = list;
+        commentDialog = new CommentDialog(context);
     }
 
     @Override
@@ -119,6 +125,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             itemClick(viewHolder, squareBean);//item点击
             moreImageClick(viewHolder.more);//更多点击
             goSupport(viewHolder.support_num, squareBean);//点赞
+            goComment(viewHolder.comment_num, squareBean, position);
             if (squareBean.getReadhistory() != null) {
                 List<ImageView> imageView = new ArrayList<>();
                 imageView.add(viewHolder.head1);
@@ -192,7 +199,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         });
     }
 
-//    public void showpopWindow(View v) {
+    //    public void showpopWindow(View v) {
 //        View layout = View.inflate(context, R.layout.square_pop_layout, null);
 //        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 //        popupWindow.setFocusable(true);
@@ -239,12 +246,84 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //        });
 //
 //    }
+    public void sendComment(final String content, final SquareBean bean, final int pos) {//添加评论
+        BookApi.getInstance()
+                .service
+                .square_addcomment(content, bean.getId(), PLATFORM_ID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-    public void goComment(View view) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base squareBeanBase) {
+                        int resultCode = squareBeanBase.getCode();
+                        if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                            CommentBean reply = new CommentBean();
+                            reply.setContent(content);
+                            if (UserBean.getInstance().getUser_nickname() != null)
+                                reply.setUsername(UserBean.getInstance().getUser_nickname());
+                            bean.getComments().add(0, reply);
+                            notifyItemChanged(pos);
+
+                            ToastUtil.showToast("评论成功");
+                        } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
+                            ToastUtil.showToast("评论失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    public void showCommentDialog(final SquareBean squareBean, final int pos) {
+//        commentDialog = new CommentDialog(context, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String content = commentDialog.getContent();
+//                if (content != null && !content.isEmpty()) {
+//                    commentDialog.dismiss();
+//                    sendComment(content, squareBean, pos);
+//                } else {
+//                    ToastUtil.showToast("请输入内容");
+//                }
+//            }
+//        });
+
+        if (commentDialog != null) {
+            commentDialog.show();
+            commentDialog.getSendText().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String content = commentDialog.getContent();
+                    if (content != null && !content.isEmpty()) {
+                        commentDialog.clearText();
+                        commentDialog.dismiss();
+                        sendComment(content, squareBean, pos);
+                    } else {
+                        ToastUtil.showToast("请输入内容");
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void goComment(View view, final SquareBean squareBean, final int pos) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showCommentDialog(squareBean, pos);
             }
         });
     }

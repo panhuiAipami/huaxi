@@ -8,12 +8,15 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,12 +32,16 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.TabBar;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
+import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
+import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
 import com.spriteapp.booklibrary.ui.fragment.MeFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -42,6 +49,7 @@ import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -66,11 +74,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
+    public static final String ADVERTISEMENT = "advertisement";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
-//    private static final int COMMUNITY_POSITION = 2;
-    private static final int BOOKSTORE_POSITION = 2;
-    private static final int ME_POSITION = 3;
+    private static final int COMMUNITY_POSITION = 2;
+    private static final int BOOKSTORE_POSITION = 3;
+    private static final int ME_POSITION = 4;
     private static final int TOP_BAR_HEIGHT = 47;
     ViewPager mHomeViewPager;
     LinearLayout mBookshelfLayout;
@@ -91,6 +100,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private TextView text_one, text_two, text_three, text_four, text_five;
     private LinearLayout icon_layout;
     private View icon_line;
+    MessageRemindDialog dialog;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -120,17 +130,88 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         if (fisrtSex == 0) {
             SharedPreferencesUtil.getInstance().putInt(SEX, HuaXiSDK.getInstance().getSex());
         }
-        setTitle("精选");
+        try {
+            Intent intent = getIntent();
+            int type = intent.getIntExtra(ADVERTISEMENT, 0);
+            if (type == 1) {
+                Log.d("toJump", "跳转广告页");
+                String link = FileHelper.readObjectFromJsonFile(this, Constant.START_PAGE_URL, String.class);
+                if (link != null && !link.isEmpty()) {
+                    Log.d("toJump", link);
+                    if (link.contains("book_details")) {
+                        Uri uri = Uri.parse(link);
+                        String book_id = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
+                        String chapter_id = uri.getQueryParameter(WebConstant.CHAPTER_ID_QUERY);
+                        if (book_id != null && !book_id.isEmpty()) {
+                            BookDetailResponse response = new BookDetailResponse();
+                            response.setBook_id(Integer.parseInt(book_id));
+                            if (chapter_id != null && !chapter_id.isEmpty()) {
+                                response.setChapter_id(Integer.parseInt(chapter_id));
+                            } else {
+                                response.setChapter_id(0);
+                            }
+                            ActivityUtil.toReadActivity(this, response);
+                        }
+                    } else {
+                        ActivityUtil.toWebViewActivity(this, link);
+                    }
+
+                }
+            } else {
+                Log.d("toJump", "不跳转广告页");
+            }
+            setTitle("精选");
 //        addFreeTextView();
-        addSearchView();
-        initFragment();
-        setAdapter();
-        setListener();
-        appUpdate();
-        addFlag();
-        libContent = getApplicationContext();//获取lib上下文
-        libActivity = this;
+            addSearchView();
+            initFragment();
+            setAdapter();
+            setListener();
+            appUpdate();
+            addFlag();
+            getUserInfo();
+            libContent = getApplicationContext();//获取lib上下文
+            libActivity = this;
 //        requestPermissions();
+            boolean open = NotificationManagerCompat.from(this).areNotificationsEnabled();
+            if (!open) {
+                messagePermisssion();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void messagePermisssion() {
+        //前三天每天提醒一次，三天后不提示
+        if (PreferenceHelper.getInt("messageNumber", 0) < 4 && System.currentTimeMillis() - PreferenceHelper.getLong("messageTime", 0) >= 1000 * 60 * 60 * 12) {
+            PreferenceHelper.putLong("messageTime", System.currentTimeMillis());
+            int number = PreferenceHelper.getInt("messageNumber", 0);
+            PreferenceHelper.putInt("messageNumber", number + 1);
+
+            dialog = new MessageRemindDialog(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    toSetting();
+                }
+            });
+        }
+    }
+
+    private void toSetting() {
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            localIntent.setData(Uri.fromParts("package", getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            localIntent.setAction(Intent.ACTION_VIEW);
+            localIntent.setClassName("com.android.settings", "com.android.setting.InstalledAppDetails");
+            localIntent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
+        }
+        startActivity(localIntent);
     }
 
     public void getUserInfo() {
@@ -175,11 +256,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                                     shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
                                 }
-                                if (appUpDateModelBase.getData().getTabbar() != null) {
+                                if (appUpDateModelBase.getData().getTabbar() != null) {//底部导航栏图标
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.NAVIGATION, appUpDateModelBase.getData().getTabbar());
                                 }
-                                if (appUpDateModelBase.getData().getSplashscreen() != null && !appUpDateModelBase.getData().getSplashscreen().isEmpty()) {
+                                if (appUpDateModelBase.getData().getSplashscreen() != null) {//广告页
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE, appUpDateModelBase.getData().getSplashscreen());
+                                }
+                                if (appUpDateModelBase.getData().getSplashscreen_url() != null) {//广告页链接
+                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE_URL, appUpDateModelBase.getData().getSplashscreen_url());
                                 }
                             }
 
@@ -246,7 +330,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     }
 
     private void setAdapter() {
-        mHomeViewPager.setOffscreenPageLimit(4);//viewpager缓存
+        mHomeViewPager.setOffscreenPageLimit(5);//viewpager缓存
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mHomeViewPager.setAdapter(mAdapter);
     }
@@ -267,7 +351,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mFragmentList.add(homePageFragment1);
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
-//        mFragmentList.add(new CommunityFragment());//社区分类
+        mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new BookshelfFragment());
         mFragmentList.add(new MeFragment());
     }
@@ -380,6 +464,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         }).start();
     }
 
+
     @Override
     public void onClick(View v) {
         if (v == mBookshelfLayout) {
@@ -388,6 +473,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         } else if (v == mDiscoverLayout) {
             mHomeViewPager.setCurrentItem(DISCOVER_POSITION);
             setSelectView(DISCOVER_POSITION);
+        } else if (v == mCommunityLayout) {//社区
+            mHomeViewPager.setCurrentItem(COMMUNITY_POSITION);
+            setSelectView(COMMUNITY_POSITION);
         } else if (v == mBookstoreLayout) {
             mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
             setSelectView(BOOKSTORE_POSITION);
@@ -406,6 +494,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
             case DISCOVER_POSITION:
                 mDiscoverLayout.setSelected(true);
                 setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mCommunityLayout);
+                break;
+            case COMMUNITY_POSITION:
+                mCommunityLayout.setSelected(true);
+                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mDiscoverLayout);
                 break;
             case BOOKSTORE_POSITION:
                 mBookstoreLayout.setSelected(true);
@@ -458,6 +550,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     setTitle(R.string.book_reader_bookstore);
                     addSearchView();
                     setSelectView(DISCOVER_POSITION);
+                    gone(mTitleLayout);
+                    setViewpagerTopMargin(0);
+                    break;
+                case COMMUNITY_POSITION:
+                    mRightLayout.removeAllViews();
+                    setTitle(R.string.book_reader_community);
+                    addSearchView();
+                    setSelectView(COMMUNITY_POSITION);
                     gone(mTitleLayout);
                     setViewpagerTopMargin(0);
                     break;

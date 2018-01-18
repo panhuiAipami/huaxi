@@ -50,7 +50,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
             if (list.size() < 9 && position == list.size()) {
                 //最后一个是添加
                 myViewHolder.delete_img.setVisibility(View.GONE);
-                myViewHolder.imageView.setImageResource(R.mipmap.add_image);
+                myViewHolder.imageView.setImageResource(R.mipmap.add_img);
                 myViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -64,7 +64,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
                 });
             } else {
                 myViewHolder.delete_img.setVisibility(View.VISIBLE);
-                GlideUtils.loadLocalImage(context,myViewHolder.imageView, list.get(position).getCompressPath());
+                GlideUtils.loadLocalImage(context, myViewHolder.imageView, list.get(position).getCompressPath());
             }
 
             //点击单个预览
@@ -101,7 +101,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
             delete_img = (ImageView) itemView.findViewById(R.id.delete_img);
             imageView = (ImageView) itemView.findViewById(R.id.iv_photo);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
-            layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(context, 50)) / 3;
+            layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(context, 30)) / 3;
             imageView.setLayoutParams(layoutParams);
         }
     }

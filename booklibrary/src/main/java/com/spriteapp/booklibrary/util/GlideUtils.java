@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.spriteapp.booklibrary.constant.Constant;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +17,8 @@ import java.net.URL;
 
 public class GlideUtils {
     public static void loadImage(ImageView imageView, String url, Context context) {
+        if (url == null) return;
+        if (!url.startsWith("http")) url = Constant.BASE_URL + url;
         Glide.with(context)
                 .load(url)
                 .into(imageView);
@@ -42,7 +45,7 @@ public class GlideUtils {
      * @param v
      * @param url
      */
-    public static void loadLocalImage(Context context,final ImageView v, String url) {
+    public static void loadLocalImage(Context context, final ImageView v, String url) {
         if (TextUtils.isEmpty(url))
             return;
         Glide.with(context).load(url).into(v);

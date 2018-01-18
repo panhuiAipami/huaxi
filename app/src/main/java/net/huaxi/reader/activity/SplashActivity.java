@@ -18,6 +18,7 @@ import net.huaxi.reader.MainActivity;
 import net.huaxi.reader.R;
 import net.huaxi.reader.utils.PreferenceHelper;
 
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.ADVERTISEMENT;
 import static net.huaxi.reader.MainActivity.SEXTIME;
 
 public class SplashActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
             switch (msg.what) {
                 case 0:
                     handler.removeCallbacksAndMessages(null);
-                    isGotoSex();
+                    isGotoSex(0);
                     break;
                 case 1:
                     if (num > 1) {
@@ -63,11 +64,22 @@ public class SplashActivity extends AppCompatActivity {
         try {
             Log.d("loadImage", "url==");
             String url = FileHelper.readObjectFromJsonFile(this, "start_page", String.class);
+
             if (url != null && !url.isEmpty() && net.huaxi.reader.utils.Util.isNetAvailable(this)) {
                 Log.d("loadImage", "url===" + url);
                 GlideUtils.loadImage(splash, url, this);
-//                skip_ad.setVisibility(View.VISIBLE);
+                skip_ad.setVisibility(View.VISIBLE);
+                splash.setOnClickListener(new View.OnClickListener() {//广告页跳转
+                    @Override
+                    public void onClick(View v) {
+                        String link = FileHelper.readObjectFromJsonFile(SplashActivity.this, "start_page_url", String.class);
+                        if (link != null && !link.isEmpty() && net.huaxi.reader.utils.Util.isNetAvailable(SplashActivity.this)) {
+                            handler.removeCallbacksAndMessages(null);
+                            isGotoSex(1);
+                        }
 
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,15 +87,21 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void isGotoSex() {
+    public void isGotoSex(int type) {
         Intent intent;
         boolean sex_first = PreferenceHelper.getBoolean(SEXTIME, true);
-        if (sex_first) {
-            intent = new Intent(SplashActivity.this, SexActivity.class);
-        } else {
+        if (type == 1) {
             intent = new Intent(SplashActivity.this, MainActivity.class);
+            intent.putExtra(ADVERTISEMENT, 1);
+        } else {
+            if (sex_first) {
+                intent = new Intent(SplashActivity.this, SexActivity.class);
+            } else {
+                intent = new Intent(SplashActivity.this, MainActivity.class);
 
+            }
         }
+
         startActivity(intent);
         finish();
     }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c13_themes_color"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/cancel_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="取消"
+            android:textColor="@color/square_small"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="回复"
+            android:textColor="@color/square_small"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/send_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/square_send_bg"
+            android:drawablePadding="3dp"
+            android:enabled="false"
+            android:text="发送"
+            android:textColor="@color/square_send_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/book_reader_divide_line_color"></View>
+
+    <EditText
+        android:id="@+id/user_edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/default_hint"
+        android:maxLength="140"
+        android:padding="10dp"
+        android:textSize="15sp"
+        app:theme="@style/MyEditText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/book_reader_divide_line_color"></View>
+
+
+</LinearLayout>

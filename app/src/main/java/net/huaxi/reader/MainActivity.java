@@ -23,6 +23,7 @@ import net.huaxi.reader.dialog.ShareDialog;
 import net.huaxi.reader.utils.LoginHelper;
 import net.huaxi.reader.utils.PreferenceHelper;
 
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.ADVERTISEMENT;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.libActivity;
 import static com.spriteapp.booklibrary.util.ToastUtil.showToast;
@@ -37,12 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private ShareDialog shareDialog;
 
     private ShareBean shareBean;
+    private int toJump = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceHelper.putBoolean(SEXTIME, false);//存入本地性别选择
+        Intent intent = getIntent();
+        toJump = intent.getIntExtra(ADVERTISEMENT, 0);
         HuaXiConfig config = new HuaXiConfig.Builder().setContext(this)
                 .setChannelListener(new ChannelListener() {
                     @Override
@@ -84,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 .setSex(PreferenceHelper.getInt(SEX, 0))//性别
                 .setSignSecret(SIGN_SECRET).build();
         HuaXiSDK.getInstance().init(config);
-        startActivity(new Intent(this, HomeActivity.class));
+        Intent intent1 = new Intent(this, HomeActivity.class);
+        intent1.putExtra(ADVERTISEMENT, toJump);
+        startActivity(intent1);
         finish();
     }
 

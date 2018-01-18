@@ -18,14 +18,12 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
-import com.spriteapp.booklibrary.custom.SpaceGridDecoration;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.ui.adapter.PhotoSelectedListAdapter;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
-import com.spriteapp.booklibrary.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class CreateDynamicActivity extends TitleActivity {
         add_photo = (ImageView) findViewById(R.id.add_photo);
         input_text = (EditText) findViewById(R.id.input_text);
         recycler_view_photo = (RecyclerView) findViewById(R.id.recycler_view_photo);
-        recycler_view_photo.addItemDecoration(new SpaceGridDecoration(Util.dp2px(this, 10)));
+//        recycler_view_photo.addItemDecoration(new SpaceGridDecoration(Util.dp2px(this, 10)));
 
     }
 

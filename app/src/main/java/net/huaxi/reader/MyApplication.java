@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.content.Context;
 
 import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
@@ -47,7 +48,9 @@ public class MyApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        SharedPreferencesUtil.init(MyApplication.getInstance(),
+                MyApplication.getInstance().getPackageName() + "hua_xi_preference", Context.MODE_PRIVATE);
+        android.util.Log.d("inittoken",MyApplication.getInstance().getPackageName() + "hua_xi_preference");
     }
 
     UmengMessageHandler messageHandler = new UmengMessageHandler() {

@@ -49,6 +49,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     private int lastPage = 0;
     private List<SquareBean> squareBeanList = new ArrayList<>();//帖子详情集合
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.new_square_layout, container, false);
@@ -143,6 +144,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                 });
     }
 
+
     @Override
     public void onRefresh() {//刷新
         lastPage = 0;
@@ -172,5 +174,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
             }
         }
     }
+
+
 
 }

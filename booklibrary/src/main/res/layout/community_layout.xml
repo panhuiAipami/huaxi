@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent">
 
             <ImageView
@@ -99,7 +99,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="13dp"
-                android:src="@mipmap/search" />
+                android:src="@mipmap/search"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/to_send"

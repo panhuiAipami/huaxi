@@ -3,6 +3,7 @@ package net.huaxi.reader.http;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.SignUtil;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -196,6 +197,10 @@ public class OKhttpRequest {
         if (params == null) {
             params = new IdentityHashMap<>();
         }
+//        if (token != null) {
+//            Map<String, String> stringStringMap = headParmas();
+//            stringStringMap.put("token", token);
+//        }
         MLog.i(action + "---get-->请求参数", URL + params.toString());
         OkHttpUtils.get()
                 .url(URL)
@@ -363,17 +368,19 @@ public class OKhttpRequest {
     public Map<String, String> headParmas(boolean tokenName) {
         Map<String, String> map;
         map = new IdentityHashMap<>();
-        String token = UserInfo.getInstance().getToken();
+//        String token = PreferenceHelper.getString("token", "");
+        String token = SharedPreferencesUtil.getInstance()
+                .getString("hua_xi_token");
         map.put("client-id", "40");
         map.put("timestamp", System.currentTimeMillis() / 1000 + "");
         map.put("version", Util.getVersionName());
         map.put("sign", SignUtil.createSign(Util.getVersionName()));
         map.put("sn", Util.getUUid().toString());
-        map.put(tokenName ? "access_token" : "access_token", token == null ? "" : token);
+        map.put("token", token == null ? "" : token);
         map.put("imei", Util.getid());
         map.put("mac", Util.getMacAddr());
         map.put("os", android.os.Build.VERSION.RELEASE);
-        MLog.d("headParmas", "----->" + map.toString());
+        MLog.i("headParmas", "----->" + map.toString());
         return map;
     }
 

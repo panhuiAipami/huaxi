@@ -6,11 +6,12 @@ import java.util.List;
  * Created by Administrator on 2017/12/20.
  */
 
-public class CateBean{
+public class CateBean {
     private Top_menu top_menu;
     private String hello_messages;
     private TabBar tabbar;
     private String splashscreen;
+    private String splashscreen_url;
 
     public TabBar getTabbar() {
         return tabbar;
@@ -42,6 +43,14 @@ public class CateBean{
 
     public void setTop_menu(Top_menu top_menu) {
         this.top_menu = top_menu;
+    }
+
+    public String getSplashscreen_url() {
+        return splashscreen_url;
+    }
+
+    public void setSplashscreen_url(String splashscreen_url) {
+        this.splashscreen_url = splashscreen_url;
     }
 
     public class Top_menu {

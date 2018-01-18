@@ -6,13 +6,10 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +24,7 @@ import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.ui.adapter.CommentDetailsAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SquareImageAdapter;
+import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
 import com.spriteapp.booklibrary.ui.dialog.FollowPop;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -57,14 +55,15 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     private View line;
     private int square_id;
     private int page = 0;
+    private int last_comment_page = 0;
     private int comment_page = 0;
     private RecyclerView recycler_view_comment;
     private NestedScrollView scroll_view;
     private FollowPop followPop;
     private SquareBean squareBean;
-    private LinearLayout bottom_send;
-    private EditText send_edit;
-    private ImageView yuan_share, yuan_support;
+    //    private LinearLayout bottom_send;
+//    private EditText send_edit;
+//    private ImageView yuan_share, yuan_support;
     private LinearLayout square_layout;//最大的layout
     private TextView follow_btn, default_comment, new_comment, hot_comment;
     private List<TextView> textViews = new ArrayList<>();
@@ -74,6 +73,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     private int type = 1;//默认为1,帖子评论,2为评论回复
     private int comment_id = 0, user_id = 0, pos = -1;
     private InputMethodManager imm;
+    private CommentDialog commentDialog;
 
 
     @Override
@@ -123,10 +123,10 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         recycler_view_comment = (RecyclerView) findViewById(R.id.recycler_view_comment);
         recycler_view_comment.setNestedScrollingEnabled(false);//禁止滑动
         //隐藏的bottom
-        bottom_send = (LinearLayout) findViewById(R.id.bottom_send);
-        send_edit = (EditText) findViewById(R.id.send_edit);
-        yuan_share = (ImageView) findViewById(R.id.yuan_share);
-        yuan_support = (ImageView) findViewById(R.id.yuan_support);
+//        bottom_send = (LinearLayout) findViewById(R.id.bottom_send);
+//        send_edit = (EditText) findViewById(R.id.send_edit);
+//        yuan_share = (ImageView) findViewById(R.id.yuan_share);
+//        yuan_support = (ImageView) findViewById(R.id.yuan_support);
         default_comment = (TextView) findViewById(R.id.default_comment);
         new_comment = (TextView) findViewById(R.id.new_comment);
         hot_comment = (TextView) findViewById(R.id.hot_comment);
@@ -144,34 +144,19 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     }
 
     public void listener() {
+        commentDialog = new CommentDialog(this);
         adapter.setOnItemClickListener(this);
         more.setOnClickListener(this);
         support_num.setOnClickListener(this);
         comment_num.setOnClickListener(this);
         square_layout.setOnClickListener(this);
-        yuan_share.setOnClickListener(this);
-        yuan_support.setOnClickListener(this);
+//        yuan_share.setOnClickListener(this);
+//        yuan_support.setOnClickListener(this);
         follow_btn.setOnClickListener(this);
         default_comment.setOnClickListener(this);
         new_comment.setOnClickListener(this);
         hot_comment.setOnClickListener(this);
         onScrollRefreshOrLoadMore();
-        send_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -184,26 +169,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 goSupport(support_num, squareBean);
             }
         } else if (v == comment_num) {//评论
-            if (squareBean != null && bottom_send.getVisibility() == View.GONE) {
-                showCommentView();//帖子回复
-            }
-        } else if (v == square_layout) {//隐藏comment
-            if (bottom_send.getVisibility() == View.VISIBLE)
-                goneCommentView();
-        } else if (v == yuan_share) {
-            if (!AppUtil.isLogin(this)) return;
-            String content = send_edit.getText().toString().trim();
-            if (content.isEmpty()) {
-                ToastUtil.showToast("请输入内容");
-                return;
-            }
-            if (type == 1) {//评论
-                sendComment(content);
-            } else if (type == 2) {//回复
-                sendCommentReply(content);
-            }
+            showCommentView();
 
-        } else if (v == yuan_support) {
+        } else if (v == square_layout) {//隐藏comment
 
         } else if (v == default_comment) {//默认评论
             setTextColor(0, "default");
@@ -238,6 +206,8 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
             textViews.get(2).setText("热门\n●");
         }
         ACT = act;
+        comment_page = 0;
+        last_comment_page = 0;
         getCommentDetails();
     }
 
@@ -301,8 +271,6 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         int resultCode = squareBeanBase.getCode();
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                             ToastUtil.showToast("评论成功");
-                            send_edit.setText("");
-                            goneCommentView();
                         } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
                             ToastUtil.showToast("评论失败");
                         }
@@ -338,8 +306,6 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         int resultCode = squareBeanBase.getCode();
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                             ToastUtil.showToast("评论成功");
-                            send_edit.setText("");
-                            goneCommentView();
                             if (pos != -1) {//本地手动添加回复
                                 CommentReply.ReplayBean.DataBean bean = new CommentReply.ReplayBean.DataBean();
                                 if (UserBean.getInstance().getUser_nickname() == null) {
@@ -355,16 +321,17 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                 commentList.get(pos).getReplay().getData().add(0, bean);
                                 adapter.notifyItemChanged(pos);
                             } else if (pos == -1) {//本地添加评论
-                                CommentReply reply = new CommentReply();
-                                if (UserBean.getInstance().getUser_nickname() != null)
-                                    reply.setUsername(UserBean.getInstance().getUser_nickname());
-                                if (UserBean.getInstance().getUser_avatar() != null)
-                                    reply.setUser_avatar(UserBean.getInstance().getUser_avatar());
-                                reply.setAddtime(System.currentTimeMillis() / 1000);
-                                reply.setContent(content);
-                                reply.setSupportnum(0);
-                                commentList.add(0, reply);
-                                adapter.notifyDataSetChanged();
+//                                CommentReply reply = new CommentReply();
+//                                if (UserBean.getInstance().getUser_nickname() != null)
+//                                    reply.setUsername(UserBean.getInstance().getUser_nickname());
+//                                if (UserBean.getInstance().getUser_avatar() != null)
+//                                    reply.setUser_avatar(UserBean.getInstance().getUser_avatar());
+//                                reply.setAddtime(System.currentTimeMillis() / 1000);
+//                                reply.setContent(content);
+//                                reply.setSupportnum(0);
+//                                commentList.add(0, reply);
+//                                adapter.notifyDataSetChanged();
+                                refreshComment();
                             }
                         } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
                             ToastUtil.showToast("评论失败");
@@ -381,6 +348,12 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         dismissDialog();
                     }
                 });
+    }
+
+    public void refreshComment() {
+        comment_page = 0;
+        last_comment_page = 0;
+        getCommentDetails();
     }
 
     public void getCommentDetails() {
@@ -402,6 +375,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                         if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                             if (commentDetailsBean != null && commentDetailsBean.getData() != null && commentDetailsBean.getData().getCommentList() != null && commentDetailsBean.getData().getCommentList().size() != 0) {
                                 if (comment_page == 0) commentList.clear();//刷新则清空集合
+                                comment_page++;
                                 commentList.addAll(commentDetailsBean.getData().getCommentList());
                                 adapter.notifyDataSetChanged();
                                 Log.d("notifyDataSetChanged", "改变集合");
@@ -544,18 +518,22 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         scroll_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (bottom_send.getVisibility() == View.VISIBLE) goneCommentView();
                 View childView = v.getChildAt(0);
                 if (childView.getMeasuredHeight() <= scrollY + scroll_view.getHeight()) {
                     Log.d("firstPage", "滑动到底部");
-                    if (page > page) {
-                        getCommentDetails();
+                    if (comment_page > last_comment_page) {
+                        loadComment();
                     }
                 }
 
             }
         });
 
+    }
+
+    public void loadComment() {
+        last_comment_page = comment_page;
+        getCommentDetails();
     }
 
 
@@ -570,32 +548,47 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     public void showCommentView() {//帖子评论
         type = 1;
         pos = -1;
+        comment_id = 0;
+        user_id = 0;
         showCommentView(null);
 
     }
 
     public void goneCommentView() {
 //        bottom_send.setVisibility(View.GONE);
-
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(send_edit.getWindowToken(), 0);
-            Log.d("goneCommentView", "关闭键盘");
-        }
-        gone(bottom_send);
     }
 
     /**
      * @param commentReply 评论实体类
      */
-    public void showCommentView(CommentReply commentReply) {
+    public void showCommentView(final CommentReply commentReply) {
 //        bottom_send.setVisibility(View.VISIBLE);
-        visible(bottom_send);
+        if (commentDialog == null) return;
+        commentDialog.show();
         if (type == 2) {
-            send_edit.setHint("回复:" + commentReply.getUsername());
+            commentDialog.setUserName("回复" + commentReply.getUsername());
             comment_id = commentReply.getId();
             user_id = commentReply.getReplyto();
+        } else {
+            commentDialog.setUserName("回复");
         }
-        send_edit.requestFocus();//获取焦点
-        imm.showSoftInput(send_edit, InputMethodManager.SHOW_FORCED);
+        commentDialog.getSendText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {//发送按钮
+                if (!AppUtil.isLogin(SquareDetailsActivity.this)) return;
+                String content = commentDialog.getContent();
+                if (content.isEmpty()) {
+                    ToastUtil.showToast("请输入内容");
+                    return;
+                }
+                commentDialog.clearText();
+                commentDialog.dismiss();
+                if (type == 1) {//评论
+                    sendCommentReply(content);
+                } else if (type == 2) {//回复
+                    sendCommentReply(content);
+                }
+            }
+        });
     }
 }

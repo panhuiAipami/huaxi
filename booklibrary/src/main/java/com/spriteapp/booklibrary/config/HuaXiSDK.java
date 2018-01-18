@@ -59,6 +59,7 @@ public class HuaXiSDK {
         FileUtils.createRootPath(mConfig.context);
         SharedPreferencesUtil.init(mConfig.context.getApplicationContext(),
                 mConfig.context.getPackageName() + "hua_xi_preference", Context.MODE_PRIVATE);
+//        android.util.Log.d("inittoken",mConfig.context.getPackageName() + "hua_xi_preference");
     }
 
     public void toLoginPage(Context context) {

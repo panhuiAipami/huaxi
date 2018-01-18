@@ -47,7 +47,7 @@ import de.greenrobot.event.EventBus;
 public class WebViewActivity extends TitleActivity implements WebViewView {
 
     private static final String TAG = "WebViewActivity";
-    public static final String LOAD_URL_TAG = "LoadUrlTag";
+    public static final String LOAD_URL_TAG = "url";
     public static final String IS_H5_PAY_TAG = "isH5PayTag";
     public static final String IS_READ = "isRead";
     private ReaderWebView mWebView;
@@ -230,13 +230,13 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         public void freeRead(int bookId, int chapterId) {
             //销毁readActivity
             if (IsRead == 0) {
-            Log.d("jump_book", "jump");
-            BookDetailResponse detail = new BookDetailResponse();
-            Log.d("bookdetails", "bookId===" + bookId);
-            detail.setBook_id(bookId);
-            detail.setChapter_id(chapterId);
-            ActivityUtil.toReadActivity(mContext, detail);
-            finish();
+                Log.d("jump_book", "jump");
+                BookDetailResponse detail = new BookDetailResponse();
+                Log.d("bookdetails", "bookId===" + bookId);
+                detail.setBook_id(bookId);
+                detail.setChapter_id(chapterId);
+                ActivityUtil.toReadActivity(mContext, detail);
+                finish();
             } else {
                 Log.d("jump_book", "finish");
                 finish();

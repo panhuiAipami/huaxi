@@ -94,9 +94,12 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     commentViewHolder.reply_comment2.setText(commentReply.getReplay().getData().get(1).getUsername() + ":" + commentReply.getReplay().getData().get(1).getContent());
                     commentViewHolder.more_reply.setText("...共" + commentReply.getReplay().getTotal() + "条");
                     moreClick(commentViewHolder.more_reply, commentReply);//查看更多回复
-
                 }
-
+            }else {
+                commentViewHolder.comment_layout.setVisibility(View.GONE);
+                commentViewHolder.reply_comment1.setVisibility(View.GONE);
+                commentViewHolder.reply_comment2.setVisibility(View.GONE);
+                commentViewHolder.more_reply.setVisibility(View.GONE);
             }
             toSupport(commentViewHolder.support_num, commentReply);//评论点赞
             if (onItemClickListener != null) {

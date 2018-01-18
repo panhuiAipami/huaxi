@@ -100,6 +100,7 @@
     <!--分割块色2，灰色背景用这个 -->
     <color name="c10_themes_color2">#e1e1e1</color>
     <!--广场颜色标注-->
+    <color name="gray_popup_text">#bebebe</color>
     <!--用户文本-->
     <color name="square_user_speak">#414870</color>
     <!--描述-->
