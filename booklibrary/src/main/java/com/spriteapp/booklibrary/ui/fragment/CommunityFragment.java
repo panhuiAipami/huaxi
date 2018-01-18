@@ -77,6 +77,7 @@ public class CommunityFragment extends BaseFragment {
         });
         listener();
         initFragment();
+
     }
 
     public void listener() {
@@ -149,6 +150,7 @@ public class CommunityFragment extends BaseFragment {
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new HomePageTabAdapter(getChildFragmentManager(), titles, fragmentList, 1));
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);
 
 
     }

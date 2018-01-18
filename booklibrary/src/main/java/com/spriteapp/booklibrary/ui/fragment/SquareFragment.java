@@ -88,15 +88,16 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                 ActivityUtil.toCreateDynamicActivity(getActivity());
             }
         });
+        adapter = new SquareAdapter(getActivity(), squareBeanList);
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
         setHttp();
     }
 
     @Override
     protected void lazyLoad() {
-        adapter = new SquareAdapter(getActivity(), squareBeanList);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+
 
     }
 
@@ -143,6 +144,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                     }
                 });
     }
+
 
 
     @Override

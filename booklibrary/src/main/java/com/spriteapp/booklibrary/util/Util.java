@@ -35,6 +35,7 @@ import android.support.design.widget.TabLayout;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
@@ -43,6 +44,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luck.picture.lib.PictureSelector;
@@ -1568,8 +1570,10 @@ public class Util {
         }
         return num + "";
     }
+
     /**
      * 截断输出日志
+     *
      * @param msg
      */
     public static void e(String tag, String msg) {
@@ -1579,11 +1583,11 @@ public class Util {
 
         int segmentSize = 3 * 1024;
         long length = msg.length();
-        if (length <= segmentSize ) {// 长度小于等于限制直接打印
+        if (length <= segmentSize) {// 长度小于等于限制直接打印
             Log.e(tag, msg);
-        }else {
-            while (msg.length() > segmentSize ) {// 循环分段打印日志
-                String logContent = msg.substring(0, segmentSize );
+        } else {
+            while (msg.length() > segmentSize) {// 循环分段打印日志
+                String logContent = msg.substring(0, segmentSize);
                 msg = msg.replace(logContent, "");
                 Log.e(tag, logContent);
             }
@@ -1591,27 +1595,17 @@ public class Util {
         }
     }
 
-
-    /**
-     * 判断一个Activity是否正在运行
-     *
-     * @param pkg
-     * @param cls
-     * @param context
-     * @return
-     */
-    public static boolean isClsRunning(String pkg, String cls, Context context) {
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(2);
-        if (tasks.size() >= 2) {
-            ActivityManager.RunningTaskInfo task = tasks.get(1);
-            if (task != null) {
-                Log.d("RunningTaskInfo", task.topActivity.getPackageName());
-                return TextUtils.equals(task.topActivity.getPackageName(), pkg) && TextUtils.equals(task.topActivity.getClassName(), cls);
-            }
-            return false;
+    public static void setTextStrColor(TextView textView, String numContent, String speak) {
+        if (textView != null && numContent != null && !numContent.isEmpty() && speak != null && !speak.isEmpty()) {
+            int num = numContent.length();
+            int speakNum = speak.length();
+            if (num <= speakNum) return;
+            int startPos = num - speakNum;
+            SpannableString spannableString = new SpannableString(numContent);
+            spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#8083a0")), startPos, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(spannableString);
         }
-        return false;
+
     }
 
     public static List<LocalMedia> getPreViewPath(List<String> pic_url) {

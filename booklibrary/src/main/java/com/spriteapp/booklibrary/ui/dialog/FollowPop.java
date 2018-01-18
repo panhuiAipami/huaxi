@@ -12,7 +12,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.util.ToastUtil;
 
 /**
  * Created by Administrator on 2018/1/11.
@@ -22,8 +21,9 @@ public class FollowPop extends PopupWindow {
     private Activity context;
     private LayoutInflater mInflater;
     private View mContentView;
+    private TextView guanzhu, jubao, pingbi;
 
-    public FollowPop(Activity activity,View v) {
+    public FollowPop(Activity activity, View v) {
         this.context = activity;
         showpopWindow(v);
 
@@ -51,35 +51,18 @@ public class FollowPop extends PopupWindow {
             }
         });
     }
+
     public void viewClick(View item) {
-        TextView guanzhu, jubao, pingbi;
         guanzhu = (TextView) item.findViewById(R.id.guanzhu);
         jubao = (TextView) item.findViewById(R.id.jubao);
         pingbi = (TextView) item.findViewById(R.id.pingbi);
+    }
 
-        guanzhu.setOnClickListener(new View.OnClickListener() {//关注
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                ToastUtil.showToast("关注");
+    public TextView setFollow() {//返回关注textView
+        return guanzhu;
+    }
 
-
-            }
-        });
-        pingbi.setOnClickListener(new View.OnClickListener() {//屏蔽
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                ToastUtil.showToast("屏蔽");
-            }
-        });
-        jubao.setOnClickListener(new View.OnClickListener() {//举报
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                ToastUtil.showToast("举报");
-            }
-        });
-
+    public TextView setJuBao() {//返回举报textView
+        return jubao;
     }
 }

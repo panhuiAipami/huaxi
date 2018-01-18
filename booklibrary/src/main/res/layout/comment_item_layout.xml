@@ -82,8 +82,8 @@
                         android:layout_marginTop="5dp"
                         android:drawableLeft="@mipmap/send_time_img"
                         android:drawablePadding="3dp"
-                        android:text="两天前"
                         android:gravity="center_vertical"
+                        android:text="两天前"
                         android:textColor="@color/square_small"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -111,10 +111,11 @@
             android:layout_marginLeft="55dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/message_box"
+            android:lineSpacingMultiplier="1.2"
             android:padding="10dp"
             android:text=""
             android:textColor="@color/square_user_speak"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/comment_layout"
@@ -132,8 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
                 android:text=""
-                android:textSize="13sp"
+                android:textColor="@color/square_small"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
             <TextView
@@ -141,8 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
                 android:text=""
-                android:textSize="13sp"
+                android:textColor="@color/square_small"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
             <TextView

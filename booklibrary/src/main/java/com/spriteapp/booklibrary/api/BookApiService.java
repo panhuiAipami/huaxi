@@ -165,6 +165,7 @@ public interface BookApiService {
 
     @GET("user_info")
     Observable<Base<UserModel>> getUserInfo(@Query("format") String format);
+
     @GET("user_info")
     Observable<Base<UserBean>> getUserBean(@Query("format") String format);
 
@@ -246,5 +247,12 @@ public interface BookApiService {
     @GET("square_addcontentsupport")
     Observable<Base> square_addcontentsupport(@Query("id") int comment_id,
                                               @Query("platform_id") int platform_id);
+
+    //帖子评论回复详情页翻页
+    @GET("square_replypage")
+    Observable<Base> square_replypage(@Query("id") int comment_id,
+                                      @Query("page_index") int page_index,
+                                      @Query("page_size") int page_size,
+                                      @Query("platform_id") int platform_id);
 
 }

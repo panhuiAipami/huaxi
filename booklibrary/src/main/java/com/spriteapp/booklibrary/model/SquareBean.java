@@ -38,6 +38,7 @@ public class SquareBean {
     private String location;
     private String username;
     private String user_avatar;
+    private int follow_status;
     private List<ReadHistoryBean> readhistory;
     private List<CommentBean> comments;
     private List<CommentReply> commentList;
@@ -121,6 +122,14 @@ public class SquareBean {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getFollow_status() {
+        return follow_status;
+    }
+
+    public void setFollow_status(int follow_status) {
+        this.follow_status = follow_status;
     }
 
     public String getUsername() {

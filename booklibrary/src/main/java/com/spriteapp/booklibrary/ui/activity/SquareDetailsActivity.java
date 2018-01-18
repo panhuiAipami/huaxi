@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
@@ -138,14 +136,18 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         textViews.add(hot_comment);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
-
+    /**
+     * 初始化recycler_view
+     */
     public void initList() {
         manager = new LinearLayoutManager(this);
         recycler_view_comment.setLayoutManager(manager);
         adapter = new CommentDetailsAdapter(this, commentList);
         recycler_view_comment.setAdapter(adapter);
     }
-
+    /**
+     * 监听事件
+     */
     public void listener() {
         commentDialog = new CommentDialog(this);
         adapter.setOnItemClickListener(this);
@@ -184,7 +186,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
             setTextColor(2, "hot");
         }
     }
-
+    /**
+     * 切换评论标题颜色
+     */
     public void setTextColor(int pos, String act) {
         for (int i = 0; i < textViews.size(); i++) {
             if (i == pos) {
@@ -213,7 +217,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         last_comment_page = 0;
         getCommentDetails();
     }
-
+    /**
+     * 获取帖子详情
+     */
     public void getDetails() {//获取帖子详情
         showDialog();
         BookApi.getInstance()
@@ -236,6 +242,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                 setData(squareBeanBase.getData());//填充界面
                                 if (squareBeanBase.getData().getCommentReply() != null && squareBeanBase.getData().getCommentReply().size() != 0) {
                                     if (commentList.size() != 0) commentList.clear();
+                                    comment_page++;
                                     commentList.addAll(squareBeanBase.getData().getCommentReply());
                                     adapter.notifyDataSetChanged();
                                 }
@@ -256,6 +263,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 });
     }
 
+    /**
+     * 发送评论(暂不引用)
+     */
     public void sendComment(String content) {//添加评论
         showDialog();
         BookApi.getInstance()
@@ -291,6 +301,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 });
     }
 
+    /**
+     * 发送评论和回复
+     */
     public void sendCommentReply(final String content) {
         showDialog();
         BookApi.getInstance()
@@ -323,17 +336,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                 commentList.get(pos).getReplay().setTotal(commentList.get(pos).getReplay().getTotal() + 1);
                                 commentList.get(pos).getReplay().getData().add(0, bean);
                                 adapter.notifyItemChanged(pos);
-                            } else if (pos == -1) {//本地添加评论
-//                                CommentReply reply = new CommentReply();
-//                                if (UserBean.getInstance().getUser_nickname() != null)
-//                                    reply.setUsername(UserBean.getInstance().getUser_nickname());
-//                                if (UserBean.getInstance().getUser_avatar() != null)
-//                                    reply.setUser_avatar(UserBean.getInstance().getUser_avatar());
-//                                reply.setAddtime(System.currentTimeMillis() / 1000);
-//                                reply.setContent(content);
-//                                reply.setSupportnum(0);
-//                                commentList.add(0, reply);
-//                                adapter.notifyDataSetChanged();
+                            } else if (pos == -1) {//刷新评论
                                 refreshComment();
                             }
                         } else if (resultCode == ApiCodeEnum.FAILURE.getValue()) {//失败
@@ -352,13 +355,18 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                     }
                 });
     }
-
+    /**
+     * 刷新评论列表
+     */
     public void refreshComment() {
         comment_page = 0;
         last_comment_page = 0;
         getCommentDetails();
     }
 
+    /**
+     * 获取书籍详情
+     */
     public void getCommentDetails() {
         showDialog();
         BookApi.getInstance()
@@ -399,7 +407,10 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 });
     }
 
-    public void setData(SquareBean squareBean) {//顶部帖子详情填充
+    /**
+     * 顶部帖子详情填充
+     */
+    public void setData(SquareBean squareBean) {
         if (squareBean == null) return;
         item_layout.setVisibility(View.VISIBLE);//加载出来显示布局
         Log.d("setData", "setData");
@@ -478,7 +489,10 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
 
     }
 
-    public void goSupport(final TextView view, final SquareBean squareBean) {//点赞
+    /**
+     * 点赞
+     */
+    public void goSupport(final TextView view, final SquareBean squareBean) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -525,6 +539,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         });
     }
 
+    /**
+     * scroll_view滑到底部加载
+     */
     public void onScrollRefreshOrLoadMore() {
         scroll_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -542,6 +559,9 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
 
     }
 
+    /**
+     * 调用加载更多评论方法
+     */
     public void loadComment() {
         last_comment_page = comment_page;
         getCommentDetails();
@@ -556,7 +576,10 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         showCommentView(commentReply);
     }
 
-    public void showCommentView() {//帖子评论
+    /**
+     * 帖子评论
+     */
+    public void showCommentView() {
         type = 1;
         pos = -1;
         comment_id = 0;
@@ -565,15 +588,13 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
 
     }
 
-    public void goneCommentView() {
-//        bottom_send.setVisibility(View.GONE);
-    }
 
     /**
      * @param commentReply 评论实体类
      */
     public void showCommentView(final CommentReply commentReply) {
 //        bottom_send.setVisibility(View.VISIBLE);
+        if (!AppUtil.isLogin(this)) return;
         if (commentDialog == null) return;
         commentDialog.show();
         if (type == 2) {
@@ -604,34 +625,4 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     }
 
 
-    /**
-     * 获取图片地址
-     *
-     * @param pic_url
-     * @return
-     */
-    public List<LocalMedia> getPreViewPath(List<String> pic_url) {
-        List<LocalMedia> medias = new ArrayList<>();
-        for (int i = 0; i < pic_url.size(); i++) {
-            LocalMedia localMedia = new LocalMedia();
-            localMedia.setPath(pic_url.get(i));
-            medias.add(localMedia);
-        }
-        return medias;
-    }
-
-    /**
-     * 图片放大
-     *
-     * @param bean SquareBean
-     */
-    public void ImageClick(View v, final SquareBean bean, final int position) {
-        if (bean == null) return;
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PictureSelector.create(SquareDetailsActivity.this).externalPicturePreview(position, getPreViewPath(bean.getPic_url()));
-            }
-        });
-    }
 }

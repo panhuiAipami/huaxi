@@ -18,7 +18,7 @@ import java.net.URL;
 public class GlideUtils {
     public static void loadImage(ImageView imageView, String url, Context context) {
         if (url == null) return;
-        if (!url.startsWith("http")) url = Constant.BASE_URL + url;
+        if (!url.startsWith("http")) url = Constant.IMG_URL + url;
         Glide.with(context)
                 .load(url)
                 .into(imageView);

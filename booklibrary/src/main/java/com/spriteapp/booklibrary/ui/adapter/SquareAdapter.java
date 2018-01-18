@@ -122,6 +122,12 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.read_num.setText(Util.getFloat(squareBean.getReadnum()) + "次预览");
             viewHolder.comment_num.setText(Util.getFloat(squareBean.getCommentnum()));
             viewHolder.support_num.setText(Util.getFloat(squareBean.getSupportnum()));
+            viewHolder.comment_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
             itemClick(viewHolder, squareBean);//item点击
             moreImageClick(viewHolder.more);//更多点击
             goSupport(viewHolder.support_num, squareBean);//点赞
@@ -161,12 +167,15 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.comment1.setVisibility(View.VISIBLE);
                     viewHolder.comment2.setVisibility(View.GONE);
                     viewHolder.comment1.setText(squareBean.getComments().get(0).getUsername() + ":" + squareBean.getComments().get(0).getContent());
+                    Util.setTextStrColor(viewHolder.comment1, viewHolder.comment1.getText().toString(), squareBean.getComments().get(0).getContent());
                 } else if (squareBean.getComments().size() >= 2) {//两条及以上评论
                     viewHolder.comment_layout.setVisibility(View.VISIBLE);
                     viewHolder.comment1.setVisibility(View.VISIBLE);
                     viewHolder.comment2.setVisibility(View.VISIBLE);
                     viewHolder.comment1.setText(squareBean.getComments().get(0).getUsername() + ":" + squareBean.getComments().get(0).getContent());
                     viewHolder.comment2.setText(squareBean.getComments().get(1).getUsername() + ":" + squareBean.getComments().get(1).getContent());
+                    Util.setTextStrColor(viewHolder.comment1, viewHolder.comment1.getText().toString(), squareBean.getComments().get(0).getContent());
+                    Util.setTextStrColor(viewHolder.comment2, viewHolder.comment2.getText().toString(), squareBean.getComments().get(1).getContent());
                 } else {//无评论
                     viewHolder.comment_layout.setVisibility(View.GONE);
                     viewHolder.comment1.setVisibility(View.GONE);
@@ -195,57 +204,23 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             public void onClick(View v) {
 //                showpopWindow(more);//更多操作
                 popupWindow = new FollowPop(context, more);
+                popupWindow.setFollow().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+                popupWindow.setJuBao().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+
+                    }
+                });
             }
         });
     }
 
-    //    public void showpopWindow(View v) {
-//        View layout = View.inflate(context, R.layout.square_pop_layout, null);
-//        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-//        popupWindow.setFocusable(true);
-//        popupWindow.setOutsideTouchable(true);
-//        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(context, R.color.pop_back));
-//        popupWindow.setBackgroundDrawable(dw);
-//        popupWindow.showAsDropDown(v, 30, 0, Gravity.LEFT);
-//        viewClick(layout);
-//        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//            @Override
-//            public void onDismiss() {
-//            }
-//        });
-//    }
-//
-//    public void viewClick(View item) {
-//        TextView guanzhu, jubao, pingbi;
-//        guanzhu = (TextView) item.findViewById(R.id.guanzhu);
-//        jubao = (TextView) item.findViewById(R.id.jubao);
-//        pingbi = (TextView) item.findViewById(R.id.pingbi);
-//
-//        guanzhu.setOnClickListener(new View.OnClickListener() {//关注
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow.dismiss();
-//                ToastUtil.showToast("关注");
-//
-//
-//            }
-//        });
-//        pingbi.setOnClickListener(new View.OnClickListener() {//屏蔽
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow.dismiss();
-//                ToastUtil.showToast("屏蔽");
-//            }
-//        });
-//        jubao.setOnClickListener(new View.OnClickListener() {//举报
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow.dismiss();
-//                ToastUtil.showToast("举报");
-//            }
-//        });
-//
-//    }
     public void sendComment(final String content, final SquareBean bean, final int pos) {//添加评论
         BookApi.getInstance()
                 .service
@@ -299,7 +274,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //                }
 //            }
 //        });
-
+        if (!AppUtil.isLogin(context)) return;
         if (commentDialog != null) {
             commentDialog.show();
             commentDialog.getSendText().setOnClickListener(new View.OnClickListener() {
