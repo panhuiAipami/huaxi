@@ -82,7 +82,7 @@
             android:layout_marginTop="10dp"
             android:text=""
             android:textColor="@color/square_user_speak"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/image_layout"
@@ -220,6 +220,7 @@
                 android:id="@+id/comment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:lineSpacingMultiplier="1.2"
                 android:text=""

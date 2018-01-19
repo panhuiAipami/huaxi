@@ -59,7 +59,7 @@
         android:hint="@string/default_hint"
         android:maxLength="140"
         android:padding="10dp"
-        android:textSize="15sp"
+        android:textSize="16sp"
         app:theme="@style/MyEditText" />
 
     <View

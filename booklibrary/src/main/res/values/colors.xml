@@ -101,6 +101,7 @@
     <color name="c10_themes_color2">#e1e1e1</color>
     <!--广场颜色标注-->
     <color name="gray_popup_text">#bebebe</color>
+    <color name="comment_bg_color">#f7f7ff</color>
     <!--用户文本-->
     <color name="square_user_speak">#414870</color>
     <!--描述-->
