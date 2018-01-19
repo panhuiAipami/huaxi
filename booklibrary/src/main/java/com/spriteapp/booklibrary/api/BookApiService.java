@@ -16,6 +16,7 @@ import com.spriteapp.booklibrary.model.response.LoginResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
+import com.spriteapp.booklibrary.ui.adapter.CommentReplyBean;
 
 import java.util.List;
 import java.util.Map;
@@ -250,9 +251,10 @@ public interface BookApiService {
 
     //帖子评论回复详情页翻页
     @GET("square_replypage")
-    Observable<Base> square_replypage(@Query("id") int comment_id,
-                                      @Query("page_index") int page_index,
-                                      @Query("page_size") int page_size,
-                                      @Query("platform_id") int platform_id);
+    Observable<Base<CommentReplyBean>> square_replypage(@Query("id") int comment_id,
+                                                        @Query("squareid") int squareid,
+                                                        @Query("page_index") int page_index,
+                                                        @Query("page_size") int page_size,
+                                                        @Query("platform_id") int platform_id);
 
 }

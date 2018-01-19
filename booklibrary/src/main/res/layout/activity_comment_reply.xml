@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c13_themes_color"
+    android:paddingTop="47dp"
+    tools:context="com.spriteapp.booklibrary.ui.activity.CommentReplyActivity">
+
+    <LinearLayout
+        android:id="@+id/comment_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c13_themes_color"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/c10_themes_color2"></View>
+
+        <LinearLayout
+            android:id="@+id/reply_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hint_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="吐槽神马的尽管来"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/send_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/square_send_bg" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
+        android:id="@+id/comment_reply_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/comment_bottom"></com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
+
+
+</RelativeLayout>

@@ -1,12 +1,13 @@
 package com.spriteapp.booklibrary.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/1/8.
  */
 
-public class CommentReply {
+public class CommentReply implements Serializable {
 
     /**
      * id : 4

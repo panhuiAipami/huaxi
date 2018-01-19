@@ -82,6 +82,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         setTitle("帖子详情");
         Intent intent = getIntent();
         square_id = intent.getIntExtra(ActivityUtil.SQUAREID, 0);
+        Log.d("getIntExtra","square_id==="+square_id);
         initList();
         getDetails();
         listener();

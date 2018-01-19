@@ -51,7 +51,6 @@ public class CreateDynamicActivity extends TitleActivity {
     TextView iv_submit;
     TextView text_length;
     int num = 0;
-
     EditText input_text;
     RecyclerView recycler_view_photo;
     PhotoSelectedListAdapter adapter;

@@ -15,6 +15,7 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CommentReply;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.TimeUtil;
@@ -195,11 +196,11 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param view  更多按钮布局
      * @param reply 回复实体类 显示更多pop
      */
-    public void moreClick(View view, CommentReply reply) {
+    public void moreClick(View view, final CommentReply reply) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToast("去更多");
+                ActivityUtil.toCommentReplyActivity(context, reply.getReplay().getTotal(),reply.getId(),reply.getSquareid());
             }
         });
     }

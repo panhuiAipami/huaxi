@@ -35,8 +35,8 @@
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/HuaXiAppTheme">
+            android:theme="@style/HuaXiAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 
             <!-- <intent-filter> -->
             <!-- <data android:scheme="weixin" android:host="wap" /> &lt;!&ndash; 自定义的scheme &ndash;&gt; -->
@@ -69,14 +69,15 @@
         <activity
             android:name=".ui.activity.NativeActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
         <activity android:name=".ui.activity.CreateDynamicActivity" />
 
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5951bff1a40fa30a5200226a" />
 
-        <activity android:name=".ui.activity.SquareDetailsActivity"></activity>
+        <activity android:name=".ui.activity.SquareDetailsActivity" />
+        <activity android:name=".ui.activity.CommentReplyActivity"></activity>
     </application>
 
 </manifest>
