@@ -53,6 +53,7 @@
         android:id="@+id/comment_reply_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:layout_above="@id/comment_bottom"></com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
 
 
