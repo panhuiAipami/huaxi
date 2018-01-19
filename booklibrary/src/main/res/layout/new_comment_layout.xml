@@ -67,5 +67,12 @@
         android:layout_height="0.5dp"
         android:background="@color/book_reader_divide_line_color"></View>
 
+    <LinearLayout
+        android:id="@+id/comment_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:visibility="gone"></LinearLayout>
+
 
 </LinearLayout>

@@ -100,13 +100,14 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     commentViewHolder.more_reply.setText("...共" + commentReply.getReplay().getTotal() + "条");
                     moreClick(commentViewHolder.more_reply, commentReply);//查看更多回复
                 }
-            }else {
+            } else {
                 commentViewHolder.comment_layout.setVisibility(View.GONE);
                 commentViewHolder.reply_comment1.setVisibility(View.GONE);
                 commentViewHolder.reply_comment2.setVisibility(View.GONE);
                 commentViewHolder.more_reply.setVisibility(View.GONE);
             }
             toSupport(commentViewHolder.support_num, commentReply);//评论点赞
+            toCommentNo(commentViewHolder.comment_layout);//评论点赞
             if (onItemClickListener != null) {
                 commentViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -118,6 +119,22 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    /**
+     * @param view 点击事件布局  点击回复不弹出CommentDialog
+     */
+    public void toCommentNo(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    /**
+     * @param view  点赞布局
+     * @param reply 回复实体类 对评论点赞
+     */
     public void toSupport(final TextView view, final CommentReply reply) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +145,10 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     }
 
+    /**
+     * @param view  点赞布局
+     * @param reply 回复实体类 点赞网络请求
+     */
     public void supportHttp(final TextView view, final CommentReply reply) {
         if (!AppUtil.isLogin(context)) {
             return;
@@ -170,6 +191,10 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 });
     }
 
+    /**
+     * @param view  更多按钮布局
+     * @param reply 回复实体类 显示更多pop
+     */
     public void moreClick(View view, CommentReply reply) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
