@@ -127,6 +127,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         IsLogin();
+        Log.d("bus","");
         if (v == user_name) {
 
         } else if (v == hua_bei) {
