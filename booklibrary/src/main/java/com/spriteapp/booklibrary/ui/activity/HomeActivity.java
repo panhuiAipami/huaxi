@@ -185,6 +185,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     private void messagePermisssion() {
         //前三天每天提醒一次，三天后不提示
+
         if (PreferenceHelper.getInt("messageNumber", 0) < 4 && System.currentTimeMillis() - PreferenceHelper.getLong("messageTime", 0) >= 1000 * 60 * 60 * 12) {
             PreferenceHelper.putLong("messageTime", System.currentTimeMillis());
             int number = PreferenceHelper.getInt("messageNumber", 0);
