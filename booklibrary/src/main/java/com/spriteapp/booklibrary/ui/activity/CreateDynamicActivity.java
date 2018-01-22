@@ -5,7 +5,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,6 +70,8 @@ public class CreateDynamicActivity extends TitleActivity {
         iv_back = (ImageView) findViewById(R.id.iv_back);
         add_photo = (ImageView) findViewById(R.id.add_photo);
         input_text = (EditText) findViewById(R.id.input_text);
+//        input_text.setHorizontallyScrolling(false);
+//        input_text.setMaxLines(Integer.MAX_VALUE);
         recycler_view_photo = (RecyclerView) findViewById(R.id.recycler_view_photo);
 //        recycler_view_photo.addItemDecoration(new SpaceGridDecoration(Util.dp2px(this, 10)));
 
@@ -107,6 +111,14 @@ public class CreateDynamicActivity extends TitleActivity {
 
             }
         });
+        input_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND)
+                    sendBtn();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -136,35 +148,36 @@ public class CreateDynamicActivity extends TitleActivity {
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
         } else if (v == iv_submit) {//发布
-            if (!AppUtil.isLogin(this)) {
-                return;
-            }
-            content = input_text.getText().toString().trim();
-            String url = "";
-            if (content.isEmpty()) {
-                ToastUtil.showLongToast("请输入内容");
-                return;
-            }
-
-            if (selectList.size() != 0) {
-                Map<String, RequestBody> part = new HashMap<>();
-                for (int i = 0; i < selectList.size(); i++) {
-                    File file = new File(selectList.get(i).getCompressPath());
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                    String substring = selectList.get(i).getCompressPath().substring(selectList.get(i).getCompressPath().lastIndexOf("/") + 1, selectList.get(i).getCompressPath().length());
-                    part.put("imgfile[]\"; filename=\"" + substring, requestBody);
-                }
-
-                addImage(part);
-//                Log.d("send_imageUrl", url);
-            } else {
-                sendSquare(content, url);
-
-            }
+            sendBtn();
 
 
         }
 
+    }
+
+    public void sendBtn() {
+        if (!AppUtil.isLogin(this)) {
+            return;
+        }
+        content = input_text.getText().toString().trim();
+        String url = "";
+        if (content.isEmpty()) {
+            ToastUtil.showLongToast("请输入内容");
+            return;
+        }
+        if (selectList.size() != 0) {
+            Map<String, RequestBody> part = new HashMap<>();
+            for (int i = 0; i < selectList.size(); i++) {
+                File file = new File(selectList.get(i).getCompressPath());
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                String substring = selectList.get(i).getCompressPath().substring(selectList.get(i).getCompressPath().lastIndexOf("/") + 1, selectList.get(i).getCompressPath().length());
+                part.put("imgfile[]\"; filename=\"" + substring, requestBody);
+            }
+            addImage(part);
+        } else {
+            sendSquare(content, url);
+
+        }
     }
 
     /**
@@ -236,7 +249,7 @@ public class CreateDynamicActivity extends TitleActivity {
                             setResult(RESULT_OK);
                             finish();
                         } else {
-                            ToastUtil.showToast("发布失败");
+                            ToastUtil.showToast(squareBeanBase.getMessage());
                         }
                     }
 

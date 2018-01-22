@@ -9,22 +9,22 @@ import com.spriteapp.booklibrary.base.BaseActivity;
 public class NativeActivity extends BaseActivity {
 
     @Override
-    public int getLayoutResId() {
+    public int getLayoutResId() throws Exception{
         return 0;
     }
 
     @Override
-    public void initData() {
+    public void initData()  throws Exception{
 
     }
 
     @Override
-    public void configViews() {
+    public void configViews()  throws Exception{
 
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId()  throws Exception{
 
     }
 }

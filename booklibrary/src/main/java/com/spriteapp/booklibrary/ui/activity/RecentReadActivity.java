@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.database.RecentBookDb;
@@ -83,7 +82,7 @@ public class RecentReadActivity extends TitleActivity {
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mRecyclerView = (RecyclerView) findViewById(R.id.book_reader_recycler_view);
         mEmptyImageView = (ImageView) findViewById(R.id.empty_image_view);

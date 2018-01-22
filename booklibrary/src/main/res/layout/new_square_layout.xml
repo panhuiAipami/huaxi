@@ -21,7 +21,8 @@
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/send_layout">
+        android:layout_above="@id/send_layout"
+        android:visibility="gone">
 
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/square_recycler_view"
@@ -29,6 +30,9 @@
             android:layout_height="match_parent"
             android:background="@color/book_reader_white" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        layout="@layout/follow_null_layout"></include>
 
     <ImageView
         android:id="@+id/send_square"

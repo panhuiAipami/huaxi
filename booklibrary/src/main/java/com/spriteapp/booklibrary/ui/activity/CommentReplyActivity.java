@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,7 +72,7 @@ public class CommentReplyActivity extends TitleActivity {
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         comment_reply_list = (RecyclerView) findViewById(R.id.comment_reply_list);
         comment_bottom = (LinearLayout) findViewById(R.id.comment_bottom);
@@ -145,18 +147,30 @@ public class CommentReplyActivity extends TitleActivity {
             commentDialog.getSendText().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {//发送按钮
-                    if (!AppUtil.isLogin(CommentReplyActivity.this)) return;
-                    String content = commentDialog.getContent();
-                    if (content.isEmpty()) {
-                        ToastUtil.showToast("请输入内容");
-                        return;
-                    }
-                    commentDialog.clearText();
-                    commentDialog.dismiss();
-                    toCommentHttp(content);
+                    sendBtn();
+                }
+            });
+            commentDialog.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEND)
+                        sendBtn();
+                    return true;
                 }
             });
         }
+    }
+
+    public void sendBtn() {
+        if (!AppUtil.isLogin(CommentReplyActivity.this)) return;
+        String content = commentDialog.getContent();
+        if (content.isEmpty()) {
+            ToastUtil.showToast("请输入内容");
+            return;
+        }
+        commentDialog.clearText();
+        commentDialog.dismiss();
+        toCommentHttp(content);
     }
 
     public void toCommentHttp(final String content) {

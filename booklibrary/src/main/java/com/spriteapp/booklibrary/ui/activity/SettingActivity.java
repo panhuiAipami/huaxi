@@ -64,7 +64,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
     }
 
     @Override
-    public void configViews() {
+    public void configViews() throws Exception {
         super.configViews();
         boolean isAutoSub = SharedPreferencesUtil.getInstance()
                 .getInt(Constant.IS_BOOK_AUTO_SUB) == AutoSubEnum.AUTO_SUB.getValue();
@@ -81,7 +81,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mClearCacheLayout = (RelativeLayout) findViewById(R.id.book_reader_clear_cache_layout);
         mCacheTextView = (TextView) findViewById(R.id.book_reader_cache_text_view);

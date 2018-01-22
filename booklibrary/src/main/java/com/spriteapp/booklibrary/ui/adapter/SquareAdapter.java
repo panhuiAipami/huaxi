@@ -190,7 +190,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//帖子id
-                ActivityUtil.toSquareDetailsActivity(context, bean.getId());
+                ActivityUtil.toSquareDetailsActivity(context, bean.getId(), 1);
             }
         });
     }
@@ -298,7 +298,8 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCommentDialog(squareBean, pos);
+                ActivityUtil.toSquareDetailsActivity(context, squareBean.getId(), 2);
+//                showCommentDialog(squareBean, pos);
             }
         });
     }

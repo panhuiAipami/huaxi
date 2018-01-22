@@ -19,8 +19,10 @@ import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
  */
 
 public class ActivityUtil {
+    public static final int LOGIN_BACK = 1;
     public static final int TOCREATEDYNAMICACTIVITY = 0;//跳转到发广播activity的result
     public static final String SQUAREID = "squareid";//跳转到帖子详情activity的id
+    public static final String ISLOOKCOMMENT = "is_look_comment";//跳转到帖子详情activity的id
     public static final String REPLYTITLE = "comment_reply_title";
     public static final String COMMENT_ID = "comment_id";
 
@@ -82,14 +84,15 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toSquareDetailsActivity(Context context, int squareid) {
+    public static void toSquareDetailsActivity(Context context, int squareid, int IsLookComment) {
         Intent intent = new Intent(context, SquareDetailsActivity.class);
         intent.putExtra(SQUAREID, squareid);
+        intent.putExtra(ISLOOKCOMMENT, IsLookComment);
         context.startActivity(intent);
 
     }
 
-    public static void toCommentReplyActivity(Context context, int total,int comment_id,int squareid) {//总条数
+    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid) {//总条数
         Intent intent = new Intent(context, CommentReplyActivity.class);
         intent.putExtra(REPLYTITLE, total);
         intent.putExtra(COMMENT_ID, comment_id);

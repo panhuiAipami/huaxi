@@ -1634,39 +1634,43 @@ public class Util {
     }
 
     public static void getUserInfo() {
-        Log.d("userInfo", "用户信息");
-        if (!AppUtil.isLogin())
-            return;
-        BookApi.getInstance().
-                service
-                .getUserBean(Constant.JSON_TYPE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Base<UserBean>>() {
-                    @Override
-                    public void onComplete() {
-                    }
+        try {
+            Log.d("userInfo", "用户信息");
+            if (!AppUtil.isLogin())
+                return;
+            BookApi.getInstance().
+                    service
+                    .getUserBean(Constant.JSON_TYPE)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Base<UserBean>>() {
+                        @Override
+                        public void onComplete() {
+                        }
 
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Base<UserBean> userModelBase) {
-                        Log.d("userInfo", userModelBase.getData().toString());
-
-                        if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
-                            Log.d("userInfo", userModelBase.getData().toString());
-                            UserBean user = userModelBase.getData();
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
 
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Base<UserBean> userModelBase) {
+                            if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                                Log.d("userInfo", userModelBase.getData().toString());
+                                UserBean user = userModelBase.getData();
+
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
 }

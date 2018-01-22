@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.spriteapp.booklibrary.widget.loading.CustomDialog;
 import com.umeng.analytics.MobclickAgent;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment{
 
     private static final String TAG = "BaseFragment";
     protected View mParentView;

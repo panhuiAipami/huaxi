@@ -76,7 +76,7 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mCommentEditText = (EditText) findViewById(R.id.book_reader_comment_edit_text);
     }

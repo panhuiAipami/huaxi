@@ -25,34 +25,39 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());
-        WindowManager mWindowManager = BaseActivity.this.getWindowManager();
-        Display display = mWindowManager.getDefaultDisplay();
-        PushAgent.getInstance(this).onAppStart();
-        deviceWidth = display.getWidth();
-        deviceHeight = display.getHeight();
-        setStatusBarColor();
-        findViewId();
-        initData();
-        configViews();
+        try {
+            setContentView(getLayoutResId());
+            WindowManager mWindowManager = BaseActivity.this.getWindowManager();
+            Display display = mWindowManager.getDefaultDisplay();
+            PushAgent.getInstance(this).onAppStart();
+            deviceWidth = display.getWidth();
+            deviceHeight = display.getHeight();
+            setStatusBarColor();
+            findViewId();
+            initData();
+            configViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void setStatusBarColor() {
         HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
         int statusBarColor = config.getStatusBarColor();
         if (statusBarColor == 0) {
-            statusBarColor = ContextCompat.getColor(this,R.color.book_reader_black);
+            statusBarColor = ContextCompat.getColor(this, R.color.book_reader_black);
         }
         StatusBarUtil.setWindowStatusBarColor(this, statusBarColor);
     }
 
-    public abstract int getLayoutResId();
+    public abstract int getLayoutResId() throws Exception;
 
-    public abstract void initData();
+    public abstract void initData() throws Exception;
 
-    public abstract void configViews();
+    public abstract void configViews() throws Exception;
 
-    public abstract void findViewId();
+    public abstract void findViewId() throws Exception;
 
     protected void gone(final View... views) {
         if (views != null && views.length > 0) {

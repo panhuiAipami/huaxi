@@ -50,6 +50,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
             if (list.size() < 9 && position == list.size()) {
                 //最后一个是添加
                 myViewHolder.delete_img.setVisibility(View.GONE);
+                myViewHolder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 myViewHolder.imageView.setImageResource(R.mipmap.add_img);
                 myViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override

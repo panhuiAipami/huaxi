@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.model;
 
+import com.spriteapp.booklibrary.util.FileHelper;
+
 /**
  * Created by Administrator on 2018/1/15.
  */
@@ -20,6 +22,26 @@ public class UserBean {
     public UserBean() {
         userBean = this;
     }
+
+
+    /**
+     * 获取缓存
+     */
+    public void restData() {
+        UserBean userInfoTemp = (UserBean) FileHelper.getEntity();
+        if (userInfoTemp != null)
+            userBean = userInfoTemp;
+    }
+
+
+    /**
+     * 获取缓存
+     */
+    public void commit() {
+        FileHelper.saveEntity(userBean);
+    }
+
+
 
     private int id;
     private String user_nickname;

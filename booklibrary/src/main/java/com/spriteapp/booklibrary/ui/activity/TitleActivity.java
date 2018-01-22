@@ -46,7 +46,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId()  throws Exception{
         mBackImageView = (ImageView) findViewById(R.id.book_reader_back_imageView);
         mTitleTextView = (TextView) findViewById(R.id.book_reader_title_textView);
         mLeftLayout = (LinearLayout) findViewById(R.id.book_reader_left_layout);
@@ -60,7 +60,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void configViews() {
+    public void configViews() throws Exception{
         HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
         int titleBackground = config.getTitleBackground();
         if (titleBackground != 0) {

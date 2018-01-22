@@ -133,7 +133,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mWebView = (ReaderWebView) findViewById(R.id.book_reader_web_view);
 //        mLeftLayout.setOnClickListener(new View.OnClickListener() {

@@ -43,7 +43,7 @@ import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
-import com.spriteapp.booklibrary.ui.fragment.MeFragment;
+import com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
@@ -215,7 +215,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     }
 
     public void getUserInfo() {
-        Util.getUserInfo();
+        if (AppUtil.isLogin())
+            Util.getUserInfo();
     }
 
     public void addFlag() {
@@ -353,11 +354,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 //        mFragmentList.add(new DiscoverFragment());
         mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new BookshelfFragment());
-        mFragmentList.add(new MeFragment());
+        mFragmentList.add(new PersonCenterFragment());
     }
 
     @Override
-    public void configViews() {
+    public void configViews() throws Exception {
         super.configViews();
         gone(mBackImageView);
         gone(mTitleLayout);
@@ -371,7 +372,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mHomeViewPager = (ViewPager) findViewById(R.id.book_reader_home_view_pager);
         mBookshelfLayout = (LinearLayout) findViewById(R.id.book_reader_bookshelf_layout);
@@ -573,8 +574,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     setTitle(R.string.book_reader_me);
                     mRightLayout.removeAllViews();
                     setSelectView(ME_POSITION);
-                    gone(mTitleLayout);
-                    setViewpagerTopMargin(0);
+                    visible(mTitleLayout);
+                    setViewpagerTopMargin(TOP_BAR_HEIGHT);
                     break;
             }
         }
@@ -624,18 +625,23 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     @Override
     public void onBackPressed() {
-        BookshelfFragment shelfFragment = getShelfFragment();
-        if (shelfFragment != null && shelfFragment.isDeleteBook()) {
-            shelfFragment.setDeleteBook();
-            return;
+        try {
+            BookshelfFragment shelfFragment = getShelfFragment();
+            if (shelfFragment != null && shelfFragment.isDeleteBook()) {
+                shelfFragment.setDeleteBook();
+                return;
+            }
+            Fragment currentFragment = getCurrentFragment();
+            if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
+                mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+                setSelectView(BOOKSTORE_POSITION);
+                return;
+            }
+            super.onBackPressed();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        Fragment currentFragment = getCurrentFragment();
-        if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
-            mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
-            setSelectView(BOOKSTORE_POSITION);
-            return;
-        }
-        super.onBackPressed();
+
     }
 
     public Fragment getCurrentFragment() {
@@ -661,6 +667,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mFragmentList.get(2).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
+        mFragmentList.get(4).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 1:

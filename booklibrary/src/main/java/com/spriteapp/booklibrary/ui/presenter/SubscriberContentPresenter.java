@@ -200,7 +200,7 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
                     @Override
                     public void onNext(Base<BookDetailResponse> bookDetailResponseBase) {
                         if (bookDetailResponseBase.getCode() ==
-                                ApiCodeEnum.SUCCESS.getValue() && mView != null) {
+                                ApiCodeEnum.SUCCESS.getValue() && mView != null&&bookDetailResponseBase.getData()!=null) {
                             mView.setBookDetail(bookDetailResponseBase.getData());
 
                         }

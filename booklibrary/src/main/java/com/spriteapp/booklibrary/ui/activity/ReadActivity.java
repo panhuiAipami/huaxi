@@ -176,11 +176,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (chapter_id != null && !chapter_id.isEmpty()) {//推送有章节id
                 chapter = Integer.parseInt(chapter_id);
                 mCurrentChapter = chapter;//赋值给当前章节id
-//                bookDetail.setChapter_id(parseInt(chapter_id));
             }
-//            ActivityUtil.toReadActivity(this, bookDetail);
-//            finish();
-//            return;
         } else {
             bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
         }
@@ -436,7 +432,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         mBookContainer = (FrameLayout) findViewById(R.id.book_reader_read_container);
         mBottomLayout = (ReadBottomLayout) findViewById(R.id.book_reader_bottom_layout);

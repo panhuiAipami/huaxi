@@ -7,8 +7,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,6 +77,8 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     private int comment_id = 0, user_id = 0, pos = -1;
     private InputMethodManager imm;
     private CommentDialog commentDialog;
+    private int IsLookComment;
+    private int item_height = 0;
 
 
     @Override
@@ -82,7 +86,8 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         setTitle("帖子详情");
         Intent intent = getIntent();
         square_id = intent.getIntExtra(ActivityUtil.SQUAREID, 0);
-        Log.d("getIntExtra","square_id==="+square_id);
+        IsLookComment = intent.getIntExtra(ActivityUtil.ISLOOKCOMMENT, 0);
+        Log.d("getIntExtra", "square_id===" + square_id);
         initList();
         getDetails();
         listener();
@@ -95,7 +100,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     }
 
     @Override
-    public void findViewId() {
+    public void findViewId() throws Exception {
         super.findViewId();
         user_head = (ImageView) findViewById(R.id.user_head);
         head1 = (ImageView) findViewById(R.id.head1);
@@ -137,6 +142,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         textViews.add(hot_comment);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
+
     /**
      * 初始化recycler_view
      */
@@ -146,6 +152,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         adapter = new CommentDetailsAdapter(this, commentList);
         recycler_view_comment.setAdapter(adapter);
     }
+
     /**
      * 监听事件
      */
@@ -187,6 +194,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
             setTextColor(2, "hot");
         }
     }
+
     /**
      * 切换评论标题颜色
      */
@@ -218,6 +226,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         last_comment_page = 0;
         getCommentDetails();
     }
+
     /**
      * 获取帖子详情
      */
@@ -356,6 +365,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                     }
                 });
     }
+
     /**
      * 刷新评论列表
      */
@@ -413,6 +423,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
      */
     public void setData(SquareBean squareBean) {
         if (squareBean == null) return;
+//        if (IsLookComment != 2)
         item_layout.setVisibility(View.VISIBLE);//加载出来显示布局
         Log.d("setData", "setData");
         if (squareBean.getPic_url() != null) {
@@ -487,6 +498,12 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 head3.setVisibility(View.GONE);
             }
         }
+        if (IsLookComment == 2) {
+            item_height = user_speak.getMeasuredHeight();
+            Log.d("item_height", "item_height===" + item_height);
+            scroll_view.scrollTo(0, 1000);
+        }
+
 
     }
 
@@ -548,6 +565,10 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 View childView = v.getChildAt(0);
+//                if (scrollY <= oldScrollY && IsLookComment == 2 && item_layout.getVisibility() == View.GONE) {
+//                    Log.d("firstPage", "显示布局");
+//                    item_layout.setVisibility(View.VISIBLE);
+//                }
                 if (childView.getMeasuredHeight() <= scrollY + scroll_view.getHeight()) {
                     Log.d("firstPage", "滑动到底部");
                     if (comment_page > last_comment_page) {
@@ -608,21 +629,34 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         commentDialog.getSendText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//发送按钮
-                if (!AppUtil.isLogin(SquareDetailsActivity.this)) return;
-                String content = commentDialog.getContent();
-                if (content.isEmpty()) {
-                    ToastUtil.showToast("请输入内容");
-                    return;
-                }
-                commentDialog.clearText();
-                commentDialog.dismiss();
-                if (type == 1) {//评论
-                    sendCommentReply(content);
-                } else if (type == 2) {//回复
-                    sendCommentReply(content);
-                }
+                sendBtn();
             }
         });
+        commentDialog.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    sendBtn();
+                }
+                return true;
+            }
+        });
+    }
+
+    public void sendBtn() {
+        if (!AppUtil.isLogin(SquareDetailsActivity.this)) return;
+        String content = commentDialog.getContent();
+        if (content.isEmpty()) {
+            ToastUtil.showToast("请输入内容");
+            return;
+        }
+        commentDialog.clearText();
+        commentDialog.dismiss();
+        if (type == 1) {//评论
+            sendCommentReply(content);
+        } else if (type == 2) {//回复
+            sendCommentReply(content);
+        }
     }
 
 

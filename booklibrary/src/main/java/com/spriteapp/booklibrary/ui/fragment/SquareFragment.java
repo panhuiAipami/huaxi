@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
@@ -47,6 +49,8 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     private SquareAdapter adapter;//适配器
     private int page = 0;//页数
     private int lastPage = 0;
+    private LinearLayout null_layout;
+    private TextView miaoshu;
     private List<SquareBean> squareBeanList = new ArrayList<>();//帖子详情集合
 
 
@@ -76,6 +80,8 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
         recyclerView = (URecyclerView) mView.findViewById(R.id.square_recycler_view);
         swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         send_square = (ImageView) mView.findViewById(R.id.send_square);
+        null_layout = (LinearLayout) mView.findViewById(R.id.null_layout);
+        miaoshu = (TextView) mView.findViewById(R.id.miaoshu);
         swipe_refresh.setColorSchemeResources(R.color.colorPrimaryDark);
         swipe_refresh.setOnRefreshListener(this);
         recyclerView.setLoadingListener(this);
@@ -93,6 +99,17 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
         setHttp();
+        showOrGone();
+    }
+
+    public void showOrGone() {
+        if (squareBeanList.size() == 0) {
+            swipe_refresh.setVisibility(View.GONE);
+            null_layout.setVisibility(View.VISIBLE);
+        } else {
+            null_layout.setVisibility(View.GONE);
+            swipe_refresh.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -124,10 +141,9 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                                     }
                                     page++;
                                     squareBeanList.addAll(squareBeanBase.getData());
+                                    showOrGone();
                                     adapter.notifyDataSetChanged();
                                 }
-
-
                             }
                         }
 
@@ -144,7 +160,6 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
                     }
                 });
     }
-
 
 
     @Override
@@ -176,7 +191,6 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
             }
         }
     }
-
 
 
 }

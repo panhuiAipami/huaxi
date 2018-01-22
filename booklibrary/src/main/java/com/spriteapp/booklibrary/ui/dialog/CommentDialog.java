@@ -38,13 +38,12 @@ public class CommentDialog extends BaseDialog {
         lp.flags = lp.flags | (WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         mDialog.getWindow().setWindowAnimations(R.style.bottomPopupDialog);
         mDialog.getWindow().setAttributes(lp);
-
-
         cancel_comment = (TextView) mDialog.findViewById(R.id.cancel_comment);
         send_comment = (TextView) mDialog.findViewById(R.id.send_comment);
         user_name = (TextView) mDialog.findViewById(R.id.user_name);
         user_edit_content = (EditText) mDialog.findViewById(R.id.user_edit_content);
-
+        user_edit_content.setHorizontallyScrolling(false);
+        user_edit_content.setMaxLines(Integer.MAX_VALUE);
         cancel_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +72,7 @@ public class CommentDialog extends BaseDialog {
 
             }
         });
+
     }
 
     public void dismiss() {
@@ -109,5 +109,9 @@ public class CommentDialog extends BaseDialog {
 
     public void clearText() {
         user_edit_content.setText("");
+    }
+
+    public EditText getEditText() {
+        return user_edit_content;
     }
 }

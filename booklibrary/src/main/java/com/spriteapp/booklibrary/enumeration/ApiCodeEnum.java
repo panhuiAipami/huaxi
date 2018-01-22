@@ -10,8 +10,11 @@ public enum ApiCodeEnum {
     //点赞,阅读数失败
     FAILURE(10001),
     //点赞,阅读曾经点过或阅读过
-    EVER(10002);
+    EVER(10002),
+    //无发帖权限
+    NOAUTHORITY(10005);
     private int value;
+
 
     ApiCodeEnum(int value) {
         this.value = value;

@@ -96,6 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:maxHeight="400dp"
                 android:visibility="gone" />
 
             <ImageView
@@ -103,6 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="400dp"
                 android:scaleType="centerCrop"
                 android:visibility="gone" />
 

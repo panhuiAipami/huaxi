@@ -15,6 +15,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
+import net.huaxi.reader.bean.UserInfo;
 import net.huaxi.reader.callback.CallBack;
 import net.huaxi.reader.http.OKhttpRequest;
 import net.huaxi.reader.http.UrlUtils;
@@ -36,6 +37,7 @@ public class MyApplication extends Application {
         super.onCreate();
         mInstance = this;
         UMShareAPI.get(this);
+        UserInfo.getInstance().restData();
         PlatformConfig.setWeixin(LoginHelper.WX_APP_ID, LoginHelper.WX_AppSecert);
         PlatformConfig.setQQZone(LoginHelper.QQLOGIN_APP_ID, LoginHelper.QQLOGIN_APP_ID);
         PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
