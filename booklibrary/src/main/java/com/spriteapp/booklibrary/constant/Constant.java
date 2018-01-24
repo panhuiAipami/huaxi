@@ -61,4 +61,10 @@ public class Constant {
      * 微信登录
      */
     public static final String USER_WELOGIN = BASE_URL + "/user/wxlogin";
+    /**
+     * 充值,消费,奖励记录
+     */
+    public static final String USER_RECHARGE_LOG = BASE_URL + "user_rechargelog";
+    public static final String USER_CONSUME_LOG = BASE_URL + "user_consumelog";
+    public static final String USER_GIVE_LOG = BASE_URL + "user_givelog";
 }

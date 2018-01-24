@@ -2,12 +2,15 @@ package com.spriteapp.booklibrary.model;
 
 import com.spriteapp.booklibrary.util.FileHelper;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018/1/15.
  */
 
-public class UserBean {
+public class UserBean implements Serializable {
     public static UserBean userBean = null;
+
     public static UserBean getInstance() {
         if (userBean == null) {
             synchronized (UserBean.class) {
@@ -42,7 +45,6 @@ public class UserBean {
     }
 
 
-
     private int id;
     private String user_nickname;
     private int user_birthday;
@@ -68,6 +70,8 @@ public class UserBean {
     }
 
     public String getUser_nickname() {
+        if (user_nickname == null)
+            user_nickname = "";
         return user_nickname;
     }
 
@@ -132,6 +136,8 @@ public class UserBean {
     }
 
     public String getUser_avatar() {
+        if (user_avatar == null)
+            user_avatar = "";
         return user_avatar;
     }
 

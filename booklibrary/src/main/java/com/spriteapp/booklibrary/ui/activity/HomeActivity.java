@@ -37,6 +37,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.TabBar;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
@@ -80,6 +81,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private static final int COMMUNITY_POSITION = 2;
     private static final int BOOKSTORE_POSITION = 3;
     private static final int ME_POSITION = 4;
+    public static final int PERSON_TO_BOOKSHELF = 10;
     private static final int TOP_BAR_HEIGHT = 47;
     ViewPager mHomeViewPager;
     LinearLayout mBookshelfLayout;
@@ -162,6 +164,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
             }
             setTitle("精选");
 //        addFreeTextView();
+            UserBean.getInstance().restData();
             addSearchView();
             initFragment();
             setAdapter();
@@ -185,7 +188,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     private void messagePermisssion() {
         //前三天每天提醒一次，三天后不提示
-
         if (PreferenceHelper.getInt("messageNumber", 0) < 4 && System.currentTimeMillis() - PreferenceHelper.getLong("messageTime", 0) >= 1000 * 60 * 60 * 12) {
             PreferenceHelper.putLong("messageTime", System.currentTimeMillis());
             int number = PreferenceHelper.getInt("messageNumber", 0);
@@ -216,8 +218,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     }
 
     public void getUserInfo() {
-        if (AppUtil.isLogin())
-            Util.getUserInfo();
+//        if (AppUtil.isLogin())
+//            Util.getUserInfo();
     }
 
     public void addFlag() {
@@ -487,7 +489,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         }
     }
 
-    private void setSelectView(int position) {//view的选中状态
+    public void setSelectView(int position) {//view的选中状态
         switch (position) {
             case BOOKSHELF_POSITION:
                 mBookshelfLayout.setSelected(true);
@@ -508,6 +510,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
             case ME_POSITION:
                 mMeLayout.setSelected(true);
                 setSelectFalse(mBookshelfLayout, mDiscoverLayout, mBookstoreLayout, mCommunityLayout);
+                break;
+            case PERSON_TO_BOOKSHELF:
+                mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+                mBookstoreLayout.setSelected(true);
+                setSelectFalse(mBookshelfLayout, mDiscoverLayout, mMeLayout, mCommunityLayout);
                 break;
         }
     }

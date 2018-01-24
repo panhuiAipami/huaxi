@@ -51,6 +51,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     private int lastPage = 0;
     private LinearLayout null_layout;
     private TextView miaoshu;
+    public int FOLLOW = 0;//社区接口添加来区分花溪与嘎吱
     private List<SquareBean> squareBeanList = new ArrayList<>();//帖子详情集合
 
 
@@ -98,6 +99,12 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+        Bundle bundle = getArguments();
+        FOLLOW = bundle.getInt("follow", 0);
+        if (FOLLOW == 0)
+            miaoshu.setText("偌大的广场,空无一人～");
+        else if (FOLLOW == 1)
+            miaoshu.setText("亲,您还没有关注任何人哦～");
         setHttp();
         showOrGone();
     }
@@ -121,7 +128,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void setHttp() {//加载数据
         BookApi.getInstance()
                 .service
-                .square_index(page, PLATFORM_ID)
+                .square_index(page, PLATFORM_ID, FOLLOW)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<SquareBean>>>() {

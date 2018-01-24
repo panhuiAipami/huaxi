@@ -185,7 +185,8 @@ public interface BookApiService {
     //广场列表
     @GET("square_index")
     Observable<Base<List<SquareBean>>> square_index(@Query("page_index") int page,
-                                                    @Query("platform_id") int platform_id);
+                                                    @Query("platform_id") int platform_id,
+                                                    @Query("follow") int follow);
 
     //广场列表详情
     @GET("square_detail")

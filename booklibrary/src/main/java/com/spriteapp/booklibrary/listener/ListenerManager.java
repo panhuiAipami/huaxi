@@ -7,6 +7,7 @@ package com.spriteapp.booklibrary.listener;
 public class ListenerManager {
     public static ListenerManager instance;
     private ReadActivityFinish readActivityFinish;
+    private LoginSuccess loginSuccess;
 
     public static ListenerManager getInstance() {
         if (instance == null) {
@@ -21,5 +22,13 @@ public class ListenerManager {
 
     public void setReadActivityFinish(ReadActivityFinish readActivityFinish) {
         this.readActivityFinish = readActivityFinish;
+    }
+
+    public LoginSuccess getLoginSuccess() {
+        return loginSuccess;
+    }
+
+    public void setLoginSuccess(LoginSuccess loginSuccess) {
+        this.loginSuccess = loginSuccess;
     }
 }

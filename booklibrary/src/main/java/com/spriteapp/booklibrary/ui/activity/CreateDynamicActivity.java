@@ -145,6 +145,7 @@ public class CreateDynamicActivity extends TitleActivity {
                     .openGallery(PictureMimeType.ofImage())
                     .selectionMedia(selectList)
                     .compress(true)
+                    .isGif(true)
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
         } else if (v == iv_submit) {//发布

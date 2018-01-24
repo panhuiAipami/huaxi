@@ -10,4 +10,8 @@
 
     <dimen name="book_reader_horizontal_margin">15dp</dimen>
     <dimen name="book_reader_store_vertical_margin">15dp</dimen>
+
+    <dimen name="person_line_left_padding">50dp</dimen>
+    <dimen name="person_icon_left_wight">30dp</dimen>
+    <dimen name="person_text_to_img">15dp</dimen>
 </resources>

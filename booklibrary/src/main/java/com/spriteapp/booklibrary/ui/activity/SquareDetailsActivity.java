@@ -67,7 +67,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     //    private LinearLayout bottom_send;
 //    private EditText send_edit;
 //    private ImageView yuan_share, yuan_support;
-    private LinearLayout square_layout;//最大的layout
+    private LinearLayout square_layout,title_name_layout;//最大的layout
     private TextView follow_btn, default_comment, new_comment, hot_comment;
     private List<TextView> textViews = new ArrayList<>();
     private List<CommentReply> commentList = new ArrayList<>();
@@ -122,6 +122,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         comment_layout = (LinearLayout) findViewById(R.id.comment_layout);
         item_layout = (LinearLayout) findViewById(R.id.item_layout);
         square_layout = (LinearLayout) findViewById(R.id.square_layout);
+        title_name_layout = (LinearLayout) findViewById(R.id.title_name_layout);
         item_layout.setVisibility(View.GONE);
         comment1 = (TextView) findViewById(R.id.comment1);
         comment2 = (TextView) findViewById(R.id.comment2);
@@ -170,6 +171,13 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         new_comment.setOnClickListener(this);
         hot_comment.setOnClickListener(this);
         onScrollRefreshOrLoadMore();
+    }
+    public void setCommentTitleGoneOrShow(){
+        if(commentList.size()==0){
+            title_name_layout.setVisibility(View.GONE);
+        }else {
+            title_name_layout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -256,6 +264,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                     commentList.addAll(squareBeanBase.getData().getCommentReply());
                                     adapter.notifyDataSetChanged();
                                 }
+                                setCommentTitleGoneOrShow();
                             }
 
                         }
@@ -336,7 +345,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                                 CommentReply.ReplayBean.DataBean bean = new CommentReply.ReplayBean.DataBean();
                                 if (UserBean.getInstance().getUser_nickname() == null) {
                                     bean.setUsername("未知");
-                                    Util.getUserInfo();
+//                                    Util.getUserInfo();
                                 } else {
                                     bean.setUsername(UserBean.getInstance().getUser_nickname());
                                 }

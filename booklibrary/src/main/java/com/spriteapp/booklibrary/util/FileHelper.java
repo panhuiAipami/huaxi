@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -387,7 +388,7 @@ public class FileHelper {
         Object object = null;
         try {
             FileInputStream fs = AppUtil.getAppContext().openFileInput(
-                    Constants.SDPath_bean);
+                    Constants.USERINFO_FILE);
             ObjectInputStream in = new ObjectInputStream(fs);
             object = in.readObject();
 
@@ -408,9 +409,10 @@ public class FileHelper {
         try {
             FileOutputStream fs;
             fs = AppUtil.getAppContext().openFileOutput(
-                    Constants.SDPath_bean, Context.MODE_PRIVATE);
+                    Constants.USERINFO_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fs);
             out.writeObject(object);
+            Log.d("ObjectOutputStream", fs.toString());
             out.close();
             fs.close();
         } catch (Exception e) {

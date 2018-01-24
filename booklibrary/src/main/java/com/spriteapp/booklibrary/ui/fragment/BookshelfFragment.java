@@ -21,6 +21,7 @@ import com.spriteapp.booklibrary.enumeration.BookEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterShelfEnum;
 import com.spriteapp.booklibrary.listener.DeleteBookListener;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.RegisterModel;
@@ -39,7 +40,6 @@ import com.spriteapp.booklibrary.util.DialogUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
-import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.recyclerview.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -262,10 +262,13 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         mPresenter.getBookShelf();
 //        getUserInfo();
         EventBus.getDefault().post(UpdaterPayEnum.UPDATE_LOGIN_INFO);
+        if(ListenerManager.getInstance().getLoginSuccess()!=null){
+            ListenerManager.getInstance().getLoginSuccess().loginState(1);
+        }
     }
 
     public void getUserInfo() {
-        Util.getUserInfo();
+//        Util.getUserInfo();
     }
 
 

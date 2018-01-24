@@ -31,7 +31,10 @@ public class Constants {
      * 下载APP action
      */
     public static final String ACTION_DOWNLOAD = "ACTION_XS_APK_DOWNLOAD";
-
+    /**
+     * 用户信息
+     */
+    public final static String USERINFO_FILE = "huaxi_user_info.txt";
 
 
 }

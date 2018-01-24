@@ -3,6 +3,11 @@ package com.spriteapp.booklibrary.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +21,17 @@ import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
-import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
+import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.listener.LoginSuccess;
 import com.spriteapp.booklibrary.model.UserBean;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.NetworkUtil;
+import com.spriteapp.booklibrary.util.Util;
 
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -30,18 +39,20 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.PERSON_TO_BOOKSHELF;
 import static com.spriteapp.booklibrary.util.ActivityUtil.LOGIN_BACK;
 
 /**
  * Created by Administrator on 2018/1/22.
  */
 
-public class PersonCenterFragment extends BaseFragment implements View.OnClickListener {
+public class PersonCenterFragment extends BaseFragment implements View.OnClickListener, LoginSuccess {
     private View mView;
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
             recharge, bookshelf, comment, recharge_record, records_of_consumption,
             award_record, remind, phone, setting;
     private ImageView user_bg, user_head;
+    private BookShelfPresenter mPresenter;
 
 
     @Override
@@ -63,7 +74,6 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void initData() {
-        EventBus.getDefault().register(this);
         listener();
     }
 
@@ -94,6 +104,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void listener() {
+        ListenerManager.getInstance().setLoginSuccess(this);
         user_name.setOnClickListener(this);
         hua_bei.setOnClickListener(this);
         hua_ban.setOnClickListener(this);
@@ -111,6 +122,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         setting.setOnClickListener(this);
         user_bg.setOnClickListener(this);
         user_head.setOnClickListener(this);
+        if (AppUtil.isLogin())
+            getUserData();
+
 
     }
 
@@ -126,43 +140,57 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        IsLogin();
-        Log.d("bus","");
+
         if (v == user_name) {
-
+            IsLogin();
         } else if (v == hua_bei) {
-
+            IsLogin();
         } else if (v == hua_ban) {
-
+            IsLogin();
         } else if (v == user_share) {
-
+            IsLogin();
         } else if (v == user_follow) {
-
+            IsLogin();
         } else if (v == user_fans) {
-
+            IsLogin();
         } else if (v == recharge) {
-
+            IsLogin();
+            toWebView(Constant.H5_PAY_URL);
         } else if (v == bookshelf) {
+            IsLogin();
+            if (getActivity() instanceof HomeActivity) {
+                HomeActivity activity = (HomeActivity) getActivity();
+                activity.setSelectView(PERSON_TO_BOOKSHELF);
+            }
 
         } else if (v == comment) {
-
+            IsLogin();
         } else if (v == recharge_record) {
-
+            IsLogin();
+            toWebView(Constant.USER_RECHARGE_LOG);
         } else if (v == records_of_consumption) {
-
+            IsLogin();
+            toWebView(Constant.USER_CONSUME_LOG);
         } else if (v == award_record) {
-
+            IsLogin();
+            toWebView(Constant.USER_GIVE_LOG);
         } else if (v == remind) {
-
+//            IsLogin();
+            ActivityUtil.toSettingActivity(getActivity());
         } else if (v == phone) {
-
+            IsLogin();
         } else if (v == setting) {
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == user_bg) {
-
+            IsLogin();
         } else if (v == user_head) {
-
+            IsLogin();
         }
+    }
+
+    public void toWebView(String url) {
+        if (url != null && !url.isEmpty())
+            ActivityUtil.toWebViewActivity(getActivity(), url);
     }
 
     @Override
@@ -177,23 +205,26 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
-    public void onEventMainThread(UpdaterPayEnum updateEnum) {
-        if (mView != null) {
-            if (updateEnum == UpdaterPayEnum.UPDATE_LOGIN_INFO) {//登录成功
-
-            } else if (updateEnum == UpdaterPayEnum.UPDATE_LOGIN_OUT) {//退出登录
-
-            } else if (updateEnum == UpdaterPayEnum.UPDATE_PAY_RESULT) {//
-
-            }
-        }
+    private void setEndColor(TextView view, String str) {
+        if (str == null) return;
+        if (str.isEmpty()) return;
+        if (str.length() < 2) return;
+        SpannableStringBuilder builder = new SpannableStringBuilder(str);
+        ForegroundColorSpan square_small = new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.square_small));
+        builder.setSpan(square_small, str.length() - 2, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new AbsoluteSizeSpan(Util.dp2px(getActivity(), 14)), str.length() - 2, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(builder);
     }
+
 
     public void getUserData() {
         try {
-            Log.d("userInfo", "用户信息");
+            Log.d("userInfo", "用户信息11");
             if (!AppUtil.isLogin(getActivity()))
                 return;
+            if (!NetworkUtil.isAvailable(getActivity())) {
+                setUserData();
+            }
             BookApi.getInstance().
                     service
                     .getUserBean(Constant.JSON_TYPE)
@@ -217,9 +248,12 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
                         @Override
                         public void onNext(Base<UserBean> userModelBase) {
                             if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
-                                Log.d("userInfo", userModelBase.getData().toString());
-                                UserBean user = userModelBase.getData();
-                                setUserData();
+                                if (userModelBase.getData() != null) {
+                                    UserBean user = userModelBase.getData();
+                                    user.commit();
+                                    setUserData();
+                                }
+
 
                             }
                         }
@@ -231,9 +265,37 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     public void setUserData() {
         Log.d("userr", "用户");
-        GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), getActivity());
-        hua_ban.setText(UserBean.getInstance().getUser_false_point() + "\n花瓣");
-        hua_bei.setText(UserBean.getInstance().getUser_real_point() + "\n花贝");
+        if (!UserBean.getInstance().getUser_avatar().isEmpty())
+            GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), getActivity());
+        else
+            GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, getActivity());
+        hua_ban.setText(Util.getString(UserBean.getInstance().getUser_false_point() + ""));
+        hua_bei.setText(Util.getString(UserBean.getInstance().getUser_real_point() + ""));
         user_name.setText(UserBean.getInstance().getUser_nickname());
+        setEndColor(user_share, "100\n分享");
+        setEndColor(user_follow, "0\n关注");
+        setEndColor(user_fans, "0\n粉丝");
     }
+
+    public void setUserDataNull() {
+        GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, getActivity());
+        hua_ban.setText("0");
+        hua_bei.setText("0");
+        user_name.setText("登录");
+        setEndColor(user_share, "0\n分享");
+        setEndColor(user_follow, "0\n关注");
+        setEndColor(user_fans, "0\n粉丝");
+    }
+
+
+    @Override
+    public void loginState(int state) {
+        if (state == 1) {
+            getUserData();
+        } else if (state == 2) {
+            setUserDataNull();
+        }
+
+    }
+
 }

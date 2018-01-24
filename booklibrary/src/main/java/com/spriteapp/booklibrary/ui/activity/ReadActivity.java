@@ -445,6 +445,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mReadProgressLayout = (ReadProgressLayout) findViewById(R.id.book_reader_read_progress_layout);
         mTextSizeLayout = (TextSizeLayout) findViewById(R.id.book_reader_text_size_layout);
         book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
+        book_reader_title_textView.setMaxEms(8);
         book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_home_bottom_text_choose_color));
         mShowView = mBottomLayout;
         mDismissView = mBottomLayout;

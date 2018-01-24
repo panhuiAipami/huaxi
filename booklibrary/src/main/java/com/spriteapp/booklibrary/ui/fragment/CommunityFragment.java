@@ -33,7 +33,7 @@ public class CommunityFragment extends BaseFragment {
     private ImageView search_btn, to_send;//搜索按钮
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private FollowFragment followFragment;
+    private SquareFragment followFragment;
     private SquareFragment squareFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
@@ -141,11 +141,17 @@ public class CommunityFragment extends BaseFragment {
         tab_one.setText(titles.get(0));
         tab_two.setText(titles.get(1));
         //实例化fragment
-        followFragment = new FollowFragment();
+        followFragment = new SquareFragment();
         squareFragment = new SquareFragment();
         //添加fragmnet集合
         fragmentList.add(followFragment);
         fragmentList.add(squareFragment);
+        Bundle bundle1=new Bundle();
+        Bundle bundle2=new Bundle();
+        bundle1.putInt("follow",0);
+        bundle2.putInt("follow",1);
+        followFragment.setArguments(bundle2);
+        squareFragment.setArguments(bundle1);
         //viewpager缓存页面
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new HomePageTabAdapter(getChildFragmentManager(), titles, fragmentList, 1));

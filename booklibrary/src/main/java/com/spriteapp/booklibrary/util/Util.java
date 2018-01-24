@@ -1673,4 +1673,13 @@ public class Util {
 
     }
 
+    public static String getString(String str) {
+        if (str == null) return "";
+        if (str != null && str.isEmpty()) return str;
+        if (!str.isEmpty() && str.length() < 3)
+            return str;
+        DecimalFormat df = new DecimalFormat("###,###");
+        return df.format(Double.parseDouble(str));
+    }
+
 }

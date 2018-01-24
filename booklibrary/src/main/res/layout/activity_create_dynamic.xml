@@ -77,8 +77,11 @@
                     android:background="@null"
                     android:gravity="top"
                     android:hint="分享新鲜事..."
+                    android:lines="10"
                     android:maxLength="140"
                     android:paddingTop="5dp"
+                    android:scrollbars="none"
+                    android:singleLine="false"
                     android:textSize="14sp"
                     android:theme="@style/MyEditText" />
             </ScrollView>

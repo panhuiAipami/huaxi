@@ -17,6 +17,7 @@ import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,7 @@ import java.util.List;
 public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int MAX_COUNTS = 9;
     private Activity context;
-    private List<LocalMedia> list;
+    private List<LocalMedia> list = new ArrayList<>();
 
     public PhotoSelectedListAdapter(Activity context) {
         this.context = context;
@@ -52,13 +53,14 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
                 myViewHolder.delete_img.setVisibility(View.GONE);
                 myViewHolder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 myViewHolder.imageView.setImageResource(R.mipmap.add_img);
-                myViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         PictureSelector.create(context)
                                 .openGallery(PictureMimeType.ofImage())
                                 .selectionMedia(list)
                                 .compress(true)
+                                .isGif(true)
                                 .maxSelectNum(MAX_COUNTS)
                                 .forResult(PictureConfig.CHOOSE_REQUEST);
                     }
@@ -66,22 +68,25 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
             } else {
                 myViewHolder.delete_img.setVisibility(View.VISIBLE);
                 GlideUtils.loadLocalImage(context, myViewHolder.imageView, list.get(position).getCompressPath());
+                //点击单个预览
+                myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PictureSelector.create(context).externalPicturePreview(position, list);
+                    }
+                });
             }
 
-            //点击单个预览
-            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PictureSelector.create(context).externalPicturePreview(position, list);
-                }
-            });
+
             //删除按钮
             myViewHolder.delete_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    list.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(0, list.size());
+                        list.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(0, list.size());
+
+
                 }
             });
         }
@@ -89,6 +94,7 @@ public class PhotoSelectedListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
+//        if (list != null && list.size() == 0) return 0;
         return list == null ? 0 : list.size() < MAX_COUNTS ? list.size() + 1 : MAX_COUNTS;
     }
 

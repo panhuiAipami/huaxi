@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/c13_themes_color">
+    android:background="@color/c13_themes_color"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,8 +21,8 @@
                 android:id="@+id/user_bg"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:src="@mipmap/new_person_bg"
                 android:scaleType="centerCrop"
+                android:src="@mipmap/new_person_bg"
                 app:riv_corner_radius="10dp" />
 
             <LinearLayout
@@ -36,7 +36,10 @@
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_marginLeft="15dp"
-                    android:src="@mipmap/deafultheadicon" />
+                    android:src="@mipmap/deafultheadicon"
+                    app:riv_border_color="@color/c10_themes_color"
+                    app:riv_border_width="1px"
+                    app:riv_oval="true" />
 
                 <LinearLayout
                     android:id="@+id/layout"
@@ -52,8 +55,8 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="携爱再漂流"
-                        android:textColor="@color/square_user_speak"
+                        android:text="登录"
+                        android:textColor="@color/c13_themes_color"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -62,31 +65,72 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp">
 
-                        <TextView
-                            android:id="@+id/hua_bei"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:paddingRight="20dp"
-                            android:text="0\n花贝"
-                            android:textColor="@color/square_comment_selector"
-                            android:textSize="16sp" />
+                            android:orientation="vertical"
+                            android:paddingRight="20dp">
+
+                            <TextView
+                                android:id="@+id/hua_bei"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/square_comment_selector"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@mipmap/huabei"
+                                android:drawablePadding="3dp"
+                                android:gravity="center"
+                                android:text="花贝"
+                                android:textColor="@color/square_small"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                         <View
                             android:layout_width="0.5dp"
                             android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:background="@color/c10_themes_color2"></View>
 
-                        <TextView
-                            android:id="@+id/hua_ban"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:orientation="vertical"
                             android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:text="0\n花瓣"
-                            android:textColor="@color/square_comment_selector"
-                            android:textSize="16sp" />
+                            android:paddingRight="20dp">
+
+                            <TextView
+                                android:id="@+id/hua_ban"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/square_support_selector"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@mipmap/huaban"
+                                android:drawablePadding="3dp"
+                                android:gravity="center"
+                                android:text="花瓣"
+                                android:textColor="@color/square_small"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -100,228 +144,373 @@
             <TextView
                 android:id="@+id/user_share"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/follow_fans_bg"
+                android:background="@drawable/person_share_bg"
                 android:gravity="center"
-                android:text="分享"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="0\n分享"
                 android:textColor="@color/square_user_speak"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/user_follow"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/follow_fans_bg"
+                android:background="@drawable/follow_bg"
                 android:gravity="center"
-                android:text="关注"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="0\n关注"
                 android:textColor="@color/square_user_speak"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/user_fans"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/follow_fans_bg"
                 android:gravity="center"
-                android:text="粉丝"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="0\n粉丝"
                 android:textColor="@color/square_user_speak"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/recharge"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="充值"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/chongzhi" />
+
+                <TextView
+                    android:id="@+id/recharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="充值"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/bookshelf"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="书架"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/shujia" />
+
+                <TextView
+                    android:id="@+id/bookshelf"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="书架"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/comment"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="我的评论"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/pinglun" />
+
+                <TextView
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="我的评论"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="gone"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:layout_marginTop="30dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/recharge_record"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="充值记录"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/chognzhijilu" />
+
+                <TextView
+                    android:id="@+id/recharge_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="充值记录"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/records_of_consumption"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="消费记录"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/xiaofei" />
+
+                <TextView
+                    android:id="@+id/records_of_consumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="消费记录"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/award_record"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="奖励记录"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/jiangli" />
+
+                <TextView
+                    android:id="@+id/award_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="奖励记录"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:layout_marginTop="30dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/remind"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="免提示订阅开启关闭"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/tishi" />
+
+                <TextView
+                    android:id="@+id/remind"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="免提示订阅开启关闭"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/phone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="绑定手机"
-                android:textColor="@color/square_user_speak"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/bang_shouji" />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="绑定手机"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -329,6 +518,7 @@
                 android:id="@+id/setting"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/person_text_to_img"
                 android:drawableEnd="@drawable/book_reader_right_arrow_image"
                 android:gravity="center_vertical"
                 android:text="设置"
@@ -338,6 +528,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>

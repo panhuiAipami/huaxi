@@ -15,7 +15,6 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
-import net.huaxi.reader.bean.UserInfo;
 import net.huaxi.reader.callback.CallBack;
 import net.huaxi.reader.http.OKhttpRequest;
 import net.huaxi.reader.http.UrlUtils;
@@ -35,15 +34,15 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mInstance = this;
-        UMShareAPI.get(this);
-        UserInfo.getInstance().restData();
-        PlatformConfig.setWeixin(LoginHelper.WX_APP_ID, LoginHelper.WX_AppSecert);
-        PlatformConfig.setQQZone(LoginHelper.QQLOGIN_APP_ID, LoginHelper.QQLOGIN_APP_ID);
-        PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
-        PushAgent mPushAgent = PushAgent.getInstance(this);
-        //注册推送服务，每次调用register方法都会回调该接口
+
         try {
+            mInstance = this;
+            UMShareAPI.get(this);
+            PlatformConfig.setWeixin(LoginHelper.WX_APP_ID, LoginHelper.WX_AppSecert);
+            PlatformConfig.setQQZone(LoginHelper.QQLOGIN_APP_ID, LoginHelper.QQLOGIN_APP_ID);
+            PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
+            PushAgent mPushAgent = PushAgent.getInstance(this);
+            //注册推送服务，每次调用register方法都会回调该接口
             mPushAgent.register(callback);
 //            mPushAgent.setNotificationClickHandler(notificationClickHandler);
             mPushAgent.setMessageHandler(messageHandler);
@@ -52,7 +51,7 @@ public class MyApplication extends Application {
         }
         SharedPreferencesUtil.init(MyApplication.getInstance(),
                 MyApplication.getInstance().getPackageName() + "hua_xi_preference", Context.MODE_PRIVATE);
-        android.util.Log.d("inittoken",MyApplication.getInstance().getPackageName() + "hua_xi_preference");
+        android.util.Log.d("inittoken", MyApplication.getInstance().getPackageName() + "hua_xi_preference");
     }
 
     UmengMessageHandler messageHandler = new UmengMessageHandler() {

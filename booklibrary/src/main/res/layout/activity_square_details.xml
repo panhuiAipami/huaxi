@@ -30,6 +30,7 @@
                 <include layout="@layout/follow_item_layout"></include>
 
                 <LinearLayout
+                    android:id="@+id/title_name_layout"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="5dp">

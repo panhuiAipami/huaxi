@@ -4,6 +4,7 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.ui.view.LoginOutView;
 import com.spriteapp.booklibrary.util.AppUtil;
 
@@ -70,6 +71,9 @@ public class LoginOutPresenter implements BasePresenter<LoginOutView> {
                     public void onNext(Base<Void> voidBase) {
                         if (voidBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
                             mView.setData(voidBase);
+                            if(ListenerManager.getInstance().getLoginSuccess()!=null){
+                                ListenerManager.getInstance().getLoginSuccess().loginState(2);
+                            }
                         }
                     }
                 });

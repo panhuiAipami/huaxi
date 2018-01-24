@@ -23,6 +23,11 @@ public class GlideUtils {
                 .load(url)
                 .into(imageView);
     }
+    public static void loadImage(ImageView imageView, int url, Context context) {
+        Glide.with(context)
+                .load(url)
+                .into(imageView);
+    }
 
     public static Drawable loadImageFromNetwork(String imageUrl) {
         Drawable drawable = null;

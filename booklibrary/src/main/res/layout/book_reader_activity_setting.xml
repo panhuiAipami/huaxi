@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="自动购买"
+            android:text="免提示订阅"
             android:textColor="@color/book_reader_common_text_color"
             android:textSize="16sp" />
 
