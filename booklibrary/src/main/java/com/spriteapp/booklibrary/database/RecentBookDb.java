@@ -57,6 +57,7 @@ public class RecentBookDb {
             ContentValues values = new ContentValues();
             values.put(DbConstants.BOOK_ID, model.getBook_id());
             values.put(DbConstants.BOOK_NAME, model.getBook_name());
+            values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
             values.put(DbConstants.BOOK_IMAGE, model.getBook_image());
             values.put(DbConstants.BOOK_INTRODUCTION, model.getBook_intro());
             values.put(DbConstants.BOOK_SHARE_URL, model.getBook_share_url());
@@ -65,7 +66,6 @@ public class RecentBookDb {
             values.put(DbConstants.TOTAL_CHAPTER, model.getBook_chapter_total());
             values.put(DbConstants.LAST_READ_TIME, System.currentTimeMillis() / 1000);
             values.put(DbConstants.LAST_UPDATE_BOOK_DATETIME, System.currentTimeMillis() / 1000);
-            values.put(DbConstants.LAST_UPDATE_CHAPTER_DATETIME, System.currentTimeMillis() / 1000);
             values.put(DbConstants.BOOK_FINISH_FLAG, model.getBook_finish_flag());
             values.put(DbConstants.BOOK_IS_VIP, model.getBook_is_vip());
             values.put(DbConstants.BOOK_IS_RECOMMEND_DATA, BookEnum.MY_BOOK.getValue());
@@ -98,6 +98,7 @@ public class RecentBookDb {
                     BookDetailResponse model = new BookDetailResponse();
                     model.setBook_id(cursor.getInt(cursor.getColumnIndex(DbConstants.BOOK_ID)));
                     model.setBook_name(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_NAME)));
+                    model.setLast_update_chapter_title(cursor.getString(cursor.getColumnIndex(DbConstants.LAST_UPDATE_CHAPTER_TITLE)));
                     model.setBook_image(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_IMAGE)));
                     model.setBook_intro(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_INTRODUCTION)));
                     model.setBook_share_url(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_SHARE_URL)));

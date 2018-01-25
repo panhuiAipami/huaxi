@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/book_reader_white"
@@ -9,11 +9,41 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="#f2f2f2" />
+    <LinearLayout
+        android:id="@+id/del_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/c10_themes_color2"></View>
+
+        <TextView
+            android:id="@+id/is_del"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="@color/del_text_color"
+            android:enabled="false"
+            android:gravity="center"
+            android:background="@drawable/del_bg_color"
+            android:text="请选择要删除的书籍"
+            android:textSize="20sp" />
+
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/book_reader_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="3dp"
-        android:layout_marginRight="15dp" />
-</LinearLayout>
+        android:layout_marginRight="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/del_layout" />
+
+
+
+
+</RelativeLayout>

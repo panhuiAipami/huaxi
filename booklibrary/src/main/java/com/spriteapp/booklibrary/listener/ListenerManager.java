@@ -8,6 +8,7 @@ public class ListenerManager {
     public static ListenerManager instance;
     private ReadActivityFinish readActivityFinish;
     private LoginSuccess loginSuccess;
+    private DelBookShelf delBookShelf;
 
     public static ListenerManager getInstance() {
         if (instance == null) {
@@ -30,5 +31,13 @@ public class ListenerManager {
 
     public void setLoginSuccess(LoginSuccess loginSuccess) {
         this.loginSuccess = loginSuccess;
+    }
+
+    public DelBookShelf getDelBookShelf() {
+        return delBookShelf;
+    }
+
+    public void setDelBookShelf(DelBookShelf delBookShelf) {
+        this.delBookShelf = delBookShelf;
     }
 }

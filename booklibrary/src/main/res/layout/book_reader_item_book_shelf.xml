@@ -19,7 +19,15 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:riv_corner_radius="10dp" />
-
+        <ImageView
+            android:id="@+id/book_reader_delete_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:src="@drawable/del_bg"
+            android:visibility="visible" />
         <TextView
             android:id="@+id/book_reader_progress_text_view1"
             android:layout_width="match_parent"
@@ -32,12 +40,7 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/book_reader_delete_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/book_reader_delete_book_selector"
-        android:visibility="gone" />
+
 
     <TextView
         android:id="@+id/book_reader_title_text_view"

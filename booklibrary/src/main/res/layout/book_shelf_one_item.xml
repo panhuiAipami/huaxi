@@ -1,49 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:orientation="horizontal">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/book_cover"
-        android:layout_width="100dp"
-        android:layout_height="140dp"
-        android:elevation="1dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/new_person_bg"
-        app:riv_border_color="#c6c6c5"
-        app:riv_border_width="1px"
-        app:riv_corner_radius="10dp" />
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="-10dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/book_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="猎爱游戏:早安,金主大人"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        <RelativeLayout
+            android:id="@+id/book_reader_image_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/book_reader_store_item_shape"
+            android:elevation="1dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/book_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:riv_border_color="#c6c6c5"
+                app:riv_border_width="1px"
+                app:riv_corner_radius="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:id="@+id/book_reader_delete_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/del_bg"
+                android:visibility="gone" />
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/one_item_back">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="0dp"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="猎爱游戏:早安,金主大人"
+                android:textColor="@color/book_reader_all_book_night_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/one_item_back"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/chapter_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="阅读至:第二十四章 表白衷肠"
+                    android:textColor="@color/gray_popup_text"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp">
+
+                    <TextView
+                        android:id="@+id/progress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_weight="1"
+                        android:text="已读20%"
+                        android:textColor="@color/square_small"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/to_read"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="15dp"
+                        android:drawablePadding="3dp"
+                        android:drawableRight="@drawable/book_reader_right_arrow_image"
+                        android:text="继续阅读"
+                        android:textColor="@color/square_comment_selector"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

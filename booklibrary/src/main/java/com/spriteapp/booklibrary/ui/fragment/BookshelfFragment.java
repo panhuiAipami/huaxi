@@ -8,6 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
@@ -20,9 +23,9 @@ import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.enumeration.BookEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterShelfEnum;
+import com.spriteapp.booklibrary.listener.DelBookShelf;
 import com.spriteapp.booklibrary.listener.DeleteBookListener;
 import com.spriteapp.booklibrary.listener.ListenerManager;
-import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.RegisterModel;
 import com.spriteapp.booklibrary.model.UpdateProgressModel;
@@ -43,8 +46,11 @@ import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.widget.recyclerview.SpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import de.greenrobot.event.EventBus;
@@ -53,7 +59,7 @@ import de.greenrobot.event.EventBus;
  * Created by kuangxiaoguo on 2017/7/7.
  */
 
-public class BookshelfFragment extends BaseFragment implements BookShelfView {
+public class BookshelfFragment extends BaseFragment implements BookShelfView, DelBookShelf {
 
     private static final String TAG = "BookshelfFragment";
     private static final int SHELF_SPAN_COUNT = 3;
@@ -71,6 +77,12 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
     private ChapterDb mChapterDb;
     private boolean isRecommendData;
     private int mDeletePosition;
+    private LinearLayout del_layout;
+    private TextView is_del;
+    private Map<Integer, Integer> del_book = new HashMap<>();
+    private int last_num = 0;
+    private List<Integer> bookIds = new ArrayList<>();
+    private List<Integer> indexs = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -79,37 +91,59 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
 
     @Override
     public void initData() {
-        SharedPreferencesUtil.getInstance().putBoolean(Constant.HAS_INIT_BOOK_SHELF, true);
-        EventBus.getDefault().register(this);
-        mBookDb = new BookDb(getContext());
-        mContentDb = new ContentDb(getMyContext());
-        mBookList = new ArrayList<>();
+        try {
+            SharedPreferencesUtil.getInstance().putBoolean(Constant.HAS_INIT_BOOK_SHELF, true);
+            Log.d("SharedPreferencesUtil", "111");
+            EventBus.getDefault().register(this);
+            mBookDb = new BookDb(getContext());
+            Log.d("SharedPreferencesUtil", "222");
+            mContentDb = new ContentDb(getMyContext());
+            Log.d("SharedPreferencesUtil", "333");
+            mBookList = new ArrayList<>();
 //        mFlagList = new ArrayList<>();
 //        mFlagList = mBookDb.queryBookData();
-        mBookList = mBookDb.queryBookData();
-        for (int i = 0; i < mBookList.size(); i++) {
-            Log.d("queryBookData1", mBookList.get(i).toString());
-        }
-//        Collections.reverse(mBookList);//倒叙
-        mChapterDb = new ChapterDb(getMyContext());
-        mPresenter = new BookShelfPresenter();
-        DialogUtil.setDialogListener(mDeleteListener);
-        mPresenter.attachView(this);
-        initRecyclerView();
-        synchronizeBookProgress();
-        if (!AppUtil.isLogin()) {
-            RegisterModel registerModel = HuaXiSDK.getInstance().getRegisterModel();
-            if (registerModel != null) {
-                mPresenter.getLoginInfo(registerModel);
-                return;
+            mBookList = mBookDb.queryBookData();
+            Log.d("SharedPreferencesUtil", "444");
+            for (int i = 0; i < mBookList.size(); i++) {
+                Log.d("queryBookData1", mBookList.get(i).toString());
             }
+//        Collections.reverse(mBookList);//倒叙
+            mChapterDb = new ChapterDb(getMyContext());
+            mPresenter = new BookShelfPresenter();
+            DialogUtil.setDialogListener(mDeleteListener);
+            mPresenter.attachView(this);
+            initRecyclerView();
+            synchronizeBookProgress();
+            if (!AppUtil.isLogin()) {
+                RegisterModel registerModel = HuaXiSDK.getInstance().getRegisterModel();
+                if (registerModel != null) {
+                    mPresenter.getLoginInfo(registerModel);
+                    return;
+                }
+            }
+            mPresenter.getBookShelf();
+            ListenerManager.getInstance().setDelBookShelf(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        mPresenter.getBookShelf();
+
     }
 
     private void initRecyclerView() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), SHELF_SPAN_COUNT,
-                LinearLayoutManager.VERTICAL, false));
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 9, LinearLayoutManager.VERTICAL, false);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position == 0)
+                    return 9;
+                else
+                    return 3;
+
+            }
+        });
+        mRecyclerView.setLayoutManager(layoutManager);
+//        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), SHELF_SPAN_COUNT,
+//                LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtil.dpToPxInt(HORIZONTAL_SPACE),
                 ScreenUtil.dpToPxInt(VERTICAL_SPACE)));
         setAdapter();
@@ -121,7 +155,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         }
         if (mAdapter == null) {
             mAdapter = new BookShelfAdapter(getContext(), mBookList,
-                    SHELF_SPAN_COUNT, HORIZONTAL_SPACE, false);
+                    SHELF_SPAN_COUNT, HORIZONTAL_SPACE, false, del_layout, is_del);
             mAdapter.setIsRecommendData(isRecommendData);
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.setDeleteBook(false);
@@ -152,6 +186,25 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
     @Override
     public void findViewId() {
         mRecyclerView = (RecyclerView) mParentView.findViewById(R.id.book_reader_recycler_view);
+        del_layout = (LinearLayout) mParentView.findViewById(R.id.del_layout);
+        is_del = (TextView) mParentView.findViewById(R.id.is_del);
+        is_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {//确认删除
+                StringBuilder builder = new StringBuilder();
+                if (del_book.size() == 0) return;
+                // 获取所有键值对对象的集合
+                Set<Map.Entry<Integer, Integer>> set = del_book.entrySet();
+                // 遍历键值对对象的集合，得到每一个键值对对象
+                for (Map.Entry<Integer, Integer> me : set) {
+                    // 根据键值对对象获取键和值
+                    bookIds.add(me.getKey());
+                    indexs.add(me.getValue());
+                    builder.append(me.getKey() + ",");
+                }
+                mPresenter.deleteBook(builder.toString());
+            }
+        });
     }
 
     @Override
@@ -262,7 +315,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         mPresenter.getBookShelf();
 //        getUserInfo();
         EventBus.getDefault().post(UpdaterPayEnum.UPDATE_LOGIN_INFO);
-        if(ListenerManager.getInstance().getLoginSuccess()!=null){
+        if (ListenerManager.getInstance().getLoginSuccess() != null) {
             ListenerManager.getInstance().getLoginSuccess().loginState(1);
         }
     }
@@ -274,20 +327,51 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
 
     @Override
     public void setDeleteBookResponse() {
-        mBookDb.deleteBook(mDeleteBookId);
-        mChapterDb.deleteChapter(mDeleteBookId);
-        mContentDb.deleteContent(mDeleteBookId);
-        mAdapter.notifyItemRemoved(mDeletePosition);
-        SettingManager.getInstance().removeReadProgress(String.valueOf(mDeleteBookId));
-        if (CollectionUtil.isEmpty(mBookList)) {
-            return;
+        try {
+            if (del_book.size() == 0) return;
+            List<Integer> pos = new ArrayList<>();
+
+            // 获取所有键值对对象的集合
+            Set<Map.Entry<Integer, Integer>> set = del_book.entrySet();
+            // 遍历键值对对象的集合，得到每一个键值对对象
+            for (Map.Entry<Integer, Integer> me : set) {
+                // 根据键值对对象获取键和值
+                int key = me.getKey();
+                int value = me.getValue();
+                pos.add(key);
+                if (CollectionUtil.isEmpty(mBookList)) {
+                    return;
+                }
+                Log.d("Entry", "key===" + key + "---" + "value===" + value);
+//                System.out.println(key + "---" + value);
+                mBookDb.deleteBook(key);
+                mChapterDb.deleteChapter(key);
+                mContentDb.deleteContent(key);
+//                mAdapter.notifyItemRemoved(value);
+//                SettingManager.getInstance().removeReadProgress(String.valueOf(value));
+            }
+            Iterator<BookDetailResponse> list = mBookList.iterator();
+            while (list.hasNext()) {
+                int book_id = list.next().getBook_id();
+                for (int i = 0; i < pos.size(); i++) {
+                    if (book_id == pos.get(i)) {
+                        list.remove();
+                    }
+                }
+            }
+//            mBookList = list;
+//        mAdapter.notifyDataSetChanged();
+//        del_layout.setVisibility(View.GONE);
+            mAdapter.setNum();
+            del_layout.setVisibility(View.GONE);
+            ListenerManager.getInstance().getDelBookShelf().del_book(0, 0, 0, 0);
+            if (CollectionUtil.isEmpty(mBookList)) {
+                onEventMainThread(UpdaterShelfEnum.UPDATE_SHELF);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (mDeletePosition >= 0 && mDeletePosition < mBookList.size()) {
-            mBookList.remove(mDeletePosition);
-        }
-        if (CollectionUtil.isEmpty(mBookList)) {
-            onEventMainThread(UpdaterShelfEnum.UPDATE_SHELF);
-        }
+
     }
 
     @Override
@@ -480,6 +564,14 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
 //        synchronizeBookProgress();
     }
 
+    public TextView getIs_del() {
+        return is_del;
+    }
+
+    public LinearLayout getDel_layout() {
+        return del_layout;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -487,6 +579,23 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView {
         SharedPreferencesUtil.getInstance().putBoolean(Constant.HAS_INIT_BOOK_SHELF, false);
         if (mPresenter != null) {
             mPresenter.detachView();
+        }
+    }
+
+    @Override
+    public void del_book(int book_id, int pos, int num, int act) {
+        if (num <= 0) {
+            del_book.clear();
+            is_del.setEnabled(false);
+            is_del.setText("请选择要删除的书籍");
+        } else {
+            if (act == 1)
+                del_book.put(book_id, pos);
+            else if (act == 2)
+                del_book.remove(book_id);
+            is_del.setEnabled(true);
+            is_del.setText("确认删除(" + num + ")");
+            Log.d("del_book", "del_book===size===" + del_book.size());
         }
     }
 }

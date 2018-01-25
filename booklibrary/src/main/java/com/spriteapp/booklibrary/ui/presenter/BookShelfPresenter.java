@@ -251,6 +251,43 @@ public class BookShelfPresenter implements BasePresenter<BookShelfView> {
                     }
                 });
     }
+    public void deleteBook(String bookId) {
+        if (mView == null) {
+            return;
+        }
+        if (!AppUtil.isNetAvailable(mView.getMyContext())) {
+            return;
+        }
+        BookApi.getInstance().
+                service
+                .deleteBook(bookId, "del")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<Void>>() {
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Base<Void> voidBase) {
+                        if (mView == null) {
+                            return;
+                        }
+                        if (voidBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                            mView.setDeleteBookResponse();
+                        }
+                    }
+                });
+    }
 
     public void addToShelf(int bookId, String action, int chapterId) {
         addToShelf(bookId, action, chapterId, true);

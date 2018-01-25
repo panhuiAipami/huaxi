@@ -101,7 +101,7 @@ public class RecentReadActivity extends TitleActivity {
         }
         if (mAdapter == null) {
             mAdapter = new BookShelfAdapter(this, mReadList,
-                    SHELF_SPAN_COUNT, HORIZONTAL_SPACE, true);
+                    SHELF_SPAN_COUNT, HORIZONTAL_SPACE, true,null,null);
             mRecyclerView.setAdapter(mAdapter);
             return;
         }

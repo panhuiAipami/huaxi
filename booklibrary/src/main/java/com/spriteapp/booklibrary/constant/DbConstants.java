@@ -16,11 +16,13 @@ public class DbConstants {
      */
     public static final String BOOK_TABLE_NAME = "book_table";
     public static final String BOOK_NAME = "book_name";
+    public static final String LAST_UPDATE_CHAPTER_TITLE = "last_update_chapter_title";
     public static final String BOOK_IMAGE = "book_image";
     public static final String LAST_CHAPTER_ID = "last_chapter_id";
     public static final String TOTAL_CHAPTER = "total_chapter";
     public static final String LAST_READ_TIME = "last_read_time";
     public static final String LAST_CHAPTER_INDEX = "last_chapter_index";
+
     //用于是否请求书籍详情接口，只有3小时外才更新
     public static final String LAST_UPDATE_BOOK_DATETIME = "last_update_book_datetime";
     public static final String LAST_UPDATE_CHAPTER_DATETIME = "last_update_chapter_datetime";

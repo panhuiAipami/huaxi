@@ -12,7 +12,7 @@ import com.spriteapp.booklibrary.constant.DbConstants;
 
 public class BookDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DB_NAME = "HuaXiDb";
     private static BookDatabaseHelper mHelper;
     public static final Object dbLock = new Object();
@@ -51,6 +51,7 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         builder.append("create table if not exists " + tableName + "(");
         builder.append("book_id integer primary key not null, ");
         builder.append(DbConstants.BOOK_NAME).append(" text,");
+        builder.append(DbConstants.LAST_UPDATE_CHAPTER_TITLE).append(" text,");
         builder.append(DbConstants.BOOK_IMAGE).append(" text,");
         builder.append(DbConstants.LAST_CHAPTER_ID).append(" integer,");
         builder.append(DbConstants.LAST_CHAPTER_INDEX).append(" integer,");
@@ -108,6 +109,11 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1 && newVersion == 2) {
+            String sql = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.LAST_UPDATE_CHAPTER_TITLE+"] nvarchar(300)";
+            db.execSQL(sql);
+        }
+
     }
 
 }

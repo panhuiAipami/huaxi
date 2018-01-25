@@ -143,6 +143,10 @@ public interface BookApiService {
     @POST("book_shelf")
     Observable<Base<Void>> deleteBook(@Field("book_ids") int bookIds,
                                       @Field("u_action") String action);
+    @FormUrlEncoded
+    @POST("book_shelf")
+    Observable<Base<Void>> deleteBook(@Field("book_ids") String bookIds,
+                                      @Field("u_action") String action);
 
     @FormUrlEncoded
     @POST("book_shelf")

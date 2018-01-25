@@ -65,6 +65,7 @@ public class BookDb {
                 values.clear();
                 values.put(DbConstants.BOOK_ID, model.getBook_id());
                 values.put(DbConstants.BOOK_NAME, model.getBook_name());
+                values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
                 values.put(DbConstants.BOOK_IMAGE, model.getBook_image());
                 values.put(DbConstants.BOOK_INTRODUCTION, model.getBook_intro());
                 values.put(DbConstants.BOOK_SHARE_URL, model.getBook_share_url());
@@ -98,6 +99,7 @@ public class BookDb {
             ContentValues values = new ContentValues();
             values.put(DbConstants.BOOK_ID, model.getBook_id());
             values.put(DbConstants.BOOK_NAME, model.getBook_name());
+            values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
             values.put(DbConstants.BOOK_IMAGE, model.getBook_image());
             values.put(DbConstants.BOOK_INTRODUCTION, model.getBook_intro());
             values.put(DbConstants.BOOK_SHARE_URL, model.getBook_share_url());
@@ -138,6 +140,7 @@ public class BookDb {
             ContentValues values = new ContentValues();
             values.put(DbConstants.BOOK_ID, model.getBook_id());
             values.put(DbConstants.BOOK_NAME, model.getBook_name());
+            values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
             values.put(DbConstants.BOOK_IMAGE, model.getBook_image());
             values.put(DbConstants.BOOK_INTRODUCTION, model.getBook_intro());
             values.put(DbConstants.BOOK_SHARE_URL, model.getBook_share_url());
@@ -183,6 +186,7 @@ public class BookDb {
             ContentValues values = new ContentValues();
             values.put(DbConstants.LAST_CHAPTER_ID, model.getChapter_id());
             values.put(DbConstants.LAST_CHAPTER_INDEX, model.getLast_chapter_index());
+//            values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
             values.put(DbConstants.TOTAL_CHAPTER, model.getBook_chapter_total());
             db.update(DbConstants.BOOK_TABLE_NAME, values, "book_id = ?",
                     new String[]{String.valueOf(model.getBook_id())});
@@ -217,6 +221,7 @@ public class BookDb {
 //                    Log.d("readTime", "阅读时间排序" + cursor.getColumnIndex(DbConstants.LAST_READ_TIME));
                     model.setBook_id(cursor.getInt(cursor.getColumnIndex(DbConstants.BOOK_ID)));
                     model.setBook_name(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_NAME)));
+                    model.setLast_update_chapter_title(cursor.getString(cursor.getColumnIndex(DbConstants.LAST_UPDATE_CHAPTER_TITLE)));
                     model.setBook_image(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_IMAGE)));
                     model.setBook_intro(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_INTRODUCTION)));
                     model.setBook_share_url(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_SHARE_URL)));
@@ -262,6 +267,7 @@ public class BookDb {
                     model = new BookDetailResponse();
                     model.setBook_id(cursor.getInt(cursor.getColumnIndex(DbConstants.BOOK_ID)));
                     model.setBook_name(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_NAME)));
+                    model.setLast_update_chapter_title(cursor.getString(cursor.getColumnIndex(DbConstants.LAST_UPDATE_CHAPTER_TITLE)));
                     model.setBook_image(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_IMAGE)));
                     model.setBook_intro(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_INTRODUCTION)));
                     model.setBook_share_url(cursor.getString(cursor.getColumnIndex(DbConstants.BOOK_SHARE_URL)));
