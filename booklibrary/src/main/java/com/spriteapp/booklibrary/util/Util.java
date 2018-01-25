@@ -47,7 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
@@ -57,6 +57,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.AppUpdateDialog;
+import com.spriteapp.booklibrary.widget.photoview.PictureSelector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -77,6 +78,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -90,6 +92,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.TELEPHONY_SERVICE;
+import static com.spriteapp.booklibrary.util.GlideUtils.IMGHEIGHT;
+import static com.spriteapp.booklibrary.util.GlideUtils.IMGWIDTH;
 
 /**
  * 工具类
@@ -1608,6 +1612,40 @@ public class Util {
 
     }
 
+    public static List<LocalMedia> getPreViewPath(List<String> pic_url,Map<String,Integer> map) {
+        List<LocalMedia> medias = new ArrayList<>();
+        for (int i = 0; i < pic_url.size(); i++) {
+            LocalMedia localMedia = new LocalMedia();
+            localMedia.setPath(pic_url.get(i));
+            if (PictureMimeType.isImageGif(pic_url.get(i))) {
+                localMedia.setCompressed(false);
+                localMedia.setPictureType("image/gif");
+            }
+            if(map!=null&&map.size()!=0){
+                localMedia.setWidth(map.get(IMGWIDTH));
+                localMedia.setHeight(map.get(IMGHEIGHT));
+                Log.d("localMedia", "设置宽高"+"宽==="+map.get(IMGWIDTH)+"高==="+map.get(IMGHEIGHT));
+            }
+            medias.add(localMedia);
+        }
+        return medias;
+    }
+
+    /**
+     * 图片放大
+     *
+     * @param
+     */
+    public static void ImageClick(View v, final List<String> url, final Map<String,Integer> map, final int position, final Activity context) {
+        if (url == null) return;
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureSelector.create(context).externalPicturePreview(position, getPreViewPath(url,map));
+            }
+        });
+    }
+
     public static List<LocalMedia> getPreViewPath(List<String> pic_url) {
         List<LocalMedia> medias = new ArrayList<>();
         for (int i = 0; i < pic_url.size(); i++) {
@@ -1617,7 +1655,6 @@ public class Util {
         }
         return medias;
     }
-
     /**
      * 图片放大
      *

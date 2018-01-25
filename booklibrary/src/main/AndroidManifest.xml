@@ -78,6 +78,7 @@
 
         <activity android:name=".ui.activity.SquareDetailsActivity" />
         <activity android:name=".ui.activity.CommentReplyActivity"></activity>
+        <activity android:name=".widget.photoview.PictureExternalPreviewActivity"></activity>
     </application>
 
 </manifest>

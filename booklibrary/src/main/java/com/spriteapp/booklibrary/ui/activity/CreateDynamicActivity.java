@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -143,15 +144,13 @@ public class CreateDynamicActivity extends TitleActivity {
         } else if (v == add_photo) {//添加照片
             PictureSelector.create(CreateDynamicActivity.this)
                     .openGallery(PictureMimeType.ofImage())
+                    .isGif(true)
                     .selectionMedia(selectList)
                     .compress(true)
-                    .isGif(true)
                     .maxSelectNum(MAX_COUNTS)
                     .forResult(PictureConfig.CHOOSE_REQUEST);
         } else if (v == iv_submit) {//发布
             sendBtn();
-
-
         }
 
     }
@@ -273,6 +272,13 @@ public class CreateDynamicActivity extends TitleActivity {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     selectList = PictureSelector.obtainMultipleResult(data);
+                    for (int i = 0; i < selectList.size(); i++) {
+                        if (selectList.size() != 0 && selectList.get(i).getCompressPath() != null && PictureMimeType.isImageGif(selectList.get(i).getCompressPath())) {
+                            selectList.get(i).setCompressed(false);
+                            selectList.get(i).setCompressPath(selectList.get(i).getPath());
+                        }
+                        Log.d("img_path", selectList.get(i).getPictureType());
+                    }
                     adapter.setList(selectList);
                     adapter.notifyDataSetChanged();
                     break;

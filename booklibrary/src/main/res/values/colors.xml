@@ -57,6 +57,10 @@
     <color name="book_reader_all_book_day_color">#bbbbbb</color>
     <color name="book_reader_all_book_night_color">#626262</color>
     <color name="book_reader_book_line_night_color">#1a1a1a</color>
+
+    <!--书架第一条-->
+    <color name="details_bg">#1a1a1a</color>
+
     <!--主字体颜色-->
     <color name="one_font_color">#3b3c44</color>
     <!--二级字体颜色-->

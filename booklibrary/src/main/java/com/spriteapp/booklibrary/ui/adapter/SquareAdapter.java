@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,11 +54,13 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     FollowPop popupWindow;
     private CommentDialog commentDialog;
     private int commentPos = -1;
+    private FrameLayout.LayoutParams layoutParams;
 
     public SquareAdapter(Activity context, List<SquareBean> list) {
         this.context = context;
         this.list = list;
         commentDialog = new CommentDialog(context);
+        layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -79,23 +82,30 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             SquareBean squareBean = list.get(position);
             if (squareBean == null) return;
             SquareViewHolder viewHolder = (SquareViewHolder) holder;
+
             if (squareBean.getPic_url() != null) {
                 if (position == list.size() - 1) viewHolder.line.setVisibility(View.GONE);
                 if (squareBean.getPic_url().size() == 1) {//一张图片
+                    if (squareBean.getHeight() > 0) {//有高度使用该高度
+                        ViewGroup.LayoutParams layoutParams = viewHolder.image1.getLayoutParams();
+                        layoutParams.height = squareBean.getHeight();
+                        viewHolder.image1.setLayoutParams(layoutParams);
+                    }
                     viewHolder.image2.setVisibility(View.GONE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
-                    GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
-                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
+                    GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
+                    if(squareBean.getHeight()==0&&true){
+
+                    }
+
+
                 } else if (squareBean.getPic_url().size() == 2) {//两张图片
                     viewHolder.image2.setVisibility(View.VISIBLE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
-                    GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
-                    GlideUtils.loadImage(viewHolder.image2, squareBean.getPic_url().get(1), context);
-                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
-                    Util.ImageClick(viewHolder.image2, squareBean.getPic_url(), 1, context);
-
+                    GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
+                    GlideUtils.loadAndGetImage(viewHolder.image2, squareBean.getPic_url().get(1), squareBean.getPic_url(), 0, context);
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.image1.getLayoutParams();
                     layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(context, 30)) / 3;
                     layoutParams.width = layoutParams.height;

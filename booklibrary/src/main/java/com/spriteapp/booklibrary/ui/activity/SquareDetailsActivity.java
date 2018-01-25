@@ -440,14 +440,18 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 image2.setVisibility(View.GONE);
                 image_recyclerview.setVisibility(View.GONE);
                 image1.setVisibility(View.VISIBLE);
-                GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
-                Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
+                GlideUtils.loadAndGetImage(image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, this);
+//                GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
+//                Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
             } else if (squareBean.getPic_url().size() == 2) {//两张图片
                 image2.setVisibility(View.VISIBLE);
                 image_recyclerview.setVisibility(View.GONE);
                 image1.setVisibility(View.VISIBLE);
-                GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
-                GlideUtils.loadImage(image2, squareBean.getPic_url().get(1), this);
+
+                GlideUtils.loadAndGetImage(image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, this);
+                GlideUtils.loadAndGetImage(image2, squareBean.getPic_url().get(1), squareBean.getPic_url(), 1, this);
+//                GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
+//                GlideUtils.loadImage(image2, squareBean.getPic_url().get(1), this);
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image1.getLayoutParams();
                 layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(this, 30)) / 3;
@@ -456,8 +460,8 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 image1.setLayoutParams(layoutParams);
                 image2.setLayoutParams(layoutParams);
 
-                Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
-                Util.ImageClick(image2, squareBean.getPic_url(), 1, this);
+//                Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
+//                Util.ImageClick(image2, squareBean.getPic_url(), 1, this);
             } else if (squareBean.getPic_url().size() > 2) {//两张图片以上
                 image1.setVisibility(View.GONE);
                 image2.setVisibility(View.GONE);

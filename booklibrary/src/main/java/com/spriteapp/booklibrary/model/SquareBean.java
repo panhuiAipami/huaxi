@@ -42,7 +42,15 @@ public class SquareBean {
     private List<ReadHistoryBean> readhistory;
     private List<CommentBean> comments;
     private List<CommentReply> commentList;
+    private int height;
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public int getId() {
         return id;

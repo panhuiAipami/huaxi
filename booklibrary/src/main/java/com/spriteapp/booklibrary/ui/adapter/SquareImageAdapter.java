@@ -55,8 +55,9 @@ public class SquareImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             layoutParams.height = height;
             layoutParams.width = layoutParams.height;
             viewHolder.imageView.setLayoutParams(layoutParams);
-            GlideUtils.loadImage(viewHolder.imageView, list.get(position), context);
-            Util.ImageClick(viewHolder.imageView, list, position, context);//查看大图
+            GlideUtils.loadAndGetImage(viewHolder.imageView, list.get(position), list, position, context);
+//            GlideUtils.loadImage(viewHolder.imageView, list.get(position), context);
+//            Util.ImageClick(viewHolder.imageView, list, position, context);//查看大图
 
         }
 
