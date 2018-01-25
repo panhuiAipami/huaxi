@@ -91,8 +91,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void findViewId() {
-        Bundle bundle = getArguments();
-        type = bundle.getInt(FRAGMENTTYPE, 0);
+        if(getArguments() != null) {
+            Bundle bundle = getArguments();
+            type = bundle.getInt(FRAGMENTTYPE, 0);
+        }
         sex_layout = (LinearLayout) mView.findViewById(R.id.sex_item);
         boy_or_girl = (CheckBox) mView.findViewById(R.id.boy_or_girl);
         tab_one = (TextView) mView.findViewById(R.id.tab_one);

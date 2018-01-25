@@ -43,6 +43,7 @@ import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
+import com.spriteapp.booklibrary.ui.fragment.HomeFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
 import com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -352,7 +353,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         bundle2.putInt(FRAGMENTTYPE, 2);
         homePageFragment1.setArguments(bundle1);
         homePageFragment2.setArguments(bundle2);
-        mFragmentList.add(homePageFragment1);
+        mFragmentList.add(HomeFragment.newInstance("",""));
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
         mFragmentList.add(new CommunityFragment());//社区分类
