@@ -59,7 +59,6 @@ public class CreateDynamicActivity extends TitleActivity {
     PhotoSelectedListAdapter adapter;
     List<LocalMedia> selectList = new ArrayList<>();
     private ImageView iv_back, add_photo;
-    private List<String> imageUrl = new ArrayList<>();
     private String content;
 
 
