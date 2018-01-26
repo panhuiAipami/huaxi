@@ -33,6 +33,7 @@ import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.BookStoreResponse;
 import com.spriteapp.booklibrary.model.response.LoginResponse;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.spriteapp.booklibrary.ui.adapter.BookShelfAdapter;
 import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.ui.view.BookShelfView;
@@ -157,6 +158,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             mAdapter = new BookShelfAdapter(getContext(), mBookList,
                     SHELF_SPAN_COUNT, HORIZONTAL_SPACE, false, del_layout, is_del);
             mAdapter.setIsRecommendData(isRecommendData);
+            Log.d("IsLong", "isRecommendData===" + isRecommendData);
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.setDeleteBook(false);
             mAdapter.setDeleteListener(mDeleteListener);
@@ -164,6 +166,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         }
         mAdapter.setDeleteBook(false);
         mAdapter.setIsRecommendData(isRecommendData);
+        Log.d("IsLong", "isRecommendData===" + isRecommendData);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -584,6 +587,10 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
 
     @Override
     public void del_book(int book_id, int pos, int num, int act) {
+        if (book_id == 0)
+            goneFinish();
+        else
+            showFinish();
         if (num <= 0) {
             del_book.clear();
             is_del.setEnabled(false);
@@ -596,6 +603,25 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             is_del.setEnabled(true);
             is_del.setText("确认删除(" + num + ")");
             Log.d("del_book", "del_book===size===" + del_book.size());
+        }
+    }
+
+    public void setFinish() {
+        if (mAdapter != null)
+            mAdapter.setNum();
+    }
+
+    public void showFinish() {
+        if (getActivity() instanceof HomeActivity) {
+            HomeActivity homeActivity = (HomeActivity) getActivity();
+            homeActivity.showLeftView();
+        }
+    }
+
+    public void goneFinish() {
+        if (getActivity() instanceof HomeActivity) {
+            HomeActivity homeActivity = (HomeActivity) getActivity();
+            homeActivity.goneLeftView();
         }
     }
 }

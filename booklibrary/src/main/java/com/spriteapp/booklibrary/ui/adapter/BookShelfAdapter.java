@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,9 +140,11 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             oneViewHolder.logoImageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    Log.d("IsLong","执行上面");
                     if (isRecommendData || isRecentReadBook) {
                         return false;
                     }
+                    Log.d("IsLong","执行下面");
                     if (isDeleteBook) {
                         return true;
                     }
@@ -184,7 +187,9 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     mHandler.sendEmptyMessageDelayed(0, 1000);
                 }
             });
-            if(num==0)oneViewHolder.deleteImageView.setSelected(false);
+            if (num == 0) oneViewHolder.deleteImageView.setSelected(false);
+            if (!isDeleteBook && del_layout.getVisibility() == View.VISIBLE)
+                goneDel();
             oneViewHolder.deleteImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -260,7 +265,9 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     mHandler.sendEmptyMessageDelayed(0, 1000);
                 }
             });
-            if(num==0)shelfViewHolder.deleteImageView.setSelected(false);
+            if (num == 0) shelfViewHolder.deleteImageView.setSelected(false);
+            if (!isDeleteBook && del_layout.getVisibility() == View.VISIBLE)
+                goneDel();
             shelfViewHolder.deleteImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -286,9 +293,13 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
-    public void setData(RecyclerView.ViewHolder holder) {
-
-
+    public void goneDel() {
+        del_layout.setVisibility(View.GONE);
+        num = 0;
+        if (ListenerManager.getInstance().getDelBookShelf() != null) {
+            ListenerManager.getInstance().getDelBookShelf().del_book(0, 0, 0, 0);
+            is_del.setEnabled(false);
+        }
     }
 
     public void setNum() {
@@ -344,7 +355,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     static class OneViewHolder extends RecyclerView.ViewHolder {
 
-        TextView progressTextView,to_read;
+        TextView progressTextView, to_read;
         TextView titleTextView, chapter_title;
         ImageView logoImageView;
         RelativeLayout mShadowLayout;
@@ -369,4 +380,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setIsRecommendData(boolean recommendData) {
         isRecommendData = recommendData;
     }
+
+
+
 }

@@ -34,6 +34,8 @@ import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.listener.DelBookShelf;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.StoreBean;
 import com.spriteapp.booklibrary.model.TabBar;
@@ -72,7 +74,7 @@ import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYP
  * Created by kuangxiaoguo on 2017/7/7.
  */
 
-public class HomeActivity extends TitleActivity implements View.OnClickListener {
+public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf {
 
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
@@ -104,6 +106,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
     private LinearLayout icon_layout;
     private View icon_line;
     MessageRemindDialog dialog;
+    BookshelfFragment bookshelfFragment;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -332,6 +335,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         mBookstoreLayout.setOnClickListener(this);
         mMeLayout.setOnClickListener(this);
         mCommunityLayout.setOnClickListener(this);
+        ListenerManager.getInstance().setDelBookShelf(this);
     }
 
     private void setAdapter() {
@@ -353,11 +357,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         bundle2.putInt(FRAGMENTTYPE, 2);
         homePageFragment1.setArguments(bundle1);
         homePageFragment2.setArguments(bundle2);
-        mFragmentList.add(HomeFragment.newInstance("",""));
+        mFragmentList.add(HomeFragment.newInstance("", ""));
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
         mFragmentList.add(new CommunityFragment());//社区分类
-        mFragmentList.add(new BookshelfFragment());
+        bookshelfFragment = new BookshelfFragment();
+        mFragmentList.add(bookshelfFragment);
         mFragmentList.add(new PersonCenterFragment());
     }
 
@@ -520,6 +525,16 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void del_book(int book_id, int pos, int num, int act) {
+        if (book_id == 0) {
+            mLeftLayout.setVisibility(View.GONE);
+        } else if (book_id != 0) {
+            if (mLeftLayout.getVisibility() == View.GONE)
+                mLeftLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
 
@@ -557,6 +572,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     break;
                 case DISCOVER_POSITION:
                     mRightLayout.removeAllViews();
+                    mLeftLayout.removeAllViews();
                     setTitle(R.string.book_reader_bookstore);
                     addSearchView();
                     setSelectView(DISCOVER_POSITION);
@@ -565,6 +581,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     break;
                 case COMMUNITY_POSITION:
                     mRightLayout.removeAllViews();
+                    mLeftLayout.removeAllViews();
                     setTitle(R.string.book_reader_community);
                     addSearchView();
                     setSelectView(COMMUNITY_POSITION);
@@ -582,6 +599,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                 case ME_POSITION:
                     setTitle(R.string.book_reader_me);
                     mRightLayout.removeAllViews();
+                    mLeftLayout.removeAllViews();
                     setSelectView(ME_POSITION);
                     visible(mTitleLayout);
                     setViewpagerTopMargin(TOP_BAR_HEIGHT);
@@ -614,12 +632,16 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
 
     private void addFreeTextView() {
         mRightLayout.removeAllViews();
+        mLeftLayout.removeAllViews();
         TextView view = (TextView) LayoutInflater.from(this).inflate(R.layout.book_reader_free_text_layout, null);
+        TextView leftView = (TextView) LayoutInflater.from(this).inflate(R.layout.finish_layout, null);
         int rightTitleColor = HuaXiSDK.getInstance().getConfig().getRightTitleColor();
         if (rightTitleColor != 0) {
             view.setTextColor(rightTitleColor);
+            leftView.setTextColor(rightTitleColor);
         }
         mRightLayout.addView(view);
+        mLeftLayout.addView(leftView);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -628,6 +650,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                     return;
                 }
                 ActivityUtil.toWebViewActivity(mContext, Constant.CHECK_IN_URL);
+            }
+        });
+        mLeftLayout.setVisibility(View.GONE);
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bookshelfFragment != null)
+                    bookshelfFragment.setFinish();
             }
         });
     }
@@ -647,7 +677,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                 return;
             }
             super.onBackPressed();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -698,5 +728,15 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener 
                 }
             }
         });
+    }
+
+    public void showLeftView() {
+        if (mLeftLayout.getVisibility() == View.GONE)
+            mLeftLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void goneLeftView() {
+        if (mLeftLayout.getVisibility() == View.VISIBLE)
+            mLeftLayout.setVisibility(View.GONE);
     }
 }

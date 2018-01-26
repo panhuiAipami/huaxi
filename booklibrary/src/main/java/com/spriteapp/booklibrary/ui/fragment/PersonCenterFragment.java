@@ -142,49 +142,50 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
 
         if (v == user_name) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == hua_bei) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == hua_ban) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
+
         } else if (v == user_share) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
+
         } else if (v == user_follow) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
+
         } else if (v == user_fans) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
+
         } else if (v == recharge) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.H5_PAY_URL);
         } else if (v == bookshelf) {
-            IsLogin();
             if (getActivity() instanceof HomeActivity) {
                 HomeActivity activity = (HomeActivity) getActivity();
                 activity.setSelectView(PERSON_TO_BOOKSHELF);
             }
-
         } else if (v == comment) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == recharge_record) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.USER_RECHARGE_LOG);
         } else if (v == records_of_consumption) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.USER_CONSUME_LOG);
         } else if (v == award_record) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.USER_GIVE_LOG);
         } else if (v == remind) {
-//            IsLogin();
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == phone) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == setting) {
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == user_bg) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == user_head) {
-            IsLogin();
+            if (!AppUtil.isLogin(getActivity())) return;
         }
     }
 
@@ -278,6 +279,8 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     }
 
     public void setUserDataNull() {
+        UserBean user = new UserBean();
+        user.commit();
         GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, getActivity());
         hua_ban.setText("0");
         hua_bei.setText("0");
