@@ -43,6 +43,7 @@ import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
+import com.spriteapp.booklibrary.ui.dialog.SortPop;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomeFragment;
@@ -633,16 +634,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private void addFreeTextView() {
         mRightLayout.removeAllViews();
         mLeftLayout.removeAllViews();
-        TextView view = (TextView) LayoutInflater.from(this).inflate(R.layout.book_reader_free_text_layout, null);
-        TextView leftView = (TextView) LayoutInflater.from(this).inflate(R.layout.finish_layout, null);
-        int rightTitleColor = HuaXiSDK.getInstance().getConfig().getRightTitleColor();
-        if (rightTitleColor != 0) {
-            view.setTextColor(rightTitleColor);
-            leftView.setTextColor(rightTitleColor);
-        }
-        mRightLayout.addView(view);
-        mLeftLayout.addView(leftView);
-        view.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.book_reader_free_text_layout, null);
+        view.findViewById(R.id.qiandao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!AppUtil.isLogin()) {
@@ -650,6 +643,30 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     return;
                 }
                 ActivityUtil.toWebViewActivity(mContext, Constant.CHECK_IN_URL);
+            }
+        });
+        view.findViewById(R.id.paixu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SortPop(HomeActivity.this,view.findViewById(R.id.paixu));
+            }
+        });
+        TextView leftView = (TextView) LayoutInflater.from(this).inflate(R.layout.finish_layout, null);
+        int rightTitleColor = HuaXiSDK.getInstance().getConfig().getRightTitleColor();
+//        if (rightTitleColor != 0) {
+//            view.setTextColor(rightTitleColor);
+//            leftView.setTextColor(rightTitleColor);
+//        }
+        mRightLayout.addView(view);
+        mLeftLayout.addView(leftView);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (!AppUtil.isLogin()) {
+//                    HuaXiSDK.getInstance().toLoginPage(mContext);
+//                    return;
+//                }
+//                ActivityUtil.toWebViewActivity(mContext, Constant.CHECK_IN_URL);
             }
         });
         mLeftLayout.setVisibility(View.GONE);

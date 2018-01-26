@@ -34,6 +34,8 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment.toSetting;
+
 /**
  * Created by kuangxiaoguo on 2017/7/18.
  */
@@ -48,6 +50,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
     private Switch mPageModeSwitch;
     private Button mLoginOutButton;
     private LoginOutPresenter mLoginOutPresenter;
+    private RelativeLayout remind_layout, fang_layout;
 
     @Override
     public void initData() {
@@ -55,7 +58,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
         getCacheSize();
         mLoginOutPresenter = new LoginOutPresenter();
         mLoginOutPresenter.attachView(this);
-        mLoginOutButton.setVisibility(AppUtil.isLogin() ? View.VISIBLE : View.GONE);
+        mLoginOutButton.setVisibility(AppUtil.isLogin() && mLoginOutButton.getVisibility() == View.VISIBLE ? View.VISIBLE : View.GONE);
     }
 
     private void getCacheSize() {
@@ -84,12 +87,19 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
     public void findViewId() throws Exception {
         super.findViewId();
         mClearCacheLayout = (RelativeLayout) findViewById(R.id.book_reader_clear_cache_layout);
+        remind_layout = (RelativeLayout) findViewById(R.id.remind_layout);
+        fang_layout = (RelativeLayout) findViewById(R.id.fang_layout);
         mCacheTextView = (TextView) findViewById(R.id.book_reader_cache_text_view);
         app_updata = (TextView) findViewById(R.id.app_updata);
         mAutoBuySwitch = (Switch) findViewById(R.id.book_reader_auto_buy_switch);
         mPageModeSwitch = (Switch) findViewById(R.id.book_reader_page_mode_switch);
         mLoginOutButton = (Button) findViewById(R.id.book_reader_login_out_button);
         setListener();
+        if (toSetting == 1) {
+            gone(mClearCacheLayout, app_updata, mLoginOutButton);
+        } else if (toSetting == 2) {
+            gone(remind_layout, fang_layout);
+        }
     }
 
     private void setListener() {

@@ -84,6 +84,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     private int last_num = 0;
     private List<Integer> bookIds = new ArrayList<>();
     private List<Integer> indexs = new ArrayList<>();
+    public static int sort_type = 0;
 
     @Override
     public int getLayoutResId() {

@@ -4,11 +4,14 @@
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="52dp"></View>
 
     <RelativeLayout
+        android:id="@+id/remind_layout"
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:layout_marginTop="52dp"
         android:background="@color/book_reader_white"
         android:paddingLeft="14dp"
         android:paddingRight="14dp">
@@ -30,6 +33,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/fang_layout"
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_marginTop="5dp"

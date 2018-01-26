@@ -53,6 +53,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             award_record, remind, phone, setting;
     private ImageView user_bg, user_head;
     private BookShelfPresenter mPresenter;
+    public static int toSetting = 0;
 
 
     @Override
@@ -80,6 +81,12 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void configViews() {
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser && AppUtil.isLogin())
+            getUserData();
     }
 
     @Override
@@ -177,10 +184,12 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.USER_GIVE_LOG);
         } else if (v == remind) {
+            toSetting = 1;
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == phone) {
             if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == setting) {
+            toSetting = 2;
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == user_bg) {
             if (!AppUtil.isLogin(getActivity())) return;
