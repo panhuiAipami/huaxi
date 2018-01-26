@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="亲,您还没有关注任何人哦～"
-        android:textColor="@color/square_user_speak"
+        android:textColor="@color/square_small"
         android:textSize="18sp" />
 
 </LinearLayout>

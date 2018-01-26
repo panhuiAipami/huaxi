@@ -40,8 +40,11 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="15dp"
+        android:visibility="visible"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/del_layout" />
+    <include layout="@layout/follow_null_layout"></include>
+
 
 
 

@@ -56,6 +56,8 @@ import java.util.Set;
 
 import de.greenrobot.event.EventBus;
 
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.BOOKSHELF_TO_BOOKSTORE;
+
 /**
  * Created by kuangxiaoguo on 2017/7/7.
  */
@@ -85,6 +87,8 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     private List<Integer> bookIds = new ArrayList<>();
     private List<Integer> indexs = new ArrayList<>();
     public static int sort_type = 0;
+    private LinearLayout null_layout;
+    private TextView miaoshu;
 
     @Override
     public int getLayoutResId() {
@@ -116,6 +120,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             }
             mPresenter.getBookShelf();
             ListenerManager.getInstance().setDelBookShelf(this);
+            showOrGone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,6 +187,9 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     public void findViewId() {
         mRecyclerView = (RecyclerView) mParentView.findViewById(R.id.book_reader_recycler_view);
         del_layout = (LinearLayout) mParentView.findViewById(R.id.del_layout);
+        null_layout = (LinearLayout) mParentView.findViewById(R.id.null_layout);
+        miaoshu = (TextView) mParentView.findViewById(R.id.miaoshu);
+        miaoshu.setText("一本书也没有,去书城看看吧～");
         is_del = (TextView) mParentView.findViewById(R.id.is_del);
         is_del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +206,15 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
                     builder.append(me.getKey() + ",");
                 }
                 mPresenter.deleteBook(builder.toString());
+            }
+        });
+        null_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getActivity() instanceof HomeActivity){
+                    HomeActivity homeActivity= (HomeActivity) getActivity();
+                    homeActivity.setSelectView(BOOKSHELF_TO_BOOKSTORE);
+                }
             }
         });
     }
@@ -361,8 +378,10 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             del_layout.setVisibility(View.GONE);
             ListenerManager.getInstance().getDelBookShelf().del_book(0, 0, 0, 0);
             if (CollectionUtil.isEmpty(mBookList)) {
+                Log.d("UPDATE_SHELF", "更新书架");
                 onEventMainThread(UpdaterShelfEnum.UPDATE_SHELF);
             }
+            showOrGone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -413,6 +432,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         mBookList.clear();
         mBookList.addAll(dataList);
         setAdapter();
+        showOrGone();
     }
 
     public void onEventMainThread(RegisterModel model) {
@@ -618,7 +638,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     }
 
     public void refreshSort() {
-        if(mBookDb!=null&&mBookList!=null&&mAdapter!=null){
+        if (mBookDb != null && mBookList != null && mAdapter != null) {
             List<BookDetailResponse> temp = new ArrayList<>();
             temp = mBookDb.queryBookData();
             if (temp != null && temp.size() != 0) {
@@ -628,5 +648,13 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             }
         }
 
+    }
+
+    public void showOrGone() {
+        if (mBookList != null && mBookList.size() != 0) {
+            null_layout.setVisibility(View.GONE);
+        } else {
+            null_layout.setVisibility(View.VISIBLE);
+        }
     }
 }
