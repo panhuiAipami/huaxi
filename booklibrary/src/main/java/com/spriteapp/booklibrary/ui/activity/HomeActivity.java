@@ -86,6 +86,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private static final int BOOKSTORE_POSITION = 3;
     private static final int ME_POSITION = 4;
     public static final int PERSON_TO_BOOKSHELF = 10;
+    public static final int BOOKSHELF_TO_BOOKSTORE = 20;
     private static final int TOP_BAR_HEIGHT = 47;
     ViewPager mHomeViewPager;
     LinearLayout mBookshelfLayout;
@@ -523,6 +524,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                 mBookstoreLayout.setSelected(true);
                 setSelectFalse(mBookshelfLayout, mDiscoverLayout, mMeLayout, mCommunityLayout);
                 break;
+            case BOOKSHELF_TO_BOOKSTORE:
+                mHomeViewPager.setCurrentItem(DISCOVER_POSITION);
+                mDiscoverLayout.setSelected(true);
+                setSelectFalse(mBookshelfLayout, mBookstoreLayout, mMeLayout, mCommunityLayout);
+                break;
+
         }
     }
 

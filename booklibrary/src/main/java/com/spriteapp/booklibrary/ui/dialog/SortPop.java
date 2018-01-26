@@ -32,7 +32,7 @@ public class SortPop extends PopupWindow {
     private ImageView lately_img, updata_img, collection_img;
     private List<ImageView> images = new ArrayList<>();
     private String LAST_READ_TIME = "last_read_time desc";
-    private String LAST_UPDATE_BOOK_DATETIME = "last_update_book_datetime desc";
+    private String LAST_UPDATE_CHAPTER_DATETIME = "last_update_chapter_datetime desc";
     private String BOOK_ADD_SHELF = "last_read_time desc";
     private OnItemClickListener onItemClickListener;
 
@@ -90,7 +90,7 @@ public class SortPop extends PopupWindow {
         updata_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SORT_DESC = BOOK_ADD_SHELF;
+                SORT_DESC = LAST_UPDATE_CHAPTER_DATETIME;
                 listener();
                 setState(1);
                 dismiss();
@@ -101,7 +101,7 @@ public class SortPop extends PopupWindow {
         collection_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SORT_DESC = LAST_UPDATE_BOOK_DATETIME;
+                SORT_DESC = BOOK_ADD_SHELF;
                 listener();
                 setState(2);
                 dismiss();
