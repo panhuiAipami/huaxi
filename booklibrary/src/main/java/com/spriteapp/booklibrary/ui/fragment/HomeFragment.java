@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
         DiscoverFragment discoverFragment = new DiscoverFragment();
         discoverFragment.setArguments(bundle1);
 
-        fragmentList.add(discoverFragment);
+        fragmentList.add(ChoiceFragment.newInstance(0));
         fragmentList.add(new PersonCenterFragment());
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);

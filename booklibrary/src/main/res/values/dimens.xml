@@ -14,4 +14,5 @@
     <dimen name="person_line_left_padding">50dp</dimen>
     <dimen name="person_icon_left_wight">30dp</dimen>
     <dimen name="person_text_to_img">15dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

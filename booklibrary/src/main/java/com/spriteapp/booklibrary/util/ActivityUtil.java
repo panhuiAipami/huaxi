@@ -51,12 +51,14 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toReadActivity(Activity context, BookDetailResponse detail, boolean hua) {
+    public static void toReadActivity(Activity context, int book_id, int chapter_id) {
+        BookDetailResponse detail = new BookDetailResponse();
+        detail.setBook_id(book_id);
+        detail.setChapter_id(chapter_id);
+
         Intent intent = new Intent(context, ReadActivity.class);
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
         context.startActivity(intent);
-//        context.overridePendingTransition(R.anim.activity_out, R.anim.activity_in);
-
     }
 
     public static void toCreateDynamicActivity(Activity context) {

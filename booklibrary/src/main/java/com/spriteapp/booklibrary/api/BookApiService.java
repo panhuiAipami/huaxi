@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
+import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
@@ -254,6 +255,7 @@ public interface BookApiService {
     Observable<Base> square_addcontentsupport(@Query("id") int comment_id,
                                               @Query("platform_id") int platform_id);
 
+
     //帖子评论回复详情页翻页
     @GET("square_replypage")
     Observable<Base<CommentReplyBean>> square_replypage(@Query("id") int comment_id,
@@ -262,4 +264,7 @@ public interface BookApiService {
                                                         @Query("page_size") int page_size,
                                                         @Query("platform_id") int platform_id);
 
+    //精选页
+    @GET("book_weekly")
+    Observable<Base<List<ChoiceBean>>> book_weekly(@Query("format")String format);
 }
