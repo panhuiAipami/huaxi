@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
+        android:textStyle="bold"
         android:text="title"
         android:textColor="@color/square_user_speak"
         android:textSize="16sp" />
@@ -48,19 +50,34 @@
             android:textColor="@color/square_small"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/look_details"
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="25dp"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableRight="@mipmap/look_more_icon"
-            android:gravity="center_vertical|right"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="查看详情"
-            android:textColor="@color/square_comment_selector"
-            android:textSize="12sp" />
+            android:layout_height="25dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/look_details"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="查看详情"
+                android:textColor="@color/square_comment_selector"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="3dp"
+                android:src="@mipmap/look_more_icon"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 
