@@ -17,6 +17,7 @@ import com.spriteapp.booklibrary.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.spriteapp.booklibrary.database.BookDb.SORT_DESC;
 import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.sort_type;
 
 /**
@@ -30,7 +31,12 @@ public class SortPop extends PopupWindow {
     private TextView lately_text, updata_text, collection_text;
     private ImageView lately_img, updata_img, collection_img;
     private List<ImageView> images = new ArrayList<>();
+    private String LAST_READ_TIME = "last_read_time desc";
+    private String LAST_UPDATE_BOOK_DATETIME = "last_update_book_datetime desc";
+    private String BOOK_ADD_SHELF = "last_read_time desc";
+    private OnItemClickListener onItemClickListener;
 
+    //"last_read_time desc","last_update_book_datetime desc","book_add_shelf desc"
     public SortPop(Activity activity, View v) {
         this.context = activity;
         showpopWindow(v);
@@ -74,6 +80,8 @@ public class SortPop extends PopupWindow {
         lately_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SORT_DESC = LAST_READ_TIME;
+                listener();
                 setState(0);
                 dismiss();
             }
@@ -82,6 +90,8 @@ public class SortPop extends PopupWindow {
         updata_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SORT_DESC = BOOK_ADD_SHELF;
+                listener();
                 setState(1);
                 dismiss();
             }
@@ -91,6 +101,8 @@ public class SortPop extends PopupWindow {
         collection_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SORT_DESC = LAST_UPDATE_BOOK_DATETIME;
+                listener();
                 setState(2);
                 dismiss();
             }
@@ -109,4 +121,16 @@ public class SortPop extends PopupWindow {
         sort_type = pos;
     }
 
+    public void listener() {
+        if (onItemClickListener != null)
+            onItemClickListener.refresh();
+    }
+
+    public void setSortOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void refresh();
+    }
 }

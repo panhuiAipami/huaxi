@@ -24,6 +24,7 @@ public class BookDb {
     private static final String TAG = "ShelfDB";
     private BookDatabaseHelper mHelper;
     private SQLiteDatabase db;
+    public static String SORT_DESC = "last_read_time desc";
 
     public BookDb(Context context) {
         mHelper = BookDatabaseHelper.getInstance(context);
@@ -212,10 +213,11 @@ public class BookDb {
         synchronized (BookDatabaseHelper.dbLock) {
             openDB();
             List<BookDetailResponse> modelList = new ArrayList<>();
-            //"last_read_time desc"
+            //"last_read_time desc","last_update_book_datetime desc","book_add_shelf desc"
             Cursor cursor = db.query(DbConstants.BOOK_TABLE_NAME, null, "book_add_shelf = ?",
-                    new String[]{String.valueOf(BookEnum.ADD_SHELF.getValue())}, null, null, "last_read_time desc");
-            if (cursor.getColumnCount() != 0) {                while (cursor.moveToNext()) {
+                    new String[]{String.valueOf(BookEnum.ADD_SHELF.getValue())}, null, null, SORT_DESC);
+            if (cursor.getColumnCount() != 0) {
+                while (cursor.moveToNext()) {
 
                     BookDetailResponse model = new BookDetailResponse();
 //                    Log.d("readTime", "阅读时间排序" + cursor.getColumnIndex(DbConstants.LAST_READ_TIME));

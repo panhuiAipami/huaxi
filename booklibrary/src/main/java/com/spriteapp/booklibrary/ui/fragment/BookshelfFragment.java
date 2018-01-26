@@ -95,20 +95,11 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     public void initData() {
         try {
             SharedPreferencesUtil.getInstance().putBoolean(Constant.HAS_INIT_BOOK_SHELF, true);
-            Log.d("SharedPreferencesUtil", "111");
             EventBus.getDefault().register(this);
             mBookDb = new BookDb(getContext());
-            Log.d("SharedPreferencesUtil", "222");
             mContentDb = new ContentDb(getMyContext());
-            Log.d("SharedPreferencesUtil", "333");
             mBookList = new ArrayList<>();
-//        mFlagList = new ArrayList<>();
-//        mFlagList = mBookDb.queryBookData();
             mBookList = mBookDb.queryBookData();
-            Log.d("SharedPreferencesUtil", "444");
-            for (int i = 0; i < mBookList.size(); i++) {
-                Log.d("queryBookData1", mBookList.get(i).toString());
-            }
 //        Collections.reverse(mBookList);//倒叙
             mChapterDb = new ChapterDb(getMyContext());
             mPresenter = new BookShelfPresenter();
@@ -624,5 +615,18 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             HomeActivity homeActivity = (HomeActivity) getActivity();
             homeActivity.goneLeftView();
         }
+    }
+
+    public void refreshSort() {
+        if(mBookDb!=null&&mBookList!=null&&mAdapter!=null){
+            List<BookDetailResponse> temp = new ArrayList<>();
+            temp = mBookDb.queryBookData();
+            if (temp != null && temp.size() != 0) {
+                mBookList.clear();
+                mBookList.addAll(temp);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
     }
 }

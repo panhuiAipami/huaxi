@@ -648,7 +648,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         view.findViewById(R.id.paixu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SortPop(HomeActivity.this,view.findViewById(R.id.paixu));
+                SortPop pop=new SortPop(HomeActivity.this,view.findViewById(R.id.paixu));
+                pop.setSortOnItemClickListener(new SortPop.OnItemClickListener() {
+                    @Override
+                    public void refresh() {
+                        if(bookshelfFragment!=null)
+                            bookshelfFragment.refreshSort();
+                    }
+                });
             }
         });
         TextView leftView = (TextView) LayoutInflater.from(this).inflate(R.layout.finish_layout, null);
