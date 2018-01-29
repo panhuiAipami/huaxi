@@ -5,9 +5,11 @@
 
 package com.spriteapp.booklibrary.widget.photoview;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,19 +18,18 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -53,16 +54,19 @@ import com.luck.picture.lib.widget.PreviewViewPager;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
 public class PictureExternalPreviewActivity extends PictureBaseActivity implements OnClickListener {
     private ImageButton left_back;
@@ -83,6 +87,13 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                     String path = (String)msg.obj;
                     PictureExternalPreviewActivity.this.showToast(PictureExternalPreviewActivity.this.getString(string.picture_save_success) + "\n" + path);
                     PictureExternalPreviewActivity.this.dismissDialog();
+
+
+                    //发广播告诉相册有图片需要更新，这样可以在图册下看到保存的图片了
+                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    Uri uri = Uri.fromFile(new File(path));
+                    intent.setData(uri);
+                    sendBroadcast(intent);
                 default:
             }
         }
@@ -160,10 +171,11 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                     PictureExternalPreviewActivity.this.loadDataThread.start();
                 } else {
                     try {
-                        String e = PictureFileUtils.createDir(PictureExternalPreviewActivity.this, System.currentTimeMillis() + ".png", PictureExternalPreviewActivity.this.directory_path);
+                        String e = PictureFileUtils.createDir(PictureExternalPreviewActivity.this, path.substring(path.lastIndexOf("/") + 1, path.length()), PictureExternalPreviewActivity.this.directory_path);
                         PictureFileUtils.copyFile(path, e);
                         PictureExternalPreviewActivity.this.showToast(PictureExternalPreviewActivity.this.getString(string.picture_save_success) + "\n" + e);
                         PictureExternalPreviewActivity.this.dismissDialog();
+
                     } catch (IOException var4) {
                         PictureExternalPreviewActivity.this.showToast(PictureExternalPreviewActivity.this.getString(string.picture_save_error) + "\n" + var4.getMessage());
                         PictureExternalPreviewActivity.this.dismissDialog();
@@ -180,7 +192,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
     public void showLoadingImage(String urlPath) {
         try {
             URL e = new URL(urlPath);
-            String path = PictureFileUtils.createDir(this, System.currentTimeMillis() + ".png", this.directory_path);
+            String path = PictureFileUtils.createDir(this, urlPath.substring(urlPath.lastIndexOf("/") + 1, urlPath.length()),this.directory_path);
             byte[] buffer = new byte[8192];
             int ava = 0;
             long start = System.currentTimeMillis();
@@ -226,8 +238,10 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
     public class loadDataThread extends Thread {
         private String path;
 
+
         public loadDataThread(String path) {
             this.path = path;
+
         }
 
         public void run() {
@@ -256,7 +270,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
             return view == object;
         }
 
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             View contentView = PictureExternalPreviewActivity.this.inflater.inflate(layout.picture_image_preview, container, false);
             final PhotoView imageView = (PhotoView)contentView.findViewById(id.preview_image);
             final SubsamplingScaleImageView longImg = (SubsamplingScaleImageView)contentView.findViewById(id.longImg);

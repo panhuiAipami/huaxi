@@ -35,6 +35,7 @@ import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFO
 import static com.spriteapp.booklibrary.util.ActivityUtil.COMMENT_ID;
 import static com.spriteapp.booklibrary.util.ActivityUtil.REPLYTITLE;
 import static com.spriteapp.booklibrary.util.ActivityUtil.SQUAREID;
+import static com.spriteapp.booklibrary.util.ActivityUtil.USER_ID;
 
 public class CommentReplyActivity extends TitleActivity {
 
@@ -46,6 +47,7 @@ public class CommentReplyActivity extends TitleActivity {
     private List<CommentReplyBean> reply = new ArrayList<>();
     private int squareid = 0;
     private int comment_id = 0;
+    private int user_id = 0;
     private CommentReplyAdapter adapter;
     private CommentDialog commentDialog;
 
@@ -57,6 +59,7 @@ public class CommentReplyActivity extends TitleActivity {
         titleNum = intent.getIntExtra(REPLYTITLE, 0);
         squareid = intent.getIntExtra(SQUAREID, 0);
         comment_id = intent.getIntExtra(COMMENT_ID, 0);
+        user_id = intent.getIntExtra(USER_ID, 0);
         if (titleNum != 0)
             setTitle(titleNum + "条回复");
         initList();
@@ -177,7 +180,7 @@ public class CommentReplyActivity extends TitleActivity {
         showDialog();
         BookApi.getInstance()
                 .service
-                .square_addcomment(content, squareid, PLATFORM_ID)
+                .square_addcomment(content, squareid, comment_id, user_id, PLATFORM_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base>() {

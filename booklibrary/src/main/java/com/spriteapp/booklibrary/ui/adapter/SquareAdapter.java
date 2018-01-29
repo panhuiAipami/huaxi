@@ -139,7 +139,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
             itemClick(viewHolder, squareBean);//item点击
-            moreImageClick(viewHolder.more);//更多点击
+//            moreImageClick(viewHolder.more);//更多点击
             goSupport(viewHolder.support_num, squareBean);//点赞
             goComment(viewHolder.comment_num, squareBean, position);
             if (squareBean.getReadhistory() != null) {

@@ -39,6 +39,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/book_reader_white"
         android:paddingLeft="14dp"
+        android:layout_marginBottom="5dp"
         android:paddingRight="14dp">
 
         <TextView
@@ -61,7 +62,7 @@
         android:id="@+id/book_reader_clear_cache_layout"
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:layout_marginTop="5dp"
+
         android:background="@drawable/book_reader_common_press_selector"
         android:paddingLeft="14dp"
         android:paddingRight="14dp">

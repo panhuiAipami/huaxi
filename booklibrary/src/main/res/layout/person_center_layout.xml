@@ -474,7 +474,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -515,17 +516,20 @@
             android:layout_height="@dimen/person_line_left_padding"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="@dimen/person_icon_left_wight"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/setting" />
+
                 <TextView
                     android:id="@+id/setting"
                     android:layout_width="match_parent"
@@ -537,7 +541,6 @@
                     android:textColor="@color/square_user_speak"
                     android:textSize="16sp" />
             </LinearLayout>
-
 
 
             <View

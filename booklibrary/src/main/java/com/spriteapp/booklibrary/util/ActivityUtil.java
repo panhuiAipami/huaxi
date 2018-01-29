@@ -25,6 +25,7 @@ public class ActivityUtil {
     public static final String ISLOOKCOMMENT = "is_look_comment";//跳转到帖子详情activity的id
     public static final String REPLYTITLE = "comment_reply_title";
     public static final String COMMENT_ID = "comment_id";
+    public static final String USER_ID = "user_id";
 
     public static void toWebViewActivity(Context context, String url) {
         toWebViewActivity(context, url, false);
@@ -94,11 +95,12 @@ public class ActivityUtil {
 
     }
 
-    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid) {//总条数
+    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid,int user_id) {//总条数
         Intent intent = new Intent(context, CommentReplyActivity.class);
         intent.putExtra(REPLYTITLE, total);
         intent.putExtra(COMMENT_ID, comment_id);
         intent.putExtra(SQUAREID, squareid);
+        intent.putExtra(USER_ID, user_id);
         context.startActivity(intent);
 
     }

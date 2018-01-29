@@ -67,7 +67,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
     //    private LinearLayout bottom_send;
 //    private EditText send_edit;
 //    private ImageView yuan_share, yuan_support;
-    private LinearLayout square_layout,title_name_layout;//最大的layout
+    private LinearLayout square_layout, title_name_layout;//最大的layout
     private TextView follow_btn, default_comment, new_comment, hot_comment;
     private List<TextView> textViews = new ArrayList<>();
     private List<CommentReply> commentList = new ArrayList<>();
@@ -172,19 +172,20 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         hot_comment.setOnClickListener(this);
         onScrollRefreshOrLoadMore();
     }
-    public void setCommentTitleGoneOrShow(){
-        if(commentList.size()==0){
-            title_name_layout.setVisibility(View.GONE);
-        }else {
-            title_name_layout.setVisibility(View.VISIBLE);
-        }
+
+    public void setCommentTitleGoneOrShow() {
+//        if (commentList.size() == 0) {
+//            title_name_layout.setVisibility(View.GONE);
+//        } else {
+//            title_name_layout.setVisibility(View.VISIBLE);
+//        }
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         if (v == more) {//更多
-            followPop = new FollowPop(this, more);
+//            followPop = new FollowPop(this, more);
         } else if (v == support_num) {//点赞
             if (squareBean != null) {
                 goSupport(support_num, squareBean);
@@ -633,7 +634,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         if (commentDialog == null) return;
         commentDialog.show();
         if (type == 2) {
-            commentDialog.setUserName("回复" + commentReply.getUsername());
+            commentDialog.setUserName("回复:" + commentReply.getUsername());
             comment_id = commentReply.getId();
             user_id = commentReply.getReplyto();
         } else {

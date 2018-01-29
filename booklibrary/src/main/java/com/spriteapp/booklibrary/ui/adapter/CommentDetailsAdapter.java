@@ -98,7 +98,7 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     commentViewHolder.reply_comment2.setText(commentReply.getReplay().getData().get(1).getUsername() + ":" + commentReply.getReplay().getData().get(1).getContent());
                     Util.setTextStrColor(commentViewHolder.reply_comment1, commentViewHolder.reply_comment1.getText().toString(), commentReply.getReplay().getData().get(0).getContent());
                     Util.setTextStrColor(commentViewHolder.reply_comment2, commentViewHolder.reply_comment2.getText().toString(), commentReply.getReplay().getData().get(1).getContent());
-                    commentViewHolder.more_reply.setText("...共" + commentReply.getReplay().getTotal() + "条");
+                    commentViewHolder.more_reply.setText("...共" + commentReply.getReplay().getTotal() + "条回复");
                     moreClick(commentViewHolder.more_reply, commentReply);//查看更多回复
                 }
             } else {
@@ -200,7 +200,7 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtil.toCommentReplyActivity(context, reply.getReplay().getTotal(),reply.getId(),reply.getSquareid());
+                ActivityUtil.toCommentReplyActivity(context, reply.getReplay().getTotal(), reply.getId(), reply.getSquareid(),reply.getReplyto());
             }
         });
     }

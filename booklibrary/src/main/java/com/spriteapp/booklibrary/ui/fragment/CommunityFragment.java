@@ -32,7 +32,7 @@ public class CommunityFragment extends BaseFragment {
     private SquareFragment followFragment;
     private SquareFragment squareFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
-    private String[] mTitles = {"关注", "广场"};
+    private String[] mTitles = {"广场"};
     private int page = 1;
 
     @Override
@@ -91,22 +91,22 @@ public class CommunityFragment extends BaseFragment {
     }
 
     public void initFragment() {
-        followFragment = new SquareFragment();
+//        followFragment = new SquareFragment();
         squareFragment = new SquareFragment();
         //添加fragmnet集合
-        fragmentList.add(followFragment);
+//        fragmentList.add(followFragment);
         fragmentList.add(squareFragment);
         Bundle bundle1 = new Bundle();
         Bundle bundle2 = new Bundle();
         bundle1.putInt("follow", 0);
         bundle2.putInt("follow", 1);
-        followFragment.setArguments(bundle2);
+//        followFragment.setArguments(bundle2);
         squareFragment.setArguments(bundle1);
         //viewpager缓存页面
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(new HomePageTabAdapter(getChildFragmentManager(), fragmentList));
         tabLayout.setViewPager(viewPager, mTitles);
-        viewPager.setCurrentItem(1);
+//        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class CommunityFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         fragmentList.get(0).onActivityResult(requestCode, resultCode, data);
-        fragmentList.get(1).onActivityResult(requestCode, resultCode, data);
+//        fragmentList.get(1).onActivityResult(requestCode, resultCode, data);
 
     }
 }

@@ -35,6 +35,10 @@ public class Constants {
      * 用户信息
      */
     public final static String USERINFO_FILE = "huaxi_user_info.txt";
+    /**
+     * APP updata
+     */
+    public static final String IMG = "/huaxi/image/";
 
 
 }

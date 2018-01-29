@@ -1612,7 +1612,7 @@ public class Util {
 
     }
 
-    public static List<LocalMedia> getPreViewPath(List<String> pic_url,Map<String,Integer> map) {
+    public static List<LocalMedia> getPreViewPath(List<String> pic_url, Map<String, Integer> map) {
         List<LocalMedia> medias = new ArrayList<>();
         for (int i = 0; i < pic_url.size(); i++) {
             LocalMedia localMedia = new LocalMedia();
@@ -1621,10 +1621,10 @@ public class Util {
                 localMedia.setCompressed(false);
                 localMedia.setPictureType("image/gif");
             }
-            if(map!=null&&map.size()!=0){
+            if (map != null && map.size() != 0) {
                 localMedia.setWidth(map.get(IMGWIDTH));
                 localMedia.setHeight(map.get(IMGHEIGHT));
-                Log.d("localMedia", "设置宽高"+"宽==="+map.get(IMGWIDTH)+"高==="+map.get(IMGHEIGHT));
+                Log.d("localMedia", "设置宽高" + "宽===" + map.get(IMGWIDTH) + "高===" + map.get(IMGHEIGHT));
             }
             medias.add(localMedia);
         }
@@ -1636,12 +1636,18 @@ public class Util {
      *
      * @param
      */
-    public static void ImageClick(View v, final List<String> url, final Map<String,Integer> map, final int position, final Activity context) {
+    public static void ImageClick(View v, final List<String> url, final Map<String, Integer> map, final int position, final Activity context) {
         if (url == null) return;
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureSelector.create(context).externalPicturePreview(position, getPreViewPath(url,map));
+                try {
+                    FileHelper._createSaveDir(Constants.IMG);
+                    PictureSelector.create(context).externalPicturePreview(position, Constants.IMG, getPreViewPath(url, map));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
@@ -1655,6 +1661,7 @@ public class Util {
         }
         return medias;
     }
+
     /**
      * 图片放大
      *
