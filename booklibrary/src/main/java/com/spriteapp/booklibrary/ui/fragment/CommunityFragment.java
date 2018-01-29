@@ -105,8 +105,8 @@ public class CommunityFragment extends BaseFragment {
         //viewpager缓存页面
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new HomePageTabAdapter(getChildFragmentManager(), fragmentList));
-        viewPager.setCurrentItem(1);
         tabLayout.setViewPager(viewPager, mTitles);
+        viewPager.setCurrentItem(1);
     }
 
     @Override
