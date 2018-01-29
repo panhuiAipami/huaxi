@@ -23,6 +23,19 @@
         android:paddingTop="10dp"
         android:src="@mipmap/bianji" />
 
+    <TextView
+        android:id="@+id/selector_or_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="全选"
+        android:textColor="@color/square_small"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 </LinearLayout>
 
 

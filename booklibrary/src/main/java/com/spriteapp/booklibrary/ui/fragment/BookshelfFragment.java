@@ -211,8 +211,8 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         null_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity() instanceof HomeActivity){
-                    HomeActivity homeActivity= (HomeActivity) getActivity();
+                if (getActivity() instanceof HomeActivity) {
+                    HomeActivity homeActivity = (HomeActivity) getActivity();
                     homeActivity.setSelectView(BOOKSHELF_TO_BOOKSTORE);
                 }
             }
@@ -374,7 +374,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
 //            mBookList = list;
 //        mAdapter.notifyDataSetChanged();
 //        del_layout.setVisibility(View.GONE);
-            mAdapter.setNum();
+            mAdapter.setNum(1);
             del_layout.setVisibility(View.GONE);
             ListenerManager.getInstance().getDelBookShelf().del_book(0, 0, 0, 0);
             if (CollectionUtil.isEmpty(mBookList)) {
@@ -601,8 +601,16 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     public void del_book(int book_id, int pos, int num, int act) {
         if (book_id == 0)
             goneFinish();
-        else
-            showFinish();
+        else {
+            if (book_id == 1 && (act == 3 || act == 4)) {
+                showFinish(act);
+                return;
+            } else {
+                showFinish(act);
+            }
+        }
+
+
         if (num <= 0) {
             del_book.clear();
             is_del.setEnabled(false);
@@ -618,15 +626,27 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         }
     }
 
-    public void setFinish() {
-        if (mAdapter != null)
-            mAdapter.setNum();
+    /**
+     * @param type 1为完成编辑,2为全选,3为取消全选
+     */
+    public void setFinish(int type) {
+        if (mAdapter != null) {
+            mAdapter.setNum(type);
+//            if (type == 1) {
+//                mAdapter.setNum(type);
+//            } else if (type == 2) {
+//
+//            } else if (type == 3) {
+//
+//            }
+        }
+
     }
 
-    public void showFinish() {
+    public void showFinish(int type) {
         if (getActivity() instanceof HomeActivity) {
             HomeActivity homeActivity = (HomeActivity) getActivity();
-            homeActivity.showLeftView();
+            homeActivity.showLeftView(type);
         }
     }
 

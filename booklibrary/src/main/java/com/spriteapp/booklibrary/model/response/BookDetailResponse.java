@@ -41,6 +41,15 @@ public class BookDetailResponse implements Serializable {
     private long last_update_book_datetime;
     private int book_add_shelf;
     private int is_recommend_book;
+    private boolean isSelector;
+
+    public boolean isSelector() {
+        return isSelector;
+    }
+
+    public void setSelector(boolean selector) {
+        isSelector = selector;
+    }
 
     public long getUpdate_time() {
         return update_time;
