@@ -144,6 +144,7 @@ public interface BookApiService {
     @POST("book_shelf")
     Observable<Base<Void>> deleteBook(@Field("book_ids") int bookIds,
                                       @Field("u_action") String action);
+
     @FormUrlEncoded
     @POST("book_shelf")
     Observable<Base<Void>> deleteBook(@Field("book_ids") String bookIds,
@@ -264,18 +265,18 @@ public interface BookApiService {
                                                         @Query("page_size") int page_size,
                                                         @Query("platform_id") int platform_id);
 
-    //精选页
-    @GET("book_weekly")
-    Observable<Base<List<ChoiceBean>>> book_weekly(@Query("format")String format);
 
-
+    //书城
     @GET("book_store")
     Observable<Base<BookStoreResponse>> book_store(@Query("format") String type);
+
+    //精选页
+    @GET("book_weekly")
     Observable<Base<List<ChoiceBean>>> book_weekly(
-            @Query("format")String format,
-            @Query("page")int page);
+            @Query("format") String format,
+            @Query("page") int page);
 
     //排行页
     @GET("book_ranklist")
-    Observable<Base<List<ChoiceBean>>> book_ranklist(@Query("format")String format);
+    Observable<Base<List<ChoiceBean>>> book_ranklist(@Query("format") String format);
 }

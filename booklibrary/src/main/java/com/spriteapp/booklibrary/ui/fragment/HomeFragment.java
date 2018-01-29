@@ -33,8 +33,6 @@ import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYP
  * 首页（精选和排行）
  */
 public class HomeFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private PopupWindow popupWindow;
     private LinearLayout sex_layout;
