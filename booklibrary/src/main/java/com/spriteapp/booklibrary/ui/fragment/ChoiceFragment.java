@@ -3,7 +3,6 @@ package com.spriteapp.booklibrary.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
@@ -12,6 +11,7 @@ import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.ui.adapter.ChoiceAdapter;
 import com.spriteapp.booklibrary.ui.presenter.ChoiceContentPresenter;
 import com.spriteapp.booklibrary.ui.view.ChoiceView;
+import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,15 @@ import java.util.List;
 /**
  * 精选
  */
-public class ChoiceFragment extends BaseFragment implements ChoiceView {
+public class ChoiceFragment extends BaseFragment implements ChoiceView, URecyclerView.LoadingListener {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private List<ChoiceBean> lists = new ArrayList<>();
     private SwipeRefreshLayout swipe_refresh;
-    private ChoiceContentPresenter contentPresenter;
+    private ChoiceContentPresenter contentPresenter = new ChoiceContentPresenter(this);
     private ChoiceAdapter adapter;
+    int page = 1;
+    int lastPage = 1;
 
     public ChoiceFragment() {
     }
@@ -54,7 +56,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView {
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                lazyLoad();
+                onRefreshData();
             }
         });
     }
@@ -62,17 +64,23 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView {
     @Override
     public void findViewId() {
         swipe_refresh = (SwipeRefreshLayout) mParentView.findViewById(R.id.swipe_refresh);
-        RecyclerView recyclerView = (RecyclerView) mParentView.findViewById(R.id.list);
+        URecyclerView recyclerView = (URecyclerView) mParentView.findViewById(R.id.list);
+        recyclerView.setLoadingListener(this);
         adapter = new ChoiceAdapter(lists, getActivity());
         recyclerView.setAdapter(adapter);
 
 
     }
+    public void onRefreshData(){
+        page = 1;
+        lazyLoad();
+    }
+
 
     @Override
     protected void lazyLoad() {
-        contentPresenter = new ChoiceContentPresenter(this);
-        contentPresenter.requestGetData();
+        lastPage = page;
+        contentPresenter.requestGetData(page);
     }
 
     @Override
@@ -81,8 +89,13 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView {
 
     @Override
     public void setData(Base<List<ChoiceBean>> result) {
-        lists.clear();
-        lists.addAll(result.getData());
+        if (page == 1)
+            lists.clear();
+
+        if (result != null && result.getData() != null && result.getData().size() > 0) {
+            page++;
+            lists.addAll(result.getData());
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -100,5 +113,12 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView {
     @Override
     public Context getMyContext() {
         return null;
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (page > lastPage) {
+            lazyLoad();
+        }
     }
 }

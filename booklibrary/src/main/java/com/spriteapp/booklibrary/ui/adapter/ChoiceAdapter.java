@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.Util;
 
 import java.util.List;
 
@@ -68,6 +71,10 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
             look_detail = (TextView) view.findViewById(R.id.look_details);
             reader = (TextView) view.findViewById(R.id.reader);
             mContentView = (ImageView) view.findViewById(R.id.cover);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
+            layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(c, 24)) / 2;
+            layoutParams.weight = LinearLayout.LayoutParams.MATCH_PARENT;
+            mContentView.setLayoutParams(layoutParams);
         }
     }
 }

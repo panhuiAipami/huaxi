@@ -266,5 +266,11 @@ public interface BookApiService {
 
     //精选页
     @GET("book_weekly")
-    Observable<Base<List<ChoiceBean>>> book_weekly(@Query("format")String format);
+    Observable<Base<List<ChoiceBean>>> book_weekly(
+            @Query("format")String format,
+            @Query("page")int page);
+
+    //排行页
+    @GET("book_ranklist")
+    Observable<Base<List<ChoiceBean>>> book_ranklist(@Query("format")String format);
 }

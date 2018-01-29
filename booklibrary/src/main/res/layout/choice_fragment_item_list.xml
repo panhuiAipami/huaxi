@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     >
 
-    <android.support.v7.widget.RecyclerView
+    <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
         android:id="@+id/list"
         android:name="com.spriteapp.booklibrary.ui.fragment.ChoiceFragment"
         android:layout_width="match_parent"

@@ -62,6 +62,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     private int reload;
     private HomePageTabAdapter adapter1;
     private HomePageTabAdapter adapter2;
+    ChoiceFragment choiceFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -278,13 +279,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     }
 
     public void setData() {
-//        if (discoverFragment1 != null && discoverFragment2 != null && bookstoreFragment1 != null && bookstoreFragment2 != null) {
-//            discoverFragment1.reLoadH5();
-//            discoverFragment2.reLoadH5();
-//            bookstoreFragment1.reLoadH5();
-//            bookstoreFragment2.reLoadH5();
-//            Log.d("h5h5", "重新加载");
-//        }
+        if(choiceFragment != null){
+            choiceFragment.onRefreshData();
+        }
+
         if (discoverFragment1 != null) {
             discoverFragment1.reLoadH5();
             Log.d("h5h5", "discoverFragment1重新加载");
@@ -344,31 +342,28 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         bundle1.putInt(FRAGMENTTYPE, 1);
         bundle2.putInt(FRAGMENTTYPE, 2);
         switch (type) {
-            case 1:
+            case 1://精选
                 for (int i = 0; i < syTitles.size(); i++) {
                     if (i < 2)
                         textViews.get(i).setText(syTitles.get(i).getName());
                 }
-                if (syTitles.size() == 0) {
-
-                } else if (syTitles.size() == 1) {
+                choiceFragment = ChoiceFragment.newInstance(0);
+                if (syTitles.size() == 1) {
                     discoverFragment1 = new DiscoverFragment();
                     discoverFragment1.setArguments(bundle1);
-                    fragments.add(discoverFragment1);
+                    fragments.add(choiceFragment);
                     textViews.get(1).setVisibility(View.GONE);
-//                    tabLayout.setVisibility(View.GONE);
                 } else if (syTitles.size() == 2) {
                     discoverFragment1 = new DiscoverFragment();
                     discoverFragment2 = new DiscoverFragment();
                     discoverFragment1.setArguments(bundle1);
                     discoverFragment2.setArguments(bundle2);
-                    fragments.add(discoverFragment1);
+                    fragments.add(choiceFragment);
                     fragments.add(discoverFragment2);
                     textViews.get(1).setVisibility(View.VISIBLE);
-//                    tabLayout.setVisibility(View.VISIBLE);
                 }
                 break;
-            case 2:
+            case 2://书城
                 for (int i = 0; i < shuTitles.size(); i++) {
                     if (i < 3)
                         textViews.get(i).setText(shuTitles.get(i).getName());

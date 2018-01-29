@@ -4,7 +4,7 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
 import com.spriteapp.booklibrary.model.ChoiceBean;
-import com.spriteapp.booklibrary.ui.view.ChoiceView;
+import com.spriteapp.booklibrary.ui.view.RankView;
 
 import java.util.List;
 
@@ -15,21 +15,21 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 精选
+ * 排行
  * Created by panhui on 2018/1/26.
  */
 
-public class ChoiceContentPresenter implements BasePresenter<ChoiceView> {
-    ChoiceView choiceView;
+public class RankContentPresenter implements BasePresenter<RankView> {
+    RankView rankView;
 
-    public ChoiceContentPresenter(ChoiceView view) {
+    public RankContentPresenter(RankView view) {
         attachView(view);
     }
 
-    public void requestGetData(int page) {
+    public void requestGetData() {
         BookApi.getInstance()
                 .service
-                .book_weekly("json",page)
+                .book_ranklist("json")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<ChoiceBean>>>() {
@@ -41,31 +41,32 @@ public class ChoiceContentPresenter implements BasePresenter<ChoiceView> {
 
                     @Override
                     public void onNext(@NonNull Base<List<ChoiceBean>> listBase) {
-                        if(choiceView != null)
-                            choiceView.setData(listBase);
+                        if(rankView != null)
+                            rankView.setData(listBase);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        if(choiceView != null)
-                            choiceView.onError(e);
+                        if(rankView != null)
+                            rankView.onError(e);
                     }
 
                     @Override
                     public void onComplete() {
-                        if(choiceView != null)
-                            choiceView.disMissProgress();
+                        if(rankView != null)
+                            rankView.disMissProgress();
                     }
                 });
     }
 
     @Override
-    public void attachView(ChoiceView view) {
-        choiceView = view;
+    public void attachView(RankView view) {
+        rankView = view;
     }
+
 
     @Override
     public void detachView() {
-        choiceView = null;
+        rankView = null;
     }
 }
