@@ -140,11 +140,11 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             oneViewHolder.logoImageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Log.d("IsLong","执行上面");
+                    Log.d("IsLong", "执行上面");
                     if (isRecommendData || isRecentReadBook) {
                         return false;
                     }
-                    Log.d("IsLong","执行下面");
+                    Log.d("IsLong", "执行下面");
                     if (isDeleteBook) {
                         return true;
                     }
@@ -188,6 +188,32 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
             if (num == 0) oneViewHolder.deleteImageView.setSelected(false);
+            if (isDeleteBook) {
+                if (detail.isSelector()) {
+                    oneViewHolder.deleteImageView.setSelected(true);
+                } else {
+                    oneViewHolder.deleteImageView.setSelected(false);
+                }
+            }else {
+                oneViewHolder.deleteImageView.setSelected(false);
+            }
+            if (num == 0 && isDeleteBook) {//取消全选
+                if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                    ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 0);
+                }
+                for (int i = 0; i < mDetailList.size(); i++) {
+                    mDetailList.get(i).setSelector(false);
+                }
+            }
+            if (num == mDetailList.size()) {//全选
+                oneViewHolder.deleteImageView.setSelected(true);
+                for (int i = 0; i < mDetailList.size(); i++) {
+                    mDetailList.get(i).setSelector(true);
+                    if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                        ListenerManager.getInstance().getDelBookShelf().del_book(mDetailList.get(i).getBook_id(), i, i + 1, 1);
+                    }
+                }
+            }
             if (!isDeleteBook && del_layout.getVisibility() == View.VISIBLE)
                 goneDel();
             oneViewHolder.deleteImageView.setOnClickListener(new View.OnClickListener() {
@@ -195,14 +221,20 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     if (mDeleteListener != null) {
                         if (!oneViewHolder.deleteImageView.isSelected()) {
+                            mDetailList.get(position).setSelector(true);
                             oneViewHolder.deleteImageView.setSelected(true);
+
                             num++;
+                            closeSelector();
                             if (ListenerManager.getInstance().getDelBookShelf() != null)
                                 ListenerManager.getInstance().getDelBookShelf().del_book(detail.getBook_id(), position, num, 1);
                         } else {
+                            mDetailList.get(position).setSelector(false);
                             oneViewHolder.deleteImageView.setSelected(false);
+
                             if (num > 0)
                                 num--;
+                            closeSelector();
                             if (ListenerManager.getInstance().getDelBookShelf() != null)
                                 ListenerManager.getInstance().getDelBookShelf().del_book(detail.getBook_id(), position, num, 2);
                         }
@@ -266,6 +298,16 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
             if (num == 0) shelfViewHolder.deleteImageView.setSelected(false);
+            if (isDeleteBook) {
+                if (detail.isSelector()) {
+                    shelfViewHolder.deleteImageView.setSelected(true);
+                } else {
+                    shelfViewHolder.deleteImageView.setSelected(false);
+                }
+            }else {
+                shelfViewHolder.deleteImageView.setSelected(false);
+            }
+            if (num == mDetailList.size()) shelfViewHolder.deleteImageView.setSelected(true);
             if (!isDeleteBook && del_layout.getVisibility() == View.VISIBLE)
                 goneDel();
             shelfViewHolder.deleteImageView.setOnClickListener(new View.OnClickListener() {
@@ -273,14 +315,18 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     if (mDeleteListener != null) {
                         if (!shelfViewHolder.deleteImageView.isSelected()) {
+                            mDetailList.get(position).setSelector(true);
                             shelfViewHolder.deleteImageView.setSelected(true);
                             num++;
+                            closeSelector();
                             if (ListenerManager.getInstance().getDelBookShelf() != null)
                                 ListenerManager.getInstance().getDelBookShelf().del_book(detail.getBook_id(), position, num, 1);
                         } else {
+                            mDetailList.get(position).setSelector(false);
                             shelfViewHolder.deleteImageView.setSelected(false);
                             if (num > 0)
                                 num--;
+                            closeSelector();
                             if (ListenerManager.getInstance().getDelBookShelf() != null)
                                 ListenerManager.getInstance().getDelBookShelf().del_book(detail.getBook_id(), position, num, 2);
                         }
@@ -302,9 +348,30 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void setNum() {
-        num = 0;
-        isDeleteBook = false;
+    public void closeSelector() {
+        if (num < mDetailList.size()) {//取消全选
+            if (ListenerManager.getInstance().getDelBookShelf() != null)
+                ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 4);
+        } else if (num == mDetailList.size()) {//全选
+            if (ListenerManager.getInstance().getDelBookShelf() != null)
+                ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 3);
+        }
+    }
+
+    public void setNum(int type) {
+        if (type == 1) {
+            num = 0;
+            isDeleteBook = false;
+        } else if (type == 2 && mDetailList.size() != 0) {
+            num = mDetailList.size();
+            isDeleteBook = true;
+        } else if (type == 3 && mDetailList.size() != 0) {
+            num = 0;
+            isDeleteBook = true;
+            for (int i = 0; i < mDetailList.size(); i++) {
+                mDetailList.get(i).setSelector(false);
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -380,7 +447,6 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setIsRecommendData(boolean recommendData) {
         isRecommendData = recommendData;
     }
-
 
 
 }

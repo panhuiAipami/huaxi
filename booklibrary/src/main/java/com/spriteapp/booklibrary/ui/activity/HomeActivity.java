@@ -129,6 +129,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             }
         }
     };
+    private ImageView paixu;
+    private ImageView qiandao;
+    private TextView selector_or_close;
 
     @Override
     public void initData() {
@@ -641,7 +644,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mRightLayout.removeAllViews();
         mLeftLayout.removeAllViews();
         final LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.book_reader_free_text_layout, null);
-        view.findViewById(R.id.qiandao).setOnClickListener(new View.OnClickListener() {
+        qiandao = (ImageView) view.findViewById(R.id.qiandao);
+        qiandao.setOnClickListener(new View.OnClickListener() {//签到
             @Override
             public void onClick(View v) {
                 if (!AppUtil.isLogin()) {
@@ -651,17 +655,33 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                 ActivityUtil.toWebViewActivity(mContext, Constant.CHECK_IN_URL);
             }
         });
-        view.findViewById(R.id.paixu).setOnClickListener(new View.OnClickListener() {
+        paixu = (ImageView) view.findViewById(R.id.paixu);
+        paixu.setOnClickListener(new View.OnClickListener() {//排序
             @Override
             public void onClick(View v) {
-                SortPop pop=new SortPop(HomeActivity.this,view.findViewById(R.id.paixu));
+                SortPop pop = new SortPop(HomeActivity.this, view.findViewById(R.id.paixu));
                 pop.setSortOnItemClickListener(new SortPop.OnItemClickListener() {
                     @Override
                     public void refresh() {
-                        if(bookshelfFragment!=null)
+                        if (bookshelfFragment != null)
                             bookshelfFragment.refreshSort();
                     }
                 });
+            }
+        });
+        selector_or_close = (TextView) view.findViewById(R.id.selector_or_close);
+        selector_or_close.setOnClickListener(new View.OnClickListener() {//全选或者取消
+            @Override
+            public void onClick(View v) {
+                if ("全选".equals(selector_or_close.getText().toString())) {
+                    selector_or_close.setText("取消");
+                    if (bookshelfFragment != null)
+                        bookshelfFragment.setFinish(2);
+                } else if ("取消".equals(selector_or_close.getText().toString())) {
+                    selector_or_close.setText("全选");
+                    if (bookshelfFragment != null)
+                        bookshelfFragment.setFinish(3);
+                }
             }
         });
         TextView leftView = (TextView) LayoutInflater.from(this).inflate(R.layout.finish_layout, null);
@@ -687,7 +707,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 if (bookshelfFragment != null)
-                    bookshelfFragment.setFinish();
+                    bookshelfFragment.setFinish(1);
             }
         });
     }
@@ -760,13 +780,28 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         });
     }
 
-    public void showLeftView() {
+    public void showLeftView(int type) {//是否改变状态
         if (mLeftLayout.getVisibility() == View.GONE)
             mLeftLayout.setVisibility(View.VISIBLE);
+        if (selector_or_close.getVisibility() == View.GONE) {
+            gone(paixu, qiandao);
+            visible(selector_or_close);
+        }
+        if (type == 3) {
+            selector_or_close.setText("取消");
+        } else if (type == 4) {
+            selector_or_close.setText("全选");
+        }
+
     }
 
     public void goneLeftView() {
         if (mLeftLayout.getVisibility() == View.VISIBLE)
             mLeftLayout.setVisibility(View.GONE);
+        if (selector_or_close.getVisibility() == View.VISIBLE) {
+            gone(selector_or_close);
+            visible(paixu, qiandao);
+
+        }
     }
 }
