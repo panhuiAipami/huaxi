@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
-import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYPE;
 
 /**
  * 首页（精选和排行）
@@ -45,6 +44,7 @@ public class HomeFragment extends BaseFragment {
     private SlidingTabLayout mTabLayout_1;
     private String[] mTitles = {"精选", "排行"};
     private ChoiceFragment choiceFragment;
+    private RankFragment rankFragment;
     private int reload;
 
     public HomeFragment() {
@@ -106,14 +106,9 @@ public class HomeFragment extends BaseFragment {
         boy_or_girl = (CheckBox) view.findViewById(R.id.boy_or_girl);
 
         choiceFragment = ChoiceFragment.newInstance(0);
-
-        DiscoverFragment discoverFragment = new DiscoverFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(FRAGMENTTYPE, 2);
-        discoverFragment.setArguments(bundle);
-
+        rankFragment = RankFragment.newInstance();
         fragmentList.add(choiceFragment);
-        fragmentList.add(RankFragment.newInstance());
+        fragmentList.add(rankFragment);
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         mTabLayout_1.setViewPager(viewPager, mTitles);
@@ -190,18 +185,27 @@ public class HomeFragment extends BaseFragment {
             boy_or_girl.setChecked(true);
             boy_or_girl.setText("男生");
             if (isReLoad)
-                choiceFragment.lazyLoad();
+                refresh();
             if (selector_man != null)
                 selector_man.setBackgroundResource(R.color.pop_back);
         } else if (sex == 2) {
             boy_or_girl.setChecked(false);
             boy_or_girl.setText("女生");
             if (isReLoad)
-                choiceFragment.lazyLoad();
+                refresh();
             if (selector_woman != null)
                 selector_woman.setBackgroundResource(R.color.pop_back);
         }else{
 
+        }
+    }
+
+    public void refresh(){
+        if(choiceFragment != null)
+        choiceFragment.onRefreshData();
+
+        if(rankFragment != null){
+            rankFragment.onRefreshData();
         }
     }
 

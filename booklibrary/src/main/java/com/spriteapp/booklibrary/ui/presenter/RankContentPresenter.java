@@ -29,7 +29,7 @@ public class RankContentPresenter implements BasePresenter<RankView> {
     public void requestGetData(int type ,int interval) {
         BookApi.getInstance()
                 .service
-                .book_ranklist("json",type,interval)
+                .book_ranklist("json",type,interval,50)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<BookDetailResponse>>>() {

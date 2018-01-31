@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
-            android:gravity="center"
             android:maxLength="2"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
@@ -102,11 +101,11 @@
                     android:drawableLeft="@mipmap/square_support_img"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
-                    android:ems="5"
+                    android:maxLines="1"
                     android:gravity="center_vertical"
                     android:text="0"
                     android:textColor="@color/three_font_color"
-                    android:textSize="13sp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/ranking_book_comment"
@@ -117,11 +116,11 @@
                     android:drawableLeft="@mipmap/square_comment_img"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
-                    android:ems="5"
+                    android:maxLines="1"
                     android:gravity="center_vertical"
                     android:text="0"
                     android:textColor="@color/three_font_color"
-                    android:textSize="13sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <View

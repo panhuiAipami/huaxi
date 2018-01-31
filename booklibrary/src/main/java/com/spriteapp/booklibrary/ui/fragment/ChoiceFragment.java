@@ -64,6 +64,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
     @Override
     public void findViewId() {
         swipe_refresh = (SwipeRefreshLayout) mParentView.findViewById(R.id.swipe_refresh);
+        swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
         URecyclerView recyclerView = (URecyclerView) mParentView.findViewById(R.id.list);
         recyclerView.setLoadingListener(this);
         adapter = new ChoiceAdapter(lists, getActivity());

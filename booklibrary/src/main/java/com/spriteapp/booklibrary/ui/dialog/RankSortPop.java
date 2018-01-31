@@ -17,8 +17,6 @@ import com.spriteapp.booklibrary.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.sort_type;
-
 /**
  * Created by Administrator on 2018/1/11.
  */
@@ -27,10 +25,12 @@ public class RankSortPop extends PopupWindow {
     private Activity context;
     private LayoutInflater mInflater;
     private View mContentView;
-    private TextView lately_text, updata_text, collection_text,updata_book;
-    private ImageView lately_img, updata_img, collection_img,updata_icon;
+    private TextView lately_text, updata_text, collection_text, updata_book;
+    private ImageView lately_img, updata_img, collection_img, updata_icon;
     private List<ImageView> images = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
+    int position;
+    String name = "热销榜";
 
     //"last_read_time desc","last_update_book_datetime desc","book_add_shelf desc"
     public RankSortPop(Activity activity, View v) {
@@ -43,7 +43,7 @@ public class RankSortPop extends PopupWindow {
         //打气筒
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //打气
-        mContentView = mInflater.inflate(R.layout.paixu_pop_layout, null);
+        mContentView = mInflater.inflate(R.layout.rank_paixu_pop_layout, null);
         //设置View
         setContentView(mContentView);
         //设置宽与高
@@ -75,11 +75,11 @@ public class RankSortPop extends PopupWindow {
         images.add(updata_img);
         images.add(collection_img);
         images.add(updata_icon);
-        setState(sort_type);
+        setState(position,name);
         lately_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setState(0);
+                setState(0,"热销榜");
                 dismiss();
             }
         });
@@ -87,7 +87,7 @@ public class RankSortPop extends PopupWindow {
         updata_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setState(1);
+                setState(1,"人气榜");
                 dismiss();
             }
         });
@@ -96,7 +96,7 @@ public class RankSortPop extends PopupWindow {
         collection_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setState(2);
+                setState(2,"评论榜");
                 dismiss();
             }
         });
@@ -104,28 +104,28 @@ public class RankSortPop extends PopupWindow {
         updata_book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setState(3);
+                setState(3,"更新榜");
                 dismiss();
             }
         });
     }
 
-    public void setState(int pos) {
+    public void setState(int pos,String n) {
         for (int i = 0; i < images.size(); i++) {
             if (pos == i) {
-                listener(i+1);
+                listener(i + 1,n);
                 images.get(i).setVisibility(View.VISIBLE);
             } else {
                 images.get(i).setVisibility(View.GONE);
             }
-
         }
-        sort_type = pos;
+        position = pos;
+        name = n;
     }
 
-    public void listener(int interval) {
+    public void listener(int interval,String name) {
         if (onItemClickListener != null)
-            onItemClickListener.refresh(interval);
+            onItemClickListener.refresh(interval,name);
     }
 
     public void setSortOnItemClickListener(OnItemClickListener listener) {
@@ -133,6 +133,6 @@ public class RankSortPop extends PopupWindow {
     }
 
     public interface OnItemClickListener {
-        void refresh(int interval);
+        void refresh(int interval,String name);
     }
 }

@@ -1,6 +1,6 @@
 package com.spriteapp.booklibrary.ui.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
 
     private final List<BookDetailResponse> mValues;
-    private Context c;
+    private Activity c;
 
-    public RankAdapter(List<BookDetailResponse> items, Context c) {
+    public RankAdapter(List<BookDetailResponse> items, Activity c) {
         mValues = items;
         this.c = c;
     }
@@ -34,7 +35,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        BookDetailResponse bean = mValues.get(position);
+        final BookDetailResponse bean = mValues.get(position);
         GlideUtils.loadImage(holder.author_cover, bean.getAuthor_avatar(), c);
         GlideUtils.loadImage(holder.ranking_book_cover, bean.getBook_image(), c);
 
@@ -55,7 +56,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ActivityUtil.toReadActivity(c, bean.getBook_id(), 0);
             }
         });
     }

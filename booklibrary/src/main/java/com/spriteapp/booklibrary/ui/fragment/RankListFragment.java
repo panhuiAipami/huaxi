@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
@@ -30,8 +31,11 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     public RankListFragment() {
     }
 
-    public static RankListFragment newInstance() {
+    public static RankListFragment newInstance(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
         RankListFragment fragment = new RankListFragment();
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -44,12 +48,17 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     @Override
     public void configViews() {
         swipe_refresh.setOnRefreshListener(this);
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            type = bundle.getInt("type");
+        }
         getData();
     }
 
     @Override
     public void findViewId() {
         swipe_refresh = (SwipeRefreshLayout) mParentView.findViewById(R.id.swipe_refresh);
+        swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
         RecyclerView recyclerView = (RecyclerView) mParentView.findViewById(R.id.list);
         adapter = new RankAdapter(lists, getActivity());
         recyclerView.setAdapter(adapter);
@@ -62,14 +71,15 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
 
     @Override
     public void onError(Throwable t) {
-        swipe_refresh.setRefreshing(false);
+        if (swipe_refresh != null)
+            swipe_refresh.setRefreshing(false);
     }
 
     @Override
     public void setData(Base<List<BookDetailResponse>> result) {
-        swipe_refresh.setRefreshing(false);
-        if (page == 1)
-            lists.clear();
+        if (swipe_refresh != null)
+            swipe_refresh.setRefreshing(false);
+        lists.clear();
 
         if (result != null && result.getData() != null && result.getData().size() > 0) {
             page++;
@@ -99,11 +109,18 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
         getData();
     }
 
+    /**
+     * 热销  人气  评论 更新榜
+     * @param interval
+     */
     public void sortRefresh(int interval) {
         this.interval = interval;
         getData();
     }
-
+    /**
+     * 周  月  总
+     * @param type
+     */
     public void timeRefresh(int type) {
         this.type = type;
         getData();

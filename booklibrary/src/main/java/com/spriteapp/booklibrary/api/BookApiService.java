@@ -281,5 +281,6 @@ public interface BookApiService {
     @GET("book_ranklist")
     Observable<Base<List<BookDetailResponse>>> book_ranklist(@Query("format") String format,
                                                              @Query("type") int type,
-                                                             @Query("interval") int interval);
+                                                             @Query("interval") int interval,
+                                                             @Query("pagesize") int pagesize);
 }
