@@ -76,9 +76,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="3dp"
+                        android:layout_marginLeft="5dp"
                         android:ellipsize="end"
                         android:lines="1"
+                        android:maxLength="5"
                         android:text=""
                         android:textColor="@color/comment_title"
                         android:textSize="14sp"
@@ -87,6 +88,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/state"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
