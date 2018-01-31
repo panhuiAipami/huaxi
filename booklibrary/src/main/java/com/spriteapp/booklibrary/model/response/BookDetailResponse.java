@@ -33,6 +33,9 @@ public class BookDetailResponse implements Serializable {
     private long lastReadTime;
     private long update_time;
 
+    //排行榜新增
+    private String support_num;
+    private String comment_num;
     /**
      * 当前阅读章节
      */
@@ -42,6 +45,22 @@ public class BookDetailResponse implements Serializable {
     private int book_add_shelf;
     private int is_recommend_book;
     private boolean isSelector;
+
+    public String getComment_num() {
+        return comment_num;
+    }
+
+    public void setComment_num(String comment_num) {
+        this.comment_num = comment_num;
+    }
+
+    public String getSupport_num() {
+        return support_num;
+    }
+
+    public void setSupport_num(String support_num) {
+        this.support_num = support_num;
+    }
 
     public boolean isSelector() {
         return isSelector;

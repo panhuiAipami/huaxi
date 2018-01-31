@@ -36,6 +36,15 @@ public class CommentReply implements Serializable {
     private String replyusername;
     private String user_avatar;
     private ReplayBean replay;
+    private int is_support;
+
+    public int getIs_support() {
+        return is_support;
+    }
+
+    public void setIs_support(int is_support) {
+        this.is_support = is_support;
+    }
 
     public int getId() {
         return id;

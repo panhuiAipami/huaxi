@@ -278,5 +278,7 @@ public interface BookApiService {
 
     //排行页
     @GET("book_ranklist")
-    Observable<Base<List<ChoiceBean>>> book_ranklist(@Query("format") String format);
+    Observable<Base<List<BookDetailResponse>>> book_ranklist(@Query("format") String format,
+                                                             @Query("type") int type,
+                                                             @Query("interval") int interval);
 }

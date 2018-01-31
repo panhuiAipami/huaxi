@@ -32,7 +32,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.app.Activity.RESULT_OK;
 import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
 
 
@@ -189,13 +188,13 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case ActivityUtil.TOCREATEDYNAMICACTIVITY://发帖子成功自动跳转
-                    Log.d("onActivityResult", "刷新");
-                    onRefresh();//调用刷新
-                    break;
-            }
+//        if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case ActivityUtil.TOCREATEDYNAMICACTIVITY://发帖子成功自动跳转
+                Log.d("onActivityResult", "刷新");
+                onRefresh();//调用刷新
+                break;
+//            }
         }
     }
 

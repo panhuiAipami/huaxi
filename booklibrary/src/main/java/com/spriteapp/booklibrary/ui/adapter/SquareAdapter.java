@@ -95,7 +95,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
-                    if(squareBean.getHeight()==0&&true){
+                    if (squareBean.getHeight() == 0 && true) {
 
                     }
 
@@ -132,6 +132,12 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.read_num.setText(Util.getFloat(squareBean.getReadnum()) + "次预览");
             viewHolder.comment_num.setText(Util.getFloat(squareBean.getCommentnum()));
             viewHolder.support_num.setText(Util.getFloat(squareBean.getSupportnum()));
+            boolean isSuppor;
+            if (squareBean.getIs_support() == 1)
+                isSuppor = false;
+            else
+                isSuppor = true;
+            viewHolder.support_num.setEnabled(isSuppor);
             viewHolder.comment_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

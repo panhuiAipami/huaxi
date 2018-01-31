@@ -90,6 +90,12 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         commentViewHolder.user_name.setText(reply.getUsername());
         commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(reply.getAddtime() + "000")));
         commentViewHolder.support_num.setText(Util.getFloat(reply.getSupportnum()));
+        boolean isSuppor;
+        if (reply.getIs_support() == 1)
+            isSuppor = false;
+        else
+            isSuppor = true;
+        commentViewHolder.support_num.setEnabled(isSuppor);
         commentViewHolder.user_speak.setText(reply.getContent());
         toSupport(commentViewHolder.support_num,reply);
     }

@@ -113,7 +113,7 @@ public class HomeFragment extends BaseFragment {
         discoverFragment.setArguments(bundle);
 
         fragmentList.add(choiceFragment);
-        fragmentList.add(discoverFragment);
+        fragmentList.add(RankFragment.newInstance());
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         mTabLayout_1.setViewPager(viewPager, mTitles);

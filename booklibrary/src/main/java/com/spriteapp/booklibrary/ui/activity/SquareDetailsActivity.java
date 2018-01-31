@@ -482,6 +482,13 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
         read_num.setText(Util.getFloat(squareBean.getReadnum()) + "次预览");
         comment_num.setText(Util.getFloat(squareBean.getCommentnum()));
         support_num.setText(Util.getFloat(squareBean.getSupportnum()));
+        boolean isSuppor;
+        if (squareBean.getIs_support() == 1)
+            isSuppor = false;
+        else
+            isSuppor = true;
+
+        support_num.setEnabled(isSuppor);
         goSupport(support_num, squareBean);//点赞
         if (squareBean.getReadhistory() != null) {
             List<ImageView> imageView = new ArrayList<>();

@@ -87,11 +87,11 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toSquareDetailsActivity(Context context, int squareid, int IsLookComment) {
+    public static void toSquareDetailsActivity(Activity context, int squareid, int IsLookComment) {
         Intent intent = new Intent(context, SquareDetailsActivity.class);
         intent.putExtra(SQUAREID, squareid);
         intent.putExtra(ISLOOKCOMMENT, IsLookComment);
-        context.startActivity(intent);
+        context.startActivityForResult(intent,TOCREATEDYNAMICACTIVITY);
 
     }
 

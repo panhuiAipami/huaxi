@@ -3,7 +3,7 @@ package com.spriteapp.booklibrary.ui.presenter;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
-import com.spriteapp.booklibrary.model.ChoiceBean;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.view.RankView;
 
 import java.util.List;
@@ -26,13 +26,13 @@ public class RankContentPresenter implements BasePresenter<RankView> {
         attachView(view);
     }
 
-    public void requestGetData() {
+    public void requestGetData(int type ,int interval) {
         BookApi.getInstance()
                 .service
-                .book_ranklist("json")
+                .book_ranklist("json",type,interval)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Base<List<ChoiceBean>>>() {
+                .subscribe(new Observer<Base<List<BookDetailResponse>>>() {
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -40,7 +40,7 @@ public class RankContentPresenter implements BasePresenter<RankView> {
                     }
 
                     @Override
-                    public void onNext(@NonNull Base<List<ChoiceBean>> listBase) {
+                    public void onNext(@NonNull Base<List<BookDetailResponse>> listBase) {
                         if(rankView != null)
                             rankView.setData(listBase);
                     }

@@ -34,6 +34,7 @@ public class SquareBean {
     private String isauthor;
     private int readnum;
     private int supportnum;
+    private int is_support;
     private int commentnum;
     private String location;
     private String username;
@@ -43,6 +44,14 @@ public class SquareBean {
     private List<CommentBean> comments;
     private List<CommentReply> commentList;
     private int height;
+
+    public int getIs_support() {
+        return is_support;
+    }
+
+    public void setIs_support(int is_support) {
+        this.is_support = is_support;
+    }
 
     public int getHeight() {
         return height;

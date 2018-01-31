@@ -1,27 +1,31 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
-import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.TextView;
 
+import com.flyco.tablayout.SlidingTabLayout;
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseFragment;
-import com.spriteapp.booklibrary.model.ChoiceBean;
-import com.spriteapp.booklibrary.ui.adapter.ChoiceAdapter;
-import com.spriteapp.booklibrary.ui.presenter.RankContentPresenter;
-import com.spriteapp.booklibrary.ui.view.RankView;
+import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
+import com.spriteapp.booklibrary.ui.dialog.RankSortPop;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 排行
  */
-public class RankFragment extends BaseFragment implements RankView{
-    private RankContentPresenter presenter = new RankContentPresenter(this);
-    private SwipeRefreshLayout swipe_refresh;
-    private List<ChoiceBean> lists = new ArrayList<>();
+public class RankFragment extends BaseFragment {
+    private ViewPager viewPager;
+    private TextView ranking_switch_button;
+    private SlidingTabLayout mTabLayout;
+    private HomePageTabAdapter adapter;
+    private List<Fragment> fragments = new ArrayList<>();
+    private String[] mTitles = {"周棒", "月榜", "总榜"};
+    private RankListFragment rankListFragment1, rankListFragment2, rankListFragment3;
 
     public RankFragment() {
     }
@@ -34,50 +38,80 @@ public class RankFragment extends BaseFragment implements RankView{
 
     @Override
     public int getLayoutResId() {
-        return R.layout.choice_fragment_item_list;
+        return R.layout.rank_fragment;
     }
 
     @Override
     public void configViews() {
+        rankListFragment1 = RankListFragment.newInstance();
+        rankListFragment2 = RankListFragment.newInstance();
+        rankListFragment3 = RankListFragment.newInstance();
+        fragments.add(rankListFragment1);
+        fragments.add(rankListFragment2);
+        fragments.add(rankListFragment3);
 
+        adapter = new HomePageTabAdapter(getChildFragmentManager(), fragments);
+        viewPager.setAdapter(adapter);
+        mTabLayout.setViewPager(viewPager, mTitles);
     }
 
     @Override
     public void findViewId() {
-        swipe_refresh = (SwipeRefreshLayout) mParentView.findViewById(R.id.swipe_refresh);
-        RecyclerView recyclerView = (RecyclerView) mParentView.findViewById(R.id.list);
-        ChoiceAdapter adapter = new ChoiceAdapter(lists, getActivity());
-        recyclerView.setAdapter(adapter);
+        viewPager = (ViewPager) mParentView.findViewById(R.id.viewPager);
+        ranking_switch_button = (TextView) mParentView.findViewById(R.id.ranking_switch_button);
+        mTabLayout = (SlidingTabLayout) mParentView.findViewById(R.id.mTabLayout);
 
+
+        ranking_switch_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RankSortPop rankSortPop = new RankSortPop(getActivity(), v);
+                rankSortPop.setSortOnItemClickListener(new RankSortPop.OnItemClickListener() {
+                    @Override
+                    public void refresh(int interval) {
+                        if (rankListFragment1 != null) {
+                            rankListFragment1.sortRefresh(interval);
+                        }
+                        if (rankListFragment2 != null) {
+                            rankListFragment2.sortRefresh(interval);
+                        }
+                        if (rankListFragment3 != null) {
+                            rankListFragment3.sortRefresh(interval);
+                        }
+                    }
+                });
+            }
+        });
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (rankListFragment1 != null) {
+                    rankListFragment1.timeRefresh(position);
+                }
+                if (rankListFragment2 != null) {
+                    rankListFragment2.sortRefresh(position);
+                }
+                if (rankListFragment3 != null) {
+                    rankListFragment3.sortRefresh(position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     protected void lazyLoad() {
-        presenter.requestGetData();
-    }
 
-    @Override
-    public void onError(Throwable t) {
-
-    }
-
-    @Override
-    public void setData(Base<List<ChoiceBean>> result) {
-
-    }
-
-    @Override
-    public void showNetWorkProgress() {
-
-    }
-
-    @Override
-    public void disMissProgress() {
-
-    }
-
-    @Override
-    public Context getMyContext() {
-        return null;
     }
 }
+

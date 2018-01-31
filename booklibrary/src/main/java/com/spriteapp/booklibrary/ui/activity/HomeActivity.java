@@ -659,7 +659,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         paixu.setOnClickListener(new View.OnClickListener() {//排序
             @Override
             public void onClick(View v) {
-                SortPop pop = new SortPop(HomeActivity.this, view.findViewById(R.id.paixu));
+                SortPop pop = new SortPop(HomeActivity.this, v);
                 pop.setSortOnItemClickListener(new SortPop.OnItemClickListener() {
                     @Override
                     public void refresh() {

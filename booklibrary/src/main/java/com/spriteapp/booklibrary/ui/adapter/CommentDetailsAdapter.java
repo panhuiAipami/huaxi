@@ -71,6 +71,12 @@ public class CommentDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             commentViewHolder.user_speak.setText(commentReply.getContent());
             commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(commentReply.getAddtime() + "000")));
             commentViewHolder.support_num.setText(Util.getFloat(commentReply.getSupportnum()));
+            boolean isSuppor;
+            if (commentReply.getIs_support() == 1)
+                isSuppor = false;
+            else
+                isSuppor = true;
+            commentViewHolder.support_num.setEnabled(isSuppor);
             if (commentReply.getReplay() != null && commentReply.getReplay().getData() != null && commentReply.getReplay().getData().size() != 0) {//此条评论有回复
 
                 if (commentReply.getReplay().getTotal() == 1) {
