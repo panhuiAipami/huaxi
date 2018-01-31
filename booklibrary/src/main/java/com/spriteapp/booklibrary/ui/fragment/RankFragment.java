@@ -27,7 +27,7 @@ public class RankFragment extends BaseFragment {
     private SlidingTabLayout mTabLayout;
     private HomePageTabAdapter adapter;
     private List<Fragment> fragments = new ArrayList<>();
-    private String[] mTitles = {"周棒", "月榜", "总榜"};
+    private String[] mTitles = {"周榜", "月榜", "总榜"};
     private RankListFragment rankListFragment1, rankListFragment2, rankListFragment3;
 
     public RankFragment() {
