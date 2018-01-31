@@ -1575,6 +1575,15 @@ public class Util {
         return num + "";
     }
 
+    public static String getFloat(long num) {//评论点赞超过一千加k
+        if (num >= 10000) {
+            float sum = (((float) num) / 10000);
+            DecimalFormat decimalFormat = new DecimalFormat(".0");
+            return decimalFormat.format(sum) + "万字";
+        }
+        return num + "";
+    }
+
     /**
      * 截断输出日志
      *

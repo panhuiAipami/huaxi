@@ -86,11 +86,11 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (squareBean.getPic_url() != null) {
                 if (position == list.size() - 1) viewHolder.line.setVisibility(View.GONE);
                 if (squareBean.getPic_url().size() == 1) {//一张图片
-                    if (squareBean.getHeight() > 0) {//有高度使用该高度
-                        ViewGroup.LayoutParams layoutParams = viewHolder.image1.getLayoutParams();
-                        layoutParams.height = squareBean.getHeight();
-                        viewHolder.image1.setLayoutParams(layoutParams);
-                    }
+//                    if (squareBean.getHeight() > 0) {//有高度使用该高度
+//                        ViewGroup.LayoutParams layoutParams = viewHolder.image1.getLayoutParams();
+//                        layoutParams.height = squareBean.getHeight();
+//                        viewHolder.image1.setLayoutParams(layoutParams);
+//                    }
                     viewHolder.image2.setVisibility(View.GONE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
@@ -105,7 +105,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
-                    GlideUtils.loadAndGetImage(viewHolder.image2, squareBean.getPic_url().get(1), squareBean.getPic_url(), 0, context);
+                    GlideUtils.loadAndGetImage(viewHolder.image2, squareBean.getPic_url().get(1), squareBean.getPic_url(), 1, context);
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.image1.getLayoutParams();
                     layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(context, 30)) / 3;
                     layoutParams.width = layoutParams.height;

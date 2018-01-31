@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.model.response;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 书籍详情
@@ -45,6 +46,27 @@ public class BookDetailResponse implements Serializable {
     private int book_add_shelf;
     private int is_recommend_book;
     private boolean isSelector;
+    /**
+     * 书城
+     */
+    private String book_url;//书籍详情链接
+    private List<String> book_keywords;//书籍关键字
+
+    public String getBook_url() {
+        return book_url;
+    }
+
+    public void setBook_url(String book_url) {
+        this.book_url = book_url;
+    }
+
+    public List<String> getBook_keywords() {
+        return book_keywords;
+    }
+
+    public void setBook_keywords(List<String> book_keywords) {
+        this.book_keywords = book_keywords;
+    }
 
     public String getComment_num() {
         return comment_num;

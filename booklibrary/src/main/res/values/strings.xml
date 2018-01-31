@@ -69,6 +69,11 @@
     <string name="download_progress">正在下载中，请稍后\u2026(%1$s%%)</string>
     <!--评论hint-->
     <string name="default_hint">请输入回帖内容</string>
+    <!--评论hint-->
+    <string name="tuijian">重磅推荐</string>
+    <string name="jingdian">经典完本</string>
+    <string name="mianfei">免费新书</string>
+    <string name="zuijin">最近更新</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

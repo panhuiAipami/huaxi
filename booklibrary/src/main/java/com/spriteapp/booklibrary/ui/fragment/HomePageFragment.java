@@ -63,6 +63,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     private HomePageTabAdapter adapter1;
     private HomePageTabAdapter adapter2;
     ChoiceFragment choiceFragment;
+    private NewNativeBookStoreFragment bookStoreFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void findViewId() {
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             Bundle bundle = getArguments();
             type = bundle.getInt(FRAGMENTTYPE, 0);
         }
@@ -279,7 +280,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     }
 
     public void setData() {
-        if(choiceFragment != null){
+        if (choiceFragment != null) {
             choiceFragment.onRefreshData();
         }
 
@@ -291,8 +292,8 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
             discoverFragment2.reLoadH5();
             Log.d("h5h5", "discoverFragment2重新加载");
         }
-        if (bookstoreFragment1 != null) {
-            bookstoreFragment1.reLoadH5();
+        if (bookStoreFragment != null) {
+            bookStoreFragment.reLoadH5();
             Log.d("h5h5", "bookstoreFragment1重新加载");
         }
         if (bookstoreFragment2 != null) {
@@ -364,28 +365,30 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case 2://书城
-                for (int i = 0; i < shuTitles.size(); i++) {
-                    if (i < 3)
-                        textViews.get(i).setText(shuTitles.get(i).getName());
-                }
-                if (shuTitles.size() == 0) {
-
-                } else if (shuTitles.size() == 1) {
-                    bookstoreFragment1 = new BookstoreFragment();
-                    bookstoreFragment1.setArguments(bundle1);
-                    fragments.add(bookstoreFragment1);
-                    textViews.get(1).setVisibility(View.GONE);
-//                    tabLayout.setVisibility(View.GONE);
-                } else if (shuTitles.size() == 2) {
-                    bookstoreFragment1 = new BookstoreFragment();
-                    bookstoreFragment2 = new BookstoreFragment();
-                    bookstoreFragment1.setArguments(bundle1);
-                    bookstoreFragment2.setArguments(bundle2);
-                    fragments.add(bookstoreFragment1);
-                    fragments.add(bookstoreFragment2);
-                    textViews.get(1).setVisibility(View.VISIBLE);
-//                    tabLayout.setVisibility(View.VISIBLE);
-                }
+//                for (int i = 0; i < shuTitles.size(); i++) {
+//                    if (i < 3)
+//                        textViews.get(i).setText(shuTitles.get(i).getName());
+//                }
+//                if (shuTitles.size() == 0) {
+//
+//                } else if (shuTitles.size() == 1) {
+//                    bookstoreFragment1 = new BookstoreFragment();
+//                    bookstoreFragment1.setArguments(bundle1);
+//                    fragments.add(bookstoreFragment1);
+//                    textViews.get(1).setVisibility(View.GONE);
+//                } else if (shuTitles.size() == 2) {
+//                    bookstoreFragment1 = new BookstoreFragment();
+//                    bookstoreFragment2 = new BookstoreFragment();
+//                    bookstoreFragment1.setArguments(bundle1);
+//                    bookstoreFragment2.setArguments(bundle2);
+//                    fragments.add(bookstoreFragment1);
+//                    fragments.add(bookstoreFragment2);
+//                    textViews.get(1).setVisibility(View.VISIBLE);
+//
+//                }
+                textViews.get(0).setText("书城");
+                bookStoreFragment = new NewNativeBookStoreFragment();
+                fragments.add(bookStoreFragment);
 
                 break;
         }

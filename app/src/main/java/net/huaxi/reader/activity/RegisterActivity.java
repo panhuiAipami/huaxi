@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.RegisterModel;
 
 import net.huaxi.reader.BaseActivity;
@@ -145,6 +146,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 model.setUser_real_point(user.getInt("user_real_point"));
                 model.setUser_vip_class(user.getInt("user_vip_class"));
                 HuaXiSDK.getInstance().syncLoginStatus(model);
+                if (ListenerManager.getInstance().getLoginSuccess() != null) {
+                    ListenerManager.getInstance().getLoginSuccess().loginState(1);
+                }
                 setResult(RESULT_OK);
                 finish();
             } catch (JSONException e) {

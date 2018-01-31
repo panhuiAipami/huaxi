@@ -4,6 +4,7 @@ import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
+import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserBean;
@@ -268,7 +269,7 @@ public interface BookApiService {
 
     //书城
     @GET("book_store")
-    Observable<Base<BookStoreResponse>> book_store(@Query("format") String type);
+    Observable<NewBookStoreResponse> book_store(@Query("format") String type);
 
     //精选页
     @GET("book_weekly")

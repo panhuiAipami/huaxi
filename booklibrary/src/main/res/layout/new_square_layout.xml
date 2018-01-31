@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/send_layout"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/square_recycler_view"

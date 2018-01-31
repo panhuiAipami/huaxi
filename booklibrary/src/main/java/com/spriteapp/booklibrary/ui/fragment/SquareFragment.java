@@ -21,6 +21,7 @@ import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.ui.adapter.SquareAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
+import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 
 import java.util.ArrayList;
@@ -110,11 +111,11 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     public void showOrGone() {
         if (squareBeanList.size() == 0) {
-            swipe_refresh.setVisibility(View.GONE);
+//            swipe_refresh.setVisibility(View.GONE);
             null_layout.setVisibility(View.VISIBLE);
         } else {
             null_layout.setVisibility(View.GONE);
-            swipe_refresh.setVisibility(View.VISIBLE);
+//            swipe_refresh.setVisibility(View.VISIBLE);
         }
     }
 
@@ -172,6 +173,8 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void onRefresh() {//刷新
         lastPage = 0;
         page = 0;
+        if (!NetworkUtil.isAvailable(getActivity()))
+            swipe_refresh.setRefreshing(false);
         setHttp();
     }
 

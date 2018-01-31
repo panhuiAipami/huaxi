@@ -67,4 +67,5 @@ public class Constant {
     public static final String USER_RECHARGE_LOG = BASE_URL + "user_rechargelog";
     public static final String USER_CONSUME_LOG = BASE_URL + "user_consumelog";
     public static final String USER_GIVE_LOG = BASE_URL + "user_givelog";
+    public static final String BOOK_DETAIL = BASE_URL + "book_detail?format=html&book_id=";
 }

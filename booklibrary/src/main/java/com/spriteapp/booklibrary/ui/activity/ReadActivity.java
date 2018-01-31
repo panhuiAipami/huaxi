@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +30,7 @@ import com.spriteapp.booklibrary.callback.ProgressCallback;
 import com.spriteapp.booklibrary.callback.TextSizeCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.database.ContentDb;
@@ -772,8 +774,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 popupWindow.dismiss();
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-                if (shareDetail != null) {
-                    ActivityUtil.toWebViewActivity(ReadActivity.this, "https://s.hxdrive.net/book_detail?format=html&book_id=" + shareDetail.getBook_id(), false, 1);
+                if (shareDetail != null && shareDetail.getBook_url() != null && !shareDetail.getBook_url().isEmpty()) {
+                    Uri uri = Uri.parse(shareDetail.getBook_url());
+                    String jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
+                    ActivityUtil.toWebViewActivity(ReadActivity.this, jumpUrl, false, 1);
 //                    finish();//销毁ReadActivity
                 }
 

@@ -87,7 +87,7 @@ public class GlideUtils {
 //                }
                 return false;
             }
-        }).into(view);
+        }).thumbnail(0.1f).into(view);
         return;
     }
 
