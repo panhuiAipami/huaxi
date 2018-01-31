@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:layout_width="100dp"
-        android:layout_height="87dp"
-        android:background="@mipmap/square_pop_bg"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pop_bg_icon"
         android:orientation="vertical">
 
         <TextView
