@@ -72,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="12dp"
+                android:visibility="gone"
                 android:src="@mipmap/square_more_img" />
         </LinearLayout>
 

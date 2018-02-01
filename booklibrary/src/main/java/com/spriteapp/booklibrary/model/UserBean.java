@@ -60,6 +60,8 @@ public class UserBean implements Serializable {
     private int user_vip_class;
     private int user_favorites;
     private int user_message;
+    private int is_author;//0不是，1是
+    private int is_editor;//0不是，1是
 
     public int getId() {
         return id;
@@ -73,6 +75,22 @@ public class UserBean implements Serializable {
         if (user_nickname == null)
             user_nickname = "";
         return user_nickname;
+    }
+
+    public int getIs_author() {
+        return is_author;
+    }
+
+    public void setIs_author(int is_author) {
+        this.is_author = is_author;
+    }
+
+    public int getIs_editor() {
+        return is_editor;
+    }
+
+    public void setIs_editor(int is_editor) {
+        this.is_editor = is_editor;
     }
 
     public void setUser_nickname(String user_nickname) {

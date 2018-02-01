@@ -166,7 +166,8 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
         } else if (v == recharge) {
             if (!AppUtil.isLogin(getActivity())) return;
-            toWebView(Constant.H5_PAY_URL);
+//            toWebView(Constant.H5_PAY_URL);
+            ActivityUtil.toWebViewActivityBack(getActivity(), Constant.H5_PAY_URL, false);
         } else if (v == bookshelf) {
             if (getActivity() instanceof HomeActivity) {
                 HomeActivity activity = (HomeActivity) getActivity();
@@ -209,6 +210,10 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case LOGIN_BACK://登录返回
+                    getUserData();
+                    break;
+                case 9:
+                    Log.d("user_go","充值返回");
                     getUserData();
                     break;
             }

@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -26,7 +28,8 @@ import java.util.List;
 
 public class CommunityFragment extends BaseFragment {
     private View mView;
-    private ImageView search_btn, to_send;//搜索按钮
+    private ImageView search_btn;
+    private TextView to_send;//搜索按钮
     private ViewPager viewPager;
     private SlidingTabLayout tabLayout;
     private SquareFragment followFragment;
@@ -59,7 +62,7 @@ public class CommunityFragment extends BaseFragment {
     @Override
     public void findViewId() {
         search_btn = (ImageView) mView.findViewById(R.id.search_btn);
-        to_send = (ImageView) mView.findViewById(R.id.to_send);
+        to_send = (TextView) mView.findViewById(R.id.to_send);
         viewPager = (ViewPager) mView.findViewById(R.id.viewPager);
         tabLayout = (SlidingTabLayout) mView.findViewById(R.id.tabLayout);
 
@@ -72,7 +75,6 @@ public class CommunityFragment extends BaseFragment {
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToast("搜索");
 //                if (!AppUtil.isLogin(getActivity())) {
 //                    return;
 //                }
@@ -85,7 +87,10 @@ public class CommunityFragment extends BaseFragment {
                 if (!AppUtil.isLogin(getActivity())) {
                     return;
                 }
-                ActivityUtil.toCreateDynamicActivity(getActivity());
+                if (UserBean.getInstance().getIs_author() == 1 && UserBean.getInstance().getIs_editor() == 1)
+                    ActivityUtil.toCreateDynamicActivity(getActivity());
+                else
+                    ToastUtil.showToast("公测阶段，仅对作者及部分用户开放");
             }
         });
     }

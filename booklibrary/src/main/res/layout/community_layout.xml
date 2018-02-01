@@ -40,23 +40,22 @@
         </LinearLayout>
 
 
-
-            <com.flyco.tablayout.SlidingTabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@color/app_background"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                tl:tl_indicator_color="@color/square_support_selector"
-                tl:tl_indicator_height="0dp"
-                tl:tl_indicator_width="20dp"
-                tl:tl_tab_space_equal="true"
-                tl:tl_textBold="true"
-                tl:tl_textSelectColor="#333333"
-                tl:tl_textUnselectColor="#666666"
-                tl:tl_textsize="18sp"></com.flyco.tablayout.SlidingTabLayout>
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@color/app_background"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            tl:tl_indicator_color="@color/square_support_selector"
+            tl:tl_indicator_height="0dp"
+            tl:tl_indicator_width="20dp"
+            tl:tl_tab_space_equal="true"
+            tl:tl_textBold="true"
+            tl:tl_textSelectColor="#333333"
+            tl:tl_textUnselectColor="#666666"
+            tl:tl_textsize="18sp"></com.flyco.tablayout.SlidingTabLayout>
 
         <RelativeLayout
             android:layout_width="60dp"
@@ -70,13 +69,18 @@
                 android:src="@mipmap/search"
                 android:visibility="gone" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/to_send"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="45dp"
+                android:layout_height="26dp"
                 android:layout_alignParentRight="true"
-                android:padding="13dp"
-                android:src="@mipmap/new_send_square_img" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/send_she_img"
+                android:gravity="center"
+                android:text="+发帖"
+                android:textColor="@color/c13_themes_color"
+                android:textSize="12sp" />
         </RelativeLayout>
 
     </LinearLayout>
