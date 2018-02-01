@@ -77,8 +77,9 @@
             android:value="5951bff1a40fa30a5200226a" />
 
         <activity android:name=".ui.activity.SquareDetailsActivity" />
-        <activity android:name=".ui.activity.CommentReplyActivity"></activity>
-        <activity android:name=".widget.photoview.PictureExternalPreviewActivity"></activity>
+        <activity android:name=".ui.activity.CommentReplyActivity" />
+        <activity android:name=".widget.photoview.PictureExternalPreviewActivity" />
+        <activity android:name=".ui.activity.SearchActivity"></activity>
     </application>
 
 </manifest>
