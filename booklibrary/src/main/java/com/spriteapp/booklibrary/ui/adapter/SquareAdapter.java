@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -79,7 +80,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SquareViewHolder) {
-            SquareBean squareBean = list.get(position);
+            final SquareBean squareBean = list.get(position);
             if (squareBean == null) return;
             SquareViewHolder viewHolder = (SquareViewHolder) holder;
 
@@ -95,11 +96,9 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
                     GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
-                    if (squareBean.getHeight() == 0 && true) {
-
-                    }
-
-
+//                    GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
+//                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
+                    GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
                 } else if (squareBean.getPic_url().size() == 2) {//两张图片
                     viewHolder.image2.setVisibility(View.VISIBLE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
@@ -118,6 +117,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.image_recyclerview.setVisibility(View.VISIBLE);
                     viewHolder.image_recyclerview.setLayoutManager(new GridLayoutManager(context, squareBean.getPic_url().size() == 4 ? 2 : 3));
                     viewHolder.image_recyclerview.setAdapter(new SquareImageAdapter(context, squareBean.getPic_url()));//嵌套列表
+                    itemClick(viewHolder.image_recyclerview, squareBean);//item点击
                 } else {//没有图片
                     viewHolder.image1.setVisibility(View.GONE);
                     viewHolder.image2.setVisibility(View.GONE);
@@ -144,7 +144,7 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 }
             });
-            itemClick(viewHolder, squareBean);//item点击
+            itemClick(viewHolder.itemView, squareBean);//item点击
 //            moreImageClick(viewHolder.more);//更多点击
             goSupport(viewHolder.support_num, squareBean);//点赞
             goComment(viewHolder.comment_num, squareBean, position);
@@ -201,15 +201,25 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public void itemClick(SquareViewHolder holder, final SquareBean bean) {
+    public void itemClick(View holder, final SquareBean bean) {
         if (bean == null) return;
-        holder.item_layout.setOnClickListener(new View.OnClickListener() {
+//        holder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {//帖子id
+//                ActivityUtil.toSquareDetailsActivity(context, bean.getId(), 1);
+//            }
+//        });
+        holder.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {//帖子id
-                ActivityUtil.toSquareDetailsActivity(context, bean.getId(), 1);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                    ActivityUtil.toSquareDetailsActivity(context, bean.getId(), 1);
+                return true;
             }
         });
+
     }
+
 
     /**
      * @param more ImageView

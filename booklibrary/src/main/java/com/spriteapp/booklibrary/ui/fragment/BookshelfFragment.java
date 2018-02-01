@@ -165,6 +165,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         mAdapter.setIsRecommendData(isRecommendData);
         Log.d("IsLong", "isRecommendData===" + isRecommendData);
         mAdapter.notifyDataSetChanged();
+        showOrGone();
     }
 
     public boolean isDeleteBook() {

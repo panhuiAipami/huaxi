@@ -156,6 +156,13 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 //                }
 //            }
 //        });
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishBack();
+                finish();
+            }
+        });
     }
 
     @Override
@@ -258,6 +265,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             mWebView.goBack();
             return;
         }
+        finishBack();
 //        if (IsRead == 1 && bookId != null && !bookId.isEmpty()) {
 //            BookDetailResponse bookDetailResponse = new BookDetailResponse();
 //            bookDetailResponse.setBook_id(Integer.parseInt(bookId));
@@ -355,4 +363,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         mPresenter.detachView();
     }
 
+    public void finishBack() {
+        setResult(RESULT_OK);
+    }
 }

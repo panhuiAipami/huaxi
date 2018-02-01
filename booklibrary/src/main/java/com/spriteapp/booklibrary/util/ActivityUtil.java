@@ -31,11 +31,19 @@ public class ActivityUtil {
         toWebViewActivity(context, url, false);
     }
 
+
     public static void toWebViewActivity(Context context, String url, boolean isH5Pay) {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(WebViewActivity.LOAD_URL_TAG, url);
         intent.putExtra(WebViewActivity.IS_H5_PAY_TAG, isH5Pay);
         context.startActivity(intent);
+    }
+
+    public static void toWebViewActivityBack(Activity context, String url, boolean isH5Pay) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.LOAD_URL_TAG, url);
+        intent.putExtra(WebViewActivity.IS_H5_PAY_TAG, isH5Pay);
+        context.startActivityForResult(intent, 9);
     }
 
     public static void toWebViewActivity(Context context, String url, boolean isH5Pay, int IsRead) {
@@ -91,11 +99,11 @@ public class ActivityUtil {
         Intent intent = new Intent(context, SquareDetailsActivity.class);
         intent.putExtra(SQUAREID, squareid);
         intent.putExtra(ISLOOKCOMMENT, IsLookComment);
-        context.startActivityForResult(intent,TOCREATEDYNAMICACTIVITY);
+        context.startActivityForResult(intent, TOCREATEDYNAMICACTIVITY);
 
     }
 
-    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid,int user_id) {//总条数
+    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid, int user_id) {//总条数
         Intent intent = new Intent(context, CommentReplyActivity.class);
         intent.putExtra(REPLYTITLE, total);
         intent.putExtra(COMMENT_ID, comment_id);
