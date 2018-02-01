@@ -113,7 +113,8 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
      * 热销  人气  评论 更新榜
      * @param interval
      */
-    public void sortRefresh(int interval) {
+    public void sortRefresh(int type,int interval) {
+        this.type = type;
         this.interval = interval;
         getData();
     }
@@ -122,6 +123,7 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
      * @param type
      */
     public void timeRefresh(int type) {
+        page = 1;
         this.type = type;
         getData();
     }

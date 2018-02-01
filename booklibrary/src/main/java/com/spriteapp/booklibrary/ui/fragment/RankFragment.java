@@ -92,42 +92,16 @@ public class RankFragment extends BaseFragment {
                         ranking_switch_button.setText(name);
 
                         if (rankListFragment1 != null) {
-                            rankListFragment1.sortRefresh(interval);
+                            rankListFragment1.sortRefresh(1,interval);
                         }
                         if (rankListFragment2 != null) {
-                            rankListFragment2.sortRefresh(interval);
+                            rankListFragment2.sortRefresh(2,interval);
                         }
                         if (rankListFragment3 != null) {
-                            rankListFragment3.sortRefresh(interval);
+                            rankListFragment3.sortRefresh(3,interval);
                         }
                     }
                 });
-            }
-        });
-
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                position += 1;
-                if (rankListFragment1 != null) {
-                    rankListFragment1.timeRefresh(position);
-                }
-                if (rankListFragment2 != null) {
-                    rankListFragment2.sortRefresh(position);
-                }
-                if (rankListFragment3 != null) {
-                    rankListFragment3.sortRefresh(position);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -139,13 +113,13 @@ public class RankFragment extends BaseFragment {
 
     public void onRefreshData() {
         if (rankListFragment1 != null) {
-            rankListFragment1.onRefresh();
+            rankListFragment1.timeRefresh(1);
         }
         if (rankListFragment2 != null) {
-            rankListFragment2.onRefresh();
+            rankListFragment2.timeRefresh(2);
         }
         if (rankListFragment3 != null) {
-            rankListFragment3.onRefresh();
+            rankListFragment3.timeRefresh(3);
         }
     }
 }
