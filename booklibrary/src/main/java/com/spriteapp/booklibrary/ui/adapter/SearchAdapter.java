@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,14 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View v) {
                     if (bookDetailResponse.getBook_url() != null && !bookDetailResponse.getBook_url().isEmpty()) {
                         Uri uri = Uri.parse(bookDetailResponse.getBook_url());
+
                         jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-                        ActivityUtil.toWebViewActivity(context, jumpUrl);
+                        if (TextUtils.isEmpty(jumpUrl)) return;
+                        Uri uri1 = Uri.parse(jumpUrl);
+                        String book_id = uri1.getQueryParameter(WebConstant.BOOK_ID_QUERY);
+                        ActivityUtil.toReadActivity(context, Integer.parseInt(book_id), 0);
+
+//                        ActivityUtil.toWebViewActivity(context, jumpUrl);
                     }
                 }
             });
