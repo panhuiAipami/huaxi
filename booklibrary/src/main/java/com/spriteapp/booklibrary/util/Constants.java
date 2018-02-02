@@ -28,6 +28,10 @@ public class Constants {
      */
     public static final String SDPath_bean = SDPath + "/bean";
     /**
+     * 实体类
+     */
+    public static final String SDPath_hot_bean = SDPath + "/hot_bean";
+    /**
      * 下载APP action
      */
     public static final String ACTION_DOWNLOAD = "ACTION_XS_APK_DOWNLOAD";

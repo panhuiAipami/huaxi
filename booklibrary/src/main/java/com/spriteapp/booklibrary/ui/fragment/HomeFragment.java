@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
-import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
@@ -132,7 +131,8 @@ public class HomeFragment extends BaseFragment {
         view.findViewById(R.id.search_btn).setOnClickListener(new View.OnClickListener() {//搜索
             @Override
             public void onClick(View v) {
-                ActivityUtil.toWebViewActivity(getActivity(), Constant.BOOK_SEARCH_URL);
+//                ActivityUtil.toWebViewActivity(getActivity(), Constant.BOOK_SEARCH_URL);
+                ActivityUtil.toSearchActivity(getActivity());
             }
         });
     }

@@ -10,6 +10,7 @@ import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
+import com.spriteapp.booklibrary.ui.activity.SearchActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
@@ -110,6 +111,9 @@ public class ActivityUtil {
         intent.putExtra(SQUAREID, squareid);
         intent.putExtra(USER_ID, user_id);
         context.startActivity(intent);
-
+    }
+    public static void toSearchActivity(Context context){
+        Intent intent = new Intent(context, SearchActivity.class);
+        context.startActivity(intent);
     }
 }

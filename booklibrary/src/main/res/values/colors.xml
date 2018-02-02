@@ -86,6 +86,8 @@
     <color name="c07_themes_color">#999999</color>
     <!--辅助提示文字-->
     <color name="c08_themes_color">#c8c8c8</color>
+    <color name="colorHistory">#333333</color>
+
     <!--分割线-->
     <color name="c09_divider_color">#e1e1e1</color>
     <!--分割块色-->

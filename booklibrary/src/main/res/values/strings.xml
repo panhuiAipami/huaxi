@@ -13,7 +13,7 @@
     <string name="book_reader_recharge_message">请充值后继续阅读</string>
     <string name="book_reader_recharge_negative_text">以后充值</string>
     <string name="book_reader_recharge_positive_text">前往充值</string>
-
+    <string name="searsh_hint"><font size="14">请输入关键字</font></string>
     <string name="book_reader_auto_buy">自动购买</string>
     <string name="book_reader_auto_buy_prompt">开启自动购买后系统将自动扣费，避免弹框打扰</string>
     <string name="book_reader_hand_buy">每次提醒</string>

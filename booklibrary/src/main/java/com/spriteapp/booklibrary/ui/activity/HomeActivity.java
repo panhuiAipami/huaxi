@@ -636,7 +636,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtil.toWebViewActivity(mContext, Constant.BOOK_SEARCH_URL);
+//                ActivityUtil.toWebViewActivity(mContext, Constant.BOOK_SEARCH_URL);
+                ActivityUtil.toSearchActivity(mContext);
             }
         });
     }

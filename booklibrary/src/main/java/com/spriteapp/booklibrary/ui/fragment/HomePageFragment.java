@@ -136,8 +136,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         search_btn.setOnClickListener(new View.OnClickListener() {//搜索
             @Override
             public void onClick(View v) {
-                ActivityUtil.toWebViewActivity(getActivity(), Constant.BOOK_SEARCH_URL);
+//                ActivityUtil.toWebViewActivity(getActivity(), Constant.BOOK_SEARCH_URL);
+                ActivityUtil.toSearchActivity(getActivity());
             }
+
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

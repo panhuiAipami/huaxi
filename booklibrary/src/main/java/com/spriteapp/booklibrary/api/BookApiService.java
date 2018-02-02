@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
@@ -270,6 +271,15 @@ public interface BookApiService {
     //书城
     @GET("book_store")
     Observable<NewBookStoreResponse> book_store(@Query("format") String type);
+
+    //搜索列表
+    @GET("book_search")
+    Observable<BaseTwo<List<String>>> book_search(@Query("format") String type);
+
+    //搜索
+    @GET("book_search")
+    Observable<Base<List<BookDetailResponse>>> book_search(@Query("format") String type,
+                                               @Query("q") String content);
 
     //精选页
     @GET("book_weekly")

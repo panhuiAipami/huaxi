@@ -1,9 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.spriteapp.booklibrary.ui.activity.SearchActivity">
+    android:background="@color/c13_themes_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/haha"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp">
+
+        <com.spriteapp.booklibrary.widget.EditTextWithDel
+            android:id="@+id/send_searsh_edit"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/comment_edit"
+            android:hint="@string/searsh_hint"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/comment_hint_couser"
+            android:textSize="14sp"
+            android:theme="@style/MyEditText" />
+
+        <TextView
+            android:id="@+id/searsh_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/square_comment_selector"
+            android:paddingTop="15dp"
+            android:text="取消" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/linear_title"
+        android:background="@color/c08_themes_color"></View>
+
+    <TextView
+        android:id="@+id/search_title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:text="标题"
+        android:textColor="@color/square_user_speak"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/search_history_layout"></include>
+
+    <include layout="@layout/follow_null_layout"></include>
+
+    <FrameLayout
+        android:id="@+id/fr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c13_themes_color"></FrameLayout>
+
+</LinearLayout>
