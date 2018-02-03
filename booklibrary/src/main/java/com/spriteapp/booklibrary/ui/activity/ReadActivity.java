@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -30,7 +29,6 @@ import com.spriteapp.booklibrary.callback.ProgressCallback;
 import com.spriteapp.booklibrary.callback.TextSizeCallback;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
-import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.database.ContentDb;
@@ -90,6 +88,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.spriteapp.booklibrary.constant.Constant.BOOK_DETAIL;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -583,7 +582,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
         if (bookDetail == null || BookUtil.isBookAddShelf(bookDetail)) {
             if (AppUtil.isLogin()) {
-                addToShelf();//书架中已存在但要刷新顺序
+                addToShelf(true);//书架中已存在但要刷新顺序
             }
             finish();
             return;
@@ -597,7 +596,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                     @Override
                     public void clickSure() {
-                        addToShelf();
+                        addToShelf(false);
                         finish();
                     }
                 });
@@ -716,7 +715,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                 @Override
                 public void clickAddShelf() {
-                    addToShelf();
+                    addToShelf(false);
                 }
 
                 @Override
@@ -740,11 +739,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 }
             };
 
-    private void addToShelf() {
+    private void addToShelf(boolean isShelf) {
         AddBookModel model = new AddBookModel();
         model.setBookId(mBookId);
         model.setChapterId(mCurrentChapter);
-        model.setAddShelf(true);//刷新纪录的标识
+        model.setAddShelf(isShelf);//刷新纪录的标识,是否弹出提示Toast
         EventBus.getDefault().post(model);
     }
 
@@ -774,10 +773,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 popupWindow.dismiss();
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-                if (shareDetail != null && shareDetail.getBook_url() != null && !shareDetail.getBook_url().isEmpty()) {
-                    Uri uri = Uri.parse(shareDetail.getBook_url());
-                    String jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-                    ActivityUtil.toWebViewActivity(ReadActivity.this, jumpUrl, false, 1);
+                if (shareDetail != null) {
+                    ActivityUtil.toWebViewActivity(ReadActivity.this, BOOK_DETAIL + shareDetail.getBook_id(), false, 1);
 //                    finish();//销毁ReadActivity
                 }
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +126,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 oneViewHolder.titleTextView.setText(detail.getBook_name());
             }
             if (!StringUtil.isEmpty(detail.getLast_update_chapter_title())) {
-                oneViewHolder.chapter_title.setText(detail.getLast_update_chapter_title());
+                oneViewHolder.chapter_title.setText("更新至:" + detail.getLast_update_chapter_title());
             }
             if (detail.getBook_chapter_total() != 0 && !isRecentReadBook) {
                 oneViewHolder.progressTextView.setVisibility(View.VISIBLE);
@@ -140,11 +139,9 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             oneViewHolder.logoImageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Log.d("IsLong", "执行上面");
                     if (isRecommendData || isRecentReadBook) {
                         return false;
                     }
-                    Log.d("IsLong", "执行下面");
                     if (isDeleteBook) {
                         return true;
                     }
@@ -174,6 +171,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             oneViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (isDeleteBook) return;//删除时不进入阅读页
                     int layoutPosition = holder.getLayoutPosition();
                     if (CollectionUtil.isEmpty(mDetailList) || layoutPosition >= mDetailList.size()) {
                         return;
@@ -194,7 +192,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 } else {
                     oneViewHolder.deleteImageView.setSelected(false);
                 }
-            }else {
+            } else {
                 oneViewHolder.deleteImageView.setSelected(false);
             }
             if (num == 0 && isDeleteBook) {//取消全选
@@ -284,6 +282,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (isDeleteBook) return;//删除时不进入阅读页
                     int layoutPosition = holder.getLayoutPosition();
                     if (CollectionUtil.isEmpty(mDetailList) || layoutPosition >= mDetailList.size()) {
                         return;
@@ -304,7 +303,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 } else {
                     shelfViewHolder.deleteImageView.setSelected(false);
                 }
-            }else {
+            } else {
                 shelfViewHolder.deleteImageView.setSelected(false);
             }
             if (num == mDetailList.size()) shelfViewHolder.deleteImageView.setSelected(true);

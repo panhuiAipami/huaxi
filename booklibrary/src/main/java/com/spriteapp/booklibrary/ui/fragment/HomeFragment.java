@@ -111,7 +111,7 @@ public class HomeFragment extends BaseFragment {
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         mTabLayout_1.setViewPager(viewPager, mTitles);
-
+        setCheck(false);
         listener();
     }
 
@@ -195,16 +195,16 @@ public class HomeFragment extends BaseFragment {
                 refresh();
             if (selector_woman != null)
                 selector_woman.setBackgroundResource(R.color.pop_back);
-        }else{
+        } else {
 
         }
     }
 
-    public void refresh(){
-        if(choiceFragment != null)
-        choiceFragment.onRefreshData();
+    public void refresh() {
+        if (choiceFragment != null)
+            choiceFragment.onRefreshData();
 
-        if(rankFragment != null){
+        if (rankFragment != null) {
             rankFragment.onRefreshData();
         }
     }

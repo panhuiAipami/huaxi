@@ -12,7 +12,10 @@
         android:id="@+id/haha"
         android:layout_width="wrap_content"
         android:layout_height="51dp">
-
+        <!--
+        android:drawableLeft="@mipmap/search"
+                    android:drawablePadding="5dp"
+        -->
         <com.spriteapp.booklibrary.widget.EditTextWithDel
             android:id="@+id/send_searsh_edit"
             android:layout_width="match_parent"
@@ -40,9 +43,9 @@
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textColor="@color/square_comment_selector"
             android:paddingTop="15dp"
-            android:text="取消" />
+            android:text="取消"
+            android:textColor="@color/square_comment_selector" />
     </RelativeLayout>
 
     <View

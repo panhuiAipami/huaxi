@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
-    <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
-        android:id="@+id/list"
-        android:name="com.spriteapp.booklibrary.ui.fragment.ChoiceFragment"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="com.spriteapp.booklibrary.ui.fragment.ChoiceFragment"
-        tools:listitem="@layout/choice_fragment_item" />
-</android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent">
+
+        <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
+            android:id="@+id/list"
+            android:name="com.spriteapp.booklibrary.ui.fragment.ChoiceFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:visibility="visible"
+            app:layoutManager="LinearLayoutManager"
+            tools:context="com.spriteapp.booklibrary.ui.fragment.ChoiceFragment"
+            tools:listitem="@layout/choice_fragment_item" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <include layout="@layout/follow_null_layout"></include>
+
+
+</RelativeLayout>

@@ -78,12 +78,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void initData() {
-        reload = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
-        if (reload == 1) {
-            boy_or_girl.setChecked(true);
-        } else {
-            boy_or_girl.setChecked(false);
-        }
+
     }
 
     @Override
@@ -158,6 +153,13 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
             }
         });
         initFragment();
+        reload = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
+        Log.d("reload1", "reload===" + reload);
+        if (reload == 1) {
+            boy_or_girl.setChecked(true);
+        } else {
+            boy_or_girl.setChecked(false);
+        }
         setCheck(false);
     }
 
@@ -184,6 +186,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && boy_or_girl != null) {
             int load = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
+            Log.d("reload1", "reload22===" + reload);
             if (reload != load) {
                 setCheck(true);
                 reload = load;

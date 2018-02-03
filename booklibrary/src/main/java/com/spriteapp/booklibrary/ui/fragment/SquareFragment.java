@@ -83,7 +83,7 @@ public class SquareFragment extends BaseFragment implements SwipeRefreshLayout.O
         send_square = (ImageView) mView.findViewById(R.id.send_square);
         null_layout = (LinearLayout) mView.findViewById(R.id.null_layout);
         miaoshu = (TextView) mView.findViewById(R.id.miaoshu);
-        swipe_refresh.setColorSchemeResources(R.color.colorPrimaryDark);
+        swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
         swipe_refresh.setOnRefreshListener(this);
         recyclerView.setLoadingListener(this);
         send_square.setOnClickListener(new View.OnClickListener() {//发帖子

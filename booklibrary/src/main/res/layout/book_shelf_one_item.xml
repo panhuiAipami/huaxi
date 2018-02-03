@@ -57,7 +57,7 @@
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="猎爱游戏:早安,金主大人"
+                android:text=""
                 android:textColor="@color/book_reader_all_book_night_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -79,7 +79,7 @@
                     android:layout_marginTop="15dp"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="阅读至:第二十四章 表白衷肠"
+                    android:text=""
                     android:textColor="@color/gray_popup_text"
                     android:textSize="16sp" />
 
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_weight="1"
-                        android:text="已读20%"
+                        android:text=""
                         android:textColor="@color/square_small"
                         android:textSize="14sp" />
 

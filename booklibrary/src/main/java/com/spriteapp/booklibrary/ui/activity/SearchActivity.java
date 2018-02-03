@@ -30,6 +30,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.FlowAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SearchAdapter;
 import com.spriteapp.booklibrary.util.FileHelper;
+import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -51,7 +52,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 搜索
  */
-public class SearchActivity extends TitleActivity {
+public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.OnRefreshListener {
     public EditText searsh_edit;
     private TextView searsh_text;
     private ImageView clear_history;
@@ -112,6 +113,8 @@ public class SearchActivity extends TitleActivity {
         miaoshu = (TextView) findViewById(R.id.miaoshu);
         miaoshu.setText("没有符合的书籍，换个关键字试试");
         null_layout.setVisibility(View.GONE);
+        mRefresh.setOnRefreshListener(this);
+        mRefresh.setColorSchemeResources(R.color.square_comment_selector);
         historyFlowAdapter = new FlowAdapter(history, this);
         hotFlowAdapter = new FlowAdapter(hot, this);
         history_flowlayout.setAdapter(historyFlowAdapter);
@@ -186,7 +189,7 @@ public class SearchActivity extends TitleActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH)
-                    searchBtn();
+                    searchBtn(2);
                 return true;
             }
         });
@@ -196,37 +199,43 @@ public class SearchActivity extends TitleActivity {
      * 得到热门搜索与搜索历史记录
      */
     public void gethistory() {
-        if (history.size() == 0) {//banner轮播文件
-            HotBean listBean = FileHelper.readObjectFromJsonFile(this, Constant.HOT_LIST, HotBean.class);
-            if (listBean != null && listBean.getHot() != null && listBean.getHot().size() != 0) {
-                Map<String, String> map = listBean.getHot();
-                Set<Map.Entry<String, String>> set = map.entrySet();
-                for (Map.Entry<String, String> me : set) {
-                    // 根据键值对对象获取键和值
-                    bookIds.add(me.getKey());
-                }
+        try {
+            if (history.size() == 0) {//banner轮播文件
+                HotBean listBean = FileHelper.readObjectFromJsonFile(this, Constant.HOT_LIST, HotBean.class);
+                if (listBean != null && listBean.getHot() != null && listBean.getHot().size() != 0) {
+                    Map<String, String> map = listBean.getHot();
+                    Set<Map.Entry<String, String>> set = map.entrySet();
+                    for (Map.Entry<String, String> me : set) {
+                        // 根据键值对对象获取键和值
+                        bookIds.add(me.getKey());
+                    }
 //                Collections.reverse(bookIds);//倒叙
-                Log.d("history11", "history.size===" + history.size());
-                history.addAll(bookIds);
-                historyFlowAdapter.notifyDataChanged();
-                gone_or_visibility();
+                    Log.d("history11", "history.size===" + history.size());
+                    history.addAll(bookIds);
+                    historyFlowAdapter.notifyDataChanged();
+                    gone_or_visibility();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         if (v == searsh_text) {
-            searchBtn();
+            searchBtn(1);
         } else if (v == clear_history) {
             history.clear();
             gone_or_visibility();
         }
     }
 
-    public void searchBtn() {
-        if ("取消".equals(searsh_text.getText()))
+    public void searchBtn(int type) {
+        content = searsh_edit.getText().toString().trim();
+        if ("取消".equals(searsh_text.getText()) && type == 1)
             finish();
         else if ("搜索".equals(searsh_text.getText())) {
             if (!TextUtils.isEmpty(searsh_edit.getText())) {
@@ -242,7 +251,7 @@ public class SearchActivity extends TitleActivity {
             hot_history_layout.setVisibility(View.VISIBLE);
             mRefresh.setVisibility(View.GONE);
             search_title.setVisibility(View.GONE);
-            if (!TextUtils.isEmpty(searsh_edit.getText()) && "取消".equals(searsh_text.getText()))
+            if (TextUtils.isEmpty(searsh_edit.getText()) && "取消".equals(searsh_text.getText()))
                 null_layout.setVisibility(View.GONE);
         } else {
             hot_history_layout.setVisibility(View.GONE);
@@ -275,6 +284,9 @@ public class SearchActivity extends TitleActivity {
         hot_history_layout.setVisibility(View.GONE);
         mRefresh.setVisibility(View.GONE);
         null_layout.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(content))
+            search_title.setText("搜索“" + content + "”的结果:");
+        search_title.setVisibility(View.VISIBLE);
     }
 
     public void getHttp() {
@@ -318,7 +330,6 @@ public class SearchActivity extends TitleActivity {
     }
 
     public void getBook() {
-        content = searsh_edit.getText().toString().trim();
         if (TextUtils.isEmpty(content)) return;
         searsh_text.setText("取消");
         toSearch();
@@ -352,14 +363,10 @@ public class SearchActivity extends TitleActivity {
 
                     @Override
                     public void onNext(@NonNull Base<List<BookDetailResponse>> bookDetailResponse) {
-                        Log.d("ApiCodeEnum", "为空");
                         if (bookDetailResponse != null) {
-                            Log.d("ApiCodeEnum", "不为空");
                             int resultCode = bookDetailResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-                                Log.d("ApiCodeEnum", "成功");
                                 if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {
-                                    Log.d("ApiCodeEnum", "成功111");
                                     mDetailResponseList.clear();
                                     mDetailResponseList.addAll(bookDetailResponse.getData());
                                     adapter.notifyDataSetChanged();
@@ -390,7 +397,7 @@ public class SearchActivity extends TitleActivity {
     protected void onDestroy() {
 
         try {
-            if (history != null && history.size() != 0) {
+            if (history != null) {
                 list.clear();
                 for (int i = 0; i < history.size(); i++) {
                     list.put(history.get(i), history.get(i));
@@ -403,5 +410,13 @@ public class SearchActivity extends TitleActivity {
             e.printStackTrace();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!NetworkUtil.isAvailable(this))
+            mRefresh.setRefreshing(false);
+        if (TextUtils.isEmpty(content)) return;
+        toSearch();
     }
 }

@@ -87,7 +87,7 @@ public class CommunityFragment extends BaseFragment {
                 if (!AppUtil.isLogin(getActivity())) {
                     return;
                 }
-                if (UserBean.getInstance().getIs_author() == 1 && UserBean.getInstance().getIs_editor() == 1)
+                if (UserBean.getInstance().getHas_role() == 1)
                     ActivityUtil.toCreateDynamicActivity(getActivity());
                 else
                     ToastUtil.showToast("公测阶段，仅对作者及部分用户开放");

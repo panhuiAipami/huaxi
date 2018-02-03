@@ -35,7 +35,7 @@ public class Constant {
     //签到
     public static final String CHECK_IN_URL = BASE_URL + "user_signin";//签到
 
-    public static final String VERSION = "2.3.0";
+    public static final String VERSION = "2.4.0";
     public static final String USER_AGENT_KEY = "User-Agent";
 
     public static final String JSON_TYPE = "json";

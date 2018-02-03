@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
@@ -27,6 +30,8 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     int type = 1;//1:热销榜 2:人气榜 3:评论榜 4: 更新榜 默认1
     int interval = 1;//1:周榜 2:月榜 3:总榜 默认1
     private int page = 1;
+    private LinearLayout null_layout;
+    private TextView miaoshu;
 
     public RankListFragment() {
     }
@@ -58,10 +63,14 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     @Override
     public void findViewId() {
         swipe_refresh = (SwipeRefreshLayout) mParentView.findViewById(R.id.swipe_refresh);
+        null_layout = (LinearLayout) mParentView.findViewById(R.id.null_layout);
+        miaoshu = (TextView) mParentView.findViewById(R.id.miaoshu);
+        miaoshu.setText("竟然没有加载出来");
         swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
         RecyclerView recyclerView = (RecyclerView) mParentView.findViewById(R.id.list);
         adapter = new RankAdapter(lists, getActivity());
         recyclerView.setAdapter(adapter);
+        goneOrShow();
 
     }
 
@@ -73,6 +82,13 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     public void onError(Throwable t) {
         if (swipe_refresh != null)
             swipe_refresh.setRefreshing(false);
+    }
+    public void goneOrShow() {
+        if (lists.size() == 0) {
+            null_layout.setVisibility(View.VISIBLE);
+        } else {
+            null_layout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -86,6 +102,7 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
             lists.addAll(result.getData());
         }
         adapter.notifyDataSetChanged();
+        goneOrShow();
     }
 
     @Override
