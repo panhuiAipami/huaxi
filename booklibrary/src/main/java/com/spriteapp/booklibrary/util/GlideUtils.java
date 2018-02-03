@@ -13,7 +13,9 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.spriteapp.booklibrary.constant.Constant;
 
 import java.io.IOException;
@@ -88,6 +90,25 @@ public class GlideUtils {
                 return false;
             }
         }).thumbnail(0.1f).into(view);
+        return;
+    }
+
+
+    public static void loadAndGetImage2(final ImageView view, String url, final List<String> squareBean, final int pos, final Activity context) {
+        if (url == null) return;
+        if (!url.startsWith("http")) url = Constant.IMG_URL + url;
+        //获取图片真正的宽高
+        Glide.with(context)
+                .setDefaultRequestOptions(new RequestOptions() {
+                }).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                Util.setImageHeiht(context, view, resource);
+                view.setImageBitmap(resource);
+
+                Util.ImageClick(view, squareBean, null, pos, context);
+            }
+        });
         return;
     }
 

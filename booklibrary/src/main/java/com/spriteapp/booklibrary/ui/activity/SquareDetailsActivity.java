@@ -441,7 +441,7 @@ public class SquareDetailsActivity extends TitleActivity implements CommentDetai
                 image2.setVisibility(View.GONE);
                 image_recyclerview.setVisibility(View.GONE);
                 image1.setVisibility(View.VISIBLE);
-                GlideUtils.loadAndGetImage(image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, this);
+                GlideUtils.loadAndGetImage2(image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, this);
 //                GlideUtils.loadImage(image1, squareBean.getPic_url().get(0), this);
 //                Util.ImageClick(image1, squareBean.getPic_url(), 0, this);
             } else if (squareBean.getPic_url().size() == 2) {//两张图片

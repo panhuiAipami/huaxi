@@ -95,10 +95,9 @@ public class SquareAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     viewHolder.image2.setVisibility(View.GONE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);
                     viewHolder.image1.setVisibility(View.VISIBLE);
-                    GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
 //                    GlideUtils.loadImage(viewHolder.image1, squareBean.getPic_url().get(0), context);
 //                    Util.ImageClick(viewHolder.image1, squareBean.getPic_url(), 0, context);
-                    GlideUtils.loadAndGetImage(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
+                    GlideUtils.loadAndGetImage2(viewHolder.image1, squareBean.getPic_url().get(0), squareBean.getPic_url(), 0, context);
                 } else if (squareBean.getPic_url().size() == 2) {//两张图片
                     viewHolder.image2.setVisibility(View.VISIBLE);
                     viewHolder.image_recyclerview.setVisibility(View.GONE);

@@ -306,22 +306,22 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         if (result == null) {
             return;
         }
-        final String orderInfo = result.getPay_str();
-        Runnable payRunnable = new Runnable() {
-            @Override
-            public void run() {
-                PayTask alipay = new PayTask(WebViewActivity.this);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
+//        final String orderInfo = result.getPay_str();
+//        Runnable payRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                PayTask alipay = new PayTask(WebViewActivity.this);
+//                Map<String, String> result = alipay.payV2(orderInfo, true);
+//
+//                Message msg = new Message();
+//                msg.what = SDK_PAY_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+//            }
+//        };
 
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
+//        Thread payThread = new Thread(payRunnable);
+//        payThread.start();
     }
 
     @Override

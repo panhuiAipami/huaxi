@@ -43,6 +43,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,8 +93,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.TELEPHONY_SERVICE;
-import static com.spriteapp.booklibrary.util.GlideUtils.IMGHEIGHT;
-import static com.spriteapp.booklibrary.util.GlideUtils.IMGWIDTH;
 
 /**
  * 工具类
@@ -1630,11 +1629,6 @@ public class Util {
                 localMedia.setCompressed(false);
                 localMedia.setPictureType("image/gif");
             }
-            if (map != null && map.size() != 0) {
-                localMedia.setWidth(map.get(IMGWIDTH));
-                localMedia.setHeight(map.get(IMGHEIGHT));
-                Log.d("localMedia", "设置宽高" + "宽===" + map.get(IMGWIDTH) + "高===" + map.get(IMGHEIGHT));
-            }
             medias.add(localMedia);
         }
         return medias;
@@ -1735,4 +1729,40 @@ public class Util {
         return df.format(Double.parseDouble(str));
     }
 
+    /**
+     * 获取屏幕宽
+     * @return
+     */
+    public static int getPixelsWidth(Context c) {
+        Resources resources = c.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        int width = dm.widthPixels;
+        return width;
+    }
+
+
+    /**
+     * 社区一张图片时宽高
+     * @param v
+     * @param resource
+     */
+    public static  void setImageHeiht(Context c,ImageView v, Bitmap resource){
+        float weight = 0.8f;
+        int h = resource.getHeight();
+        int w = resource.getWidth();
+        int max_w = Util.getPixelsWidth(c);
+        if (h >= 1280 && h < 1920) {
+            weight = 0.6f;
+        } else if (h > 1920) {
+            weight = 0.5f;
+        }
+        if(w > max_w){//图片大于屏幕宽
+            weight = max_w/w;
+        }
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.width = (int) (w * weight);
+        layoutParams.height = (int) (h * weight);
+        v.setLayoutParams(layoutParams);
+    }
 }
