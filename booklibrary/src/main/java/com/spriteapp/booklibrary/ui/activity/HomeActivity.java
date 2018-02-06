@@ -82,8 +82,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public static final String ADVERTISEMENT = "advertisement";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
-    private static final int COMMUNITY_POSITION = 2;
-    private static final int BOOKSTORE_POSITION = 3;
+    private static final int COMMUNITY_POSITION = 3;
+    private static final int BOOKSTORE_POSITION = 2;
     private static final int ME_POSITION = 4;
     public static final int PERSON_TO_BOOKSHELF = 10;
     public static final int BOOKSHELF_TO_BOOKSTORE = 20;
@@ -368,9 +368,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mFragmentList.add(HomeFragment.newInstance());
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
-        mFragmentList.add(new CommunityFragment());//社区分类
         bookshelfFragment = new BookshelfFragment();
         mFragmentList.add(bookshelfFragment);
+        mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new PersonCenterFragment());
     }
 
