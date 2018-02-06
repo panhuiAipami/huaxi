@@ -124,11 +124,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                 case 2:
                     image_three.setImageDrawable(drawable);
                     break;
-                case 4://我的
-                    image_four.setImageDrawable(drawable);
-                    break;
                 case 3://社区
                     image_five.setImageDrawable(drawable);
+                    break;
+                case 4://我的
+                    image_four.setImageDrawable(drawable);
                     break;
             }
         }
@@ -479,7 +479,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     message.obj = drawable;
                     message.what = i;
                     handler.sendMessage(message);
-                    Log.d("textViewColor", tab.getLists().get(i).getIcon_on().get_$2x());
+                    Log.d("Thread", tab.getLists().get(i).getIcon_on().get_$2x());
                 }
             }
         }).start();
