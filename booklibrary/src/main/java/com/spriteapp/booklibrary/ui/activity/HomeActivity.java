@@ -20,7 +20,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,9 +82,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public static final String ADVERTISEMENT = "advertisement";
     private static final int BOOKSHELF_POSITION = 0;
     private static final int DISCOVER_POSITION = 1;
-
-    private static final int BOOKSTORE_POSITION = 2;
-    private static final int COMMUNITY_POSITION = 3;
+    private static final int COMMUNITY_POSITION = 2;
+    private static final int BOOKSTORE_POSITION = 3;
     private static final int ME_POSITION = 4;
     public static final int PERSON_TO_BOOKSHELF = 10;
     public static final int BOOKSHELF_TO_BOOKSTORE = 20;
@@ -111,37 +109,28 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private View icon_line;
     MessageRemindDialog dialog;
     BookshelfFragment bookshelfFragment;
-    List<TextView> textViewList = new ArrayList<>();
-    List<ImageView> imageViewList = new ArrayList<>();
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            try {
-                Drawable drawable = (Drawable) msg.obj;
-                if (msg.what > imageViewList.size()) return;
-                imageViewList.get(msg.what).setImageDrawable(drawable);
-                Log.d("icon_lay", "设置icon===" + msg.what);
-            } catch (Exception e) {
-                e.printStackTrace();
+            Drawable drawable = (Drawable) msg.obj;
+            switch (msg.what) {
+                case 0:
+                    image_one.setImageDrawable(drawable);
+                    break;
+                case 1:
+                    image_two.setImageDrawable(drawable);
+                    break;
+                case 2:
+                    image_three.setImageDrawable(drawable);
+                    break;
+                case 4://我的
+                    image_four.setImageDrawable(drawable);
+                    break;
+                case 3://社区
+                    image_five.setImageDrawable(drawable);
+                    break;
             }
-//            switch (msg.what) {
-//                case 0:
-//                    image_one.setImageDrawable(drawable);
-//                    break;
-//                case 1:
-//                    image_two.setImageDrawable(drawable);
-//                    break;
-//                case 2:
-//                    image_three.setImageDrawable(drawable);
-//                    break;
-//                case 3:
-//                    image_four.setImageDrawable(drawable);
-//                    break;
-//                case 4:
-//                    image_five.setImageDrawable(drawable);
-//                    break;
-//            }
         }
     };
     private ImageView paixu;
@@ -379,9 +368,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mFragmentList.add(HomeFragment.newInstance());
         mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
+        mFragmentList.add(new CommunityFragment());//社区分类
         bookshelfFragment = new BookshelfFragment();
         mFragmentList.add(bookshelfFragment);
-        mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new PersonCenterFragment());
     }
 
@@ -425,35 +414,30 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     }
 
     public void setIcon() {
-        textViewList.clear();
-        imageViewList.clear();
+        List<TextView> textViewList = new ArrayList<>();
+        List<ImageView> imageViewList = new ArrayList<>();
         textViewList.add(text_one);
         textViewList.add(text_two);
         textViewList.add(text_three);
+        textViewList.add(text_five);
         textViewList.add(text_four);
+
         imageViewList.add(image_one);
         imageViewList.add(image_two);
         imageViewList.add(image_three);
+        imageViewList.add(image_five);
         imageViewList.add(image_four);
         try {
             TabBar tabBar = FileHelper.readObjectFromJsonFile(this, Constant.NAVIGATION, TabBar.class);
             if (AppUtil.isNetAvailable(this)) {
-                //四个导航栏
                 if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && tabBar.getBackground_color() != null && !tabBar.getBackground_color().isEmpty() && tabBar.getBorder_style() != null && !tabBar.getBorder_style().isEmpty() && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
-                    icon_layout.setBackgroundColor(Color.parseColor("#" + tabBar.getBackground_color()));
-                    icon_line.setBackgroundColor(Color.parseColor("#" + tabBar.getBorder_style()));
-                    setTextColor(tabBar, tabBar.getColor(), tabBar.getColor_on(), textViewList);
-                    //五个导航栏
-                } else if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && tabBar.getBackground_color() != null && !tabBar.getBackground_color().isEmpty() && tabBar.getBorder_style() != null && !tabBar.getBorder_style().isEmpty() && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 5) {
-                    textViewList.add(3, text_five);//社区导航文本，根据下标加入集合
+                    Log.d("textViewColor", "进入修改颜色的方法");
                     icon_layout.setBackgroundColor(Color.parseColor("#" + tabBar.getBackground_color()));
                     icon_line.setBackgroundColor(Color.parseColor("#" + tabBar.getBorder_style()));
                     setTextColor(tabBar, tabBar.getColor(), tabBar.getColor_on(), textViewList);
                 }
                 if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
-                    setImageIcon(imageViewList, tabBar);
-                } else if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() >= 5) {
-                    imageViewList.add(3, image_five);//社区导航icon，根据下标加入集合
+                    Log.d("textViewColor", "进入修改icon的方法");
                     setImageIcon(imageViewList, tabBar);
                 }
             }
@@ -463,7 +447,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         }
     }
 
-    public void setTextColor(TabBar tab, String normalColor, String seletorColor, List<TextView> text) throws Exception {
+    public void setTextColor(TabBar tab, String normalColor, String seletorColor, List<TextView> text) {
         for (int i = 0; i < text.size(); i++) {
             Log.d("textViewColor", tab.getLists().get(i).getText());
             int[] colors = new int[]{Color.parseColor("#" + normalColor), Color.parseColor("#" + seletorColor), Color.parseColor("#" + normalColor)};
@@ -478,7 +462,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         }
     }
 
-    public void setImageIcon(final List<ImageView> image, final TabBar tab) throws Exception {
+    public void setImageIcon(final List<ImageView> image, final TabBar tab) {
 
         new Thread(new Runnable() {
             @Override
@@ -736,30 +720,25 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         });
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public void onBackPressed() {
         try {
             BookshelfFragment shelfFragment = getShelfFragment();
             if (shelfFragment != null && shelfFragment.isDeleteBook()) {
                 shelfFragment.setDeleteBook();
-                return true;
+                return;
             }
             Fragment currentFragment = getCurrentFragment();
             if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
                 mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
                 setSelectView(BOOKSTORE_POSITION);
-                return true;
+                return;
             }
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                moveTaskToBack(true);
-                return true;
-            }
-
+            super.onBackPressed();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return super.onKeyDown(keyCode, event);
+
     }
 
     public Fragment getCurrentFragment() {
