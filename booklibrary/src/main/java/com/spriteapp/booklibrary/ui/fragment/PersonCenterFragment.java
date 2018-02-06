@@ -279,7 +279,6 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     }
 
     public void setUserData() {
-        Log.d("userr", "用户");
         if (!UserBean.getInstance().getUser_avatar().isEmpty())
             GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), getActivity());
         else

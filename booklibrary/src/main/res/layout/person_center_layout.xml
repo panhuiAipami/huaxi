@@ -35,6 +35,7 @@
                     android:id="@+id/user_head"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
+                    android:scaleType="centerCrop"
                     android:layout_marginLeft="15dp"
                     android:src="@mipmap/deafultheadicon"
                     app:riv_border_color="@color/c10_themes_color"

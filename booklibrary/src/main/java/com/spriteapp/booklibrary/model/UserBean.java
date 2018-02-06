@@ -49,7 +49,7 @@ public class UserBean implements Serializable {
     private String user_nickname;
     private int user_birthday;
     private String user_wechat;
-    private int user_qq;
+    private long user_qq;
     private int user_oldnickname;
     private int user_gender;
     private int user_id;
@@ -104,11 +104,11 @@ public class UserBean implements Serializable {
         this.user_wechat = user_wechat;
     }
 
-    public int getUser_qq() {
+    public long getUser_qq() {
         return user_qq;
     }
 
-    public void setUser_qq(int user_qq) {
+    public void setUser_qq(long user_qq) {
         this.user_qq = user_qq;
     }
 
@@ -192,5 +192,27 @@ public class UserBean implements Serializable {
 
     public void setUser_message(int user_message) {
         this.user_message = user_message;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "id=" + id +
+                ", user_nickname='" + user_nickname + '\'' +
+                ", user_birthday=" + user_birthday +
+                ", user_wechat='" + user_wechat + '\'' +
+                ", user_qq=" + user_qq +
+                ", user_oldnickname=" + user_oldnickname +
+                ", user_gender=" + user_gender +
+                ", user_id=" + user_id +
+                ", user_mobile='" + user_mobile + '\'' +
+                ", user_avatar='" + user_avatar + '\'' +
+                ", user_real_point=" + user_real_point +
+                ", user_false_point=" + user_false_point +
+                ", user_vip_class=" + user_vip_class +
+                ", user_favorites=" + user_favorites +
+                ", user_message=" + user_message +
+                ", has_role=" + has_role +
+                '}';
     }
 }
