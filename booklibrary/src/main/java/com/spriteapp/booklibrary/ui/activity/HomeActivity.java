@@ -430,13 +430,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         try {
             TabBar tabBar = FileHelper.readObjectFromJsonFile(this, Constant.NAVIGATION, TabBar.class);
             if (AppUtil.isNetAvailable(this)) {
-                if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && tabBar.getBackground_color() != null && !tabBar.getBackground_color().isEmpty() && tabBar.getBorder_style() != null && !tabBar.getBorder_style().isEmpty() && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
+                if (tabBar != null && tabBar.getColor() != null && !tabBar.getColor().isEmpty() && tabBar.getColor_on() != null && tabBar.getBackground_color() != null && !tabBar.getBackground_color().isEmpty() && tabBar.getBorder_style() != null && !tabBar.getBorder_style().isEmpty() && !tabBar.getColor_on().isEmpty() && tabBar.getLists() != null && tabBar.getLists().size() > 4) {
                     Log.d("textViewColor", "进入修改颜色的方法");
                     icon_layout.setBackgroundColor(Color.parseColor("#" + tabBar.getBackground_color()));
                     icon_line.setBackgroundColor(Color.parseColor("#" + tabBar.getBorder_style()));
                     setTextColor(tabBar, tabBar.getColor(), tabBar.getColor_on(), textViewList);
                 }
-                if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() >= 4) {
+                if (tabBar != null && tabBar.getLists() != null && tabBar.getLists().size() > 4) {
                     Log.d("textViewColor", "进入修改icon的方法");
                     setImageIcon(imageViewList, tabBar);
                 }
