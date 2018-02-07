@@ -1755,7 +1755,7 @@ public class Util {
         int max_w = Util.getPixelsWidth(c);
         if (h >= 1280 && h < 1920) {
             weight = 0.3f;
-        } else if (h > 1920 && h < 2560) {
+        } else if (h >= 1920 && h < 2560) {
             weight = 0.2f;
         } else if (h >= 2560) {
             weight = 0.15f;
