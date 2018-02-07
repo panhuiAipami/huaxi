@@ -100,6 +100,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private static final String TAG = "ReadActivity";
     public static final String BOOK_DETAIL_TAG = "BookDetailTag";
     private static final int ANIMATION_TIME = 300;
+    public static final String LAST_CHAPTER = "last_chapter";
     FrameLayout mBookContainer;
     private ReadBottomLayout mBottomLayout;
     private SubscriberContentPresenter mPresenter;
@@ -151,6 +152,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     PopupWindow popupWindow;//书籍详情与分享
     private int chapter = 0;
     private boolean IsRegister = true;
+    private String titleFile = "";
 
     @Override
     public void initData() {
@@ -1105,9 +1107,25 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     };
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (mBookId != 0 && mCurrentChapter != 0 && mChapterList != null && mChapterList.size() != 0) {
+                for (int i = 0; i < mChapterList.size(); i++) {
+                    if (mCurrentChapter == mChapterList.get(i).getChapter_id()) {//用于书架展示上次阅读
+                        SharedPreferencesUtil.getInstance().putString(LAST_CHAPTER + mBookId, mChapterList.get(i).getChapter_title());
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("onDestroy", "执行onDestroy");
         ThemeManager.isNull();
         EventBus.getDefault().unregister(this);
         try {

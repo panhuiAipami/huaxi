@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 
 import java.util.List;
@@ -125,9 +127,14 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (!StringUtil.isEmpty(detail.getBook_name())) {
                 oneViewHolder.titleTextView.setText(detail.getBook_name());
             }
-            if (!StringUtil.isEmpty(detail.getLast_update_chapter_title())) {
-                oneViewHolder.chapter_title.setText("更新至:" + detail.getLast_update_chapter_title());
-            }
+            String lastRead = SharedPreferencesUtil.getInstance().getString(ReadActivity.LAST_CHAPTER + detail.getBook_id());
+            if (!TextUtils.isEmpty(lastRead))
+                oneViewHolder.chapter_title.setText("上次阅读到:" + lastRead);
+            else
+                oneViewHolder.chapter_title.setText("未阅读");
+//            if (!StringUtil.isEmpty(detail.getLast_update_chapter_title())) {
+//                oneViewHolder.chapter_title.setText("更新至:" + detail.getLast_update_chapter_title());
+//            }
             if (detail.getBook_chapter_total() != 0 && !isRecentReadBook) {
                 oneViewHolder.progressTextView.setVisibility(View.VISIBLE);
                 oneViewHolder.progressTextView.setText
