@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.constant.Constant;
 
 import java.io.IOException;
@@ -100,13 +102,19 @@ public class GlideUtils {
         //获取图片真正的宽高
         Glide.with(context)
                 .setDefaultRequestOptions(new RequestOptions() {
-                }).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+                }).asBitmap().load(url).thumbnail(0.1f).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 Util.setImageHeiht(context, view, resource);
                 view.setImageBitmap(resource);
 
                 Util.ImageClick(view, squareBean, null, pos, context);
+            }
+
+            @Override
+            public void onLoadStarted(@Nullable Drawable placeholder) {
+                super.onLoadStarted(placeholder);
+                view.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.book_default));
             }
         });
         return;
