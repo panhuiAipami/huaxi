@@ -1752,7 +1752,7 @@ public class Util {
         float weight = 0.6f;
         int h = resource.getHeight();
         int w = resource.getWidth();
-        int max_w = Util.getPixelsWidth(c);
+        int max_w = Util.getPixelsWidth(c) / 2;
         if (h >= 1280 && h < 1920) {
             weight = 0.3f;
         } else if (h >= 1920 && h < 2560) {
