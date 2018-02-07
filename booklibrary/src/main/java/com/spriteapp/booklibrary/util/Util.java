@@ -1762,9 +1762,10 @@ public class Util {
             h = 2560;
         }
         if (w > max_w) {//图片大于屏幕宽
-            weight = max_w / w;
-        }
+            weight = (float) max_w / w;
 
+        }
+//        Log.d("setImageHeiht", "weight===" + weight + "h===" + h + "w===" + w);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.width = (int) (w * weight);
         layoutParams.height = (int) (h * weight);
