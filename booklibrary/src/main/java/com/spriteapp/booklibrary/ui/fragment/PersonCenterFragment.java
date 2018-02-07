@@ -50,7 +50,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     private View mView;
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
             recharge, bookshelf, comment, recharge_record, records_of_consumption,
-            award_record, remind, phone, setting;
+            award_record, remind, phone, setting, user_id;
     private ImageView user_bg, user_head;
     private BookShelfPresenter mPresenter;
     public static int toSetting = 0;
@@ -108,6 +108,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         setting = (TextView) mView.findViewById(R.id.setting);
         user_bg = (ImageView) mView.findViewById(R.id.user_bg);
         user_head = (ImageView) mView.findViewById(R.id.user_head);
+        user_id = (TextView) mView.findViewById(R.id.user_id);
     }
 
     private void listener() {
@@ -213,7 +214,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
                     getUserData();
                     break;
                 case 9:
-                    Log.d("user_go","充值返回");
+                    Log.d("user_go", "充值返回");
                     getUserData();
                     break;
             }
@@ -286,6 +287,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         hua_ban.setText(Util.getString(UserBean.getInstance().getUser_false_point() + ""));
         hua_bei.setText(Util.getString(UserBean.getInstance().getUser_real_point() + ""));
         user_name.setText(UserBean.getInstance().getUser_nickname());
+        user_id.setText("uid:" + UserBean.getInstance().getUser_id());
         setEndColor(user_share, "100\n分享");
         setEndColor(user_follow, "0\n关注");
         setEndColor(user_fans, "0\n粉丝");
@@ -298,6 +300,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         hua_ban.setText("0");
         hua_bei.setText("0");
         user_name.setText("登录");
+        user_id.setText("");
         setEndColor(user_share, "0\n分享");
         setEndColor(user_follow, "0\n关注");
         setEndColor(user_fans, "0\n粉丝");

@@ -763,8 +763,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mFragmentList.get(2).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
-        mFragmentList.get(4).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
+        mFragmentList.get(COMMUNITY_POSITION).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
+        mFragmentList.get(ME_POSITION).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 1:
