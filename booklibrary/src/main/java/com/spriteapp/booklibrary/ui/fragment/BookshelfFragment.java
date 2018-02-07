@@ -34,6 +34,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.BookStoreResponse;
 import com.spriteapp.booklibrary.model.response.LoginResponse;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.adapter.BookShelfAdapter;
 import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.ui.view.BookShelfView;
@@ -132,7 +133,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (position == 0)
+                if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false))
                     return 9;
                 else
                     return 3;

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +25,14 @@ import com.spriteapp.booklibrary.database.RecentBookDb;
 import com.spriteapp.booklibrary.enumeration.UpdaterShelfEnum;
 import com.spriteapp.booklibrary.listener.DeleteBookListener;
 import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.util.CollectionUtil;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 
 import java.util.List;
@@ -125,9 +130,14 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (!StringUtil.isEmpty(detail.getBook_name())) {
                 oneViewHolder.titleTextView.setText(detail.getBook_name());
             }
-            if (!StringUtil.isEmpty(detail.getLast_update_chapter_title())) {
-                oneViewHolder.chapter_title.setText("更新至:" + detail.getLast_update_chapter_title());
-            }
+            String lastRead = PreferenceHelper.getString(ReadActivity.LAST_CHAPTER + UserBean.getInstance().getUser_id() + detail.getBook_id(), "");
+            if (!TextUtils.isEmpty(lastRead))
+                oneViewHolder.chapter_title.setText("上次阅读到:" + lastRead);
+            else
+                oneViewHolder.chapter_title.setText("未阅读");
+//            if (!StringUtil.isEmpty(detail.getLast_update_chapter_title())) {
+//                oneViewHolder.chapter_title.setText("更新至:" + detail.getLast_update_chapter_title());
+//            }
             if (detail.getBook_chapter_total() != 0 && !isRecentReadBook) {
                 oneViewHolder.progressTextView.setVisibility(View.VISIBLE);
                 oneViewHolder.progressTextView.setText
@@ -279,6 +289,25 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return true;
                 }
             });
+            if (position == 0) {//没有头部时调用
+                if (num == 0 && isDeleteBook) {//取消全选
+                    if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                        ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 0);
+                    }
+                    for (int i = 0; i < mDetailList.size(); i++) {
+                        mDetailList.get(i).setSelector(false);
+                    }
+                }
+                if (num == mDetailList.size()) {//全选
+                    shelfViewHolder.deleteImageView.setSelected(true);
+                    for (int i = 0; i < mDetailList.size(); i++) {
+                        mDetailList.get(i).setSelector(true);
+                        if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                            ListenerManager.getInstance().getDelBookShelf().del_book(mDetailList.get(i).getBook_id(), i, i + 1, 1);
+                        }
+                    }
+                }
+            }
             shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -397,7 +426,11 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return ITEM_ONE;
+        if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false)) {
+            Log.d("getItemViewType", "返回头部");
+            return ITEM_ONE;
+        }
+
         return ITEM_OTHER;
     }
 

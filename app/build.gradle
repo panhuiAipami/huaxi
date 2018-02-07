@@ -35,8 +35,8 @@ android {
         }
     }
     productFlavors {
-        yingyongbao {}//应用宝
-        huaxiweb {}//花溪服务器
+        yingyongbao {}//应用�?
+        huaxiweb {}//花溪服务�?
         huawei {}//华为
         xiaomi {}//小米
         baidu {}//百度
@@ -44,9 +44,9 @@ android {
         jifeng {}//机锋
         zhushou360 {}//360助手
         baiduzhushou {}//百度助手
-        wandoujia {}//豌豆荚
+        wandoujia {}//豌豆�?
         anzhi {}//安智
-        yingyonghui {}//应用汇
+        yingyonghui {}//应用�?
         sougoushichang {}//搜狗市场
         sougouzhushou {}//搜狗助手
         meizu {}//魅族
@@ -54,23 +54,23 @@ android {
         oppo {}//oppo
         vivo {}//vivo
         google_play {}//谷歌商店
-        yidianzixun {}//一点资讯
+        yidianzixun {}//一点资�?
         kuhua {}//酷划
-        xiaoyaojing {}//小妖精
+        xiaoyaojing {}//小妖�?
         weibo {}//微博
         jinritoutiao {}//今日头条
         fans {}//粉丝
         chuizi {}//锤子
         qzone {}//qq空间
         kuaishou {}//快手
-        her_community {}//她社区
+        her_community {}//她社�?
         samsung {}//三星
     }
     //批量配置
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [CHANNEL: name]
     }
-    //定义输出apk的名字
+    //定义输出apk的名�?
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             if (variant.buildType.name.equals('release')) {
@@ -99,7 +99,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':PushSDK')
+   
     compile project(':booklibrary')
     compile files('libs/open_sdk_r5788_lite.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
