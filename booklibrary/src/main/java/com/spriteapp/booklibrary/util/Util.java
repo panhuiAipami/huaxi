@@ -1758,7 +1758,7 @@ public class Util {
         } else if (h > 1920 && h < 2560) {
             weight = 0.2f;
         } else if (h >= 2560) {
-            weight = 0.2f;
+            weight = 0.15f;
             h = 2560;
         }
         if (w > max_w) {//图片大于屏幕宽
