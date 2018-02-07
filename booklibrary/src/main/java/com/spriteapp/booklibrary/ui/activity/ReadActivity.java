@@ -1094,7 +1094,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      * @param isShowProgress 是否是点击调节进度
      */
     private void doBottomAnimation(View view, boolean isShow, boolean isShowProgress) {
-        isChangeTextSize = isShow && view == mTextSizeLayout;
         mBottomHeight = isShowProgress ? mReadProgressHeight : mTempHeight;
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y,
                 isShow ? mBottomHeight : 0, isShow ? 0 : mBottomHeight);
@@ -1116,8 +1115,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (mBookId != 0 && mCurrentChapter != 0 && mChapterList != null && mChapterList.size() != 0) {
                 for (int i = 0; i < mChapterList.size(); i++) {
                     if (mCurrentChapter == mChapterList.get(i).getChapter_id()) {//用于书架展示上次阅读
-                        if (!TextUtils.isEmpty(mChapterList.get(i).getChapter_title()))
+                        if (!TextUtils.isEmpty(mChapterList.get(i).getChapter_title())) {
                             PreferenceHelper.putString(LAST_CHAPTER + UserBean.getInstance().getUser_id() + mBookId, mChapterList.get(i).getChapter_title());
+                            SharedPreferencesUtil.getInstance().putBoolean(LAST_CHAPTER, true);
+                        }
                         break;
                     }
                 }

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -288,6 +289,25 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return true;
                 }
             });
+            if (position == 0) {//没有头部时调用
+                if (num == 0 && isDeleteBook) {//取消全选
+                    if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                        ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 0);
+                    }
+                    for (int i = 0; i < mDetailList.size(); i++) {
+                        mDetailList.get(i).setSelector(false);
+                    }
+                }
+                if (num == mDetailList.size()) {//全选
+                    shelfViewHolder.deleteImageView.setSelected(true);
+                    for (int i = 0; i < mDetailList.size(); i++) {
+                        mDetailList.get(i).setSelector(true);
+                        if (ListenerManager.getInstance().getDelBookShelf() != null) {
+                            ListenerManager.getInstance().getDelBookShelf().del_book(mDetailList.get(i).getBook_id(), i, i + 1, 1);
+                        }
+                    }
+                }
+            }
             shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -406,7 +426,11 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return ITEM_ONE;
+        if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false)) {
+            Log.d("getItemViewType", "返回头部");
+            return ITEM_ONE;
+        }
+
         return ITEM_OTHER;
     }
 
