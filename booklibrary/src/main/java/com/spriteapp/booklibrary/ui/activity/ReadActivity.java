@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.manager.ThemeManager;
 import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.UpdateProgressModel;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
@@ -60,6 +62,7 @@ import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.DialogUtil;
 import com.spriteapp.booklibrary.util.NetworkUtil;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
@@ -1113,7 +1116,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (mBookId != 0 && mCurrentChapter != 0 && mChapterList != null && mChapterList.size() != 0) {
                 for (int i = 0; i < mChapterList.size(); i++) {
                     if (mCurrentChapter == mChapterList.get(i).getChapter_id()) {//用于书架展示上次阅读
-                        SharedPreferencesUtil.getInstance().putString(LAST_CHAPTER + mBookId, mChapterList.get(i).getChapter_title());
+                        if (!TextUtils.isEmpty(mChapterList.get(i).getChapter_title()))
+                            PreferenceHelper.putString(LAST_CHAPTER + UserBean.getInstance().getUser_id() + mBookId, mChapterList.get(i).getChapter_title());
                         break;
                     }
                 }

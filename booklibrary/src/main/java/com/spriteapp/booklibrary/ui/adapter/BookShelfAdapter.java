@@ -24,9 +24,11 @@ import com.spriteapp.booklibrary.database.RecentBookDb;
 import com.spriteapp.booklibrary.enumeration.UpdaterShelfEnum;
 import com.spriteapp.booklibrary.listener.DeleteBookListener;
 import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.util.CollectionUtil;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
@@ -127,7 +129,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (!StringUtil.isEmpty(detail.getBook_name())) {
                 oneViewHolder.titleTextView.setText(detail.getBook_name());
             }
-            String lastRead = SharedPreferencesUtil.getInstance().getString(ReadActivity.LAST_CHAPTER + detail.getBook_id());
+            String lastRead = PreferenceHelper.getString(ReadActivity.LAST_CHAPTER + UserBean.getInstance().getUser_id() + detail.getBook_id(), "");
             if (!TextUtils.isEmpty(lastRead))
                 oneViewHolder.chapter_title.setText("上次阅读到:" + lastRead);
             else
