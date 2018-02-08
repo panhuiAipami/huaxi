@@ -36,9 +36,9 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     public RankListFragment() {
     }
 
-    public static RankListFragment newInstance(int type) {
+    public static RankListFragment newInstance(int interval) {
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putInt("interval", interval);
         RankListFragment fragment = new RankListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -55,7 +55,7 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
         swipe_refresh.setOnRefreshListener(this);
         if (getArguments() != null) {
             Bundle bundle = getArguments();
-            interval = bundle.getInt("type");
+            interval = bundle.getInt("interval");
         }
         getData();
     }
