@@ -92,13 +92,13 @@ public class RankFragment extends BaseFragment {
                         ranking_switch_button.setText(name);
 
                         if (rankListFragment1 != null) {
-                            rankListFragment1.sortRefresh(1,interval);
+                            rankListFragment1.sortRefresh(interval,1);
                         }
                         if (rankListFragment2 != null) {
-                            rankListFragment2.sortRefresh(2,interval);
+                            rankListFragment2.sortRefresh(interval,2);
                         }
                         if (rankListFragment3 != null) {
-                            rankListFragment3.sortRefresh(3,interval);
+                            rankListFragment3.sortRefresh(interval,3);
                         }
                     }
                 });

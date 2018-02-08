@@ -137,11 +137,11 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     }
     /**
      * 周  月  总
-     * @param type
+     * @param interval
      */
-    public void timeRefresh(int type) {
+    public void timeRefresh(int interval) {
         page = 1;
-        this.type = type;
+        this.interval = interval;
         getData();
     }
 
