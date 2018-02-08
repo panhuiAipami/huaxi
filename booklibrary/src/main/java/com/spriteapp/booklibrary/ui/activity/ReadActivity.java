@@ -607,7 +607,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 });
     }
 
-    private boolean showAddShelfPrompt1() {//是否存书架入头部布尔值
+    private boolean showAddShelfPrompt1() {//是否存入书架头部布尔值
         if (mBookDb == null) {
             return false;
         }

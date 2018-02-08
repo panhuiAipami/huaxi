@@ -11,8 +11,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -24,29 +23,33 @@
                 android:layout_width="5dp"
                 android:layout_height="20dp"
                 android:background="@color/comment_title"></View>
+
             <TextView
                 android:id="@+id/ranking_switch_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="12dp"
-                android:textSize="14sp"
-                android:textColor="@color/bar_grey"
-                android:gravity="center"
                 android:drawablePadding="5dp"
                 android:drawableRight="@mipmap/bottom_jiao"
-                android:text="热销榜" />
+                android:gravity="center"
+                android:text="热销榜"
+                android:textColor="@color/bar_grey"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/mTabLayout"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            tl:tl_indicator_color="@color/square_support_selector"
-            tl:tl_indicator_height="3dp"
-            tl:tl_indicator_width="20dp"
+            tl:tl_indicator_color="@color/comment_title"
+            tl:tl_indicator_corner_radius="45dp"
+            tl:tl_indicator_gravity="BOTTOM"
+            tl:tl_indicator_height="5dp"
+            tl:tl_indicator_style="NORMAL"
+            tl:tl_indicator_width="5dp"
             tl:tl_tab_space_equal="true"
             tl:tl_textBold="true"
             tl:tl_textSelectColor="@color/comment_title"
