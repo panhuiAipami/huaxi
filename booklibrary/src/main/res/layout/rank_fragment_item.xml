@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:drawableLeft="@mipmap/square_support_img"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
