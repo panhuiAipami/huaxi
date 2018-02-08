@@ -47,7 +47,7 @@
                 android:id="@+id/ranking_book_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="未命名作品"
@@ -59,11 +59,12 @@
                 android:id="@+id/ranking_book_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:maxLines="2"
                 android:text="描述\n"
+                android:textColor="@color/square_small"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -85,7 +86,7 @@
                     android:id="@+id/ranking_book_author"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -126,9 +127,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/line_color"></View>
+                android:background="@color/c10_themes_color2"></View>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
