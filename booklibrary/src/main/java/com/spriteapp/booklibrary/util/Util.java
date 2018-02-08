@@ -1749,17 +1749,19 @@ public class Util {
      * @param resource
      */
     public static void setImageHeiht(Context c, ImageView v, Bitmap resource) {
-        float weight = 0.6f;
+        float weight = 1f;
         int h = resource.getHeight();
         int w = resource.getWidth();
         int max_w = Util.getPixelsWidth(c);
-        if (h >= 1280 && h < 1920) {
+        if (h >= 600 && h < 1280) {
+            weight = 0.6f;
+        } else if (h >= 1280 && h < 1920) {
             weight = 0.3f;
         } else if (h >= 1920 && h < 2560) {
             weight = 0.2f;
         } else if (h >= 2560) {
             weight = 0.15f;
-            h = 2560;
+            h = 1920;
         }
         if (w > max_w) {//图片大于屏幕宽
             weight = (float) (max_w / 2) / w;
