@@ -607,6 +607,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 });
     }
 
+    private boolean showAddShelfPrompt1() {//是否存入书架头部布尔值
+        if (mBookDb == null) {
+            return false;
+        }
+        BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
+        if (bookDetail == null || BookUtil.isBookAddShelf(bookDetail)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
         if (mOldBookDetail != null || mNewBookDetail != null) {
@@ -1117,7 +1128,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     if (mCurrentChapter == mChapterList.get(i).getChapter_id()) {//用于书架展示上次阅读
                         if (!TextUtils.isEmpty(mChapterList.get(i).getChapter_title())) {
                             PreferenceHelper.putString(LAST_CHAPTER + UserBean.getInstance().getUser_id() + mBookId, mChapterList.get(i).getChapter_title());
-                            SharedPreferencesUtil.getInstance().putBoolean(LAST_CHAPTER, true);
+                            if (showAddShelfPrompt1())//书籍在书架上面才存入true
+                                SharedPreferencesUtil.getInstance().putBoolean(LAST_CHAPTER, true);
                         }
                         break;
                     }
