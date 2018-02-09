@@ -113,7 +113,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private LinearLayout icon_layout;
     private View icon_line;
     //打华为包需为true，否则为false（华为渠道需要用华为支付）
-    public static final boolean CHANNEL_IS_HUAWEI = true;
+    public static final boolean CHANNEL_IS_HUAWEI = false;
     //华为移动服务Client
     private static HuaweiApiClient client;
     MessageRemindDialog dialog;
