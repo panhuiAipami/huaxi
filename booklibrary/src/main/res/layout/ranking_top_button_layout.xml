@@ -51,7 +51,6 @@
             tl:tl_indicator_style="NORMAL"
             tl:tl_indicator_width="5dp"
             tl:tl_tab_space_equal="true"
-            tl:tl_textBold="true"
             tl:tl_textSelectColor="@color/comment_title"
             tl:tl_textUnselectColor="@color/square_small"
             tl:tl_textsize="15sp"></com.flyco.tablayout.SlidingTabLayout>

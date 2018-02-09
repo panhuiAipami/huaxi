@@ -7,8 +7,8 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/book_cover"
-        android:layout_width="100dp"
-        android:layout_height="140dp"
+        android:layout_width="95dp"
+        android:layout_height="126dp"
         android:scaleType="centerCrop"
         app:riv_border_color="@color/c10_themes_color"
         app:riv_border_width="2px"
@@ -35,14 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
+            android:lineSpacingMultiplier="1.2"
             android:ellipsize="end"
-            android:gravity="center_vertical"
             android:lines="2"
             android:text=""
             android:textColor="@color/square_small"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

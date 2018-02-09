@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.RegisterModel;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 
 import net.huaxi.reader.BaseActivity;
 import net.huaxi.reader.R;
@@ -207,9 +208,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.agreement:
-//                if (params.size() != 0) params.clear();
-//                params.put("book_id", "732");
-//                request.get("name", "book_details", params);
+                ActivityUtil.toWebViewActivity(this,"file:///android_asset/protocol.html");
                 break;
         }
     }

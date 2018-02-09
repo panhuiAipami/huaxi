@@ -29,8 +29,8 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ranking_book_cover"
-            android:layout_width="100dp"
-            android:layout_height="140dp"
+            android:layout_width="95dp"
+            android:layout_height="126dp"
             android:layout_marginTop="5dp"
             android:scaleType="centerCrop"
             app:riv_corner_radius="6dp" />
@@ -51,7 +51,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="未命名作品"
-                android:textColor="@color/one_font_color"
+                android:textColor="@color/square_user_speak"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -59,13 +59,14 @@
                 android:id="@+id/ranking_book_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
+                android:lineSpacingMultiplier="1.2"
                 android:maxLines="2"
-                android:text="描述\n"
+                android:text="描述"
                 android:textColor="@color/square_small"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,7 +92,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="name"
-                    android:textColor="@color/comment_title"
+                    android:textColor="@color/ranking_author_name"
                     android:textSize="14sp" />
 
                 <TextView
@@ -99,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:drawableLeft="@mipmap/square_support_img"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
@@ -114,7 +115,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
                     android:drawableLeft="@mipmap/square_comment_img"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"

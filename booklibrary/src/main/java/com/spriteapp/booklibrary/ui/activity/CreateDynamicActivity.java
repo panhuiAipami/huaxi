@@ -31,6 +31,7 @@ import com.spriteapp.booklibrary.util.ToastUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -165,7 +166,7 @@ public class CreateDynamicActivity extends TitleActivity {
             return;
         }
         if (selectList.size() != 0) {
-            Map<String, RequestBody> part = new HashMap<>();
+            Map<String, RequestBody> part = new LinkedHashMap<>();
             for (int i = 0; i < selectList.size(); i++) {
                 File file = new File(selectList.get(i).getCompressPath());
                 RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);

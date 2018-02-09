@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
 import android.content.Context;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -95,6 +96,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     public int getLayoutResId() {
         return R.layout.book_reader_fragment_bookshelf;
     }
+
 
     @Override
     public void initData() {
@@ -604,7 +606,8 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         if (book_id == 0)
             goneFinish();
         else {
-            if (book_id == 1 && (act == 3 || act == 4)) {
+            Log.d("del_book", "book_id===" + book_id + "act===" + act);
+            if (book_id == 1 && (act == 3 || act == 4 || act == 5)) {
                 showFinish(act);
                 return;
             } else {
@@ -678,5 +681,13 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         } else {
             null_layout.setVisibility(View.VISIBLE);
         }
+    }
+
+    public int getIs_del1() {
+        if (mAdapter != null && mAdapter.isDeleteBook()) {
+            if (mAdapter.getNum()) return 1;
+            return 2;
+        } else
+            return 0;
     }
 }

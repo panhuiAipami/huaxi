@@ -45,6 +45,8 @@ public class HomeFragment extends BaseFragment {
     private ChoiceFragment choiceFragment;
     private RankFragment rankFragment;
     private int reload;
+    private TextView titleView1;
+    private TextView titleView2;
 
     public HomeFragment() {
     }
@@ -111,8 +113,13 @@ public class HomeFragment extends BaseFragment {
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         mTabLayout_1.setViewPager(viewPager, mTitles);
+        titleView1 = mTabLayout_1.getTitleView(0);
+        titleView2 = mTabLayout_1.getTitleView(1);
+        titleView1.setTextSize(18);
+        titleView2.setTextSize(16);
         setCheck(false);
         listener();
+
     }
 
     @Override
@@ -121,6 +128,28 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void listener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    titleView1.setTextSize(18);
+                    titleView2.setTextSize(16);
+                } else if (position == 1) {
+                    titleView1.setTextSize(16);
+                    titleView2.setTextSize(18);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         sex_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

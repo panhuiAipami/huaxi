@@ -714,10 +714,25 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mLeftLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bookshelfFragment != null)
+                if (bookshelfFragment != null) {
                     bookshelfFragment.setFinish(1);
+                }
+
             }
         });
+        if (bookshelfFragment != null) {
+            if (bookshelfFragment.getIs_del1() == 0) {
+
+            } else if (bookshelfFragment.getIs_del1() == 1) {
+                gone(paixu, qiandao);
+                visible(selector_or_close, mLeftLayout);
+                selector_or_close.setText("取消");
+            } else if (bookshelfFragment.getIs_del1() == 2) {
+                gone(paixu, qiandao);
+                visible(selector_or_close, mLeftLayout);
+                selector_or_close.setText("全选");
+            }
+        }
     }
 
     @Override
@@ -791,9 +806,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public void showLeftView(int type) {//是否改变状态
         if (mLeftLayout.getVisibility() == View.GONE)
             mLeftLayout.setVisibility(View.VISIBLE);
+        Log.d("showLeftView", "条件不成立");
         if (selector_or_close.getVisibility() == View.GONE) {
             gone(paixu, qiandao);
             visible(selector_or_close);
+            Log.d("showLeftView", "fragment可见时");
         }
         if (type == 3) {
             selector_or_close.setText("取消");

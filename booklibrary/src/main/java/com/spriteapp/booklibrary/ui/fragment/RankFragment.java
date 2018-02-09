@@ -3,6 +3,8 @@ package com.spriteapp.booklibrary.ui.fragment;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class RankFragment extends BaseFragment {
     private List<Fragment> fragments = new ArrayList<>();
     private String[] mTitles = {"周榜", "月榜", "总榜"};
     private RankListFragment rankListFragment1, rankListFragment2, rankListFragment3;
+    List<TextPaint> list = new ArrayList<>();
 
     public RankFragment() {
     }
@@ -56,6 +59,45 @@ public class RankFragment extends BaseFragment {
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         mTabLayout.setViewPager(viewPager, mTitles);
+        TextView titleView1 = mTabLayout.getTitleView(0);
+        TextView titleView2 = mTabLayout.getTitleView(1);
+        TextView titleView3 = mTabLayout.getTitleView(2);
+        TextPaint paint1 = titleView1.getPaint();
+        TextPaint paint2 = titleView2.getPaint();
+        TextPaint paint3 = titleView3.getPaint();
+        list.add(paint1);
+        list.add(paint2);
+        list.add(paint3);
+        setTextStyle(0);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setTextStyle(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    public void setTextStyle(int pos) {
+        Log.d("setTextStyle","pos");
+        for (int i = 0; i < list.size(); i++) {
+            if (pos == i){
+                list.get(i).setFakeBoldText(true);
+                Log.d("setTextStyle","true");
+            }
+
+            else
+                list.get(i).setFakeBoldText(false);
+        }
     }
 
     @Override
@@ -92,13 +134,13 @@ public class RankFragment extends BaseFragment {
                         ranking_switch_button.setText(name);
 
                         if (rankListFragment1 != null) {
-                            rankListFragment1.sortRefresh(interval,1);
+                            rankListFragment1.sortRefresh(interval, 1);
                         }
                         if (rankListFragment2 != null) {
-                            rankListFragment2.sortRefresh(interval,2);
+                            rankListFragment2.sortRefresh(interval, 2);
                         }
                         if (rankListFragment3 != null) {
-                            rankListFragment3.sortRefresh(interval,3);
+                            rankListFragment3.sortRefresh(interval, 3);
                         }
                     }
                 });

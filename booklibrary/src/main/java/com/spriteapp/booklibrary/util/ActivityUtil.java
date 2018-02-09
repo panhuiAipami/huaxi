@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
@@ -29,6 +30,7 @@ public class ActivityUtil {
     public static final String USER_ID = "user_id";
 
     public static void toWebViewActivity(Context context, String url) {
+//        Log.d("toWebViewActivity", "url==="+url);
         toWebViewActivity(context, url, false);
     }
 
@@ -112,7 +114,8 @@ public class ActivityUtil {
         intent.putExtra(USER_ID, user_id);
         context.startActivity(intent);
     }
-    public static void toSearchActivity(Context context){
+
+    public static void toSearchActivity(Context context) {
         Intent intent = new Intent(context, SearchActivity.class);
         context.startActivity(intent);
     }

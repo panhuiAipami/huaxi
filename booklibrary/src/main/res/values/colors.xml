@@ -115,10 +115,11 @@
     <!--描述-->
     <color name="square_introduce">#8083a0</color>
     <!--小字体文本颜色-->
-    <color name="square_small">#b4b2c8</color>
+    <color name="square_small">#b4b2c9</color>
     <!--点赞后-->
     <color name="square_support_selector">#ff74ac</color>
     <!--评论后-->
     <color name="square_comment_selector">#a785ff</color>
+    <color name="ranking_author_name">#7c53ff</color>
     <color name="comment_title">#5c44c4</color>
 </resources>
