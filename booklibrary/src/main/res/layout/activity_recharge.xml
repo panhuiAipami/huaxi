@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -55,7 +56,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -64,23 +64,30 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/user_head"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@mipmap/deafultheadicon" />
+                        android:scaleType="centerCrop"
+                        app:riv_oval="true"
+                        app:riv_border_width="0.5dp"
+                        android:src="@mipmap/deafultheadicon"
+                        app:riv_border_color="@color/line_color" />
 
                     <TextView
+                        android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="name" />
+                        android:ellipsize="end"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:text="" />
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -94,6 +101,7 @@
                         android:textColor="@color/two_font_color" />
 
                     <TextView
+                        android:id="@+id/hua_bei"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -126,6 +134,7 @@
                     android:textColor="@color/two_font_color" />
 
                 <TextView
+                    android:id="@+id/hua_ban"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -543,16 +552,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="充值提示："
             android:layout_margin="15dp"
+            android:text="充值提示："
             android:textColor="@color/two_font_color" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
             android:layout_marginLeft="13dp"
             android:layout_marginRight="13dp"
-            android:layout_marginBottom="25dp"
-            android:text="@string/recharge_help"/>
+            android:text="@string/recharge_help" />
     </LinearLayout>
 </ScrollView>
