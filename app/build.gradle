@@ -35,8 +35,8 @@ android {
         }
     }
     productFlavors {
-        yingyongbao {}//应用�?
-        huaxiweb {}//花溪服务�?
+        yingyongbao {}//应用�?
+        huaxiweb {}//花溪服务�?
         huawei {}//华为
         xiaomi {}//小米
         baidu {}//百度
@@ -44,9 +44,9 @@ android {
         jifeng {}//机锋
         zhushou360 {}//360助手
         baiduzhushou {}//百度助手
-        wandoujia {}//豌豆�?
+        wandoujia {}//豌豆�?
         anzhi {}//安智
-        yingyonghui {}//应用�?
+        yingyonghui {}//应用�?
         sougoushichang {}//搜狗市场
         sougouzhushou {}//搜狗助手
         meizu {}//魅族
@@ -54,23 +54,23 @@ android {
         oppo {}//oppo
         vivo {}//vivo
         google_play {}//谷歌商店
-        yidianzixun {}//一点资�?
+        yidianzixun {}//一点资�?
         kuhua {}//酷划
-        xiaoyaojing {}//小妖�?
+        xiaoyaojing {}//小妖�?
         weibo {}//微博
         jinritoutiao {}//今日头条
         fans {}//粉丝
         chuizi {}//锤子
         qzone {}//qq空间
         kuaishou {}//快手
-        her_community {}//她社�?
+        her_community {}//她社�?
         samsung {}//三星
     }
     //批量配置
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [CHANNEL: name]
     }
-    //定义输出apk的名�?
+    //定义输出apk的名�?
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             if (variant.buildType.name.equals('release')) {
@@ -93,6 +93,12 @@ android {
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
+allprojects {
+    repositories {
+        jcenter()
+        maven {url 'http://developer.huawei.com/repo/'}
+    }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -111,5 +117,6 @@ dependencies {
     compile 'com.zhy:okhttputils:2.0.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/wftsdk5.0.jar')
+
 
 }

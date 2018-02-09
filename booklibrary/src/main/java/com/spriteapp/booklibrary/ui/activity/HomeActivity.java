@@ -27,6 +27,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huawei.hms.api.ConnectionResult;
+import com.huawei.hms.api.HuaweiApiClient;
+import com.huawei.hms.support.api.hwid.HuaweiId;
+import com.huawei.hms.support.api.hwid.HuaweiIdSignInOptions;
+import com.huawei.hms.support.api.pay.HuaweiPay;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
@@ -75,7 +80,7 @@ import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYP
  * Created by kuangxiaoguo on 2017/7/7.
  */
 
-public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf {
+public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks {
 
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
@@ -107,6 +112,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private TextView text_one, text_two, text_three, text_four, text_five;
     private LinearLayout icon_layout;
     private View icon_line;
+    //打华为包需为true，否则为false（华为渠道需要用华为支付）
+    public static final boolean CHANNEL_IS_HUAWEI = true;
+    //华为移动服务Client
+    private static HuaweiApiClient client;
     MessageRemindDialog dialog;
     BookshelfFragment bookshelfFragment;
     private Handler handler = new Handler() {
@@ -191,6 +200,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             if (!open) {
                 messagePermisssion();
             }
+            connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -552,6 +562,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         }
     }
 
+
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
 
@@ -828,5 +839,52 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             visible(paixu, qiandao);
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (client != null)
+            client.disconnect();
+    }
+
+    public static HuaweiApiClient getConnect() {
+        return client;
+    }
+    HuaweiIdSignInOptions signInOptions = new
+            HuaweiIdSignInOptions.Builder(HuaweiIdSignInOptions.DEFAULT_SIGN_IN)
+            .requestOpenId()
+            .build();
+    public void connect() {
+        //创建华为移动服务client实例用以实现支付功能
+        //需要指定api为HuaweiPay.PAY_API
+        //连接回调以及连接失败监听
+        if (CHANNEL_IS_HUAWEI) {
+            client = new HuaweiApiClient.Builder(this)
+                    .addApi(HuaweiPay.PAY_API)
+                    .addApi(HuaweiId.SIGN_IN_API, signInOptions)
+                    .addOnConnectionFailedListener(this)
+                    .addConnectionCallbacks(this)
+                    .build();
+
+            //建议在oncreate的时候连接华为移动服务
+            //业务可以根据自己业务的形态来确定client的连接和断开的时机，但是确保connect和disconnect必须成对出现
+            client.connect();
+        }
+    }
+
+    @Override
+    public void onConnected() {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }
