@@ -256,12 +256,10 @@ public class OKhttpRequest {
     /**
      * post请求，结果回调到Activity
      *
-     * @param t
      * @param action
      * @param params
-     * @param <T>
      */
-    public <T> void post(final Class<T> t, final String action, String url, Map<String, String> params) {
+    public void post(final String action, String url, Map<String, String> params) {
         String URL = url;
         if (!url.startsWith("http")) {
             URL = UrlUtils.BASE_URL + url;
@@ -288,7 +286,7 @@ public class OKhttpRequest {
                         try {
                             BaseResponse baseResponse = new Gson().fromJson(response, BaseResponse.class);
                             if (baseResponse.isSuccess()) {
-                                actionHandle.handleActionSuccess(action, new Gson().fromJson(response, t));
+                                actionHandle.handleActionSuccess(action, response);
                             } else {
                                 //TODO 错误提示
                                 actionHandle.handleActionError(action, response);
