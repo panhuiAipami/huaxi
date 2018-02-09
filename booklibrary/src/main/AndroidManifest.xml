@@ -79,7 +79,8 @@
         <activity android:name=".ui.activity.SquareDetailsActivity" />
         <activity android:name=".ui.activity.CommentReplyActivity" />
         <activity android:name=".widget.photoview.PictureExternalPreviewActivity" />
-        <activity android:name=".ui.activity.SearchActivity"></activity>
+        <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.RechargeActivity"></activity>
     </application>
 
 </manifest>

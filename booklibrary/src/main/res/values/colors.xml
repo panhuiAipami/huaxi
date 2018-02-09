@@ -122,4 +122,5 @@
     <color name="square_comment_selector">#a785ff</color>
     <color name="ranking_author_name">#7c53ff</color>
     <color name="comment_title">#5c44c4</color>
+    <color name="green_color">#16a951</color>
 </resources>
