@@ -1,11 +1,16 @@
 package com.spriteapp.booklibrary.ui.activity;
 
+import android.app.ActivityManager;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,15 +18,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by kuangxiaoguo on 2017/7/7.
@@ -40,13 +58,15 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     RelativeLayout mTitleLayout;
     View mLineView;
 
+    public static boolean isActive; //全局变量
+
     @Override
     public int getLayoutResId() {
         return R.layout.book_reader_activity_title;
     }
 
     @Override
-    public void findViewId()  throws Exception{
+    public void findViewId() throws Exception {
         mBackImageView = (ImageView) findViewById(R.id.book_reader_back_imageView);
         mTitleTextView = (TextView) findViewById(R.id.book_reader_title_textView);
         mLeftLayout = (LinearLayout) findViewById(R.id.book_reader_left_layout);
@@ -60,7 +80,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void configViews() throws Exception{
+    public void configViews() throws Exception {
         HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
         int titleBackground = config.getTitleBackground();
         if (titleBackground != 0) {
@@ -266,11 +286,116 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        try {
+            if (!isActive) {
+                //app 从后台唤醒，进入前台
+                isActive = true;
+                ClipboardManager cbm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                if (!TextUtils.isEmpty(cbm.getText())) {//剪切板有数据
+                    // + "剪切板信息" + cbm.getText()
+                    //如果剪切板信息是识别码,跳转到阅读页
+                    getBook(cbm);
+
+                }
+
+                Log.i("isActive", "程序从后台唤醒");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onStop() {
+        try {
+            if (!isAppOnForeground()) {
+                //app 进入后台
+                isActive = false;//记录当前已经进入后台
+                Log.i("isActive", "程序进入后台");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onStop();
+    }
+
+    /**
+     * APP是否处于前台唤醒状态
+     *
+     * @return
+     */
+    public boolean isAppOnForeground() throws Exception {
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = getApplicationContext().getPackageName();
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void getBook(final ClipboardManager cbm) throws Exception{
+        if (!AppUtil.isNetAvailable(this))
+            return;
+        BookApi.getInstance()
+                .service
+                .book_command(cbm.getText().toString().trim())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<List<BookDetailResponse>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<List<BookDetailResponse>> bookDetailResponse) {
+                        if (bookDetailResponse != null) {
+                            int resultCode = bookDetailResponse.getCode();
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {//关键字
+                                    //识别码直接跳转到阅读界面
+                                    ActivityUtil.toReadActivity(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
+                                    cbm.setText("");//清空剪切板
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

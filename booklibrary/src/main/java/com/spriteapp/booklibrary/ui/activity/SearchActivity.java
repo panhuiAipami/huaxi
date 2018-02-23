@@ -29,6 +29,7 @@ import com.spriteapp.booklibrary.model.HotBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.FlowAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SearchAdapter;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -366,12 +367,17 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
                         if (bookDetailResponse != null) {
                             int resultCode = bookDetailResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-                                if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {
+                                if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0 && bookDetailResponse.getCommand() == 0) {//关键字
                                     mDetailResponseList.clear();
                                     mDetailResponseList.addAll(bookDetailResponse.getData());
                                     adapter.notifyDataSetChanged();
                                     gone_or_visibility();
-                                } else {
+                                } else if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0 && bookDetailResponse.getCommand() == 1) {//识别码
+                                    //识别码直接跳转到阅读界面
+                                    ActivityUtil.toReadActivity(SearchActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
+                                    searsh_text.setText("搜索");
+
+                                } else {//无数据
                                     setNullLayout();
                                 }
 

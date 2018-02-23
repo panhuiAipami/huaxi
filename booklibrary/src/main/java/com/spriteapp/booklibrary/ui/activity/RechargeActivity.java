@@ -57,7 +57,7 @@ public class RechargeActivity extends TitleActivity {
     private RadioGroup pay_method_group;
     private RadioButton hw_pay;
     private TextView goto_pay;
-    private float price;//充值金额
+    private float price=49.9f;//充值金额
     private int type = 0;//充值类型
     private List<LinearLayout> linearLayouts = new ArrayList<>();
     private static final int SDK_PAY_FLAG = 1;
@@ -138,6 +138,13 @@ public class RechargeActivity extends TitleActivity {
         price2_layout.setOnClickListener(this);
         price3_layout.setOnClickListener(this);
         goto_pay.setOnClickListener(this);
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
         pay_method_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -164,9 +171,9 @@ public class RechargeActivity extends TitleActivity {
             setPriceState(2);
         } else if (v == goto_pay) {//去支付
             if (type == 0) {//微信支付
-                requestWxPay("net.huaxi.0.01yuan");
+                requestWxPay("com.huaxiapp." + price + "yuan");
             } else if (type == 1) {//支付宝支付
-                requestAliPay("net.huaxi.0.01yuan");
+                requestAliPay("com.huaxiapp." + price + "yuan");
             } else if (type == 2) {//华为支付,暂无
 
             }
@@ -229,6 +236,13 @@ public class RechargeActivity extends TitleActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -237,6 +251,7 @@ public class RechargeActivity extends TitleActivity {
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
+        Log.d("productId","ali==="+productId);
         showDialog();
         BookApi.getInstance().
                 service
@@ -296,6 +311,7 @@ public class RechargeActivity extends TitleActivity {
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
+        Log.d("productId","wx==="+productId);
         showDialog();
         BookApi.getInstance().
                 service

@@ -157,12 +157,15 @@ public interface BookApiService {
     Observable<Base<Void>> addBook(@Field("u_action") String action,
                                    @Field("data") String bookJson);
 
-    @GET("pay_appalipay")
-    Observable<Base<PayResponse>> getAliPayRequest(@Query("product_id") String productId);
+    @FormUrlEncoded
+    @POST("pay_appalipay")
+    Observable<Base<PayResponse>> getAliPayRequest(@Field("product_id") String productId);
 
     //威富通
-    @GET("pay_appwechat")//pay_appswiftpassg
-    Observable<Base<WeChatBean>> getWeChatRequest(@Query("product_id") String productId);
+    @FormUrlEncoded
+    @POST("pay_appwechat")
+//pay_appswiftpassg
+    Observable<Base<WeChatBean>> getWeChatRequest(@Field("product_id") String productId);
 
     @FormUrlEncoded
     @POST("book_comment")
@@ -279,7 +282,7 @@ public interface BookApiService {
     //搜索
     @GET("book_search")
     Observable<Base<List<BookDetailResponse>>> book_search(@Query("format") String type,
-                                               @Query("q") String content);
+                                                           @Query("q") String content);
 
     //精选页
     @GET("book_weekly")
@@ -293,4 +296,8 @@ public interface BookApiService {
                                                              @Query("type") int type,
                                                              @Query("interval") int interval,
                                                              @Query("pagesize") int pagesize);
+
+    //获取口令书籍
+    @GET("book_command")
+    Observable<Base<List<BookDetailResponse>>> book_command(@Query("q") String q);
 }

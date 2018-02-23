@@ -186,6 +186,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url == null) return false;
             try {
+                Log.d("webUrl", "url===" + url);
                 if (url.startsWith("http:") || url.startsWith("https:")) {
                     Log.d("webViewUrl", "url000===" + url);
                     if (url.startsWith("https://statecheck.swiftpass.cn/pay/wappay") || url.startsWith("http://statecheck.swiftpass.cn/pay/wappay")) {

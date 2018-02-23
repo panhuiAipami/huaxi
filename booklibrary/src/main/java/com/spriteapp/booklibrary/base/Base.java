@@ -13,8 +13,9 @@ public class Base<T> implements Serializable {
     private String status;
     private int code;
     private String message;
-    @SerializedName(value = "data", alternate = {"lists", "squarelist","detail"})//分别适应不同名称的集合
+    @SerializedName(value = "data", alternate = {"lists", "squarelist", "detail"})//分别适应不同名称的集合
     private T data;
+    private int command;
 
     public String getStatus() {
         return status;
@@ -48,6 +49,14 @@ public class Base<T> implements Serializable {
         this.data = data;
     }
 
+    public int getCommand() {
+        return command;
+    }
+
+    public void setCommand(int command) {
+        this.command = command;
+    }
+
     @Override
     public String toString() {
         return "Base{" +
@@ -55,6 +64,7 @@ public class Base<T> implements Serializable {
                 ", code=" + code +
                 ", message='" + message + '\'' +
                 ", data=" + data +
+                ", command=" + command +
                 '}';
     }
 }

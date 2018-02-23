@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -768,6 +769,31 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        try {
+            BookshelfFragment shelfFragment = getShelfFragment();
+            if (shelfFragment != null && shelfFragment.isDeleteBook()) {
+                shelfFragment.setDeleteBook();
+                return true;
+            }
+            Fragment currentFragment = getCurrentFragment();
+            if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
+                mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+                setSelectView(BOOKSTORE_POSITION);
+                return true;
+            }
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                moveTaskToBack(true);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     public Fragment getCurrentFragment() {
