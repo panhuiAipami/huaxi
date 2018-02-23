@@ -513,6 +513,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         } else if (v == mMeLayout) {
             mHomeViewPager.setCurrentItem(ME_POSITION);
             setSelectView(ME_POSITION);
+            if(!AppUtil.isLogin(this)){
+
+            }
         }
     }
 
@@ -851,10 +854,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public static HuaweiApiClient getConnect() {
         return client;
     }
+
     HuaweiIdSignInOptions signInOptions = new
             HuaweiIdSignInOptions.Builder(HuaweiIdSignInOptions.DEFAULT_SIGN_IN)
             .requestOpenId()
             .build();
+
     public void connect() {
         //创建华为移动服务client实例用以实现支付功能
         //需要指定api为HuaweiPay.PAY_API

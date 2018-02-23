@@ -161,7 +161,7 @@ public interface BookApiService {
     Observable<Base<PayResponse>> getAliPayRequest(@Query("product_id") String productId);
 
     //威富通
-    @GET("pay_appswiftpassg")
+    @GET("pay_appwechat")//pay_appswiftpassg
     Observable<Base<WeChatBean>> getWeChatRequest(@Query("product_id") String productId);
 
     @FormUrlEncoded

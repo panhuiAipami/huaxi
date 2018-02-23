@@ -167,8 +167,8 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
         } else if (v == recharge) {
             if (!AppUtil.isLogin(getActivity())) return;
-//            toWebView(Constant.H5_PAY_URL);
-            ActivityUtil.toWebViewActivityBack(getActivity(), Constant.H5_PAY_URL, false);
+//            ActivityUtil.toWebViewActivityBack(getActivity(), Constant.H5_PAY_URL, false);
+            ActivityUtil.toRechargeActivity(getActivity());
         } else if (v == bookshelf) {
             if (getActivity() instanceof HomeActivity) {
                 HomeActivity activity = (HomeActivity) getActivity();

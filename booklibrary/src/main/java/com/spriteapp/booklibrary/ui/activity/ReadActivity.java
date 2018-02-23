@@ -54,6 +54,7 @@ import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.ui.adapter.ChapterAdapter;
+import com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -974,7 +975,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 payType = mQueryContent.getChapter_pay_type();
             }
             if (payType == ChapterEnum.TO_PAY_PAGE.getCode()) {
-                ActivityUtil.toWebViewActivity(mContext, Constant.H5_PAY_URL, true);
+//                ActivityUtil.toWebViewActivity(mContext, Constant.H5_PAY_URL, true);
+                ActivityUtil.toRechargeActivity(ReadActivity.this);
                 return;
             }
             showAutoSubDialog();
@@ -984,6 +986,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         @Override
         public void clickSetting() {
+            PersonCenterFragment.toSetting = 1;
             ActivityUtil.toSettingActivity(mContext);
         }
     };

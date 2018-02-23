@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="47dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +17,8 @@
             android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/image_back"
@@ -69,10 +71,10 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:scaleType="centerCrop"
-                        app:riv_oval="true"
-                        app:riv_border_width="0.5dp"
                         android:src="@mipmap/deafultheadicon"
-                        app:riv_border_color="@color/line_color" />
+                        app:riv_border_color="@color/line_color"
+                        app:riv_border_width="0.5dp"
+                        app:riv_oval="true" />
 
                     <TextView
                         android:id="@+id/user_name"
@@ -106,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/square_support_selector"
-                        android:textSize="25sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -139,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/square_comment_selector"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -155,6 +157,7 @@
             android:layout_height="wrap_content">
 
             <RadioGroup
+                android:id="@+id/pay_method_group"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_margin="12dp"
@@ -162,6 +165,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/wx_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@null"
@@ -170,6 +174,7 @@
                     android:text="微信支付" />
 
                 <RadioButton
+                    android:id="@+id/ali_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -180,13 +185,15 @@
 
 
                 <RadioButton
+                    android:id="@+id/hw_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:button="@null"
                     android:drawableLeft="@mipmap/huaxi_rz"
                     android:drawablePadding="5dp"
-                    android:text="华为支付" />
+                    android:text="华为支付"
+                    android:visibility="gone" />
             </RadioGroup>
 
             <LinearLayout
@@ -197,6 +204,7 @@
                 android:orientation="horizontal">
 
                 <View
+                    android:id="@+id/line1"
                     android:layout_width="40dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="25dp"
@@ -204,6 +212,7 @@
                     android:visibility="invisible"></View>
 
                 <View
+                    android:id="@+id/line2"
                     android:layout_width="40dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="55dp"
@@ -211,10 +220,12 @@
                     android:visibility="invisible"></View>
 
                 <View
+                    android:id="@+id/line3"
                     android:layout_width="40dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="60dp"
-                    android:background="@color/color_orange"></View>
+                    android:background="@color/color_orange"
+                    android:visibility="gone"></View>
             </LinearLayout>
         </FrameLayout>
 
@@ -226,10 +237,11 @@
 
 
             <LinearLayout
+                android:id="@+id/price1_layout"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_weight="1"
-                android:background="@drawable/creat_edit_back1"
+                android:background="@drawable/price_bg"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -256,6 +268,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n2990"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -263,6 +276,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="+" />
@@ -283,6 +297,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n0"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -290,10 +305,13 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/old_price1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="原价:¥30" />
+                    android:text="原价:¥30"
+                    android:textColor="@color/square_small"
+                    android:textSize="14sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -311,18 +329,21 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/price1"
                         android:text="  ¥29.9"
-                        android:textColor="@color/green_color" />
+                        android:textColor="@color/green_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/price2_layout"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/creat_edit_back1"
+                android:background="@drawable/price_bg"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -349,6 +370,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n4990"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -356,6 +378,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="+" />
@@ -376,6 +399,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n888"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -383,10 +407,13 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/old_price2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="原价:¥58.8" />
+                    android:text="原价:¥58.8"
+                    android:textColor="@color/square_small"
+                    android:textSize="14sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -404,15 +431,18 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/price2"
                         android:text="  ¥49.9"
-                        android:textColor="@color/green_color" />
+                        android:textColor="@color/green_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/price3_layout"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_weight="1"
-                android:background="@drawable/creat_edit_back1"
+                android:background="@drawable/price_bg"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -439,6 +469,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n9990"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -446,6 +477,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="+" />
@@ -466,6 +498,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text="花贝\n3333"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -473,10 +506,13 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/old_price3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="原价:¥133.3" />
+                    android:text="原价:¥133.3"
+                    android:textColor="@color/square_small"
+                    android:textSize="14sp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -494,12 +530,15 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/price3"
                         android:text="  ¥99.9"
-                        android:textColor="@color/green_color" />
+                        android:textColor="@color/green_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/goto_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -535,7 +574,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="huaxikefu01"
-                android:textColor="@color/two_font_color" />
+                android:textColor="@color/square_user_speak"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <View

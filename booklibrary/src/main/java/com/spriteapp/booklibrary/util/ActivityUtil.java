@@ -11,6 +11,7 @@ import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
+import com.spriteapp.booklibrary.ui.activity.RechargeActivity;
 import com.spriteapp.booklibrary.ui.activity.SearchActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
@@ -118,5 +119,10 @@ public class ActivityUtil {
     public static void toSearchActivity(Context context) {
         Intent intent = new Intent(context, SearchActivity.class);
         context.startActivity(intent);
+    }
+
+    public static void toRechargeActivity(Activity context) {
+        Intent intent = new Intent(context, RechargeActivity.class);
+        context.startActivityForResult(intent, 9);
     }
 }

@@ -116,16 +116,16 @@ openpage	通过app代理打开网页，参数url就是需要打开的网页	huax
                         String productId = uri.getQueryParameter(WebConstant.PRODUCT_ID_QUERY);
                         String type = uri.getQueryParameter(WebConstant.PRODUCT_TYPE);
                         //区分微信或者支付宝支付
-                        Log.d("alipay", "productId===" + productId + "type===" + type);
+//                        Log.d("alipay", "productId===" + productId + "type===" + type);
                         if (mWebViewCallback != null) {
-                            if (type != null && type.equals("appalipay")) {
+                            if (type != null && type.equals("appalipay")) {//支付宝原生支付
                                 mWebViewCallback.getAliPay(productId);//支付宝
-                            } else if (type != null && type.equals("appswiftpassg")) {
+                            } else if (type != null && type.equals("appswiftpassg")) {//威富通微信支付
                                 jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-                                Log.d("alipay", "jumpUrl===" + jumpUrl + "uri==" + uri.toString());
+//                                Log.d("alipay", "jumpUrl===" + jumpUrl + "uri==" + uri.toString());
 //                                mWebViewCallback.getWeChatPay(productId);//微信
-//                                mWebViewCallback.getWeChatPay(productId);//微信网页
-//                                ActivityUtil.toWebViewActivity(context, "http://wxpay.weixin.qq.com/pub_v2/pay/wap.v2.php");
+                            } else if (type != null && type.equals("wxpay")) {//微信原生支付
+                                mWebViewCallback.getWeChatPay(productId);//微信
                             }
 //                            mWebViewCallback.getAliPay(productId);//支付宝
 //                            mWebViewCallback.getWeChatPay(productId);//微信
