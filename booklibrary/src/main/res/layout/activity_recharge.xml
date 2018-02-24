@@ -586,9 +586,11 @@
 
 
         <ImageView
+            android:id="@+id/huaxi_pay"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:src="@drawable/huaxi_ad_bottom_icon" />
+            android:scaleType="centerCrop"
+            android:src="@mipmap/huaxi_pay" />
 
         <TextView
             android:layout_width="match_parent"

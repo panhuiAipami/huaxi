@@ -109,6 +109,8 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         getDataFromTopPage();
         if (StringUtil.isEmpty(mUrl)) {
             return;
+        } else if (mUrl.startsWith("https://statecheck.swiftpass.cn/pay/wappay") || mUrl.startsWith("http://statecheck.swiftpass.cn/pay/wappay")) {
+            WXURL = mUrl;//原生支付宝支付网页微信支付
         }
         if (!AppUtil.isNetAvailable(this)) {
             return;

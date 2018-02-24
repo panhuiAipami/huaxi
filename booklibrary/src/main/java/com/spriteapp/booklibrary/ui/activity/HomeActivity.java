@@ -750,26 +750,26 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        try {
-            BookshelfFragment shelfFragment = getShelfFragment();
-            if (shelfFragment != null && shelfFragment.isDeleteBook()) {
-                shelfFragment.setDeleteBook();
-                return;
-            }
-            Fragment currentFragment = getCurrentFragment();
-            if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
-                mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
-                setSelectView(BOOKSTORE_POSITION);
-                return;
-            }
-            super.onBackPressed();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        try {
+//            BookshelfFragment shelfFragment = getShelfFragment();
+//            if (shelfFragment != null && shelfFragment.isDeleteBook()) {
+//                shelfFragment.setDeleteBook();
+//                return;
+//            }
+//            Fragment currentFragment = getCurrentFragment();
+//            if (currentFragment != null && !(currentFragment instanceof BookshelfFragment)) {
+//                mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+//                setSelectView(BOOKSTORE_POSITION);
+//                return;
+//            }
+//            super.onBackPressed();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

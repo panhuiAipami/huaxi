@@ -164,8 +164,13 @@ public interface BookApiService {
     //威富通
     @FormUrlEncoded
     @POST("pay_appwechat")
-//pay_appswiftpassg
     Observable<Base<WeChatBean>> getWeChatRequest(@Field("product_id") String productId);
+
+
+    //威富通pay_appswiftpassg
+    @FormUrlEncoded
+    @POST("pay_wapswiftpassg")
+    Observable<Base<WeChatBean>> pay_wapswiftpassg(@Field("product_id") String productId);
 
     @FormUrlEncoded
     @POST("book_comment")

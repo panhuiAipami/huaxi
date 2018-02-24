@@ -20,6 +20,7 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
@@ -29,6 +30,7 @@ import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.presenter.WebViewPresenter;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.Util;
@@ -53,11 +55,11 @@ public class RechargeActivity extends TitleActivity {
     private TextView old_price1, old_price2, old_price3;
     private LinearLayout price1_layout, price2_layout, price3_layout;
     private View line1, line2, line3;
-    private ImageView user_head;
+    private ImageView user_head, huaxi_pay;
     private RadioGroup pay_method_group;
     private RadioButton hw_pay;
     private TextView goto_pay;
-    private float price=49.9f;//充值金额
+    private float price = 49.9f;//充值金额
     private int type = 0;//充值类型
     private List<LinearLayout> linearLayouts = new ArrayList<>();
     private static final int SDK_PAY_FLAG = 1;
@@ -115,6 +117,7 @@ public class RechargeActivity extends TitleActivity {
     public void findViewId() throws Exception {
         super.findViewId();
         user_head = (ImageView) findViewById(R.id.user_head);
+        huaxi_pay = (ImageView) findViewById(R.id.huaxi_pay);
         user_name = (TextView) findViewById(R.id.user_name);
         hua_ban = (TextView) findViewById(R.id.hua_ban);
         hua_bei = (TextView) findViewById(R.id.hua_bei);
@@ -171,7 +174,8 @@ public class RechargeActivity extends TitleActivity {
             setPriceState(2);
         } else if (v == goto_pay) {//去支付
             if (type == 0) {//微信支付
-                requestWxPay("com.huaxiapp." + price + "yuan");
+//                net.huaxi.12yuan
+                requestWxWebPay("com.huaxiapp." + price + "yuan");
             } else if (type == 1) {//支付宝支付
                 requestAliPay("com.huaxiapp." + price + "yuan");
             } else if (type == 2) {//华为支付,暂无
@@ -212,6 +216,7 @@ public class RechargeActivity extends TitleActivity {
         old_price1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         old_price2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         old_price3.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        GlideUtils.loadImage(huaxi_pay, "http://img.hxdrive.net/themes/baisibudejie_v2/images/20180118145145.png", this);//引用图片
         linearLayouts.add(price1_layout);
         linearLayouts.add(price2_layout);
         linearLayouts.add(price3_layout);
@@ -251,7 +256,7 @@ public class RechargeActivity extends TitleActivity {
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
-        Log.d("productId","ali==="+productId);
+        Log.d("productId", "ali===" + productId);
         showDialog();
         BookApi.getInstance().
                 service
@@ -307,11 +312,11 @@ public class RechargeActivity extends TitleActivity {
         payThread.start();
     }
 
-    public void requestWxPay(String productId) {//生成微信订单信息
+    public void requestWxPay(String productId) {//生成原生微信订单信息
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
-        Log.d("productId","wx==="+productId);
+        Log.d("productId", "wx===" + productId);
         showDialog();
         BookApi.getInstance().
                 service
@@ -348,6 +353,52 @@ public class RechargeActivity extends TitleActivity {
                                 HuaXiSDK.getInstance().toWXPay(data, null);
                             }
                         }
+                    }
+                });
+    }
+
+    public void requestWxWebPay(String productId) {//生成网页微信订单信息
+        if (!AppUtil.isNetAvailable(this)) {
+            return;
+        }
+        Log.d("productId", "wx===" + productId);
+        showDialog();
+        BookApi.getInstance().
+                service
+                .pay_wapswiftpassg(productId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<WeChatBean>>() {
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d("PayResponse", "微信订单请求失败");
+//                            PayResponse response = new PayResponse();
+//                            HuaXiSDK.getInstance().toWXPay(response);
+
+                    }
+
+                    @Override
+                    public void onNext(Base<WeChatBean> payResponseBase) {//微信wechat
+                        Log.d("PayResponse", payResponseBase.toString());
+                        if (payResponseBase != null) {
+                            if (payResponseBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                                if (!TextUtils.isEmpty(payResponseBase.getData().getPay_info())) {
+                                    ActivityUtil.toWebViewActivityBack(RechargeActivity.this, payResponseBase.getData().getPay_info(), true);
+                                }
+                            }
+                        }
+
                     }
                 });
     }
