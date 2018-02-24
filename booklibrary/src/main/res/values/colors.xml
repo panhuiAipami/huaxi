@@ -123,4 +123,6 @@
     <color name="ranking_author_name">#7c53ff</color>
     <color name="comment_title">#5c44c4</color>
     <color name="green_color">#2FB121</color>
+    <color name="blue_color">#47C2FF</color>
+    <color name="price_bg_color">#F6F5FB</color>
 </resources>

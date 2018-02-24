@@ -288,6 +288,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                                 }
                                 if (appUpDateModelBase.getData().getSplashscreen() != null) {//广告页
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE, appUpDateModelBase.getData().getSplashscreen());
+                                    Log.d("addFileImage","url==="+appUpDateModelBase.getData().getSplashscreen());
                                 }
                                 if (appUpDateModelBase.getData().getSplashscreen_url() != null) {//广告页链接
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE_URL, appUpDateModelBase.getData().getSplashscreen_url());

@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.ui.activity;
 
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -92,6 +93,7 @@ public class RechargeActivity extends TitleActivity {
             }
         }
     };
+    private GradientDrawable myGrad;
 
 
     @Override
@@ -133,7 +135,7 @@ public class RechargeActivity extends TitleActivity {
         line2 = findViewById(R.id.line2);
         line3 = findViewById(R.id.line3);
         goto_pay = (TextView) findViewById(R.id.goto_pay);
-
+        myGrad = (GradientDrawable)goto_pay.getBackground();
     }
 
     public void listener() {
@@ -193,6 +195,13 @@ public class RechargeActivity extends TitleActivity {
         }
         type = pos;
         Log.d("setLine", "pos===" + pos + "type===" + type);
+        if(type==0){
+            myGrad.setColor(getResources().getColor(R.color.green_color));
+        }else if(type==1){
+            myGrad.setColor(getResources().getColor(R.color.blue_color));
+        }else if(type==2){
+            myGrad.setColor(getResources().getColor(R.color.c02_themes_color));
+        }
     }
 
     public void setPriceState(int pos) {

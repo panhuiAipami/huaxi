@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.ui.activity;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -136,10 +139,12 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         }
     }
 
+
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
         mWebView = (ReaderWebView) findViewById(R.id.book_reader_web_view);
+        registerForContextMenu(mWebView);
 //        book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
 //        book_reader_title_textView.setMaxEms(10);
 //        mLeftLayout.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +171,40 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
             }
         });
     }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+        final WebView.HitTestResult webViewHitTestResult = mWebView.getHitTestResult();
+        if (webViewHitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+                webViewHitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+            contextMenu.setHeaderTitle("网页中下载图片");
+            contextMenu.add(0, 1, 0, "点击保存")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            String DownloadImageURL = webViewHitTestResult.getExtra();
+                            if (!TextUtils.isEmpty(DownloadImageURL)) {
+                                Log.d("DownloadImageURL","url==="+DownloadImageURL);
+                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(DownloadImageURL));
+                                request.allowScanningByMediaScanner();
+                                //设置图片的保存路径
+                                request.setDestinationInExternalFilesDir(WebViewActivity.this, "/img", "/a.png");
+                                DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                                downloadManager.enqueue(request);
+                                Toast.makeText(WebViewActivity.this, "下载成功", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(WebViewActivity.this, "下载失败", Toast.LENGTH_LONG).show();
+                            }
+                            return false;
+                        }
+                    });
+        }
+    }
+
+
+
 
     @Override
     public void addContentView() {
@@ -202,6 +241,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
                     if (url.startsWith("weixin://")) {
                         if (WXURL != null && !WXURL.isEmpty())
                             view.loadUrl(WXURL);
+                        WXURL = "";
 //                        view.goBack();
                     }
                     return true;

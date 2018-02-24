@@ -300,7 +300,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             banner = (Banner) itemView.findViewById(R.id.banner);
             ViewGroup.LayoutParams layoutParams = banner.getLayoutParams();
 
-            layoutParams.height = (BaseActivity.deviceWidth / 16) * 9;
+            layoutParams.height = (BaseActivity.deviceWidth / 34) * 15;
             banner.setLayoutParams(layoutParams);
         }
     }

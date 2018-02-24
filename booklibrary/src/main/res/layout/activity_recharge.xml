@@ -44,8 +44,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:visibility="gone"
-            android:background="@color/line_color"></View>
+            android:background="@color/line_color"
+            android:visibility="gone"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,10 +79,11 @@
 
                     <TextView
                         android:id="@+id/user_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:maxLength="5"
+                        android:layout_marginTop="-8dp"
+                        android:drawableTop="@mipmap/vip"
                         android:maxLines="1"
                         android:text="" />
                 </LinearLayout>
@@ -150,7 +151,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:background="@color/line_color"></View>
+            android:background="@color/price_bg_color"></View>
 
 
         <FrameLayout
@@ -170,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@null"
-                    android:drawableLeft="@mipmap/huaxi_rz"
+                    android:drawableLeft="@mipmap/wxpay"
                     android:drawablePadding="5dp"
                     android:text="微信支付" />
 
@@ -180,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:button="@null"
-                    android:drawableLeft="@mipmap/huaxi_rz"
+                    android:drawableLeft="@mipmap/alipay"
                     android:drawablePadding="5dp"
                     android:text="支付宝支付" />
 
@@ -209,7 +210,7 @@
                     android:layout_width="40dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="25dp"
-                    android:background="@color/color_orange"
+                    android:background="@color/green_color"
                     android:visibility="invisible"></View>
 
                 <View
@@ -217,7 +218,7 @@
                     android:layout_width="40dp"
                     android:layout_height="2dp"
                     android:layout_marginLeft="55dp"
-                    android:background="@color/color_orange"
+                    android:background="@color/blue_color"
                     android:visibility="invisible"></View>
 
                 <View
@@ -240,7 +241,7 @@
             <LinearLayout
                 android:id="@+id/price1_layout"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:layout_weight="1"
                 android:background="@drawable/price_bg"
                 android:gravity="center_horizontal"
@@ -309,7 +310,7 @@
                     android:id="@+id/old_price1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:text="原价:¥30"
                     android:textColor="@color/square_small"
                     android:textSize="14sp" />
@@ -323,6 +324,7 @@
                         android:id="@+id/price1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="现价:" />
 
                     <TextView
@@ -340,7 +342,7 @@
             <LinearLayout
                 android:id="@+id/price2_layout"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -353,14 +355,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp">
+                    android:paddingRight="5dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -380,7 +382,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-10dp"
                         android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/eight_five"
                         android:gravity="center"
                         android:text="+" />
 
@@ -389,7 +394,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -411,7 +417,7 @@
                     android:id="@+id/old_price2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:text="原价:¥58.8"
                     android:textColor="@color/square_small"
                     android:textSize="14sp" />
@@ -425,6 +431,7 @@
                         android:id="@+id/price2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="现价:" />
 
                     <TextView
@@ -441,7 +448,7 @@
             <LinearLayout
                 android:id="@+id/price3_layout"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:layout_weight="1"
                 android:background="@drawable/price_bg"
                 android:gravity="center_horizontal"
@@ -452,14 +459,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="10dp">
+                    android:paddingRight="5dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -479,7 +486,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-10dp"
                         android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableTop="@mipmap/seven_five"
                         android:gravity="center"
                         android:text="+" />
 
@@ -488,7 +498,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -510,7 +521,7 @@
                     android:id="@+id/old_price3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:text="原价:¥133.3"
                     android:textColor="@color/square_small"
                     android:textSize="14sp" />
@@ -524,6 +535,7 @@
                         android:id="@+id/price3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="现价:" />
 
                     <TextView
@@ -543,7 +555,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button_blue_select2"
+            android:background="@drawable/goto_pay_bg"
             android:paddingBottom="8dp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
@@ -556,7 +568,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginTop="15dp"
-            android:background="@color/line_color"></View>
+            android:background="@color/price_bg_color"></View>
 
 
         <LinearLayout
@@ -582,7 +594,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@color/line_color"></View>
+            android:background="@color/price_bg_color"></View>
 
 
         <ImageView
