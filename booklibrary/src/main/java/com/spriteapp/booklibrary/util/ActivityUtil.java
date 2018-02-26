@@ -73,6 +73,12 @@ public class ActivityUtil {
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
         context.startActivity(intent);
     }
+    public static void toReadActivityPassword(Activity context, int book_id, int chapter_id){
+        Intent intent = new Intent(context, ReadActivity.class);
+        intent.putExtra("book_id", book_id+"");
+        intent.putExtra("chapter_id", chapter_id+"");
+        context.startActivity(intent);
+    }
 
     public static void toCreateDynamicActivity(Activity context) {
         Intent intent = new Intent(context, CreateDynamicActivity.class);

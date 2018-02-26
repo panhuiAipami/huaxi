@@ -356,7 +356,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
         return false;
     }
 
-    public void getBook(final ClipboardManager cbm) throws Exception{
+    public void getBook(final ClipboardManager cbm) throws Exception {
         if (!AppUtil.isNetAvailable(this))
             return;
         BookApi.getInstance()
@@ -377,7 +377,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {//关键字
                                     //识别码直接跳转到阅读界面
-                                    ActivityUtil.toReadActivity(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
+                                    ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
                                     cbm.setText("");//清空剪切板
                                 }
 

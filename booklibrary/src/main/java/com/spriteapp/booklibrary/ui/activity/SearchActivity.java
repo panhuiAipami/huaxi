@@ -374,7 +374,7 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
                                     gone_or_visibility();
                                 } else if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0 && bookDetailResponse.getCommand() == 1) {//识别码
                                     //识别码直接跳转到阅读界面
-                                    ActivityUtil.toReadActivity(SearchActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
+                                    ActivityUtil.toReadActivityPassword(SearchActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
                                     searsh_text.setText("搜索");
 
                                 } else {//无数据
