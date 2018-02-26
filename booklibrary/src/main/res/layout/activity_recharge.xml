@@ -81,9 +81,9 @@
                         android:id="@+id/user_name"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
                         android:layout_marginTop="-8dp"
                         android:drawableTop="@mipmap/vip"
+                        android:ellipsize="end"
                         android:maxLines="1"
                         android:text="" />
                 </LinearLayout>
@@ -108,6 +108,8 @@
                         android:id="@+id/hua_bei"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="0"
                         android:textColor="@color/square_support_selector"
                         android:textSize="22sp"
@@ -141,6 +143,8 @@
                     android:id="@+id/hua_ban"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="0"
                     android:textColor="@color/square_comment_selector"
                     android:textSize="22sp"

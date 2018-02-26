@@ -144,7 +144,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     public void findViewId() throws Exception {
         super.findViewId();
         mWebView = (ReaderWebView) findViewById(R.id.book_reader_web_view);
-        registerForContextMenu(mWebView);
+//        registerForContextMenu(mWebView);
 //        book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
 //        book_reader_title_textView.setMaxEms(10);
 //        mLeftLayout.setOnClickListener(new View.OnClickListener() {
