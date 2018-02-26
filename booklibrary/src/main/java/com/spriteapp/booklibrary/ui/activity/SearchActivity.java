@@ -30,6 +30,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.FlowAdapter;
 import com.spriteapp.booklibrary.ui.adapter.SearchAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.ColorUtils;
 import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -97,6 +98,7 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
+        ColorUtils.setColor();
         mTitleLayout.setVisibility(View.GONE);
         inputmanager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         searsh_edit = (EditText) findViewById(R.id.send_searsh_edit);
@@ -134,6 +136,8 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 searsh_edit.setText(hot.get(position));
                 searsh_edit.setSelection(searsh_edit.getText().length());
+                content = hot.get(position);
+                getBook();//点击历史记录直接搜索
                 return false;
             }
         });
@@ -153,6 +157,8 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 searsh_edit.setText(history.get(position));
                 searsh_edit.setSelection(searsh_edit.getText().length());
+                content = history.get(position);
+                getBook();//点击历史记录直接搜索
                 return false;
             }
         });

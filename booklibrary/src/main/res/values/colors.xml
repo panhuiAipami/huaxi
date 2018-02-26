@@ -125,4 +125,13 @@
     <color name="green_color">#2FB121</color>
     <color name="blue_color">#47C2FF</color>
     <color name="price_bg_color">#F6F5FB</color>
+    <!--搜索文本与背景颜色-->
+    <color name="text1">#ff78b3</color>
+    <color name="text2">#a081ff</color>
+    <color name="text3">#e689f6</color>
+    <color name="text4">#7f809e</color>
+    <color name="bg1">#fef2f4</color>
+    <color name="bg2">#f5f1ff</color>
+    <color name="bg3">#fbeafd</color>
+    <color name="bg4">#eceff6</color>
 </resources>
