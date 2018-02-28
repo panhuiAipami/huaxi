@@ -37,6 +37,8 @@
         android:roundIcon="@mipmap/huaxi_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="android.max_aspect"
+            android:value="2.1"/>
         <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".LoginActivity"
@@ -99,6 +101,7 @@
         <activity
             android:name=".activity.ShareActivity"
             android:theme="@style/MyDialogActivityStyle" />
+        <!--android:theme="@style/StartAppTheme"-->
         <activity android:name=".activity.SplashActivity"
             android:theme="@style/StartAppTheme">
             <intent-filter>

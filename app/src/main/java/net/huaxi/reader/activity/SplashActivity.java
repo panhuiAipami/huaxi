@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -48,11 +49,41 @@ public class SplashActivity extends AppCompatActivity {
         }
     };
 
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        setIntent(intent);
+//        if (intent != null) {
+//            String app = intent.getStringExtra("app");
+//            if (!TextUtils.isEmpty(app)) {
+//                Log.d("protected", "app===" + app);
+//                if (app.equals("mi")) {
+//                    //请求赠送花瓣的接口
+//                }
+//            } else {
+//                Log.d("protected", "app");
+//            }
+//        } else {
+//            Log.d("protected", "intent===null");
+//        }
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_splash);
+//        Intent intent = getIntent();
+//        if (intent != null) {
+//            String app = intent.getStringExtra("app");
+//            if (!TextUtils.isEmpty(app)) {
+//                Log.d("savedInstanceState", "app===" + app);
+//            } else {
+//                Log.d("savedInstanceState", "app");
+//            }
+//        } else {
+//            Log.d("savedInstanceState", "intent===null");
+//        }
         splash = (ImageView) findViewById(R.id.splash);
         skip_ad = (TextView) findViewById(R.id.skip_ad);
         skip_ad.setOnClickListener(new View.OnClickListener() {

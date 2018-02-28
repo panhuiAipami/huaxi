@@ -24,7 +24,7 @@
 
     </style>
     <style name="StartAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@mipmap/splash</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     <!--去掉android5.0以上按钮的阴影效果-->

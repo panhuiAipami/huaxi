@@ -12,7 +12,9 @@ public enum ApiCodeEnum {
     //点赞,阅读曾经点过或阅读过
     EVER(10002),
     //无发帖权限
-    NOAUTHORITY(10005);
+    NOAUTHORITY(10005),
+    //未登录
+    NOLOGIN(11002);
     private int value;
 
 

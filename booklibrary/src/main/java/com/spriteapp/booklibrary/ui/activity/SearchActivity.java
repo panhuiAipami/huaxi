@@ -382,6 +382,10 @@ public class SearchActivity extends TitleActivity implements SwipeRefreshLayout.
                                     //识别码直接跳转到阅读界面
                                     ActivityUtil.toReadActivityPassword(SearchActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
                                     searsh_text.setText("搜索");
+                                    if (history.size() != 0 && history.get(0).startsWith("hx")) {//判断如果是口令则删除本条历史记录
+                                        history.remove(0);
+                                        historyFlowAdapter.notifyDataChanged();
+                                    }
 
                                 } else {//无数据
                                     setNullLayout();

@@ -146,7 +146,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private ImageView paixu;
     private ImageView qiandao;
     private TextView selector_or_close;
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("HomeActivity", "执行onNewIntent方法");
+    }
     @Override
     public void initData() {
         mContext = this;

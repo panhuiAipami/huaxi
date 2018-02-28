@@ -74,6 +74,7 @@
     <string name="jingdian">经典完本</string>
     <string name="mianfei">免费新书</string>
     <string name="zuijin">最近更新</string>
+    <string name="xiaomilogin">系统检测到您领取了1000花瓣的小米卡券，登陆后即时获取~</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.app.ActivityManager;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -16,18 +17,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.XiaoMiBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
+import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -48,6 +54,10 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class TitleActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "TitleActivity";
+    //固定:xiaomi,测试使用:alibaba
+    public static final String channel = "xiaomi";//xiaomi
+    private static final String parmes = "app=mi";//xiaomi
+    private static final String parmes2 = "mi";//xiaomi
 
     ImageView mBackImageView;
     TextView mTitleTextView;
@@ -59,6 +69,8 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     View mLineView;
 
     public static boolean isActive; //全局变量
+    private static boolean isLogin = true;//是否登录
+
 
     @Override
     public int getLayoutResId() {
@@ -287,18 +299,27 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
         super.onResume();
         MobclickAgent.onResume(this);
         try {
+            ClipboardManager cbm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             if (!isActive) {
                 //app 从后台唤醒，进入前台
                 isActive = true;
-                ClipboardManager cbm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 if (!TextUtils.isEmpty(cbm.getText())) {//剪切板有数据
                     // + "剪切板信息" + cbm.getText()
                     //如果剪切板信息是识别码,跳转到阅读页
-                    getBook(cbm);
+                    if (cbm.getText().toString().trim().startsWith("hx")) {//口令
+                        getBook(cbm);
+                    } else if (cbm.getText().toString().trim().startsWith(parmes) && !TextUtils.isEmpty(Util.getAppMetaData(this)) && Util.getAppMetaData(this).equals(channel)) {//小米卡券
+                        getHuaBan(cbm);
+                    }
 
                 }
-
                 Log.i("isActive", "程序从后台唤醒");
+            }
+            Log.i("isActive", "执行onResume");
+            if (AppUtil.isLogin() && !TextUtils.isEmpty(Util.getAppMetaData(this)) && Util.getAppMetaData(this).equals(channel) && !isLogin && !TextUtils.isEmpty(cbm.getText()) && cbm.getText().toString().trim().startsWith(parmes)) {//小米卡券
+                Log.i("isActive", "未登录之后登录执行onResume");
+                isLogin = true;
+                getHuaBan(cbm);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -356,6 +377,12 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
         return false;
     }
 
+    /**
+     * 口令书籍
+     *
+     * @param cbm 剪切板
+     * @throws Exception
+     */
     public void getBook(final ClipboardManager cbm) throws Exception {
         if (!AppUtil.isNetAvailable(this))
             return;
@@ -381,6 +408,67 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
                                     cbm.setText("");//清空剪切板
                                 }
 
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 从小米卡券过来
+     *
+     * @param cbm 剪切板
+     * @throws Exception
+     */
+    public void getHuaBan(final ClipboardManager cbm) throws Exception {
+        if (!AppUtil.isNetAvailable(this))
+            return;
+        if (!AppUtil.isLogin()) {
+            isLogin = false;
+        }
+//Constant.JSON_TYPE
+        BookApi.getInstance()
+                .service
+                .card_get("mi", Constant.JSON_TYPE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseTwo<XiaoMiBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BaseTwo<XiaoMiBean> bookDetailResponse) {
+                        if (bookDetailResponse != null) {
+                            int resultCode = bookDetailResponse.getCode();
+                            if (!TextUtils.isEmpty(bookDetailResponse.getMessage())) {
+                                ToastUtil.showLongToast(bookDetailResponse.getMessage());
+                            }
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                //领取成功则是清空剪切板
+                                cbm.setText("");//清空剪切板
+                                if (bookDetailResponse.getHot() != null && !TextUtils.isEmpty(bookDetailResponse.getHot().getHello_messages())) {
+                                    ToastUtil.showLongToast(bookDetailResponse.getHot().getHello_messages());
+                                }
+                                Log.d("getHuaBan", "清空剪切板");
+                            } else if (resultCode == ApiCodeEnum.NOLOGIN.getValue() || resultCode == ApiCodeEnum.NOLOGIN.getValue()) {
+                                Log.d("getHuaBan", "不清空剪切板");
+                                if (bookDetailResponse.getHot() != null && !TextUtils.isEmpty(bookDetailResponse.getHot().getHello_messages())) {
+                                    ToastUtil.showLongToast(bookDetailResponse.getHot().getHello_messages());
+                                }
                             }
 
                         }

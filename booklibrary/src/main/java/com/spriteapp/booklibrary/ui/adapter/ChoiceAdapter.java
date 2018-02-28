@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,10 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final ChoiceBean bean = mValues.get(position);
         holder.title.setText(bean.getName());
+        if (TextUtils.isEmpty(bean.getIntro()))
+            holder.details.setVisibility(View.GONE);
+        else
+            holder.details.setVisibility(View.VISIBLE);
         holder.details.setText(bean.getIntro());
         holder.reader.setText(bean.getExtend() + "人追读");
         GlideUtils.loadImage(holder.mContentView, bean.getImages(), c);

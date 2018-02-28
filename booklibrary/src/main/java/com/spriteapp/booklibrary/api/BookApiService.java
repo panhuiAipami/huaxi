@@ -11,6 +11,7 @@ import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.UserModel;
 import com.spriteapp.booklibrary.model.WeChatBean;
+import com.spriteapp.booklibrary.model.XiaoMiBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.BookStoreResponse;
@@ -305,4 +306,9 @@ public interface BookApiService {
     //获取口令书籍
     @GET("book_command")
     Observable<Base<List<BookDetailResponse>>> book_command(@Query("q") String q);
+
+    //领取小米卡券花瓣
+    @GET("card_get")
+    Observable<BaseTwo<XiaoMiBean>> card_get(@Query("id") String id,
+                                             @Query("format") String format);
 }
