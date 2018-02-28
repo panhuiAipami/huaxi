@@ -67,7 +67,6 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     FrameLayout mContainerLayout;
     RelativeLayout mTitleLayout;
     View mLineView;
-
     public static boolean isActive; //全局变量
     private static boolean isLogin = true;//是否登录
 
