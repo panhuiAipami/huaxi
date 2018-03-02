@@ -9,13 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/book_reader_read_container"
+        <com.spriteapp.booklibrary.widget.PtrFrameLayout
+            android:id="@+id/mPtrFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:focusable="false"
-            android:layerType="hardware" />
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/book_reader_read_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:focusable="false"
+                android:layerType="hardware" />
+        </com.spriteapp.booklibrary.widget.PtrFrameLayout>
 
         <com.spriteapp.booklibrary.widget.ReadProgressLayout
             android:id="@+id/book_reader_read_progress_layout"

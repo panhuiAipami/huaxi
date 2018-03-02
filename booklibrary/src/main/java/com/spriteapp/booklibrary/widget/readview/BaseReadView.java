@@ -19,6 +19,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -206,24 +208,34 @@ public abstract class BaseReadView extends View {
                     }
                     break;
                 }
-
-                if ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10)) {
-                    if ((t - et < 1000)) { // 单击
-                        startAnimation();
+                Log.i("onTouchEvent", Math.abs(ux - dx) + "----x------------------------y-->" + Math.abs(uy - dy));
+                if (Math.abs(uy - dy) < Math.abs(ux - dx) || ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10))) {
+                    if (t - et < 1000) { // 单击时间小于一秒为有效
+                        startAnimation();//开始翻页
                     } else { // 长按
                         pagefactory.cancelPage();
                         restoreAnimation();
                     }
                     postInvalidate();
                     return true;
+                }else{//当为上下划取消翻页
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pagefactory.cancelPage();
+                            restoreAnimation();
+                        }
+                    },180);
                 }
+
                 if (cancel) {
+                    Log.i("cancel","--------cancel-------------");
                     pagefactory.cancelPage();
                     restoreAnimation();
                     postInvalidate();
                 } else {
-                    startAnimation();
-                    postInvalidate();
+//                    startAnimation();
+//                    postInvalidate();
                 }
                 cancel = false;
                 center = false;

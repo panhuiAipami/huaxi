@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="47dp"></View>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/downloadRecycleView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="LinearLayoutManager"
+        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/check_chapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已选0章，需要付费章节40章" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="价格：" />
+
+            <TextView
+                android:id="@+id/chapter_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0花贝\\花瓣"
+                android:textColor="@color/color_orange" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"></View>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余额：" />
+
+            <TextView
+                android:id="@+id/my_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0花贝\\花瓣"
+                android:textColor="@color/color_orange" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/downLoad_chapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_red_bg_select"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="下载"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="花贝为花溪小说网消费虚拟币，花瓣为花溪小说网赠送用户之体验币，仅限于阅读消费当用作阅读时，1花瓣=1花贝，1元=100花贝" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:text="当用作阅读时，1花瓣=1花贝，1元=100花贝"
+            android:textColor="@color/color_orange" />
+    </LinearLayout>
+</LinearLayout>

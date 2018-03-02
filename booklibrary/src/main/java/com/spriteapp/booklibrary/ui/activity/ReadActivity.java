@@ -69,6 +69,9 @@ import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.widget.PtrClassicDefaultHeader;
+import com.spriteapp.booklibrary.widget.PtrFrameLayout;
+import com.spriteapp.booklibrary.widget.PtrHandler;
 import com.spriteapp.booklibrary.widget.ReadBottomLayout;
 import com.spriteapp.booklibrary.widget.ReadProgressLayout;
 import com.spriteapp.booklibrary.widget.ReadRightTitleLayout;
@@ -106,6 +109,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private static final int ANIMATION_TIME = 300;
     public static final String LAST_CHAPTER = "last_chapter";
     FrameLayout mBookContainer;
+    PtrFrameLayout mPtrFrameLayout;
     private ReadBottomLayout mBottomLayout;
     private SubscriberContentPresenter mPresenter;
     private BaseReadView mWidget;
@@ -441,6 +445,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
+        mPtrFrameLayout = (PtrFrameLayout) findViewById(R.id.mPtrFrameLayout);
         mBookContainer = (FrameLayout) findViewById(R.id.book_reader_read_container);
         mBottomLayout = (ReadBottomLayout) findViewById(R.id.book_reader_bottom_layout);
         mChapterListView = (ListView) findViewById(R.id.book_reader_catalog_list_view);
@@ -538,6 +543,31 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             }
         });
 
+        //下拉操作
+        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(this);
+        mPtrFrameLayout.setPtrUIHandler(header);
+        mPtrFrameLayout.setHeaderView(header);
+        mPtrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                /**
+                 *检查是否可以刷新，这里使用默认的PtrHandler进行判断
+                 */
+                return true;
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                //刷新操作
+                frame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showSingleToast("收藏成功");
+                        mPtrFrameLayout.refreshComplete();
+                    }
+                }, 1500);
+            }
+        });
     }
 
     @Override

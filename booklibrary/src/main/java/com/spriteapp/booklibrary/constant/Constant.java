@@ -15,7 +15,7 @@ public class Constant {
      */
     public static final String SDROOTPath = Environment.getExternalStorageDirectory().getPath();
     public static final String SDPath = SDROOTPath + "/huaxi";
-//    public static final String PathTitle = SDPath + "/title";
+    public static final String BOOK_CONTENT_CACHE_Path = SDPath + "/cache/";
     /**
      * 首页书籍列表缓存文件名fragment
      */

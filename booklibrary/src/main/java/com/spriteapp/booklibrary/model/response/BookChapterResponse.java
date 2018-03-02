@@ -18,6 +18,16 @@ public class BookChapterResponse implements Serializable {
     private int bookId;
     private int chapterReadState;
 
+    private boolean is_check = false;
+
+    public boolean isIs_check() {
+        return is_check;
+    }
+
+    public void setIs_check(boolean is_check) {
+        this.is_check = is_check;
+    }
+
     public int getChapter_id() {
         return chapter_id;
     }

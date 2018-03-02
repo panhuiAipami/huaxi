@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PtrFrameLayout">
+        <!-- resistence, when pulling -->
+        <attr name="ptr_resistence" format="float"/>
+
+        <attr name="ptr_ratio_of_header_height_to_refresh" format="float"/>
+
+        <attr name="ptr_duration_to_close" format="integer"/>
+        <attr name="ptr_duration_to_close_header" format="integer"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="PtrClassicDefaultHeader">
+        <attr name="ptr_rotate_ani_time" format="integer"/>
+    </declare-styleable>
+</resources>
