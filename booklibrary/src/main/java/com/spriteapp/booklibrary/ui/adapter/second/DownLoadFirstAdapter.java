@@ -76,7 +76,8 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                 h.is_free.setText("");
             }
         }
-        h.check_box.setChecked(g.isIs_check());
+        //setSelected..setChecked
+        h.check_box.setSelected(g.isIs_check());
         int color = 0;
         if (groupItemIndex == 0)
             color = R.color.color_orange;
@@ -104,7 +105,9 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
 
                 g.setmChapterList(child_list);
                 list.set(groupItemIndex, g);
-                notifyGroupItemChangedData(groupItemIndex);
+//                notifyGroupItemChangedData(groupItemIndex);
+//                notifyItemChanged(groupItemIndex);
+                notifyDataSetChanged();
 
 
             }
@@ -137,12 +140,13 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
             s.is_free.setText(c.getChapter_price() + "花贝/花瓣");
         }
         s.is_free.setTextColor(ContextCompat.getColor(context, color));
-        s.check_box.setChecked(c.isIs_check());
+        s.check_box.setSelected(c.isIs_check());
 
         //选中item
         s.check_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                s.check_box.setSelected(isChecked);
                 c.setIs_check(isChecked);
                 list.get(groupItemIndex).getmChapterList().set(subItemIndex, c);
                 notifyGroupItemChangedData(groupItemIndex);
