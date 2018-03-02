@@ -194,9 +194,8 @@
                     android:id="@+id/hw_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
                     android:button="@null"
-                    android:drawableLeft="@mipmap/huaxi_rz"
+                    android:drawableLeft="@mipmap/huawei_pay"
                     android:drawablePadding="5dp"
                     android:text="华为支付"
                     android:visibility="gone" />

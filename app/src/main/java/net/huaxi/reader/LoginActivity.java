@@ -99,6 +99,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         login_password_edittext = (EditText) findViewById(R.id.login_password_edittext);
         login_dialog_weixin_img = (TextView) findViewById(R.id.login_dialog_weixin_img);
         login_dialog_huawei_img = (TextView) findViewById(R.id.login_dialog_huawei_img);
+        Log.d("CHANNEL_IS_HUAWEI", "CHANNEL_IS_HUAWEI===" + HomeActivity.CHANNEL_IS_HUAWEI);
         if (HomeActivity.CHANNEL_IS_HUAWEI) login_dialog_huawei_img.setVisibility(View.VISIBLE);
         zhuce = (TextView) findViewById(R.id.zhuce);
         login_login_button = (Button) findViewById(R.id.login_login_button);
