@@ -25,9 +25,11 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.PayResult;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.WeChatBean;
+import com.spriteapp.booklibrary.model.response.HuaWeiResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.ui.presenter.WebViewPresenter;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
@@ -58,7 +60,7 @@ public class RechargeActivity extends TitleActivity {
     private View line1, line2, line3;
     private ImageView user_head, huaxi_pay;
     private RadioGroup pay_method_group;
-    private RadioButton hw_pay;
+    private RadioButton hw_pay, wx_pay, ali_pay;
     private TextView goto_pay;
     private float price = 49.9f;//充值金额
     private int type = 0;//充值类型
@@ -79,6 +81,7 @@ public class RechargeActivity extends TitleActivity {
                         Toast.makeText(RechargeActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(UpdaterPayEnum.UPDATE_PAY_RESULT);
                         EventBus.getDefault().post(PayResultEnum.SUCCESS);
+                        setResult(RESULT_OK);
                         finish();
                         return;
                     } else {
@@ -131,14 +134,16 @@ public class RechargeActivity extends TitleActivity {
         price3_layout = (LinearLayout) findViewById(R.id.price3_layout);
         pay_method_group = (RadioGroup) findViewById(R.id.pay_method_group);
         hw_pay = (RadioButton) findViewById(R.id.hw_pay);
+        wx_pay = (RadioButton) findViewById(R.id.wx_pay);
+        ali_pay = (RadioButton) findViewById(R.id.ali_pay);
         line1 = findViewById(R.id.line1);
         line2 = findViewById(R.id.line2);
         line3 = findViewById(R.id.line3);
         goto_pay = (TextView) findViewById(R.id.goto_pay);
-        myGrad = (GradientDrawable)goto_pay.getBackground();
+        myGrad = (GradientDrawable) goto_pay.getBackground();
     }
 
-    public void listener() {
+    public void listener() throws Exception {
         price1_layout.setOnClickListener(this);
         price2_layout.setOnClickListener(this);
         price3_layout.setOnClickListener(this);
@@ -158,8 +163,8 @@ public class RechargeActivity extends TitleActivity {
                     setLine(0);//微信支付
                 else if (i == R.id.ali_pay)
                     setLine(1);//支付宝支付
-                else if (i == R.id.hw_pay)
-                    setLine(2);//华为支付
+//                else if (i == R.id.hw_pay)
+//                    setLine(2);//华为支付
             }
         });
     }
@@ -168,43 +173,54 @@ public class RechargeActivity extends TitleActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if (v == price1_layout) {
-            setPriceState(0);
-        } else if (v == price2_layout) {
-            setPriceState(1);
-        } else if (v == price3_layout) {
-            setPriceState(2);
-        } else if (v == goto_pay) {//去支付
-            if (type == 0) {//微信支付
+        try {
+            if (v == price1_layout) {
+                setPriceState(0);
+            } else if (v == price2_layout) {
+                setPriceState(1);
+            } else if (v == price3_layout) {
+                setPriceState(2);
+            } else if (v == goto_pay) {//去支付
+                if (type == 0) {//微信支付
 //                net.huaxi.12yuan
-                requestWxWebPay("com.huaxiapp." + price + "yuan");
-            } else if (type == 1) {//支付宝支付
-                requestAliPay("com.huaxiapp." + price + "yuan");
-            } else if (type == 2) {//华为支付,暂无
-
+                    requestWxWebPay("com.huaxiapp." + price + "yuan");
+                } else if (type == 1) {//支付宝支付
+                    requestAliPay("com.huaxiapp." + price + "yuan");
+                } else if (type == 2) {//华为支付,暂无
+//                requestHuaWeiPay("com.huaxiapp." + price + "yuan");
+                    requestHuaWeiPay("com.huaxiapp." + price + "yuan");
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     public void setLine(int pos) {
-        for (int i = 0; i < views.size(); i++) {
-            if (pos == i)
-                views.get(i).setVisibility(View.VISIBLE);
-            else
-                views.get(i).setVisibility(View.INVISIBLE);
+        if (HomeActivity.CHANNEL_IS_HUAWEI) {
+            type = 2;
+        } else {
+            for (int i = 0; i < views.size(); i++) {
+                if (pos == i)
+                    views.get(i).setVisibility(View.VISIBLE);
+                else
+                    views.get(i).setVisibility(View.INVISIBLE);
+            }
+            type = pos;
         }
-        type = pos;
+
         Log.d("setLine", "pos===" + pos + "type===" + type);
-        if(type==0){
+        if (type == 0) {
             myGrad.setColor(getResources().getColor(R.color.green_color));
-        }else if(type==1){
+        } else if (type == 1) {
             myGrad.setColor(getResources().getColor(R.color.blue_color));
-        }else if(type==2){
+        } else if (type == 2) {
             myGrad.setColor(getResources().getColor(R.color.c02_themes_color));
         }
     }
 
-    public void setPriceState(int pos) {
+    public void setPriceState(int pos) throws Exception {
         for (int i = 0; i < linearLayouts.size(); i++) {
             if (pos == i)
                 linearLayouts.get(i).setEnabled(false);
@@ -221,7 +237,7 @@ public class RechargeActivity extends TitleActivity {
         Log.d("setPriceState", "pos===" + pos + "price===" + price);
     }
 
-    public void setText() {
+    public void setText() throws Exception {
         old_price1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         old_price2.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         old_price3.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -229,18 +245,23 @@ public class RechargeActivity extends TitleActivity {
         linearLayouts.add(price1_layout);
         linearLayouts.add(price2_layout);
         linearLayouts.add(price3_layout);
-        views.add(line1);
-        views.add(line2);
-        if (HomeActivity.CHANNEL_IS_HUAWEI) {
+        if (HomeActivity.CHANNEL_IS_HUAWEI) {//华为渠道显示华为支付并默认选中
+            ali_pay.setVisibility(View.GONE);
+            wx_pay.setVisibility(View.GONE);
+            line2.setVisibility(View.GONE);
             hw_pay.setVisibility(View.VISIBLE);
-            views.add(line3);
+            line1.setVisibility(View.VISIBLE);
+            line1.setBackgroundColor(getResources().getColor(R.color.c02_themes_color));
+        } else {
+            views.add(line1);
+            views.add(line2);
         }
-
         setLine(0);
         setPriceState(1);
+
     }
 
-    public void setUserData() {
+    public void setUserData() throws Exception {
         if (AppUtil.isLogin(this)) {
             GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), this);
             hua_ban.setText(Util.getString(UserBean.getInstance().getUser_false_point() + ""));
@@ -261,7 +282,55 @@ public class RechargeActivity extends TitleActivity {
         super.onDestroy();
     }
 
-    public void requestAliPay(String productId) {//生成支付宝订单信息
+    public void requestHuaWeiPay(String productId) throws Exception {//生成华为支付订单信息
+        if (!AppUtil.isNetAvailable(this)) {
+            return;
+        }
+        Log.d("productId", "ali===" + productId);
+        showDialog();
+        BookApi.getInstance().
+                service
+                .pay_apphuawei(productId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<HuaWeiResponse>>() {
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Base<HuaWeiResponse> payResponseBase) {
+                        if (payResponseBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                            HuaWeiResponse data = payResponseBase.getData();
+                            Log.d("alipay-->", data.toString());
+                            setHuaWeiPayResult(data);
+                        }
+                    }
+                });
+    }
+
+    public void setHuaWeiPayResult(HuaWeiResponse result) {
+        if (result == null) {
+            return;
+        }
+        if (ListenerManager.getInstance().getHuaWeiPayCallBack() != null) {
+            ListenerManager.getInstance().getHuaWeiPayCallBack().info(result.getAmount(), result.getOrder_no(), result.getPrivate_key());
+        }
+    }
+
+
+    public void requestAliPay(String productId) throws Exception {//生成支付宝支付订单信息
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
@@ -321,7 +390,7 @@ public class RechargeActivity extends TitleActivity {
         payThread.start();
     }
 
-    public void requestWxPay(String productId) {//生成原生微信订单信息
+    public void requestWxPay(String productId) {//生成原生微信支付订单信息
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
@@ -366,7 +435,7 @@ public class RechargeActivity extends TitleActivity {
                 });
     }
 
-    public void requestWxWebPay(String productId) {//生成网页微信订单信息
+    public void requestWxWebPay(String productId) throws Exception {//生成网页微信订单信息
         if (!AppUtil.isNetAvailable(this)) {
             return;
         }
@@ -414,5 +483,57 @@ public class RechargeActivity extends TitleActivity {
 
     public void setWechatPayResult(PayResponse result) {
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getUserData();
+    }
+
+    public void getUserData() {
+        try {
+            Log.d("userInfo", "用户信息");
+            if (!AppUtil.isLogin())
+                return;
+            BookApi.getInstance().
+                    service
+                    .getUserBean(Constant.JSON_TYPE)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Base<UserBean>>() {
+                        @Override
+                        public void onComplete() {
+                        }
+
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Base<UserBean> userModelBase) {
+                            if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                                if (userModelBase.getData() != null) {
+                                    try {
+                                        UserBean user = userModelBase.getData();
+                                        user.commit();
+                                        setUserData();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

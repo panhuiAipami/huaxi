@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,11 +29,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huawei.hms.activity.BridgeActivity;
 import com.huawei.hms.api.ConnectionResult;
+import com.huawei.hms.api.HuaweiApiAvailability;
 import com.huawei.hms.api.HuaweiApiClient;
+import com.huawei.hms.support.api.entity.pay.PayStatusCodes;
 import com.huawei.hms.support.api.hwid.HuaweiId;
 import com.huawei.hms.support.api.hwid.HuaweiIdSignInOptions;
 import com.huawei.hms.support.api.pay.HuaweiPay;
+import com.huawei.hms.support.api.pay.PayResultInfo;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
@@ -41,6 +46,7 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.listener.DelBookShelf;
+import com.spriteapp.booklibrary.listener.HuaWeiPayCallBack;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.StoreBean;
@@ -48,6 +54,7 @@ import com.spriteapp.booklibrary.model.TabBar;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
+import com.spriteapp.booklibrary.thread.HuaWeiPayTask;
 import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
 import com.spriteapp.booklibrary.ui.dialog.SortPop;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
@@ -60,14 +67,19 @@ import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.FileHelper;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.HuaweiPayResult;
 import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -75,13 +87,15 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.spriteapp.booklibrary.thread.HuaWeiPayTask.REQUEST_HMS_RESOLVE_ERROR;
+import static com.spriteapp.booklibrary.thread.HuaWeiPayTask.REQ_CODE_PAY;
 import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYPE;
 
 /**
  * Created by kuangxiaoguo on 2017/7/7.
  */
 
-public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks {
+public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks, HuaWeiPayCallBack {
 
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
@@ -113,8 +127,27 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private TextView text_one, text_two, text_three, text_four, text_five;
     private LinearLayout icon_layout;
     private View icon_line;
+
+    //打包记得改成:huawei,测试用:alibaba,如果要打2.5.0之前的包(不支持华为登录与支付)用:aaaaa
+
+
+//    public static final String HUAWEI = "alibaba";
+
+
+    /**
+     * 华为版本需要改变CLIENT_ID与SIGN_SECRET
+     * <p>
+     * 华为渠道CLIENT_ID=73，SIGN_SECRET=4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc，CHANNEL_IS_HUAWEI=true;
+     * <p>
+     * 正常CLIENT_ID=40，SIGN_SECRET=fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6，CHANNEL_IS_HUAWEI=false;
+     */
+
     //打华为包需为true，否则为false（华为渠道需要用华为支付）
-    public static final boolean CHANNEL_IS_HUAWEI = false;
+    public static boolean CHANNEL_IS_HUAWEI = true;//华为渠道必须修改
+    public static final String SIGN_SECRET = "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc";//华为渠道必须修改
+    public static final int CLIENT_ID = 73;//华为渠道必须修改
+
+
     //华为移动服务Client
     private static HuaweiApiClient client;
     MessageRemindDialog dialog;
@@ -146,11 +179,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private ImageView paixu;
     private ImageView qiandao;
     private TextView selector_or_close;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.d("HomeActivity", "执行onNewIntent方法");
     }
+
     @Override
     public void initData() {
         mContext = this;
@@ -190,6 +225,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             }
             setTitle("精选");
 //        addFreeTextView();
+
+            //判断华为渠道的CHANNEL_IS_HUAWEI变量
+//            if (!TextUtils.isEmpty(Util.getAppMetaData(this)) && Util.getAppMetaData(this).equals(HUAWEI)) {
+//                CHANNEL_IS_HUAWEI = true;
+//            }
             UserBean.getInstance().restData();
             addSearchView();
             initFragment();
@@ -292,7 +332,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                                 }
                                 if (appUpDateModelBase.getData().getSplashscreen() != null) {//广告页
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE, appUpDateModelBase.getData().getSplashscreen());
-                                    Log.d("addFileImage","url==="+appUpDateModelBase.getData().getSplashscreen());
+                                    Log.d("addFileImage", "url===" + appUpDateModelBase.getData().getSplashscreen());
                                 }
                                 if (appUpDateModelBase.getData().getSplashscreen_url() != null) {//广告页链接
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.START_PAGE_URL, appUpDateModelBase.getData().getSplashscreen_url());
@@ -360,6 +400,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mMeLayout.setOnClickListener(this);
         mCommunityLayout.setOnClickListener(this);
         ListenerManager.getInstance().setDelBookShelf(this);
+        ListenerManager.getInstance().setHuaWeiPayCallBack(this);
     }
 
     private void setAdapter() {
@@ -519,7 +560,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         } else if (v == mMeLayout) {
             mHomeViewPager.setCurrentItem(ME_POSITION);
             setSelectView(ME_POSITION);
-            if(!AppUtil.isLogin(this)){
+            if (!AppUtil.isLogin(this)) {
 
             }
         }
@@ -569,6 +610,12 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             if (mLeftLayout.getVisibility() == View.GONE)
                 mLeftLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void info(double productPrice, String orderId, String key) {
+        HuaWeiPayTask p = new HuaWeiPayTask(HomeActivity.getConnect(), new HuaweiPayResult(this, REQ_CODE_PAY));
+        p.pay(key, "花溪小说", "充值", productPrice, orderId);
     }
 
 
@@ -826,9 +873,97 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mFragmentList.get(COMMUNITY_POSITION).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
         mFragmentList.get(ME_POSITION).onActivityResult(requestCode, resultCode, data);//将返回传给社区Fragment
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case 1:
-                    break;
+            //连接失败处理
+            if (requestCode == REQUEST_HMS_RESOLVE_ERROR) {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    int result = data.getIntExtra(BridgeActivity.EXTRA_RESULT, 0);
+
+                    if (result == ConnectionResult.SUCCESS) {
+                        Log.i(HuaWeiPayTask.TAG, "错误成功解决");
+                        if (!client.isConnecting() && !client.isConnected()) {
+                            client.connect();
+                        }
+                    } else if (result == ConnectionResult.CANCELED) {
+                        Log.i(HuaWeiPayTask.TAG, "解决错误过程被用户取消");
+                    } else if (result == ConnectionResult.INTERNAL_ERROR) {
+                        Log.i(HuaWeiPayTask.TAG, "发生内部错误，重试可以解决");
+                        //CP可以在此处重试连接华为移动服务等操作，导致失败的原因可能是网络原因等
+                    } else {
+                        Log.i(HuaWeiPayTask.TAG, "未知返回码");
+                    }
+                } else {
+                    Log.i(HuaWeiPayTask.TAG, "调用解决方案发生错误");
+                }
+            } else if (requestCode == REQ_CODE_PAY) {//连接成功
+                //当返回值是-1的时候表明用户支付调用调用成功
+                if (resultCode == Activity.RESULT_OK) {
+                    //获取支付完成信息
+                    PayResultInfo payResultInfo = HuaweiPay.HuaweiPayApi.getPayResultInfoFromIntent(data);
+                    if (payResultInfo != null) {
+                        Map<String, Object> paramsa = new HashMap<>();
+                        if (PayStatusCodes.PAY_STATE_SUCCESS == payResultInfo.getReturnCode()) {
+
+                            paramsa.put("returnCode", payResultInfo.getReturnCode());
+                            paramsa.put("userName", payResultInfo.getUserName());
+                            paramsa.put("requestId", payResultInfo.getRequestId());
+                            paramsa.put("amount", payResultInfo.getAmount());
+                            paramsa.put("time", payResultInfo.getTime());
+
+                            String orderId = payResultInfo.getOrderID();
+                            if (!TextUtils.isEmpty(orderId)) {
+                                paramsa.put("orderID", orderId);
+                            }
+                            String withholdID = payResultInfo.getWithholdID();
+                            if (!TextUtils.isEmpty(withholdID)) {
+                                paramsa.put("withholdID", withholdID);
+                            }
+                            String errMsg = payResultInfo.getErrMsg();
+                            if (!TextUtils.isEmpty(errMsg)) {
+                                paramsa.put("errMsg", errMsg);
+                            }
+
+                            String noSigna = HuaWeiPayTask.getNoSign(paramsa);
+                            boolean success = HuaWeiPayTask.doCheck(noSigna, payResultInfo.getSign());
+
+                            if (success) {
+                                Log.i(HuaWeiPayTask.TAG, "支付/订阅成功");
+                            } else {
+                                //支付成功，但是签名校验失败。CP需要到服务器上查询该次支付的情况，然后再进行处理。
+                                Log.i(HuaWeiPayTask.TAG, "支付/订阅成功，但是签名验证失败");
+                            }
+
+                            Log.i(HuaWeiPayTask.TAG, "商户名称: " + payResultInfo.getUserName());
+                            if (!TextUtils.isEmpty(orderId)) {
+                                Log.i(HuaWeiPayTask.TAG, "订单编号: " + orderId);
+                            }
+                            Log.i(HuaWeiPayTask.TAG, "支付金额: " + payResultInfo.getAmount());
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+                            String time = payResultInfo.getTime();
+                            if (time != null) {
+                                try {
+                                    Date curDate = new Date(Long.valueOf(time));
+                                    String str = formatter.format(curDate);
+                                    Log.i(HuaWeiPayTask.TAG, "交易时间: " + str);
+                                } catch (NumberFormatException e) {
+                                    Log.i(HuaWeiPayTask.TAG, "交易时间解析出错 time: " + time);
+                                }
+                            }
+                            Log.i(HuaWeiPayTask.TAG, "商户订单号: " + payResultInfo.getRequestId());
+                        } else if (PayStatusCodes.PAY_STATE_CANCEL == payResultInfo.getReturnCode()) {
+                            //支付失败，原因是用户取消了支付，可能是用户取消登录，或者取消支付
+                            Log.i(HuaWeiPayTask.TAG, "0支付失败：用户取消" + payResultInfo.getErrMsg());
+                        } else {
+                            //支付失败，其他一些原因
+                            Log.i(HuaWeiPayTask.TAG, "支付失败：" + payResultInfo.getErrMsg());
+                        }
+                    } else {
+                        //支付失败
+                    }
+                } else {
+                    //当resultCode 为0的时候表明用户未登录，则CP可以处理用户不登录事件
+                    Log.i(HuaWeiPayTask.TAG, "resultCode为0, 用户未登录 CP可以处理用户不登录事件");
+                }
             }
         }
     }
@@ -911,7 +1046,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
     @Override
     public void onConnected() {
-
+        Log.i(HuaWeiPayTask.TAG, "HuaweiApiClient 连接成功");
     }
 
     @Override
@@ -921,6 +1056,20 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(HuaWeiPayTask.TAG, "HuaweiApiClient连接失败，错误码：" + connectionResult.getErrorCode());
+        if (HuaweiApiAvailability.getInstance().isUserResolvableError(connectionResult.getErrorCode())) {
+            final int errorCode = connectionResult.getErrorCode();
+            new Handler(getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    // 此方法必须在主线程调用
+//                    Toast.makeText(AppContext.context(),"请先安装华为移动服务",Toast.LENGTH_LONG).show();
+                    HuaweiApiAvailability.getInstance().resolveError(HomeActivity.this, errorCode, REQUEST_HMS_RESOLVE_ERROR);
+                }
+            });
+        } else {
+            //其他错误码请参见开发指南或者API文档
 
+        }
     }
 }

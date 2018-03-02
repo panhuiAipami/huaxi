@@ -33,7 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             PushAgent.getInstance(this).onAppStart();
             deviceWidth = display.getWidth();
             deviceHeight = display.getHeight();
-            Log.d("deviceHeight", "deviceHeight==="+deviceHeight);
             setStatusBarColor();
             findViewId();
             initData();

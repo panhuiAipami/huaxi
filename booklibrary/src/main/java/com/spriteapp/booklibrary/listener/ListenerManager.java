@@ -6,9 +6,10 @@ package com.spriteapp.booklibrary.listener;
 
 public class ListenerManager {
     public static ListenerManager instance;
-    private ReadActivityFinish readActivityFinish;
-    private LoginSuccess loginSuccess;
-    private DelBookShelf delBookShelf;
+    private ReadActivityFinish readActivityFinish;//阅读完成
+    private LoginSuccess loginSuccess;//登录成功
+    private DelBookShelf delBookShelf;//删除书架接口
+    private HuaWeiPayCallBack huaWeiPayCallBack;//华为支付回调
 
     public static ListenerManager getInstance() {
         if (instance == null) {
@@ -39,5 +40,13 @@ public class ListenerManager {
 
     public void setDelBookShelf(DelBookShelf delBookShelf) {
         this.delBookShelf = delBookShelf;
+    }
+
+    public HuaWeiPayCallBack getHuaWeiPayCallBack() {
+        return huaWeiPayCallBack;
+    }
+
+    public void setHuaWeiPayCallBack(HuaWeiPayCallBack huaWeiPayCallBack) {
+        this.huaWeiPayCallBack = huaWeiPayCallBack;
     }
 }

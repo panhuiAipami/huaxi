@@ -16,6 +16,7 @@ import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.BookStoreResponse;
 import com.spriteapp.booklibrary.model.response.CommentResponse;
+import com.spriteapp.booklibrary.model.response.HuaWeiResponse;
 import com.spriteapp.booklibrary.model.response.LoginResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
@@ -162,7 +163,7 @@ public interface BookApiService {
     @POST("pay_appalipay")
     Observable<Base<PayResponse>> getAliPayRequest(@Field("product_id") String productId);
 
-    //威富通
+    //原生微信支付
     @FormUrlEncoded
     @POST("pay_appwechat")
     Observable<Base<WeChatBean>> getWeChatRequest(@Field("product_id") String productId);
@@ -172,6 +173,11 @@ public interface BookApiService {
     @FormUrlEncoded
     @POST("pay_wapswiftpassg")
     Observable<Base<WeChatBean>> pay_wapswiftpassg(@Field("product_id") String productId);
+
+    //原生微信支付
+    @FormUrlEncoded
+    @POST("pay_apphuawei")
+    Observable<Base<HuaWeiResponse>> pay_apphuawei(@Field("product_id") String productId);
 
     @FormUrlEncoded
     @POST("book_comment")

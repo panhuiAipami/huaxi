@@ -31,8 +31,13 @@ import static com.spriteapp.booklibrary.util.ToastUtil.showToast;
 public class MainActivity extends AppCompatActivity {
     public static final String SEXTIME = "sextime";
     private static final String TAG = "MainActivity";
-    public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
-    public static final int CLIENT_ID = 40;
+
+
+
+//    public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
+//    public static final int CLIENT_ID = 40;
+
+
     private static final int CHANNEL_ID = 2;
     public static final String SHAREDATA = "share_data";
     private ShareDialog shareDialog;
@@ -85,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .setChannelId(CHANNEL_ID)
-                .setClientId(CLIENT_ID)
+                .setClientId(HomeActivity.CLIENT_ID)
                 .setSex(PreferenceHelper.getInt(SEX, 0))//性别
-                .setSignSecret(SIGN_SECRET).build();
+                .setSignSecret(HomeActivity.SIGN_SECRET).build();
         HuaXiSDK.getInstance().init(config);
         Intent intent1 = new Intent(this, HomeActivity.class);
         intent1.putExtra(ADVERTISEMENT, toJump);
