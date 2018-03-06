@@ -107,4 +107,6 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+#保留crash日志的行号
+-keepattributes SourceFile,LineNumberTable
 

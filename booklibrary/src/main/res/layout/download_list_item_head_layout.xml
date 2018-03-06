@@ -18,7 +18,7 @@
             android:id="@+id/image_button_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/image_button_down" />
+            android:src="@mipmap/image_button_right" />
 
         <TextView
             android:id="@+id/group_title"
@@ -42,8 +42,9 @@
 
         <CheckBox
             android:id="@+id/check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:padding="10dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/del_bg"
             android:button="@null" />

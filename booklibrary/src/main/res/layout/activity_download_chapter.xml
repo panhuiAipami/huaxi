@@ -47,7 +47,7 @@
                 android:id="@+id/chapter_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0花贝\\花瓣"
+                android:text="0花贝/花瓣"
                 android:textColor="@color/color_orange" />
 
             <View
@@ -65,7 +65,7 @@
                 android:id="@+id/my_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0花贝\\花瓣"
+                android:text="0花贝/花瓣"
                 android:textColor="@color/color_orange" />
 
         </LinearLayout>

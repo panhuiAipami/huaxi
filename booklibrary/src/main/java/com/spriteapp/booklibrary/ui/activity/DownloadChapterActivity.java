@@ -16,6 +16,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.GroupChapter;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.ui.adapter.second.DownLoadFirstAdapter;
+import com.spriteapp.booklibrary.ui.adapter.second.DownLoadFirstAdapter.OnSelectList;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
 import com.spriteapp.booklibrary.util.CXAESUtil;
@@ -29,17 +30,21 @@ import java.util.List;
  * 下载章节内容
  * https://s.hxdrive.net/book_content?&book_id=692&chapter_id=252674&auto_sub=0
  */
-public class DownloadChapterActivity extends TitleActivity implements SubscriberContentView {
+public class DownloadChapterActivity extends TitleActivity implements SubscriberContentView, OnSelectList {
     private final int ITEM_NUM = 20;
     private SubscriberContentPresenter contentPresenter;
     private ContentDb contentDb = new ContentDb(this);
     private List<GroupChapter> groupChapters = new ArrayList<>();
+    private List<BookChapterResponse> selectChapter = new ArrayList<>();
     private List<BookChapterResponse> mChapterList;
     private RecyclerView downloadRecycleView;
     private DownLoadFirstAdapter adapter;
 
     private TextView downLoad_chapter;
-
+    private TextView rightText;
+    private TextView chapter_price;
+    private TextView my_balance;
+    private boolean all_select;
     private int book_id = 0;
 
     @Override
@@ -65,24 +70,46 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
-        TextView rightText = new TextView(this);
+        rightText = new TextView(this);
         rightText.setText("全选");
         mRightLayout.addView(rightText);
 
-        adapter = new DownLoadFirstAdapter(this);
+        adapter = new DownLoadFirstAdapter(this, this);
         downloadRecycleView = (RecyclerView) findViewById(R.id.downloadRecycleView);
         downloadRecycleView.setAdapter(adapter);
         downLoad_chapter = (TextView) findViewById(R.id.downLoad_chapter);
+        chapter_price = (TextView) findViewById(R.id.chapter_price);
+        my_balance = (TextView) findViewById(R.id.my_balance);
 
         mRightLayout.setOnClickListener(this);
         downLoad_chapter.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         int i = v.getId();
-        if (i == R.id.book_reader_right_layout) {
+        if (i == R.id.book_reader_right_layout) {//全选、反选
+            int total_price = 0;
+            all_select = !all_select;
+            rightText.setText(!all_select ? "全选" : "反选");
+            for (GroupChapter g : groupChapters) {
+                g.setIs_check(all_select);
+                for (BookChapterResponse c : g.getmChapterList()) {
+                    c.setIs_check(all_select);
+                    if (all_select) {
+                        selectChapter.add(c);
+                        total_price += c.getChapter_price();
+                    } else {
+                        total_price = 0;
+                        selectChapter.remove(c);
+                    }
+                }
+            }
+            chapter_price.setText(total_price + "花贝/花瓣");
+            adapter.notifyNewData(groupChapters);
+        } else if (i == R.id.downLoad_chapter) {//下载
 
         }
     }
@@ -189,9 +216,9 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
 
             groupChapter = new GroupChapter();
             groupChapter.setIs_free(1);
-            groupChapter.setStart_chapter(s + first_item_num+1);
+            groupChapter.setStart_chapter(s + first_item_num + 1);
             groupChapter.setEnd_chapter(e + first_item_num);
-            groupChapter.setPrice(mChapterList.get(s + first_item_num).getChapter_price() * ITEM_NUM);
+            groupChapter.setPrice(0);
             groupChapter.setmChapterList(mChapterList.subList(s + first_item_num, e + first_item_num));
             groupChapters.add(groupChapter);
 
@@ -209,5 +236,13 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     @Override
     public void setBookDetail(BookDetailResponse data) {
 
+    }
+
+    @Override
+    public void onSelect(List<BookChapterResponse> mChapterList, int price) {
+        selectChapter.clear();
+        selectChapter.addAll(mChapterList);
+
+        chapter_price.setText(price + "花贝/花瓣");
     }
 }
