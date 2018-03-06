@@ -12,7 +12,7 @@ import com.spriteapp.booklibrary.constant.DbConstants;
 
 public class BookDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DB_NAME = "HuaXiDb";
     private static BookDatabaseHelper mHelper;
     public static final Object dbLock = new Object();
@@ -101,6 +101,7 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         builder.append(DbConstants.CHAPTER_PRICE).append(" integer,");
         builder.append(DbConstants.CHAPTER_IS_VIP).append(" integer,");
         builder.append(DbConstants.CHAPTER_ORDER).append(" integer,");
+        builder.append(DbConstants.CHAPTER_IS_DOWN_LOAD).append(" integer,");
         builder.append(DbConstants.CHAPTER_READ_STATE).append(" integer");
 //        builder.append(DbConstants.BOOK_ADD_SHELF).append(" integer");
         builder.append(")");
@@ -112,8 +113,9 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion == 1 && newVersion == 2) {
             String sql = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.LAST_UPDATE_CHAPTER_TITLE+"] nvarchar(300)";
             db.execSQL(sql);
+        }else if(oldVersion == 2 && newVersion == 3){
+            String sql = "alter table ["+DbConstants.CHAPTER_TABLE_NAME+"] add ["+DbConstants.CHAPTER_IS_DOWN_LOAD+"] nvarchar(300)";
+            db.execSQL(sql);
         }
-
     }
-
 }

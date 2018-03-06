@@ -3,12 +3,12 @@ package com.spriteapp.booklibrary.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
+import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.activity.RechargeActivity;
@@ -29,6 +29,9 @@ public class ActivityUtil {
     public static final String REPLYTITLE = "comment_reply_title";
     public static final String COMMENT_ID = "comment_id";
     public static final String USER_ID = "user_id";
+
+    public static final String BOOK_ID = "book_id";
+
 
     public static void toWebViewActivity(Context context, String url) {
 //        Log.d("toWebViewActivity", "url==="+url);
@@ -103,6 +106,13 @@ public class ActivityUtil {
     public static void toCommonActivity(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         context.startActivity(intent);
+    }
+
+    public static void toDownloadChapterActivity(Activity context, int book_id) {
+        Intent intent = new Intent(context, DownloadChapterActivity.class);
+        intent.putExtra(BOOK_ID, book_id);
+        context.startActivity(intent);
+
     }
 
     public static void toSquareDetailsActivity(Activity context, int squareid, int IsLookComment) {

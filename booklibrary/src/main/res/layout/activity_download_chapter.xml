@@ -50,23 +50,15 @@
                 android:text="0花贝/花瓣"
                 android:textColor="@color/color_orange" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"></View>
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="余额：" />
 
             <TextView
                 android:id="@+id/my_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0花贝/花瓣"
-                android:textColor="@color/color_orange" />
+                android:textSize="12sp"
+                android:textColor="@color/three_font_color"
+                android:text="（余额：0花贝/花瓣）"
+                />
 
         </LinearLayout>
 
@@ -74,7 +66,8 @@
             android:id="@+id/downLoad_chapter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_red_bg_select"
+            android:enabled="false"
+            android:background="@drawable/download_button_red_bg_select"
             android:gravity="center"
             android:padding="8dp"
             android:text="下载"
@@ -83,10 +76,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/three_font_color"
             android:text="花贝为花溪小说网消费虚拟币，花瓣为花溪小说网赠送用户之体验币，仅限于阅读消费当用作阅读时，1花瓣=1花贝，1元=100花贝" />
 
         <TextView

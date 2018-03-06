@@ -7,6 +7,7 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BasePresenter;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.ChapterEnum;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
@@ -60,7 +61,15 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
 
     public void getContent(int bookId, int chapterId, int isAutoSub, boolean isShowDialog) {
         if (!NetworkUtil.isAvailable(mView.getMyContext())) {
-            ToastUtil.showSingleToast(R.string.please_check_network_info);
+            ContentDb contentDb = new ContentDb(mView.getMyContext());
+            SubscriberContent subscriberContent = contentDb.queryContent(bookId, chapterId);
+            Base<SubscriberContent> result = new Base<>();
+            if (subscriberContent != null) {
+                result.setData(subscriberContent);
+                mView.setData(result);
+            } else {
+                ToastUtil.showSingleToast(R.string.please_check_network_info);
+            }
             return;
         }
         if (isShowDialog && mView != null) {
@@ -200,7 +209,7 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
                     @Override
                     public void onNext(Base<BookDetailResponse> bookDetailResponseBase) {
                         if (bookDetailResponseBase.getCode() ==
-                                ApiCodeEnum.SUCCESS.getValue() && mView != null&&bookDetailResponseBase.getData()!=null) {
+                                ApiCodeEnum.SUCCESS.getValue() && mView != null && bookDetailResponseBase.getData() != null) {
                             mView.setBookDetail(bookDetailResponseBase.getData());
 
                         }

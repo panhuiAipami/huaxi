@@ -653,7 +653,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     setSelectView(BOOKSHELF_POSITION);
                     gone(mTitleLayout);
                     setViewpagerTopMargin(0);
-                    ActivityUtil.toCommonActivity(HomeActivity.this,DownloadChapterActivity.class);
                     break;
                 case DISCOVER_POSITION:
                     mRightLayout.removeAllViews();

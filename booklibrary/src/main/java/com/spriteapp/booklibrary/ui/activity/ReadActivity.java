@@ -168,6 +168,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             EventBus.getDefault().register(this);
 //            IsRegister = !IsRegister;
         }
+        //标题栏
         mRightTitleLayout = new ReadRightTitleLayout(this);
         mRightLayout.addView(mRightTitleLayout);
         mRightTitleLayout.setTitleListener(mTitleListener);
@@ -456,6 +457,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mDrawerLayout = (DrawerLayout) findViewById(R.id.book_reader_drawer_layout);
         mReadProgressLayout = (ReadProgressLayout) findViewById(R.id.book_reader_read_progress_layout);
         mTextSizeLayout = (TextSizeLayout) findViewById(R.id.book_reader_text_size_layout);
+
         book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
         book_reader_title_textView.setMaxEms(8);
         book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_home_bottom_text_choose_color));
@@ -559,6 +561,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 //刷新操作
+
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -752,6 +755,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
+    /**
+     * 标题栏的点击事件
+     */
     private ReadRightTitleLayout.ReadTitleListener mTitleListener =
             new ReadRightTitleLayout.ReadTitleListener() {
                 @Override
@@ -761,8 +767,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 }
 
                 @Override
-                public void clickAddShelf() {
-                    addToShelf(false);
+                public void clickAddShelf() {//下载
+//                    addToShelf(false);
+                    ActivityUtil.toDownloadChapterActivity(ReadActivity.this,mBookId);
+
                 }
 
                 @Override

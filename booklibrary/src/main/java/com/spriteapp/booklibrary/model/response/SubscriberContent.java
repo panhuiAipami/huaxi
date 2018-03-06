@@ -138,4 +138,25 @@ public class SubscriberContent implements Serializable {
     public void setChapter_pay_type(int chapter_pay_type) {
         this.chapter_pay_type = chapter_pay_type;
     }
+
+    @Override
+    public String toString() {
+        return "SubscriberContent{" +
+                "SQLiteId=" + SQLiteId +
+                ", auto_sub=" + auto_sub +
+                ", book_id=" + book_id +
+                ", chapter_title='" + chapter_title + '\'' +
+                ", chapter_intro='" + chapter_intro + '\'' +
+                ", chapter_id=" + chapter_id +
+                ", chapter_price=" + chapter_price +
+                ", chapter_is_vip=" + chapter_is_vip +
+                ", chapter_content_byte=" + chapter_content_byte +
+                ", chapter_content_key='" + chapter_content_key + '\'' +
+                ", chapter_content='" + chapter_content + '\'' +
+                ", used_real_point=" + used_real_point +
+                ", used_false_point=" + used_false_point +
+                ", chapter_need_buy=" + chapter_need_buy +
+                ", chapter_pay_type=" + chapter_pay_type +
+                '}';
+    }
 }

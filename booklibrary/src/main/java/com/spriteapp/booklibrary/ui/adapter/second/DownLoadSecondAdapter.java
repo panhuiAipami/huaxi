@@ -26,6 +26,7 @@ public abstract class DownLoadSecondAdapter<GVH, SVH extends RecyclerView.ViewHo
     }
 
 
+
     /**
      * Set new data for adapter and notify changing.
      *

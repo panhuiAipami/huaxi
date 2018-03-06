@@ -57,6 +57,7 @@ public class ChapterDb {
                 values.clear();
                 values.put(DbConstants.BOOK_ID, bookId);
                 values.put(DbConstants.CHAPTER_ID, chapter_id);
+                values.put(DbConstants.CHAPTER_IS_DOWN_LOAD, 0);
                 values.put(DbConstants.CHAPTER_TITLE, model.getChapter_title());
                 values.put(DbConstants.CHAPTER_ORDER, model.getChapter_order());
                 values.put(DbConstants.CHAPTER_CONTENT_BYTE, model.getChapter_content_byte());
@@ -102,12 +103,27 @@ public class ChapterDb {
 //                    model.setCacheTime(cursor.getInt(cursor.getColumnIndex(DbConstant.CACHE_TIME)));
                     model.setChapter_is_vip(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_IS_VIP)));
                     model.setChapterReadState(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_READ_STATE)));
+                    if (!cursor.isNull(cursor.getColumnIndex(DbConstants.CHAPTER_IS_DOWN_LOAD)))
+                        model.setIs_download(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_IS_DOWN_LOAD)));
                     modelList.add(model);
                 }
             }
             cursor.close();
             closeDB();
             return modelList;
+        }
+    }
+
+
+    public void updateDownLoadState(int bookId, int chapterId) {
+        synchronized (BookDatabaseHelper.dbLock) {
+            openDB();
+            ContentValues values = new ContentValues();
+            values.put(DbConstants.CHAPTER_IS_DOWN_LOAD, 1);
+
+            mDb.update(DbConstants.CHAPTER_TABLE_NAME, values, "book_id = ? and chapter_id = ?",
+                    new String[]{String.valueOf(bookId), String.valueOf(chapterId)});
+            closeDB();
         }
     }
 

@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.enumeration.ChapterEnum;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.GroupChapter;
@@ -19,6 +21,8 @@ import com.spriteapp.booklibrary.ui.adapter.second.DownLoadFirstAdapter;
 import com.spriteapp.booklibrary.ui.adapter.second.DownLoadFirstAdapter.OnSelectList;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
+import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CXAESUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -33,6 +37,7 @@ import java.util.List;
 public class DownloadChapterActivity extends TitleActivity implements SubscriberContentView, OnSelectList {
     private final int ITEM_NUM = 20;
     private SubscriberContentPresenter contentPresenter;
+    private ChapterDb mChapterDb = new ChapterDb(this);
     private ContentDb contentDb = new ContentDb(this);
     private List<GroupChapter> groupChapters = new ArrayList<>();
     private List<BookChapterResponse> selectChapter = new ArrayList<>();
@@ -43,22 +48,41 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     private TextView downLoad_chapter;
     private TextView rightText;
     private TextView chapter_price;
+    private TextView check_chapter;
     private TextView my_balance;
     private boolean all_select;
     private int book_id = 0;
+    private int balance;
+    private int total_price;
+    int total_size = 0;
 
     @Override
     public void initData() throws Exception {
+        book_id = getIntent().getIntExtra(ActivityUtil.BOOK_ID, 0);
         contentPresenter = new SubscriberContentPresenter();
         contentPresenter.attachView(this);
+        if (!AppUtil.isLogin(this)) {
+            return;
+        } else {
+            balance = UserBean.getInstance().getUser_real_point() + UserBean.getInstance().getUser_false_point();
+            my_balance.setText("（余额：" + balance + "花贝/花瓣)");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AppUtil.isLogin()) {
+            balance = UserBean.getInstance().getUser_real_point() + UserBean.getInstance().getUser_false_point();
+            my_balance.setText("（余额：" + balance + "花贝/花瓣)");
+        }
     }
 
     @Override
     public void configViews() throws Exception {
         super.configViews();
-        contentPresenter.getContent(692, 252674, 0);
-        contentPresenter.getChapter(692);
-        setTitle("下载章节");
+        contentPresenter.getChapter(book_id);
+        setTitle("批量下载");
     }
 
     @Override
@@ -80,6 +104,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         downLoad_chapter = (TextView) findViewById(R.id.downLoad_chapter);
         chapter_price = (TextView) findViewById(R.id.chapter_price);
         my_balance = (TextView) findViewById(R.id.my_balance);
+        check_chapter = (TextView) findViewById(R.id.check_chapter);
 
         mRightLayout.setOnClickListener(this);
         downLoad_chapter.setOnClickListener(this);
@@ -91,26 +116,48 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         super.onClick(v);
         int i = v.getId();
         if (i == R.id.book_reader_right_layout) {//全选、反选
+            selectChapter.clear();
             int total_price = 0;
+            int group_price = 0;
             all_select = !all_select;
-            rightText.setText(!all_select ? "全选" : "反选");
+            rightText.setText(!all_select ? "全选" : "取消全选");
             for (GroupChapter g : groupChapters) {
+                group_price = 0;
                 g.setIs_check(all_select);
                 for (BookChapterResponse c : g.getmChapterList()) {
                     c.setIs_check(all_select);
                     if (all_select) {
                         selectChapter.add(c);
                         total_price += c.getChapter_price();
+                        group_price += c.getChapter_price();
                     } else {
                         total_price = 0;
+                        group_price = 0;
                         selectChapter.remove(c);
                     }
                 }
+                g.setPrice(group_price);
             }
-            chapter_price.setText(total_price + "花贝/花瓣");
+            refreshUi(selectChapter.size(), selectChapter.size(), total_price);
+            this.total_price = total_price;
             adapter.notifyNewData(groupChapters);
+            adapter.allSelectListAndPrice(selectChapter, total_price);
         } else if (i == R.id.downLoad_chapter) {//下载
-
+            if (!AppUtil.isLogin(this)) {
+                return;
+            }
+            if (balance < total_price) {//余额不足，去充值
+                ToastUtil.showSingleToast("余额不足，请先充值");
+                ActivityUtil.toRechargeActivity(this);
+                return;
+            }
+            if (selectChapter != null && selectChapter.size() > 0) {
+                showDialog();
+                downLoad_chapter.setEnabled(false);
+                for (BookChapterResponse bean : selectChapter) {
+                    contentPresenter.getContent(book_id, bean.getChapter_id(), bean.getChapter_is_sub());
+                }
+            }
         }
     }
 
@@ -136,13 +183,24 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             String key = data.getChapter_content_key();
             String content = data.getChapter_content();
 
-            contentDb.update(data.getBook_id(), data.getChapter_id(), data);
+            mChapterDb.updateDownLoadState(book_id, data.getChapter_id());
+
+            if (contentDb.queryContent(book_id, data.getChapter_id()) != null) {
+                contentDb.update(book_id, data.getChapter_id(), data);
+            } else {
+                contentDb.insert(data);
+            }
+            contentDb.update(book_id, data.getChapter_id(), data);
 
             String filecontent = CXAESUtil.encrypt("1", content);
-            Log.i("download" + data.getChapter_title(), "----content-1-->" + content);
 
 
-            SubscriberContent c = contentDb.queryContent(data.getBook_id(), data.getChapter_id());
+            SubscriberContent c = contentDb.queryContent(book_id, data.getChapter_id());
+            try {
+                Log.i("sql" + data.getChapter_content(), "----查询-->" + c.getChapter_content());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -174,9 +232,20 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             ToastUtil.showSingleToast("章节列表为空" + book_id);
             return;
         }
+        total_size = catalogList.size();
         mChapterList = new ArrayList<>();
         mChapterList.addAll(catalogList);
         GroupChapter groupChapter;
+
+
+        List<BookChapterResponse> chapterResponses = mChapterDb.queryCatalog(book_id);
+        for (BookChapterResponse c : chapterResponses) {
+            for (BookChapterResponse ch : mChapterList) {
+                if (ch.getChapter_id() == c.getChapter_id() && c.getIs_download()) {
+                    ch.setIs_download(1);
+                }
+            }
+        }
 
         //分第一组--免费章节
         int first_item_num = 0;
@@ -185,7 +254,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             if (ChapterEnum.CHAPTER_IS_VIP.getCode()
                     == mChapterList.get(i).getChapter_is_vip()) {
                 first_item_num = i;
-                Log.e("setChapter" + size, "------开始收费----" + i);
+                Log.e("setChapter" + size, mChapterList.get(i).getChapter_price() + "------开始收费----" + i);
                 break;
             }
         }
@@ -240,9 +309,25 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
 
     @Override
     public void onSelect(List<BookChapterResponse> mChapterList, int price) {
+        total_price = price;
         selectChapter.clear();
         selectChapter.addAll(mChapterList);
+        refreshUi(selectChapter.size(), selectChapter.size(), price);
+    }
 
+    public void refreshUi(int select, int is_buy, int price) {
+        check_chapter.setText("已选" + select + "章，需要付费章节" + is_buy + "章");
         chapter_price.setText(price + "花贝/花瓣");
+        all_select = (select == total_size);
+        rightText.setText(!all_select ? "全选" : "取消全选");
+
+        if (selectChapter != null && selectChapter.size() > 0) {
+            downLoad_chapter.setEnabled(true);
+            downLoad_chapter.setText(price > 0 ? "购买并下载" : "下载");
+        } else {
+            downLoad_chapter.setText("请选择章节");
+            downLoad_chapter.setEnabled(false);
+        }
+
     }
 }

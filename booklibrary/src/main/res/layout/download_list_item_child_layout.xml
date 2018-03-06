@@ -23,25 +23,43 @@
             android:textColor="@color/two_font_color"
             android:textSize="12sp" />
 
+        <LinearLayout
+            android:id="@+id/linear_check_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/is_free"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="10花贝/花瓣"
+                android:textColor="@color/color_orange"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:button="@null"
+                android:drawableRight="@drawable/check_box_download_item_bg"
+                android:padding="5dp" />
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/is_free"
+            android:id="@+id/is_download"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="10花贝/花瓣"
-            android:textColor="@color/color_orange"
+            android:text="已下载"
             android:textSize="12sp" />
-
-        <CheckBox
-            android:id="@+id/check_box"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/del_bg"
-            android:button="@null"/>
-
     </LinearLayout>
 
     <View

@@ -62,5 +62,5 @@ public class DbConstants {
     public static final String CHAPTER_PRICE = "chapter_price";
     public static final String CHAPTER_IS_VIP = "chapter_is_vip";
     public static final String CHAPTER_READ_STATE = "chapter_read_state";
-
+    public static final String CHAPTER_IS_DOWN_LOAD = "chapter_is_down_load";
 }

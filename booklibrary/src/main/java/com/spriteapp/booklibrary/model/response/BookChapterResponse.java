@@ -19,6 +19,15 @@ public class BookChapterResponse implements Serializable {
     private int chapterReadState;
 
     private boolean is_check = false;
+    private int is_download = 0;
+
+    public boolean getIs_download() {
+        return is_download == 1;
+    }
+
+    public void setIs_download(int is_download) {
+        this.is_download = is_download;
+    }
 
     public boolean isIs_check() {
         return is_check;

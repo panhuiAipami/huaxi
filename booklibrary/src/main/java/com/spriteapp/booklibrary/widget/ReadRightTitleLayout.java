@@ -70,7 +70,7 @@ public class ReadRightTitleLayout extends LinearLayout {
                 }
                 if (view == mBuyImageView) {
                     mTitleListener.clickBuy();
-                } else if (view == mAddShelfImageView) {
+                } else if (view == mAddShelfImageView) {//下载
                     mTitleListener.clickAddShelf();
                 } else if (view == mRewardImageView) {
                     mTitleListener.clickReward();

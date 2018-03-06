@@ -14,8 +14,17 @@ public class GroupChapter {
     private boolean is_check;
     private boolean is_open;
     private int price;
+    private int is_download = 0;
 
     private List<BookChapterResponse> mChapterList;
+
+    public boolean getIs_download() {
+        return is_download == 1;
+    }
+
+    public void setIs_download(int is_download) {
+        this.is_download = is_download;
+    }
 
     public boolean getIs_free() {
         return is_free == 0;
