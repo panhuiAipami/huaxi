@@ -44,8 +44,8 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
 
     public void allSelectListAndPrice(List<BookChapterResponse> mChapterList, int price) {
         total_price = price;
+        this.mChapterList.clear();
         if (mChapterList != null && mChapterList.size() > 0) {
-            this.mChapterList.clear();
             this.mChapterList.addAll(mChapterList);
         }
     }
@@ -73,14 +73,25 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
         h.group_title.setText("第" + g.getStart_chapter() + "章-第" + g.getEnd_chapter() + "章");
         h.check_box.setSelected(g.isIs_check());
 
+        for (BookChapterResponse bc:g.getmChapterList()){
+            if(!bc.getIs_download()){
+                g.setIs_download(0);
+                break;
+            }else{
+                g.setIs_download(1);
+            }
+        }
 
+        int free_color = R.color.color_orange;
         if (g.getIs_free()) {
             h.is_free.setText("免费");
+            free_color = R.color.green_color;
         } else if (g.isIs_check()) {
             h.is_free.setText(g.getPrice() > 0 ? g.getPrice() + "花贝/花瓣" : "");
         } else {
             h.is_free.setText("");
         }
+        h.is_free.setTextColor(ContextCompat.getColor(context, free_color));
 
         if (g.getIs_download()) {
             h.is_download.setVisibility(View.VISIBLE);

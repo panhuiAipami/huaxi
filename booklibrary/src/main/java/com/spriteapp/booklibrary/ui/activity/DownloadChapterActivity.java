@@ -27,6 +27,7 @@ import com.spriteapp.booklibrary.util.CXAESUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +154,8 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             }
             if (selectChapter != null && selectChapter.size() > 0) {
                 showDialog();
+                loading = 0;
+                downLoad_chapter.setText("下载中0%");
                 downLoad_chapter.setEnabled(false);
                 for (BookChapterResponse bean : selectChapter) {
                     contentPresenter.getContent(book_id, bean.getChapter_id(), bean.getChapter_is_sub());
@@ -167,13 +170,29 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     }
 
     /**
-     * 阅读内容
+     * 下载阅读内容存储
      *
      * @param result
      */
+    int loading = 0;
+
     @Override
     public void setData(Base<SubscriberContent> result) {
         try {
+            loading++;
+            DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+            String pregress = df.format((float) loading / selectChapter.size());
+            downLoad_chapter.setText("下载中" + pregress + "%");
+            if (loading == selectChapter.size()) {
+                ToastUtil.showSingleToast("下载完成！");
+                for (BookChapterResponse bean : selectChapter) {
+                    bean.setIs_download(1);
+                }
+                adapter.notifyDataSetChanged();
+                selectChapter.clear();
+                refreshUi(0,0,0);
+            }
+
             String message = result.getMessage();
             SubscriberContent data = result.getData();
             if (data == null) {
@@ -182,18 +201,14 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             }
             String key = data.getChapter_content_key();
             String content = data.getChapter_content();
-
             mChapterDb.updateDownLoadState(book_id, data.getChapter_id());
-
             if (contentDb.queryContent(book_id, data.getChapter_id()) != null) {
                 contentDb.update(book_id, data.getChapter_id(), data);
             } else {
                 contentDb.insert(data);
             }
             contentDb.update(book_id, data.getChapter_id(), data);
-
             String filecontent = CXAESUtil.encrypt("1", content);
-
 
             SubscriberContent c = contentDb.queryContent(book_id, data.getChapter_id());
             try {
@@ -318,8 +333,10 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     public void refreshUi(int select, int is_buy, int price) {
         check_chapter.setText("已选" + select + "章，需要付费章节" + is_buy + "章");
         chapter_price.setText(price + "花贝/花瓣");
-        all_select = (select == total_size);
-        rightText.setText(!all_select ? "全选" : "取消全选");
+        if(select>0) {
+            all_select = (select == total_size);
+            rightText.setText(!all_select ? "全选" : "取消全选");
+        }
 
         if (selectChapter != null && selectChapter.size() > 0) {
             downLoad_chapter.setEnabled(true);
