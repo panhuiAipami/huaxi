@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.spriteapp.booklibrary.callback.RoundImageLoader;
 import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.adapter.second.FreeAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.Util;
@@ -35,16 +38,19 @@ import java.util.List;
 
 public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int BANNERPOS = 0;//轮播
-    private static final int TITLEPOS = 1;//标题
+    private static final int FREELIMITPOS = 3;//标题
+    private static final int TITLEPOS = 1;//限时免费
     private static final int DETAILSPOS = 2;//内容
     private Activity context;
     private List<NewBookStoreResponse> list;
     private int num = 0;
     private boolean HAVERECOMMAND = false;
+    private boolean FREELIMITBOOKLIST = false;
     private boolean HAVECLASSICAL = false;
     private boolean HAVEFREENEW = false;
     private boolean HAVERECENT = false;
     private int recommandSize = 0;
+    private int freelimitSize = 0;
     private int classicalSize = 0;
     private int freenewSize = 0;
     private int recentSize = 0;
@@ -67,6 +73,9 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (viewType == TITLEPOS) {
             convertView = LayoutInflater.from(context).inflate(R.layout.store_title_layout, parent, false);
             return new TitleViewHolder(convertView);
+        } else if (viewType == FREELIMITPOS) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.store_free_layout, parent, false);
+            return new FreeViewHolder(convertView);
         } else if (viewType == DETAILSPOS) {
             convertView = LayoutInflater.from(context).inflate(R.layout.store_details_layout, parent, false);
             return new DetailsViewHolder(convertView);
@@ -117,18 +126,26 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 List<BookDetailResponse> recommandBookList = newBookStoreResponse.getRecommandBookList();
                 setData(detailsViewHolder, recommandBookList, position, position - 2);
 
-            } else if (HAVECLASSICAL && position - (recommandSize + (HAVERECOMMAND ? 3 : 2)) < classicalSize) {
+            } else if (HAVECLASSICAL && position - (recommandSize + freelimitSize + (HAVERECOMMAND ? 3 : 2)) < classicalSize) {
                 List<BookDetailResponse> classicalBookList = newBookStoreResponse.getClassicalBookList();
-                setData(detailsViewHolder, classicalBookList, position, position - (recommandSize + (HAVERECOMMAND ? 3 : 2)));
+                setData(detailsViewHolder, classicalBookList, position, position - (recommandSize + freelimitSize + (HAVERECOMMAND ? 3 : 2)));
 
-            } else if (HAVEFREENEW && position - (recommandSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 4 : (HAVERECOMMAND || HAVECLASSICAL) ? 3 : 2)) < freenewSize) {
+            } else if (HAVEFREENEW && position - (recommandSize + freelimitSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 4 : (HAVERECOMMAND || HAVECLASSICAL) ? 3 : 2)) < freenewSize) {
                 List<BookDetailResponse> freeNewBookList = newBookStoreResponse.getFreeNewBookList();
-                setData(detailsViewHolder, freeNewBookList, position, position - (recommandSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 4 : (HAVERECOMMAND || HAVECLASSICAL) ? 3 : 2)));
+                setData(detailsViewHolder, freeNewBookList, position, position - (recommandSize + freelimitSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 4 : (HAVERECOMMAND || HAVECLASSICAL) ? 3 : 2)));
 
-            } else if (HAVERECENT && position - (recommandSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 5 : (HAVERECOMMAND && HAVECLASSICAL) ? 4 : (HAVERECOMMAND && HAVEFREENEW) ? 4 : (HAVECLASSICAL && HAVEFREENEW) ? 4 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW) ? 3 : 2)) < recentSize) {
+            } else if (HAVERECENT && position - (recommandSize + freelimitSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 5 : (HAVERECOMMAND && HAVECLASSICAL) ? 4 : (HAVERECOMMAND && HAVEFREENEW) ? 4 : (HAVECLASSICAL && HAVEFREENEW) ? 4 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW) ? 3 : 2)) < recentSize) {
                 List<BookDetailResponse> recentBookList = newBookStoreResponse.getRecentBookList();
-                setData(detailsViewHolder, recentBookList, position, position - (recommandSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 5 : (HAVERECOMMAND && HAVECLASSICAL) ? 4 : (HAVERECOMMAND && HAVEFREENEW) ? 4 : (HAVECLASSICAL && HAVEFREENEW) ? 4 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW) ? 3 : 2)));
+                setData(detailsViewHolder, recentBookList, position, position - (recommandSize + freelimitSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 5 : (HAVERECOMMAND && HAVECLASSICAL) ? 4 : (HAVERECOMMAND && HAVEFREENEW) ? 4 : (HAVECLASSICAL && HAVEFREENEW) ? 4 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW) ? 3 : 2)));
 
+            }
+
+        } else if (holder instanceof FreeViewHolder) {
+            FreeViewHolder freeViewHolder = (FreeViewHolder) holder;
+            List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getFreelimitBookList();
+            if (FREELIMITBOOKLIST && freelimitBookList != null && freelimitBookList.size() != 0) {
+                freeViewHolder.recyclerView.setLayoutManager(new GridLayoutManager(context,freelimitBookList.size()));
+                freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
             }
 
         }
@@ -233,6 +250,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             num = 1;
             HAVERECOMMAND = false;
+            FREELIMITBOOKLIST = false;
             HAVECLASSICAL = false;
             HAVEFREENEW = false;
             HAVERECENT = false;
@@ -246,6 +264,11 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 num = num + newBookStoreResponse.getRecommandBookList().size() + 1;
                 HAVERECOMMAND = true;
                 recommandSize = newBookStoreResponse.getRecommandBookList().size();
+            }
+            if (newBookStoreResponse.getFreelimitBookList() != null && newBookStoreResponse.getFreelimitBookList().size() != 0) {//重磅推荐
+                num = num + 1;
+                FREELIMITBOOKLIST = true;
+                freelimitSize = 1;
             }
             if (newBookStoreResponse.getClassicalBookList() != null && newBookStoreResponse.getClassicalBookList().size() != 0) {//经典完本
                 num = num + newBookStoreResponse.getClassicalBookList().size() + 1;
@@ -276,13 +299,15 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (HAVERECOMMAND && position == 1) {
                 titlePos = 0;
                 return TITLEPOS;
-            } else if (HAVECLASSICAL && position == recommandSize + (HAVERECOMMAND ? 2 : 1)) {
+            } else if (FREELIMITBOOKLIST && position == recommandSize + (HAVERECOMMAND ? 2 : 1)) {
+                return FREELIMITPOS;
+            } else if (HAVECLASSICAL && position == recommandSize + freelimitSize + (HAVERECOMMAND ? 2 : 1)) {
                 titlePos = 1;
                 return TITLEPOS;
-            } else if (HAVEFREENEW && position == recommandSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 3 : (HAVERECOMMAND || HAVECLASSICAL ? 2 : 1))) {
+            } else if (HAVEFREENEW && position == recommandSize + freelimitSize + classicalSize + (HAVERECOMMAND && HAVECLASSICAL ? 3 : (HAVERECOMMAND || HAVECLASSICAL ? 2 : 1))) {
                 titlePos = 2;
                 return TITLEPOS;
-            } else if (HAVERECENT && position == recommandSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 4 : (HAVERECOMMAND && HAVECLASSICAL ? 3 : (HAVERECOMMAND && HAVEFREENEW ? 3 : (HAVECLASSICAL && HAVEFREENEW ? 3 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW ? 2 : 1)))))) {
+            } else if (HAVERECENT && position == recommandSize + freelimitSize + classicalSize + freenewSize + (HAVERECOMMAND && HAVECLASSICAL && HAVEFREENEW ? 4 : (HAVERECOMMAND && HAVECLASSICAL ? 3 : (HAVERECOMMAND && HAVEFREENEW ? 3 : (HAVECLASSICAL && HAVEFREENEW ? 3 : (HAVERECOMMAND || HAVECLASSICAL || HAVEFREENEW ? 2 : 1)))))) {
                 titlePos = 3;
                 return TITLEPOS;
             } else {
@@ -329,6 +354,17 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             book_state = (TextView) itemView.findViewById(R.id.book_state);
             book_num = (TextView) itemView.findViewById(R.id.book_num);
 
+        }
+    }
+
+    private class FreeViewHolder extends RecyclerView.ViewHolder {//标题
+        private TextView free_title;
+        private RecyclerView recyclerView;
+
+        public FreeViewHolder(View itemView) {
+            super(itemView);
+            free_title = (TextView) itemView.findViewById(R.id.free_title);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView);
         }
     }
 }

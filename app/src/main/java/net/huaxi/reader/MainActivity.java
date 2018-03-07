@@ -112,16 +112,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void wxPay(WeChatBean response) {//微信支付
-        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
-        if (WXApi.isWXAppInstalled()) {
+//        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
+//        if (WXApi.isWXAppInstalled()) {
             RequestMsg msg = new RequestMsg();
             msg.setTokenId(response.getToken_id());
             msg.setTradeType(MainApplication.WX_APP_TYPE);
             msg.setAppId(LoginHelper.WX_APP_ID);
             PayPlugin.unifiedAppPay(libActivity, msg);
-        } else {
-            showToast("请先安装微信");
-        }
+//        } else {
+//            showToast("请先安装微信");
+//        }
 
     }
 }

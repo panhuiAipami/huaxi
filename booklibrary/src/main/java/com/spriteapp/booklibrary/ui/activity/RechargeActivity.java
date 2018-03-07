@@ -183,6 +183,7 @@ public class RechargeActivity extends TitleActivity {
             } else if (v == goto_pay) {//去支付
                 if (type == 0) {//微信支付
 //                net.huaxi.12yuan
+//                    requestWxPay("com.huaxiapp." + price + "yuan");
                     requestWxWebPay("com.huaxiapp." + price + "yuan");
                 } else if (type == 1) {//支付宝支付
                     requestAliPay("com.huaxiapp." + price + "yuan");
@@ -398,7 +399,7 @@ public class RechargeActivity extends TitleActivity {
         showDialog();
         BookApi.getInstance().
                 service
-                .getWeChatRequest(productId)
+                .pay_appswiftpassg(productId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<WeChatBean>>() {
@@ -536,4 +537,61 @@ public class RechargeActivity extends TitleActivity {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+    public void requestWxWebPaywft(String productId) throws Exception {//生成威富通订单信息
+        if (!AppUtil.isNetAvailable(this)) {
+            return;
+        }
+        Log.d("productId", "wx===" + productId);
+        showDialog();
+        BookApi.getInstance().
+                service
+                .pay_wapswiftpassg(productId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<WeChatBean>>() {
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d("PayResponse", "微信订单请求失败");
+//                            PayResponse response = new PayResponse();
+//                            HuaXiSDK.getInstance().toWXPay(response);
+
+                    }
+
+                    @Override
+                    public void onNext(Base<WeChatBean> payResponseBase) {//微信wechat
+                        Log.d("PayResponse", payResponseBase.toString());
+                        if (payResponseBase != null) {
+                            if (payResponseBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                                if (!TextUtils.isEmpty(payResponseBase.getData().getPay_info())) {
+                                    ActivityUtil.toWebViewActivityBack(RechargeActivity.this, payResponseBase.getData().getPay_info(), true);
+                                }
+                            }
+                        }
+
+                    }
+                });
+    }
+
 }

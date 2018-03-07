@@ -27,8 +27,8 @@ public class BookApi {
         @Override
         public void log(String message) {
             Log.d(">>>", message);
-//            Util.printJson(">>--", message, "body");
-//            Util.e("......", message);
+            Util.printJson(">>----", message, "body");
+            Util.e(">>--", message);
 
         }
 

@@ -143,9 +143,9 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
      */
 
     //打华为包需为true，否则为false（华为渠道需要用华为支付）
-    public static boolean CHANNEL_IS_HUAWEI = true;//华为渠道必须修改
-    public static final String SIGN_SECRET = "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc";//华为渠道必须修改
-    public static final int CLIENT_ID = 73;//华为渠道必须修改
+    public static boolean CHANNEL_IS_HUAWEI = false;//华为渠道必须修改
+    public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";//华为渠道必须修改
+    public static final int CLIENT_ID = 40;//华为渠道必须修改
 
 
     //华为移动服务Client

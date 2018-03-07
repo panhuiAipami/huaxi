@@ -36,6 +36,7 @@ public class NewBookStoreResponse implements Serializable {
     private int code;
     private List<TopBannerListsBean> top_banner_lists;//轮播
     private List<BookDetailResponse> recommandBookList;//重磅推荐
+    private List<BookDetailResponse> freelimitBookList;//显示免费
     private List<BookDetailResponse> classicalBookList;//经典完本
     private List<BookDetailResponse> freeNewBookList;//免费新书
     private List<BookDetailResponse> recentBookList;//最近更新
@@ -104,6 +105,13 @@ public class NewBookStoreResponse implements Serializable {
         this.recommandBookList = recommandBookList;
     }
 
+    public List<BookDetailResponse> getFreelimitBookList() {
+        return freelimitBookList;
+    }
+
+    public void setFreelimitBookList(List<BookDetailResponse> freelimitBookList) {
+        this.freelimitBookList = freelimitBookList;
+    }
 
     public List<BookDetailResponse> getClassicalBookList() {
         return classicalBookList;
