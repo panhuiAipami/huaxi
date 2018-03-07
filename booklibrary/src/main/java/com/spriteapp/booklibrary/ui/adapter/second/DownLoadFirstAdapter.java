@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.adapter.second;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,11 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
         notifyNewData(list);
     }
 
+    public void notifyDownLoadStatus() {
+        this.mChapterList.clear();
+        notifyDataSetChanged();
+    }
+
     public void allSelectListAndPrice(List<BookChapterResponse> mChapterList, int price) {
         total_price = price;
         this.mChapterList.clear();
@@ -73,11 +79,11 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
         h.group_title.setText("第" + g.getStart_chapter() + "章-第" + g.getEnd_chapter() + "章");
         h.check_box.setSelected(g.isIs_check());
 
-        for (BookChapterResponse bc:g.getmChapterList()){
-            if(!bc.getIs_download()){
+        for (BookChapterResponse bc : g.getmChapterList()) {
+            if (!bc.getIs_download()) {
                 g.setIs_download(0);
                 break;
-            }else{
+            } else {
                 g.setIs_download(1);
             }
         }
@@ -108,6 +114,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
             color = R.color.two_font_color;
         h.group_title.setTextColor(ContextCompat.getColor(context, color));
 
+
         //选中分组
         h.check_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -117,14 +124,24 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                 h.check_box.setSelected(isChecked);
 
                 List<BookChapterResponse> child_list = g.getmChapterList();
+                List<BookChapterResponse> select_child_list = new ArrayList<>();
                 group_price = 0;
-                for (int i = 0; i < child_list.size(); i++) {
-                    if (isChecked && !child_list.get(i).isIs_check()) {//选中时，已经选择的item不重复加钱
-                        group_price += child_list.get(i).getChapter_price();
+                for (BookChapterResponse chapter : child_list) {
+                    if (isChecked) {
+                        //选中时，已勾选和已下载不重复加钱
+                        if (!chapter.isIs_check()) {
+                            if (!chapter.getIs_download())
+                                group_price += chapter.getChapter_price();
+                        }
+                        if (!chapter.getIs_download())//没下载的才能选中
+                            if (!select_child_list.contains(chapter))//已选择的不重复添加
+                                select_child_list.add(chapter);
+                        Log.e("---isC--" + isChecked, chapter.isIs_check() + "--------aaaa----------" + chapter.getIs_download());
                     } else if (!isChecked) {//取消时
-                        group_price += child_list.get(i).getChapter_price();
+                        if (!chapter.getIs_download())
+                            group_price += chapter.getChapter_price();
                     }
-                    child_list.get(i).setIs_check(isChecked);
+                    chapter.setIs_check(isChecked);
                 }
 
                 if (isChecked) {
@@ -132,12 +149,17 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                     g.setPrice(group_price);
                     if (group_price > 0)
                         h.is_free.setText(group_price + "花贝/花瓣");
-                    mChapterList.addAll(child_list);
+                    mChapterList.removeAll(g.getSelect_list());
+                    mChapterList.addAll(select_child_list);
                 } else {
                     total_price -= group_price;
-                    mChapterList.removeAll(child_list);
+                    if (g.getSelect_list().size() > 0)
+                        mChapterList.removeAll(g.getSelect_list());
+                    else//删除全选添加的数据
+                        mChapterList.removeAll(g.getmChapterList());
                 }
                 g.setmChapterList(child_list);
+                g.setSelect_list(select_child_list);
                 list.set(groupItemIndex, g);
                 notifyDataSetChanged();
                 if (onSelectList != null)
@@ -196,6 +218,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                         total_price += price;
                     }
                     g.setPrice(g.getPrice() + price);
+                    g.getSelect_list().add(c);
                     list.set(groupItemIndex, g);
                     mChapterList.add(c);
                 }

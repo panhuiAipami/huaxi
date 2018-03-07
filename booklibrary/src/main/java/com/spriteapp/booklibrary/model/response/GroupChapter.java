@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.model.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,16 @@ public class GroupChapter {
     private int price;
     private int is_download = 0;
 
-    private List<BookChapterResponse> mChapterList;
+    private List<BookChapterResponse> mChapterList;//所有二级项
+    private List<BookChapterResponse> select_list;//未下载，已选择集合
+
+    public List<BookChapterResponse> getSelect_list() {
+        return select_list == null ? new ArrayList<BookChapterResponse>() : select_list;
+    }
+
+    public void setSelect_list(List<BookChapterResponse> select_list) {
+        this.select_list = select_list;
+    }
 
     public boolean getIs_download() {
         return is_download == 1;

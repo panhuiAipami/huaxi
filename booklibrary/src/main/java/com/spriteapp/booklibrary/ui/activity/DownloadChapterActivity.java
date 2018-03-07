@@ -128,9 +128,11 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 for (BookChapterResponse c : g.getmChapterList()) {
                     c.setIs_check(all_select);
                     if (all_select) {
-                        selectChapter.add(c);
-                        total_price += c.getChapter_price();
-                        group_price += c.getChapter_price();
+                        if (!c.getIs_download()) {
+                            selectChapter.add(c);
+                            total_price += c.getChapter_price();
+                            group_price += c.getChapter_price();
+                        }
                     } else {
                         total_price = 0;
                         group_price = 0;
@@ -157,16 +159,16 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 loading = 0;
                 downLoad_chapter.setText("下载中0%");
                 downLoad_chapter.setEnabled(false);
-                for (BookChapterResponse bean : selectChapter) {
-                    contentPresenter.getContent(book_id, bean.getChapter_id(), bean.getChapter_is_sub());
-                }
+                contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), selectChapter.get(loading).getChapter_is_sub());
             }
         }
+
     }
 
     @Override
     public void onError(Throwable t) {
-
+        ToastUtil.showSingleToast("连接出错，请检查网络！");
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -181,16 +183,20 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         try {
             loading++;
             DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-            String pregress = df.format((float) loading / selectChapter.size());
+            String pregress = df.format((float) loading / selectChapter.size()*100);
             downLoad_chapter.setText("下载中" + pregress + "%");
+
             if (loading == selectChapter.size()) {
                 ToastUtil.showSingleToast("下载完成！");
                 for (BookChapterResponse bean : selectChapter) {
                     bean.setIs_download(1);
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDownLoadStatus();
                 selectChapter.clear();
-                refreshUi(0,0,0);
+                refreshUi(0, 0, 0);
+            } else {
+                //下完一章接着下一章
+                contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), 1);
             }
 
             String message = result.getMessage();
@@ -258,6 +264,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             for (BookChapterResponse ch : mChapterList) {
                 if (ch.getChapter_id() == c.getChapter_id() && c.getIs_download()) {
                     ch.setIs_download(1);
+                    total_size--;
                 }
             }
         }
@@ -333,7 +340,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     public void refreshUi(int select, int is_buy, int price) {
         check_chapter.setText("已选" + select + "章，需要付费章节" + is_buy + "章");
         chapter_price.setText(price + "花贝/花瓣");
-        if(select>0) {
+        if (select > 0) {
             all_select = (select == total_size);
             rightText.setText(!all_select ? "全选" : "取消全选");
         }

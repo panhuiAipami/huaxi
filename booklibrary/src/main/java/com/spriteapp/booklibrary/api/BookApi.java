@@ -5,7 +5,6 @@ import android.util.Log;
 import com.spriteapp.booklibrary.api.interceptor.HeaderInterceptor;
 import com.spriteapp.booklibrary.api.interceptor.ResponseInterceptor;
 import com.spriteapp.booklibrary.constant.Constant;
-import com.spriteapp.booklibrary.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
