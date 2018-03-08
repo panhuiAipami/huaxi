@@ -140,4 +140,10 @@
     <color name="down_load_font_color1">#404050</color>
     <color name="down_load_font_color2">#aeacbd</color>
     <color name="down_load_violet">#7d50ff</color>
+
+
+    <!--花都颜色-->
+    <color name="toast_bg_color">#666665</color>
+    <color name="toast_text_color">#FFCA7B</color>
+    <color name="toast_bg">#F1A837</color>
 </resources>

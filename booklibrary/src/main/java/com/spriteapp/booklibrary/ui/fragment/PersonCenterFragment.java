@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
@@ -25,9 +26,11 @@ import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.listener.LoginSuccess;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.dialog.InvitationCodeDialog;
 import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
+import com.spriteapp.booklibrary.util.CustomToastUtils;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.Util;
@@ -49,8 +52,10 @@ import static com.spriteapp.booklibrary.util.ActivityUtil.LOGIN_BACK;
 public class PersonCenterFragment extends BaseFragment implements View.OnClickListener, LoginSuccess {
     private View mView;
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
-            recharge, bookshelf, comment, recharge_record, records_of_consumption,
+            recharge, bookshelf, recharge_record, records_of_consumption,
             award_record, remind, phone, setting, user_id;
+    private LinearLayout invitation_code_layout, task_layout;
+    private TextView invitation_code, task;
     private ImageView user_bg, user_head;
     private BookShelfPresenter mPresenter;
     public static int toSetting = 0;
@@ -99,7 +104,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         user_fans = (TextView) mView.findViewById(R.id.user_fans);
         recharge = (TextView) mView.findViewById(R.id.recharge);
         bookshelf = (TextView) mView.findViewById(R.id.bookshelf);
-        comment = (TextView) mView.findViewById(R.id.comment);
+
         recharge_record = (TextView) mView.findViewById(R.id.recharge_record);
         records_of_consumption = (TextView) mView.findViewById(R.id.records_of_consumption);
         award_record = (TextView) mView.findViewById(R.id.award_record);
@@ -109,6 +114,17 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         user_bg = (ImageView) mView.findViewById(R.id.user_bg);
         user_head = (ImageView) mView.findViewById(R.id.user_head);
         user_id = (TextView) mView.findViewById(R.id.user_id);
+        //花都
+        invitation_code = (TextView) mView.findViewById(R.id.invitation_code);
+        task = (TextView) mView.findViewById(R.id.task);
+        invitation_code_layout = (LinearLayout) mView.findViewById(R.id.invitation_code_layout);
+        task_layout = (LinearLayout) mView.findViewById(R.id.task_layout);
+        if (HomeActivity.ISHAUDU) {
+            task_layout.setVisibility(View.VISIBLE);
+            invitation_code_layout.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void listener() {
@@ -121,7 +137,6 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         user_fans.setOnClickListener(this);
         recharge.setOnClickListener(this);
         bookshelf.setOnClickListener(this);
-        comment.setOnClickListener(this);
         recharge_record.setOnClickListener(this);
         records_of_consumption.setOnClickListener(this);
         award_record.setOnClickListener(this);
@@ -130,6 +145,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         setting.setOnClickListener(this);
         user_bg.setOnClickListener(this);
         user_head.setOnClickListener(this);
+        //花都
+        task.setOnClickListener(this);
+        invitation_code.setOnClickListener(this);
         if (AppUtil.isLogin())
             getUserData();
 
@@ -174,8 +192,6 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
                 HomeActivity activity = (HomeActivity) getActivity();
                 activity.setSelectView(PERSON_TO_BOOKSHELF);
             }
-        } else if (v == comment) {
-            if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == recharge_record) {
             if (!AppUtil.isLogin(getActivity())) return;
             toWebView(Constant.USER_RECHARGE_LOG);
@@ -197,6 +213,13 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == user_head) {
             if (!AppUtil.isLogin(getActivity())) return;
+        } else if (v == task) {//任务
+            if (!AppUtil.isLogin(getActivity())) return;
+            CustomToastUtils toastUtils = new CustomToastUtils(getActivity(), R.layout.toast, "领取成功  +200");
+            toastUtils.show();
+        } else if (v == invitation_code) {//邀请码
+            if (!AppUtil.isLogin(getActivity())) return;
+            InvitationCodeDialog dialog = new InvitationCodeDialog(getActivity());
         }
     }
 

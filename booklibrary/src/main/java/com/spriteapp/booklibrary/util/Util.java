@@ -35,6 +35,7 @@ import android.support.design.widget.TabLayout;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
@@ -1813,5 +1815,20 @@ public class Util {
             Log.d(tag, "║ " + line);
         }
         printLine(tag, false);
+    }
+    /**
+     * 单独设置内部字体颜色
+     * @param text
+     * @param keyworld
+     * @return
+     */
+    public static SpannableStringBuilder getSpannableTextColor(String text, String keyworld){
+        SpannableStringBuilder spannableStringBuilder=new SpannableStringBuilder(text);
+        if(text.contains(keyworld)){
+            int spanStartIndex=text.indexOf(keyworld);
+            int spacEndIndex=spanStartIndex+keyworld.length();
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(AppUtil.getAppContext().getResources().getColor(R.color.toast_text_color)),spanStartIndex,spacEndIndex, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+        return spannableStringBuilder;
     }
 }
