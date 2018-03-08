@@ -1684,11 +1684,13 @@ public class Util {
         });
     }
 
-    public static void getUserInfo() {
+    static UserBean user;
+    public static UserBean  getUserInfo() {
         try {
             Log.d("userInfo", "用户信息");
             if (!AppUtil.isLogin())
-                return;
+                return user;
+
             BookApi.getInstance().
                     service
                     .getUserBean(Constant.JSON_TYPE)
@@ -1713,7 +1715,7 @@ public class Util {
                         public void onNext(Base<UserBean> userModelBase) {
                             if (userModelBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
                                 Log.d("userInfo", userModelBase.getData().toString());
-                                UserBean user = userModelBase.getData();
+                                user = userModelBase.getData();
 
                             }
                         }
@@ -1721,7 +1723,7 @@ public class Util {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return user;
     }
 
     public static String getString(String str) {

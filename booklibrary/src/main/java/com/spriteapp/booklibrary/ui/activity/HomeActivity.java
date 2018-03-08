@@ -188,6 +188,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
     @Override
     public void initData() {
+        long a = PreferenceHelper.getLong(PreferenceHelper.AES_KEY,0l);
+        if(a == 0){
+            PreferenceHelper.putLong(PreferenceHelper.AES_KEY,System.currentTimeMillis());
+        }
+
         mContext = this;
         int fisrtSex = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
         if (fisrtSex == 0) {

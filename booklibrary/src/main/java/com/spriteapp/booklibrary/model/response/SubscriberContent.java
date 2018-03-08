@@ -1,5 +1,8 @@
 package com.spriteapp.booklibrary.model.response;
 
+import com.spriteapp.booklibrary.util.CXAESUtil;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
+
 import java.io.Serializable;
 
 /**
@@ -18,7 +21,7 @@ public class SubscriberContent implements Serializable {
     private int chapter_is_vip;
     private long chapter_content_byte;
     private String chapter_content_key;
-    private String chapter_content;
+    public String chapter_content;
     //付费章节订阅后使用的花贝，已订阅过或免费的章节不会出现此字段
     private int used_real_point;
     //付费章节订阅后使用的花瓣，已订阅过或免费的章节不会出现此字段
@@ -26,6 +29,15 @@ public class SubscriberContent implements Serializable {
     private int chapter_need_buy;
     //书籍购买时是直接扣费还是跳转支付页面
     private int chapter_pay_type;
+    private int isAES = 0;
+
+    public boolean getIsAES() {
+        return isAES == 1;
+    }
+
+    public void setIsAES(int isAES) {
+        this.isAES = isAES;
+    }
 
     public int getAuto_sub() {
         return auto_sub;
@@ -100,6 +112,14 @@ public class SubscriberContent implements Serializable {
     }
 
     public String getChapter_content() {
+        if (getIsAES()) {
+            try {
+                String text = CXAESUtil.decrypt("" + PreferenceHelper.getLong(PreferenceHelper.AES_KEY, 0l), chapter_content);
+                return text;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return chapter_content;
     }
 

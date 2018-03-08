@@ -26,8 +26,8 @@ import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CXAESUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
+import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ToastUtil;
-import com.spriteapp.booklibrary.util.Util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -188,6 +188,28 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     @Override
     public void setData(Base<SubscriberContent> result) {
         try {
+            String message = result.getMessage();
+            SubscriberContent data = result.getData();
+            if (data == null) {
+                ToastUtil.showSingleToast(message);
+                return;
+            }
+            if(data.getChapter_need_buy() == 0){//不需要购买不扣钱
+                total_price -= data.getChapter_price();
+            }
+
+            String k = data.getChapter_content_key();
+            String c1 = data.chapter_content;
+            String c2 = CXAESUtil.encrypt("" + PreferenceHelper.getLong(PreferenceHelper.AES_KEY, 0l), c1);
+            data.setChapter_content(c2);
+            data.setIsAES(1);
+            mChapterDb.updateDownLoadState(book_id, data.getChapter_id());
+            if (contentDb.queryContent(book_id, data.getChapter_id()) != null) {
+                contentDb.update(book_id, data.getChapter_id(), data);
+            } else {
+                contentDb.insert(data);
+            }
+
             loading++;
             DecimalFormat df = new DecimalFormat("0.00");//格式化小数
             String pregress = df.format((float) loading / selectChapter.size() * 100);
@@ -202,34 +224,9 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 selectChapter.clear();
                 balance -= total_price;
                 refreshUi(0, 0);
-                Util.getUserInfo();
             } else {
                 //下完一章接着下一章
                 contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), 1);
-            }
-
-            String message = result.getMessage();
-            SubscriberContent data = result.getData();
-            if (data == null) {
-                ToastUtil.showSingleToast(message);
-                return;
-            }
-            String key = data.getChapter_content_key();
-            String content = data.getChapter_content();
-            mChapterDb.updateDownLoadState(book_id, data.getChapter_id());
-            if (contentDb.queryContent(book_id, data.getChapter_id()) != null) {
-                contentDb.update(book_id, data.getChapter_id(), data);
-            } else {
-                contentDb.insert(data);
-            }
-            contentDb.update(book_id, data.getChapter_id(), data);
-            String filecontent = CXAESUtil.encrypt("1", content);
-
-            SubscriberContent c = contentDb.queryContent(book_id, data.getChapter_id());
-            try {
-                Log.i("sql" + data.getChapter_content(), "----查询-->" + c.getChapter_content());
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -343,10 +340,10 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         total_price = price;
         selectChapter.clear();
         selectChapter.addAll(mChapterList);
-        refreshUi(selectChapter.size(),price);
+        refreshUi(selectChapter.size(), price);
     }
 
-    public void refreshUi(int select,int price) {
+    public void refreshUi(int select, int price) {
         int select_is_buy = select;
         for (BookChapterResponse chapter : selectChapter) {
             if (ChapterEnum.CHAPTER_IS_VIP.getCode()

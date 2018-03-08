@@ -50,6 +50,7 @@ public class DbConstants {
     public static final String CHAPTER_CONTENT = "chapter_content";
     public static final String CHAPTER_NEED_BUY = "chapter_need_buy";
     public static final String CHAPTER_PAY_TYPE = "chapter_pay_type";
+    public static final String CHAPTER_ISAES = "isAES";
 
     /**
      * 书章节表及字段

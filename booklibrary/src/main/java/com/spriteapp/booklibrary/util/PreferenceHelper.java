@@ -7,14 +7,7 @@ import android.preference.PreferenceManager;
 
 public class PreferenceHelper {
 	//分享的标题
-	public final static String shareTitle = "shareTitle";
-	//分享的格式
-	public final static String shareformat = "shareformat";
-	//分享的格式字数
-	public final static String shareformat_length = "shareformat_length";
-	//显示排行的小圆点
-	public final static String show_ranking_spot = "show_ranking_spot";
-
+	public static final String AES_KEY = "aes_key";
 
 	public static boolean getBoolean(String key, boolean defValue) {
 

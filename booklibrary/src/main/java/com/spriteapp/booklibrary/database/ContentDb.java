@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.spriteapp.booklibrary.constant.DbConstants;
-import com.spriteapp.booklibrary.enumeration.ChapterEnum;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 
 /**
@@ -53,9 +52,10 @@ public class ContentDb {
             values.put(DbConstants.AUTO_SUB, model.getAuto_sub());
             values.put(DbConstants.CHAPTER_INTRO, model.getChapter_intro());
             values.put(DbConstants.CHAPTER_CONTENT_KEY, model.getChapter_content_key());
-            values.put(DbConstants.CHAPTER_CONTENT, model.getChapter_content());
+            values.put(DbConstants.CHAPTER_CONTENT, model.chapter_content);
             values.put(DbConstants.CHAPTER_NEED_BUY, model.getChapter_need_buy());
             values.put(DbConstants.CHAPTER_PAY_TYPE, model.getChapter_pay_type());
+            values.put(DbConstants.CHAPTER_ISAES, model.getIsAES());
             db.insert(DbConstants.CONTENT_TABLE_NAME, null, values);
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -83,9 +83,10 @@ public class ContentDb {
             }
             ContentValues values = new ContentValues();
             values.put(DbConstants.CHAPTER_CONTENT_KEY, model.getChapter_content_key());
-            values.put(DbConstants.CHAPTER_CONTENT, model.getChapter_content());
+            values.put(DbConstants.CHAPTER_CONTENT, model.chapter_content);
             values.put(DbConstants.CHAPTER_NEED_BUY, model.getChapter_need_buy());
             values.put(DbConstants.CHAPTER_PAY_TYPE, model.getChapter_pay_type());
+            values.put(DbConstants.CHAPTER_ISAES, model.getIsAES());
             db.update(DbConstants.CONTENT_TABLE_NAME, values, "book_id = ? and chapter_id = ?",
                     new String[]{String.valueOf(bookId), String.valueOf(chapterId)});
             closeDB();
@@ -135,6 +136,7 @@ public class ContentDb {
                     model.setChapter_content(cursor.getString(cursor.getColumnIndex(DbConstants.CHAPTER_CONTENT)));
                     model.setChapter_need_buy(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_NEED_BUY)));
                     model.setChapter_pay_type(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_PAY_TYPE)));
+                    model.setIsAES(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_ISAES)));
                     model.SQLiteId = cursor.getInt(cursor.getColumnIndex("id"));
                 }
             }

@@ -260,10 +260,9 @@ public class PtrFrameLayout extends ViewGroup {
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
                     return dispatchTouchEventSuper(e);
                 }
-                Log.i("dispatchTouchEvent"+Math.abs(actiondownX - x), actiondownY + "-----" + y + "-----------------" + actiondownX + "--------------------" + x);
+                Log.i("dispatchTouchEvent" + Math.abs(actiondownX - x), actiondownY + "-----" + y + "-----------------" + actiondownX + "--------------------" + x);
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-                    if (offsetY > 10)
-                        movePos(offsetY);
+                    movePos(offsetY);
                     return true;
                 } else if (actiondownY - y > 100 && Math.abs(actiondownX - x) < 50) {
                     if (Util.isFastClick(500)) {

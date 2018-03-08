@@ -84,7 +84,8 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         builder.append(DbConstants.CHAPTER_CONTENT_KEY).append(" text,");
         builder.append(DbConstants.CHAPTER_CONTENT).append(" text,");
         builder.append(DbConstants.CHAPTER_NEED_BUY).append(" integer,");
-        builder.append(DbConstants.CHAPTER_PAY_TYPE).append(" integer");
+        builder.append(DbConstants.CHAPTER_PAY_TYPE).append(" integer,");
+        builder.append(DbConstants.CHAPTER_ISAES).append(" integer");
         builder.append(")");
         return builder.toString();
     }
@@ -116,6 +117,9 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         }else if(oldVersion == 2 && newVersion == 3){
             String sql = "alter table ["+DbConstants.CHAPTER_TABLE_NAME+"] add ["+DbConstants.CHAPTER_IS_DOWN_LOAD+"] nvarchar(300)";
             db.execSQL(sql);
+
+            String sql2 = "alter table ["+DbConstants.CONTENT_TABLE_NAME+"] add ["+DbConstants.CHAPTER_ISAES+"] nvarchar(300)";
+            db.execSQL(sql2);
         }
     }
 }
