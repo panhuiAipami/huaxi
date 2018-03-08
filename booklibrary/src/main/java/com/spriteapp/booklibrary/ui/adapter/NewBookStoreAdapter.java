@@ -144,7 +144,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             FreeViewHolder freeViewHolder = (FreeViewHolder) holder;
             List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getFreelimitBookList();
             if (FREELIMITBOOKLIST && freelimitBookList != null && freelimitBookList.size() != 0) {
-                freeViewHolder.recyclerView.setLayoutManager(new GridLayoutManager(context,freelimitBookList.size()));
+                freeViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
                 freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
             }
 
