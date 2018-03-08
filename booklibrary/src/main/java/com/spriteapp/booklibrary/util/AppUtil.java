@@ -117,7 +117,7 @@ public class AppUtil {
 
     public static void loginOut() {
         clearToken();
-        clearBookInfo();
+//        clearBookInfo();
         HuaXiSDK.getInstance().setRegisterModelNull();
         clearShare();
         HuaXiSDK.mLoginState = LoginStateEnum.UN_LOGIN;

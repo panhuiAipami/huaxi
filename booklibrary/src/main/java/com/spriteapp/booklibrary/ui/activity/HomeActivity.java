@@ -148,6 +148,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public static final int CLIENT_ID = 40;//华为渠道必须修改
 
 
+    /**
+     * 花都打包修改为:true,花溪打包修改为:false;
+     * （花都需要添加拉新功能）
+     */
+    public static final boolean ISHAUDU = true;
+
+
     //华为移动服务Client
     private static HuaweiApiClient client;
     MessageRemindDialog dialog;

@@ -20,6 +20,7 @@
     <string name="book_reader_hand_buy">每次提醒</string>
     <string name="book_reader_buy_text">购买(消耗%s花贝)</string>
     <string name="book_reader_buy_successful_text">购买成功</string>
+    <string name="give_success_gold">领取成功</string>
 
     <string name="book_reader_prompt">温馨提示</string>
     <string name="book_reader_delete_book_prompt">您确定从书架上移除这本书?</string>
