@@ -134,4 +134,10 @@
     <color name="bg2">#f5f1ff</color>
     <color name="bg3">#fbeafd</color>
     <color name="bg4">#eceff6</color>
+
+    <!--下载页面橙色...字体-->
+    <color name="down_load_orange">#ff7050</color>
+    <color name="down_load_font_color1">#404050</color>
+    <color name="down_load_font_color2">#aeacbd</color>
+    <color name="down_load_violet">#7d50ff</color>
 </resources>

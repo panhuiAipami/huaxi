@@ -3,7 +3,6 @@ package com.spriteapp.booklibrary.ui.adapter.second;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
     private OnSelectList onSelectList;
     int total_price = 0;
     int group_price = 0;
+    int group_price2 = 0;
 
     public DownLoadFirstAdapter(Context context, OnSelectList onSelectList) {
         this.context = context;
@@ -88,7 +88,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
             }
         }
 
-        int free_color = R.color.color_orange;
+        int free_color = R.color.down_load_orange;
         if (g.getIs_free()) {
             h.is_free.setText("免费");
             free_color = R.color.green_color;
@@ -109,11 +109,10 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
 
         int color = 0;
         if (groupItemIndex == 0)
-            color = R.color.color_orange;
+            color = R.color.down_load_orange;
         else
-            color = R.color.two_font_color;
+            color = R.color.down_load_font_color1;
         h.group_title.setTextColor(ContextCompat.getColor(context, color));
-
 
         //选中分组
         h.check_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -126,6 +125,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                 List<BookChapterResponse> child_list = g.getmChapterList();
                 List<BookChapterResponse> select_child_list = new ArrayList<>();
                 group_price = 0;
+                group_price2 = 0;
                 for (BookChapterResponse chapter : child_list) {
                     if (isChecked) {
                         //选中时，已勾选和已下载不重复加钱
@@ -133,10 +133,12 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
                             if (!chapter.getIs_download())
                                 group_price += chapter.getChapter_price();
                         }
+                        if (!chapter.getIs_download())
+                            group_price2 += chapter.getChapter_price();
+
                         if (!chapter.getIs_download())//没下载的才能选中
                             if (!select_child_list.contains(chapter))//已选择的不重复添加
                                 select_child_list.add(chapter);
-                        Log.e("---isC--" + isChecked, chapter.isIs_check() + "--------aaaa----------" + chapter.getIs_download());
                     } else if (!isChecked) {//取消时
                         if (!chapter.getIs_download())
                             group_price += chapter.getChapter_price();
@@ -146,9 +148,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
 
                 if (isChecked) {
                     total_price += group_price;
-                    g.setPrice(group_price);
-                    if (group_price > 0)
-                        h.is_free.setText(group_price + "花贝/花瓣");
+                    g.setPrice(group_price2);
                     mChapterList.removeAll(g.getSelect_list());
                     mChapterList.addAll(select_child_list);
                 } else {
@@ -183,7 +183,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
             s.is_free.setText("免费");
             color = R.color.green_color;
         } else {
-            color = R.color.color_orange;
+            color = R.color.down_load_orange;
             s.is_free.setText(c.getChapter_price() + "花贝/花瓣");
         }
         s.is_free.setTextColor(ContextCompat.getColor(context, color));

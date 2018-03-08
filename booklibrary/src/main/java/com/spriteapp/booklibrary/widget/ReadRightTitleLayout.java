@@ -109,10 +109,10 @@ public class ReadRightTitleLayout extends LinearLayout {
     }
 
     public void setAddShelfViewState(boolean hasAddShelf) {
-        if (mAddShelfImageView == null) {
-            return;
-        }
-        mAddShelfImageView.setVisibility(hasAddShelf ? GONE : VISIBLE);
+//        if (mAddShelfImageView == null) {
+//            return;
+//        }
+//        mAddShelfImageView.setVisibility(hasAddShelf ? GONE : VISIBLE);
     }
 
     public void setTitleListener(ReadTitleListener mTitleListener) {

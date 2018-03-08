@@ -229,7 +229,6 @@ public abstract class BaseReadView extends View {
                 }
 
                 if (cancel) {
-                    Log.i("cancel","--------cancel-------------");
                     pagefactory.cancelPage();
                     restoreAnimation();
                     postInvalidate();

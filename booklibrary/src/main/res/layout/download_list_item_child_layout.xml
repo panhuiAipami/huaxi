@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="第1章"
-            android:textColor="@color/two_font_color"
-            android:textSize="12sp" />
+            android:textColor="@color/down_load_font_color1"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:id="@+id/linear_check_box"
@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="10花贝/花瓣"
-                android:textColor="@color/color_orange"
+                android:textColor="@color/down_load_orange"
                 android:textSize="12sp" />
 
             <CheckBox
@@ -55,10 +55,11 @@
             android:id="@+id/is_download"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:gravity="right"
             android:text="已下载"
+            android:textColor="@color/down_load_font_color2"
             android:textSize="12sp" />
     </LinearLayout>
 

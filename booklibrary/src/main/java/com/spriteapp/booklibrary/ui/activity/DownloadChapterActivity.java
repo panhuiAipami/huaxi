@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CXAESUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     private TextView chapter_price;
     private TextView check_chapter;
     private TextView my_balance;
+    private TextView tv_hint;
     private boolean all_select;
     private int book_id = 0;
     private int balance;
@@ -82,6 +85,10 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     @Override
     public void configViews() throws Exception {
         super.configViews();
+        String content = "<font color=\"#aeacbd\">花贝为花溪小说网消费虚拟币，花瓣为花溪小说网赠送用户之体验币，" +
+                "仅限于阅读消费当用作阅读时，</font><font color=\"#ff7050\">" + "1花瓣=1花贝，1元=100花贝" + "</font>";
+        tv_hint.setText(Html.fromHtml(content));
+        refreshUi(0, 0);
         contentPresenter.getChapter(book_id);
         setTitle("批量下载");
     }
@@ -106,7 +113,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         chapter_price = (TextView) findViewById(R.id.chapter_price);
         my_balance = (TextView) findViewById(R.id.my_balance);
         check_chapter = (TextView) findViewById(R.id.check_chapter);
-
+        tv_hint = (TextView) findViewById(R.id.tv_hint);
         mRightLayout.setOnClickListener(this);
         downLoad_chapter.setOnClickListener(this);
     }
@@ -141,7 +148,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 }
                 g.setPrice(group_price);
             }
-            refreshUi(selectChapter.size(), selectChapter.size(), total_price);
+            refreshUi(selectChapter.size(), total_price);
             this.total_price = total_price;
             adapter.notifyNewData(groupChapters);
             adapter.allSelectListAndPrice(selectChapter, total_price);
@@ -183,7 +190,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         try {
             loading++;
             DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-            String pregress = df.format((float) loading / selectChapter.size()*100);
+            String pregress = df.format((float) loading / selectChapter.size() * 100);
             downLoad_chapter.setText("下载中" + pregress + "%");
 
             if (loading == selectChapter.size()) {
@@ -193,7 +200,9 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 }
                 adapter.notifyDownLoadStatus();
                 selectChapter.clear();
-                refreshUi(0, 0, 0);
+                balance -= total_price;
+                refreshUi(0, 0);
+                Util.getUserInfo();
             } else {
                 //下完一章接着下一章
                 contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), 1);
@@ -334,11 +343,18 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
         total_price = price;
         selectChapter.clear();
         selectChapter.addAll(mChapterList);
-        refreshUi(selectChapter.size(), selectChapter.size(), price);
+        refreshUi(selectChapter.size(),price);
     }
 
-    public void refreshUi(int select, int is_buy, int price) {
-        check_chapter.setText("已选" + select + "章，需要付费章节" + is_buy + "章");
+    public void refreshUi(int select,int price) {
+        int select_is_buy = select;
+        for (BookChapterResponse chapter : selectChapter) {
+            if (ChapterEnum.CHAPTER_IS_VIP.getCode()
+                    != chapter.getChapter_is_vip()) {
+                select_is_buy--;
+            }
+        }
+        check_chapter.setText(Html.fromHtml("已选" + select + "章，需要付费章节<font color=\"#7d50ff\">" + select_is_buy + "</font>章"));
         chapter_price.setText(price + "花贝/花瓣");
         if (select > 0) {
             all_select = (select == total_size);
@@ -352,6 +368,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
             downLoad_chapter.setText("请选择章节");
             downLoad_chapter.setEnabled(false);
         }
+        my_balance.setText("（余额：" + balance + "花贝/花瓣)");
 
     }
 }

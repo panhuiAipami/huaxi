@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/app_background"
+    android:background="#fbfbfb"
     android:orientation="vertical"
     android:paddingRight="15dp"
     android:paddingTop="10dp">
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="第1章-第30章"
-            android:textColor="@color/two_font_color"
+            android:textColor="@color/down_load_font_color1"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -61,10 +61,11 @@
             android:id="@+id/is_download"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:gravity="right"
             android:text="已下载"
+            android:textColor="@color/down_load_font_color2"
             android:textSize="12sp" />
     </LinearLayout>
 

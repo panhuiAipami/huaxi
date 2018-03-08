@@ -22,41 +22,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:background="@color/app_background"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"
+        >
 
         <TextView
             android:id="@+id/check_chapter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="已选0章，需要付费章节40章" />
+            android:textSize="16sp"
+            android:textColor="@color/down_load_font_color1"
+            android:text="已选0章，需要付费章节0章" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/down_load_font_color1"
                 android:text="价格：" />
 
             <TextView
                 android:id="@+id/chapter_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:text="0花贝/花瓣"
-                android:textColor="@color/color_orange" />
+                android:textColor="@color/down_load_orange" />
 
 
             <TextView
                 android:id="@+id/my_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:textSize="12sp"
-                android:textColor="@color/three_font_color"
+                android:textColor="@color/down_load_font_color2"
                 android:text="（余额：0花贝/花瓣）"
                 />
 
@@ -71,16 +81,18 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="下载"
+            android:textSize="18sp"
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/tv_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/three_font_color"
+            android:textColor="@color/down_load_font_color2"
             android:text="花贝为花溪小说网消费虚拟币，花瓣为花溪小说网赠送用户之体验币，仅限于阅读消费当用作阅读时，1花瓣=1花贝，1元=100花贝" />
 
         <TextView
@@ -89,6 +101,6 @@
             android:visibility="gone"
             android:layout_gravity="center_horizontal"
             android:text="当用作阅读时，1花瓣=1花贝，1元=100花贝"
-            android:textColor="@color/color_orange" />
+            android:textColor="@color/down_load_orange" />
     </LinearLayout>
 </LinearLayout>

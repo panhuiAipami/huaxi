@@ -13,6 +13,7 @@
             android:id="@+id/mPtrFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <FrameLayout
                 android:id="@+id/book_reader_read_container"
                 android:layout_width="match_parent"
@@ -44,13 +45,43 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/book_reader_catalog_list_view"
+    <LinearLayout
+        android:id="@+id/linear_left_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/book_reader_white"
-        android:clickable="true"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:background="@color/app_background"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/book_reader_catalog_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/book_reader_white"
+            android:clickable="true"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
+
+        <RelativeLayout
+            android:id="@+id/download_btn"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:background="@drawable/comment_edit"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@mipmap/download_chapter_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="下载章节"
+                android:textColor="@color/two_font_color"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </android.support.v4.widget.DrawerLayout>

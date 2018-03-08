@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
@@ -116,7 +117,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private List<BookChapterResponse> mChapterList;
     private int mTitleHeight;
     private boolean isDismiss = true;
+    private LinearLayout linear_left_view;
     private ListView mChapterListView;
+    private RelativeLayout download_btn;
     private LinearLayout mChapterLayout;
     private LinearLayout mProgressLayout;
     private LinearLayout mModeLayout;
@@ -449,7 +452,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mPtrFrameLayout = (PtrFrameLayout) findViewById(R.id.mPtrFrameLayout);
         mBookContainer = (FrameLayout) findViewById(R.id.book_reader_read_container);
         mBottomLayout = (ReadBottomLayout) findViewById(R.id.book_reader_bottom_layout);
+        linear_left_view = (LinearLayout) findViewById(R.id.linear_left_view);
         mChapterListView = (ListView) findViewById(R.id.book_reader_catalog_list_view);
+        download_btn = (RelativeLayout) findViewById(R.id.download_btn);
         mChapterLayout = (LinearLayout) findViewById(R.id.book_reader_chapter_layout);
         mProgressLayout = (LinearLayout) findViewById(R.id.book_reader_progress_layout);
         mModeLayout = (LinearLayout) findViewById(R.id.book_reader_mode_layout);
@@ -498,6 +503,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mProgressLayout.setOnClickListener(this);
         mModeLayout.setOnClickListener(this);
         mTextLayout.setOnClickListener(this);
+        download_btn.setOnClickListener(this);
         mChapterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -509,7 +515,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mChapterAdapter.notifyDataSetChanged();
                 startRead = false;
                 openChapter();
-                mDrawerLayout.closeDrawer(mChapterListView);
+                mDrawerLayout.closeDrawer(linear_left_view);
             }
         });
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -588,7 +594,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (v == mChapterLayout) {
             mShowView = mBottomLayout;
             mDismissView = mBottomLayout;
-            mDrawerLayout.openDrawer(mChapterListView);
+            mDrawerLayout.openDrawer(linear_left_view);
         } else if (v == mProgressLayout) {
             if (mWidget != null) {
                 mReadProgressLayout.setProgress(mWidget.getCurrentProgress());
@@ -610,6 +616,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mDismissView = mTextSizeLayout;
         } else if (v == mLeftLayout) {
             showAddShelfPrompt();
+        } else if (v == download_btn) {
+            ActivityUtil.toDownloadChapterActivity(this, mBookId);
         }
     }
 
@@ -769,7 +777,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 @Override
                 public void clickAddShelf() {//下载
 //                    addToShelf(false);
-                    ActivityUtil.toDownloadChapterActivity(ReadActivity.this,mBookId);
+                    ActivityUtil.toDownloadChapterActivity(ReadActivity.this, mBookId);
 
                 }
 
@@ -1006,7 +1014,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
 
         @Override
-        public void clickPayChapter() {
+        public void clickPayChapter() {//购买章节
             isClickPayChapter = true;
             int payType = 0;
             if (mQueryContent != null) {
