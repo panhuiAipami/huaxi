@@ -13,7 +13,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
@@ -36,7 +35,7 @@ public class PtrFrameLayout extends ViewGroup {
     private int mDurationToCloseHeader = 1000;
 
     private long mLoadingStartTime = 0;
-
+    private int book_id;
     private View mHeaderView;
     private View mContentView;
 
@@ -267,7 +266,7 @@ public class PtrFrameLayout extends ViewGroup {
                 } else if (actiondownY - y > 100 && Math.abs(actiondownX - x) < 50) {
                     if (Util.isFastClick(500)) {
                         ToastUtil.showSingleToast("添加评论");
-                        ActivityUtil.toCommonActivity(getContext(), PublishCommentActivity.class);
+                        ActivityUtil.toPublishCommentActivity(getContext(),book_id );
                     }
                     return true;
                 }
@@ -414,6 +413,9 @@ public class PtrFrameLayout extends ViewGroup {
         mPtrUIHandler = handler;
     }
 
+    public void setBookId(int book_id){
+        this.book_id = book_id;
+    }
     public void setHeaderView(View header) {
         if (header == null) {
             return;

@@ -20,6 +20,7 @@ import com.spriteapp.booklibrary.util.ToastUtil;
 import de.greenrobot.event.EventBus;
 
 /**
+ * 添加书评
  * Created by kuangxiaoguo on 2017/7/25.
  */
 
