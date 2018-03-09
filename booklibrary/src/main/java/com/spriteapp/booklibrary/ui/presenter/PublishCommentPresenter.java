@@ -37,14 +37,14 @@ public class PublishCommentPresenter implements BasePresenter<PublishCommentView
         }
     }
 
-    public void sendComment(int bookId, String content) {
+    public void sendComment(int bookId, String title,String content,float score) {
         if (!AppUtil.isNetAvailable(mView.getMyContext())) {
             return;
         }
         mView.showNetWorkProgress();
         BookApi.getInstance().
                 service
-                .addComment(bookId, content)
+                .addComment(bookId,title, content,score)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<Void>>() {

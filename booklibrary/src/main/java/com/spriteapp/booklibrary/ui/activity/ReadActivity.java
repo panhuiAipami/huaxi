@@ -88,8 +88,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
@@ -133,6 +131,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private ChapterAdapter mChapterAdapter;
     private TextSizeLayout mTextSizeLayout;
     private TextView book_reader_title_textView;
+    private ImageView is_add_shelf;
 
     /**
      * 是否开始阅读章节
@@ -168,13 +167,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private int chapter = 0;
     private boolean IsRegister = true;
     private String titleFile = "";
+    private boolean isAddOrClean = false;
 
 
     //上传阅读时长
     public static int READTIME = 120;//测试10秒,正式使用用户信息里的字段，如果没有则默认使用120秒;
     public static int time = 120;
     private static int oldChapter_id;
-    private static android.os.Handler handler = new android.os.Handler() {
+    private android.os.Handler handler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -239,7 +239,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mBookId = bookDetail.getBook_id();
         mPtrFrameLayout.setBookId(mBookId);
         mOldBookDetail = mBookDb.queryBook(mBookId);
-        mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
+        isAddOrClean = BookUtil.isBookAddShelf(mOldBookDetail);
+        is_add_shelf.setVisibility(isAddOrClean ? View.VISIBLE : View.GONE);
+//        mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
         mChapterList = mChapterDb.queryCatalog(mBookId);
         int lastChapterId = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), 0);
         if (chapter == 0) {
@@ -500,6 +502,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mDismissView = mBottomLayout;
         mTextSizeLayout.setCallBack(mTextSizeCallback);
         mReadProgressLayout.setCallback(mPositionCallback);
+        is_add_shelf = (ImageView) findViewById(R.id.is_add_shelf);
         setListener();
     }
 
@@ -582,7 +585,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         });
 
         //下拉操作
-        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(this);
+        final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(this);
         mPtrFrameLayout.setPtrUIHandler(header);
         mPtrFrameLayout.setHeaderView(header);
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -597,8 +600,27 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 //刷新操作
-                addToShelf(false);
-                mPtrFrameLayout.refreshComplete();
+                frame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (AppUtil.isLogin()) {
+                            if (isAddOrClean) {//书架中已存在,移除
+                                addToShelf(false, true);
+                                is_add_shelf.setVisibility(View.GONE);
+                                isAddOrClean = false;
+                                header.setAddOrClean(!isAddOrClean);
+                            } else {//加书架
+                                addToShelf(false, false);
+                                is_add_shelf.setVisibility(View.VISIBLE);
+                                isAddOrClean = true;
+                                header.setAddOrClean(!isAddOrClean);
+                            }
+
+                        }
+                        mPtrFrameLayout.refreshComplete();
+                    }
+                }, 500);
+
             }
         });
     }
@@ -653,7 +675,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
         if (bookDetail == null || BookUtil.isBookAddShelf(bookDetail)) {
             if (AppUtil.isLogin()) {
-                addToShelf(true);//书架中已存在但要刷新顺序
+                addToShelf(true, false);//书架中已存在但要刷新顺序
             }
             finish();
             return;
@@ -667,7 +689,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                     @Override
                     public void clickSure() {
-                        addToShelf(false);
+                        addToShelf(false, false);
                         finish();
                     }
                 });
@@ -826,11 +848,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 }
             };
 
-    private void addToShelf(boolean isShelf) {
+    private void addToShelf(boolean isShelf, boolean isClean) {
         AddBookModel model = new AddBookModel();
         model.setBookId(mBookId);
         model.setChapterId(mCurrentChapter);
         model.setAddShelf(isShelf);//刷新纪录的标识,是否弹出提示Toast
+        model.setClean(isClean);
         EventBus.getDefault().post(model);
     }
 

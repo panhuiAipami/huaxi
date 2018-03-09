@@ -9,6 +9,15 @@ public class AddBookModel {
     private int bookId;
     private int chapterId;
     private boolean isAddShelf = false;
+    private boolean isClean = false;//清除书架
+
+    public boolean isClean() {
+        return isClean;
+    }
+
+    public void setClean(boolean clean) {
+        isClean = clean;
+    }
 
     public int getBookId() {
         return bookId;

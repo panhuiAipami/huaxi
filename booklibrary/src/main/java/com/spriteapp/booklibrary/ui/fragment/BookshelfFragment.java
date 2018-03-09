@@ -1,7 +1,6 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
 import android.content.Context;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -446,6 +445,11 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         mPresenter.getLoginInfo(model);
     }
 
+    /**
+     * 阅读页加入书架
+     *
+     * @param model
+     */
     public void onEventMainThread(AddBookModel model) {
         if (!AppUtil.isLogin()) {
             HuaXiSDK.getInstance().toLoginPage(mContext);
@@ -461,10 +465,14 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
             mBookList.addAll(bookDetailList);
             mAdapter.notifyDataSetChanged();
             Log.d("addBook", "添加书架中1");
-            if (model != null && model.isAddShelf()) {
+            if (model != null && model.isAddShelf()) {//添加书架
 
             } else {
-                ToastUtil.showSingleToast("书架中已存在");
+                if (model.isClean()) {//移除书架
+                    mPresenter.deleteBook(mAddBookId);
+                } else {
+                    ToastUtil.showSingleToast("书架中已存在");
+                }
                 return;
             }
 

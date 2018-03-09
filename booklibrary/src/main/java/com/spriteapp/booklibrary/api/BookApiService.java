@@ -186,7 +186,9 @@ public interface BookApiService {
     @FormUrlEncoded
     @POST("book_comment")
     Observable<Base<Void>> addComment(@Field("book_id") int bookId,
-                                      @Field("content") String content);
+                                      @Field("title") String title,
+                                      @Field("content") String content,
+                                      @Field("star") float score);
 
     @GET("book_store")
     Call<BookStoreResponse> getBookStore(@Query("format") String type);

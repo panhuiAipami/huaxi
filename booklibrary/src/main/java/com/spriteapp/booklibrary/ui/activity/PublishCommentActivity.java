@@ -2,7 +2,6 @@ package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
     private TextView mSendTextView;
     private PublishCommentPresenter mPresenter;
     private int mBookId;
+    private float rCount;
 
     @Override
     public void initData() {
@@ -54,7 +54,8 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
                     ToastUtil.showSingleToast("请输入评论内容");
                     return;
                 }
-                mPresenter.sendComment(mBookId, content);
+                String title = mCommentEditTitle.getText().toString();
+                mPresenter.sendComment(mBookId,title, content,rCount);
             }
         });
         mContainerLayout.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +68,7 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
         score_bar.setOnRatingChangeListener(new com.spriteapp.booklibrary.widget.RatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(float ratingCount) {
-                Log.e("onRatingChanged","--------评分 = ---------"+ratingCount);
+                rCount = ratingCount;
             }
         });
     }

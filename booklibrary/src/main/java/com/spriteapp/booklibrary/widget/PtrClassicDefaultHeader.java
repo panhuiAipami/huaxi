@@ -42,8 +42,14 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
     private long mLastUpdateTime = -1;
     private boolean mShoulShowLastUpdate = false;
 
+    private boolean is_add_shelf = false;
+
     private LastUpdateTimeUpdater mLastUpdateTimeUpdater = new LastUpdateTimeUpdater();
 
+
+    public void setAddOrClean(boolean is_add_shelf){
+       this.is_add_shelf = is_add_shelf;
+    }
     public PtrClassicDefaultHeader(Context context)
     {
         super(context);
@@ -130,16 +136,16 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
 
         mProgressBar.setVisibility(INVISIBLE);
         mRotateView.setVisibility(VISIBLE);
-        mTitleView.setText(R.string.hebut_ptr_pull_down);
+        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_pull_down:R.string.hebut_ptr_pull_down2);
     }
 
     @Override
     public void onUIRefreshBegin(PtrFrameLayout frame)
     {
         hideRotateView();
-        mProgressBar.setVisibility(VISIBLE);
+//        mProgressBar.setVisibility(VISIBLE);
         mTitleView.setVisibility(VISIBLE);
-        mTitleView.setText(R.string.hebut_ptr_updating);
+        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_updating:R.string.hebut_ptr_updating2);
 
         mShoulShowLastUpdate = false;
         tryUpdateLastUpdateTime();
@@ -152,7 +158,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
         hideRotateView();
         mProgressBar.setVisibility(INVISIBLE);
         mTitleView.setVisibility(VISIBLE);
-        mTitleView.setText(R.string.hebut_ptr_update_complete);
+        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_update_complete:R.string.hebut_ptr_update_complete2);
 
         //update last update time
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(KEY_SharedPreferences, 0);
@@ -183,7 +189,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
     private void crossRotateLineFromTopUnderTouch()
     {
         mTitleView.setVisibility(VISIBLE);
-        mTitleView.setText(R.string.hebut_ptr_release_to_refresh);
+        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_release_to_refresh:R.string.hebut_ptr_release_to_refresh2);
         //anim
         if(mRotateView != null) {
             mRotateView.clearAnimation();
@@ -194,7 +200,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
     private void crossRotateLineFromBottomUnderTouch()
     {
         mTitleView.setVisibility(VISIBLE);
-        mTitleView.setText(R.string.hebut_ptr_pull_down);
+        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_pull_down:R.string.hebut_ptr_pull_down2);
         //anim
         if(mRotateView != null) {
             mRotateView.clearAnimation();

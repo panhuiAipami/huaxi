@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AEACBD"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:src="@mipmap/pull_down_bg_icon"/>
+                android:src="@mipmap/pull_down_bg_icon" />
 
 
             <TextView
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#666666"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -44,24 +45,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/bottom_jiao"/>
+                android:src="@mipmap/bottom_jiao" />
 
             <ProgressBar
                 android:id="@+id/ptr_classic_header_progress_bar"
                 style="@android:style/Widget.ProgressBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
             android:id="@+id/ptr_classic_header_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:layout_alignParentRight="true"
-            android:textColor="#666666"
-            android:textSize="12sp"/>
+            android:layout_margin="10dp"
+            android:drawablePadding="3dp"
+            android:drawableRight="@mipmap/add_shelf_icon"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_background"
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </LinearLayout>
