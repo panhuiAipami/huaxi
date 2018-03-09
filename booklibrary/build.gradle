@@ -30,7 +30,7 @@ repositories {
 allprojects {
     repositories {
         jcenter()
-        maven {url 'http://developer.huawei.com/repo/'}
+        maven { url 'http://developer.huawei.com/repo/' }
     }
 }
 

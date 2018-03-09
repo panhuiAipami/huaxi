@@ -7,12 +7,65 @@
     <LinearLayout
         android:id="@+id/code_layout"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="360dp"
         android:layout_gravity="center"
-        android:orientation="vertical"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/author_follow_dialog_bg"></LinearLayout>
+        android:background="@drawable/author_follow_dialog_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/code_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="输入好友邀请你的邀请码"
+            android:textColor="@color/square_user_speak"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_code"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="请输入邀请码"
+            android:lines="1"
+            android:textSize="16sp"
+            android:theme="@style/CodeEditText" />
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:background="@color/c02_themes_color"></View>
+
+        <TextView
+            android:id="@+id/finish_text"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/code_finish"
+            android:gravity="center"
+            android:text="领取金币"
+            android:textColor="@color/c13_themes_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/colse_img"

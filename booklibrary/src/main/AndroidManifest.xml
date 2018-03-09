@@ -105,7 +105,8 @@
         <activity android:name=".widget.photoview.PictureExternalPreviewActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.RechargeActivity" />
-        <activity android:name=".ui.activity.DownloadChapterActivity"></activity>
+        <activity android:name=".ui.activity.DownloadChapterActivity" />
+        <activity android:name=".ui.activity.TaskActivity"></activity>
     </application>
 
 </manifest>

@@ -85,5 +85,11 @@
         <item name="colorControlNormal">@color/c10_themes_color</item>
         <item name="colorControlHighlight">@color/square_comment_selector</item>
     </style>
+    <style name="CodeEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/c02_themes_color</item>
+        <item name="colorAccent">@color/c10_themes_color</item>
+        <item name="colorControlNormal">@color/c10_themes_color</item>
+        <item name="colorControlHighlight">@color/c02_themes_color</item>
+    </style>
 
 </resources>

@@ -118,6 +118,7 @@
     <color name="square_small">#b4b2c9</color>
     <!--点赞后-->
     <color name="square_support_selector">#ff74ac</color>
+    <color name="code_finish">#FF173B</color>
     <!--评论后-->
     <color name="square_comment_selector">#a785ff</color>
     <color name="ranking_author_name">#7c53ff</color>
@@ -146,4 +147,7 @@
     <color name="toast_bg_color">#666665</color>
     <color name="toast_text_color">#FFCA7B</color>
     <color name="toast_bg">#F1A837</color>
+    <color name="apprentice_btn_bg_color">#FF6A9FF2</color>
+    <color name="code_btn_bg_color">#FFFEB10B</color>
+    <color name="other_hint_bg_color">#FFFFF7EA</color>
 </resources>

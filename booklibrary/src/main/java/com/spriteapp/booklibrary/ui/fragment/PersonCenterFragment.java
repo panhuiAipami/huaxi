@@ -215,9 +215,10 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             if (!AppUtil.isLogin(getActivity())) return;
         } else if (v == task) {//任务
             if (!AppUtil.isLogin(getActivity())) return;
-            CustomToastUtils toastUtils = new CustomToastUtils(getActivity(), R.layout.toast, "领取成功  +200");
-            toastUtils.show();
-        } else if (v == invitation_code) {//邀请码
+            ActivityUtil.toTaskActivity(getActivity());//去任务
+//            CustomToastUtils toastUtils = new CustomToastUtils(getActivity(), R.layout.toast, "领取成功  +200");
+//            toastUtils.show();
+        } else if (v == invitation_code) {//填写邀请码
             if (!AppUtil.isLogin(getActivity())) return;
             InvitationCodeDialog dialog = new InvitationCodeDialog(getActivity());
         }
