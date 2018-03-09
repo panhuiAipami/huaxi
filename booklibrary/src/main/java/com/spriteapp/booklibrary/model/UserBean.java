@@ -61,6 +61,7 @@ public class UserBean implements Serializable {
     private int user_favorites;
     private int user_message;
     private int has_role;//0不是，1是
+    private int read_timespan;//上传时长的秒数
 
     public int getId() {
         return id;
@@ -74,6 +75,14 @@ public class UserBean implements Serializable {
         if (user_nickname == null)
             user_nickname = "";
         return user_nickname;
+    }
+
+    public int getRead_timespan() {
+        return read_timespan;
+    }
+
+    public void setRead_timespan(int read_timespan) {
+        this.read_timespan = read_timespan;
     }
 
     public int getHas_role() {

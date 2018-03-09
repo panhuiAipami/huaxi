@@ -321,4 +321,9 @@ public interface BookApiService {
     @GET("card_get")
     Observable<BaseTwo<XiaoMiBean>> card_get(@Query("id") String id,
                                              @Query("format") String format);
+
+    //阅读时长判断
+    @GET("book_readhistroy")
+    Observable<Base> book_readhistroy(@Query("book_id") String book_id,
+                                      @Query("chapter_id") String chapter_id);
 }

@@ -5,14 +5,17 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/code_layout"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_gravity="center"
+        android:orientation="vertical"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/author_follow_dialog_bg"></LinearLayout>
 
     <ImageView
+        android:id="@+id/colse_img"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
