@@ -605,12 +605,12 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     public void run() {
                         if (AppUtil.isLogin()) {
                             if (isAddOrClean) {//书架中已存在,移除
-                                addToShelf(false, true);
+                                addToShelf(true, true);
                                 is_add_shelf.setVisibility(View.GONE);
                                 isAddOrClean = false;
                                 header.setAddOrClean(!isAddOrClean);
                             } else {//加书架
-                                addToShelf(false, false);
+                                addToShelf(true, false);
                                 is_add_shelf.setVisibility(View.VISIBLE);
                                 isAddOrClean = true;
                                 header.setAddOrClean(!isAddOrClean);
