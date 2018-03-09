@@ -207,7 +207,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             return;
         }
         mBookId = bookDetail.getBook_id();
-
+        mPtrFrameLayout.setBookId(mBookId);
         mOldBookDetail = mBookDb.queryBook(mBookId);
         mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
         mChapterList = mChapterDb.queryCatalog(mBookId);
@@ -567,14 +567,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 //刷新操作
-
-                frame.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showSingleToast("收藏成功");
-                        mPtrFrameLayout.refreshComplete();
-                    }
-                }, 1500);
+                addToShelf(false);
+                mPtrFrameLayout.refreshComplete();
             }
         });
     }

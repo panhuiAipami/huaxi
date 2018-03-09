@@ -45,6 +45,7 @@ public class DownLoadFirstAdapter extends DownLoadSecondAdapter<DownLoadFirstAda
 
     public void notifyDownLoadStatus() {
         this.mChapterList.clear();
+        total_price = 0;
         notifyDataSetChanged();
     }
 

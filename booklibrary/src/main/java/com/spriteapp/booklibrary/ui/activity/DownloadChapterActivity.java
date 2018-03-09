@@ -223,6 +223,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 adapter.notifyDownLoadStatus();
                 selectChapter.clear();
                 balance -= total_price;
+                total_price = 0;
                 refreshUi(0, 0);
             } else {
                 //下完一章接着下一章

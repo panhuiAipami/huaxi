@@ -1,20 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/book_reader_white"
+    android:background="@color/app_background"
+    android:paddingTop="@dimen/book_reader_top_bar_height"
     android:orientation="vertical">
+
+
+    <com.spriteapp.booklibrary.widget.RatingBar
+        android:id="@+id/star"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/textView"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:gravity="center"
+        app:starCount="5"
+        app:starEmpty="@mipmap/score_gary_icon"
+        app:starFill="@mipmap/score_yellow_icon"
+        app:starHalf="@mipmap/score_gary_icon"
+        app:starImageSize="25dp"
+        app:starPadding="5dp"
+        app:starStep="5"
+        app:stepSize="Half" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/three_font_color"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="轻点添加评分"/>
+
+    <EditText
+        android:id="@+id/book_reader_comment_edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/add_book_comment_bg"
+        android:gravity="top"
+        android:hint="标题(选填)"
+        android:imeOptions="actionDone"
+        android:lineSpacingExtra="3dp"
+        android:maxLines="5"
+        android:minLines="5"
+        android:padding="14dp"
+        android:textColor="#333333"
+        android:textColorHint="#939393"
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/book_reader_comment_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/book_reader_top_bar_height"
-        android:background="@null"
+        android:layout_margin="15dp"
+        android:background="@drawable/add_book_comment_bg"
         android:gravity="top"
-        android:hint="说说此刻你的想法..."
+        android:hint="请输入评论内容"
         android:imeOptions="actionDone"
         android:lineSpacingExtra="3dp"
+        android:layout_marginTop="10dp"
         android:maxLines="5"
         android:minLines="5"
         android:padding="14dp"
