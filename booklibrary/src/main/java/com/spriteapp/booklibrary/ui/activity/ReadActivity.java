@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -63,6 +64,7 @@ import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.DialogUtil;
+import com.spriteapp.booklibrary.util.HistoryTime;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ScreenUtil;
@@ -86,6 +88,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
@@ -134,7 +138,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      * 是否开始阅读章节
      **/
     private boolean startRead = false;
-    private int mBookId;
+    private static int mBookId;
     private int mCurrentChapter;
     private ReadProgressLayout mReadProgressLayout;
     private boolean isNight;
@@ -165,11 +169,37 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private boolean IsRegister = true;
     private String titleFile = "";
 
+
+    //上传阅读时长
+    public static int READTIME = 120;//测试10秒,正式使用用户信息里的字段，如果没有则默认使用120秒;
+    public static int time = 120;
+    private static int oldChapter_id;
+    private static android.os.Handler handler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (time == 0) {
+                Log.d("handleMessage", "上传时长");
+                if (mBookId != 0 && oldChapter_id != 0)
+                    HistoryTime.getHistory(mBookId + "", oldChapter_id + "");
+            } else if (time > 0) {
+                time--;
+                handler.sendEmptyMessageDelayed(0, 1000);
+                Log.d("handleMessage", "time===" + time);
+            }
+        }
+    };
+
     @Override
     public void initData() {
         if (IsRegister) {
             EventBus.getDefault().register(this);
 //            IsRegister = !IsRegister;
+        }
+        if (AppUtil.isLogin() && UserBean.getInstance().getRead_timespan() != 0) {
+            READTIME = UserBean.getInstance().getRead_timespan();
+            time = READTIME;
+            Log.d("READTIME", "READTIME===" + READTIME);
         }
         //标题栏
         mRightTitleLayout = new ReadRightTitleLayout(this);
@@ -852,11 +882,31 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (oldChapter_id != 0 && time != READTIME && time < READTIME && time != 0 && handler != null && AppUtil.isLogin()) {
+            Log.d("handleMessage", "onRestart===" + time);
+            handler.sendEmptyMessageDelayed(0, 1000);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (handler != null && AppUtil.isLogin()) {
+            Log.d("handleMessage", "onStop====" + time);
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
     private OnReadStateChangeListener mReadListener = new OnReadStateChangeListener() {
         @Override
         public void onChapterChanged(int chapter) {
+
             isClickPayChapter = false;
             updateCurrentProgress(chapter);
+            oldChapter_id = mCurrentChapter;
             mCurrentChapter = chapter;
             mChapterDb.updateReadState(mBookId, mCurrentChapter);
             if (mPayChapterDialog != null && mPayChapterDialog.isShowing()) {
@@ -901,6 +951,25 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookChapterResponse catalog = mChapterList.get(i);
                 int chapter_id = catalog.getChapter_id();
                 if (chapter_id == chapter) {
+
+                    if (AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id == chapter) {//当前章节等于跳转章节并且跳转章节为免费
+
+
+                        Log.d("onChapterChanged", "选取章节等于" + "当前章节ID===" + oldChapter_id + "跳转的章节ID===" + chapter);
+                        time = READTIME;
+                        handler.removeCallbacksAndMessages(null);
+                        handler.sendEmptyMessageDelayed(0, 1000);//一秒
+
+
+                    } else if (AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id != chapter) {//当前章节不等于跳转章节并且跳转章节为免费
+
+                        Log.d("onChapterChanged", "选取章节不等于" + "当前章节ID===" + oldChapter_id + "跳转的章节ID===" + chapter);
+                        time = READTIME;
+                        handler.removeCallbacksAndMessages(null);
+                        handler.sendEmptyMessageDelayed(0, 1000);//一秒
+                    }
+
+
                     mChapterList.get(i).setChapterReadState(ChapterEnum.HAS_READ.getCode());
                     int loadPosition = i + 1;
                     if (loadPosition >= mChapterList.size()) {
@@ -912,8 +981,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                                 SharedPreferencesUtil.getInstance().getInt(Constant.IS_BOOK_AUTO_SUB),
                                 false);
                     }
+
                     break;
                 }
+
             }
         }
 
