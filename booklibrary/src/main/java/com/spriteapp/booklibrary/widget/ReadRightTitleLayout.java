@@ -86,8 +86,8 @@ public class ReadRightTitleLayout extends LinearLayout {
     public void changeMode(boolean isNight) {
         mBuyImageView.setImageResource(isNight ? R.drawable.book_reader_buy_night_selector
                 : R.drawable.book_reader_buy_day_selector);
-        mAddShelfImageView.setImageResource(isNight ? R.drawable.book_reader_add_shelf_night_selector
-                : R.drawable.book_reader_add_shelf_day_selector);
+        mAddShelfImageView.setImageResource(isNight ? R.drawable.book_reader_download_day_selector
+                : R.drawable.book_reader_download_day_selector);
         mRewardImageView.setImageResource(isNight ? R.drawable.book_reader_reward_night_selector
                 : R.drawable.book_reader_reward_day_selector);
         mMoreImageView.setImageResource(isNight ? R.drawable.book_reader_more_night_selector
