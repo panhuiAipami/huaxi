@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,8 @@ import de.greenrobot.event.EventBus;
 public class PublishCommentActivity extends TitleActivity implements PublishCommentView {
 
     public static final String BOOK_ID_TAG = "bookIdTag";
-    private EditText mCommentEditText;
+    private EditText mCommentEditText,mCommentEditTitle;
+    private com.spriteapp.booklibrary.widget.RatingBar score_bar;
     private TextView mSendTextView;
     private PublishCommentPresenter mPresenter;
     private int mBookId;
@@ -61,6 +63,13 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
                 InputUtil.showSoftInput(PublishCommentActivity.this, mCommentEditText);
             }
         });
+
+        score_bar.setOnRatingChangeListener(new com.spriteapp.booklibrary.widget.RatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(float ratingCount) {
+                Log.e("onRatingChanged","--------评分 = ---------"+ratingCount);
+            }
+        });
     }
 
     private void addRightView() {
@@ -79,7 +88,9 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
+        mCommentEditTitle = (EditText) findViewById(R.id.book_reader_comment_edit_title);
         mCommentEditText = (EditText) findViewById(R.id.book_reader_comment_edit_text);
+        score_bar = (com.spriteapp.booklibrary.widget.RatingBar) findViewById(R.id.ratingBar);
     }
 
     @Override

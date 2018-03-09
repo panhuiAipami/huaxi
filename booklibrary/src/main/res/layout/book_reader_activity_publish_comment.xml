@@ -9,12 +9,12 @@
 
 
     <com.spriteapp.booklibrary.widget.RatingBar
-        android:id="@+id/star"
+        android:id="@+id/ratingBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textView"
         android:paddingLeft="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:gravity="center"
         app:starCount="5"
         app:starEmpty="@mipmap/score_gary_icon"
