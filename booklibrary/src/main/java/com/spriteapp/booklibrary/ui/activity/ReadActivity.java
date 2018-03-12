@@ -497,7 +497,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
         book_reader_title_textView.setMaxEms(8);
-        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_home_bottom_text_choose_color));
+        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_reader_text_color));
         mShowView = mBottomLayout;
         mDismissView = mBottomLayout;
         mTextSizeLayout.setCallBack(mTextSizeCallback);
@@ -586,6 +586,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         //下拉操作
         final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(this);
+        header.setAddOrClean(!isAddOrClean);
         mPtrFrameLayout.setPtrUIHandler(header);
         mPtrFrameLayout.setHeaderView(header);
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -594,44 +595,37 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 /**
                  *检查是否可以刷新，这里使用默认的PtrHandler进行判断
                  */
-                return true;
+                return AppUtil.isLogin(ReadActivity.this);
             }
 
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+            public void onRefreshBegin(final PtrFrameLayout frame) {
                 //刷新操作
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (AppUtil.isLogin()) {
-                            if (isAddOrClean) {//书架中已存在,移除
-                                addToShelf(true, true);
-                                is_add_shelf.setVisibility(View.GONE);
-                                isAddOrClean = false;
-                                header.setAddOrClean(!isAddOrClean);
+                        if (isAddOrClean) {//书架中已存在,移除
+                            addToShelf(true, true);
+                            is_add_shelf.setVisibility(View.GONE);
+                            isAddOrClean = false;
 
-
-                                BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
-                                if (bookDetail != null || BookUtil.isBookAddShelf(bookDetail)) {
-                                    if (AppUtil.isLogin()) {
-                                        bookDetail.setBook_add_shelf(0);
-                                        mBookDb.update(bookDetail, 0);
-                                    }
+                            BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
+                            if (bookDetail != null || BookUtil.isBookAddShelf(bookDetail)) {
+                                if (AppUtil.isLogin()) {
+                                    bookDetail.setBook_add_shelf(0);
+                                    mBookDb.update(bookDetail, 0);
                                 }
-
-
-                            } else {//加书架
-                                addToShelf(true, false);
-                                is_add_shelf.setVisibility(View.VISIBLE);
-                                isAddOrClean = true;
-                                header.setAddOrClean(!isAddOrClean);
                             }
 
+                        } else {//加书架
+                            addToShelf(true, false);
+                            is_add_shelf.setVisibility(View.VISIBLE);
+                            isAddOrClean = true;
                         }
+                        header.setAddOrClean(!isAddOrClean);
                         mPtrFrameLayout.refreshComplete();
                     }
                 }, 500);
-
             }
         });
     }
@@ -747,8 +741,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                         : R.color.book_reader_reader_text_color),
                 getResources().getColor(isNight ? R.color.book_reader_read_title_night_color
                         : R.color.book_reader_read_title_color));
-        mBackImageView.setImageResource(isNight ? R.drawable.book_reader_title_back_night_selector :
-                R.drawable.book_reader_title_back_selector);
+        //返回按钮
+//        mBackImageView.setImageResource(isNight ? R.drawable.book_reader_title_back_night_selector :
+//                R.drawable.book_reader_title_back_selector);
         mTitleLayout.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background :
                 R.color.book_reader_white);
         mLineView.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background :
@@ -757,7 +752,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 R.color.book_reader_white);
         mChapterListView.setSelector(isNight ? R.drawable.book_reader_common_press_night_selector :
                 R.drawable.book_reader_common_press_selector);
-        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, isNight ? R.color.night_title : R.color.book_reader_home_bottom_text_choose_color));
+        //标题
+//        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, isNight ? R.color.night_title : R.color.book_reader_home_bottom_text_choose_color));
         if (mChapterAdapter != null) {
             mChapterAdapter.setNight(isNight);
             mChapterAdapter.notifyDataSetChanged();
@@ -835,7 +831,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 public void clickAddShelf() {//下载
 //                    addToShelf(false);
                     ActivityUtil.toDownloadChapterActivity(ReadActivity.this, mBookId);
+                }
 
+                @Override
+                public void clickComment() {//评论
+                    ActivityUtil.toPublishCommentActivity(ReadActivity.this, mBookId);
                 }
 
                 @Override

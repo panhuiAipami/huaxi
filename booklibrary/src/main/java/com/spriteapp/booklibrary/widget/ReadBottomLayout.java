@@ -62,29 +62,29 @@ public class ReadBottomLayout extends LinearLayout {
     }
 
     public void changeMode(boolean isNight) {
-        mChapterImageView.setImageResource(isNight ? R.drawable.book_reader_chapter_night_selector :
-                R.drawable.book_reader_chapter_selector);
-        mProgressImageView.setImageResource(isNight ? R.drawable.book_reader_progress_night_selector :
-                R.drawable.book_reader_progress_selector);
-        mModeImageView.setImageResource(isNight ? R.drawable.book_reader_mode_night_selector :
-                R.drawable.book_reader_mode_selector);
-        mTextImageView.setImageResource(isNight ? R.drawable.book_reader_text_size_night_selector :
-                R.drawable.book_reader_text_size_selector);
+//        mChapterImageView.setImageResource(isNight ? R.drawable.book_reader_chapter_night_selector :
+//                R.drawable.book_reader_chapter_selector);
+//        mProgressImageView.setImageResource(isNight ? R.drawable.book_reader_progress_night_selector :
+//                R.drawable.book_reader_progress_selector);
+//        mModeImageView.setImageResource(isNight ? R.drawable.book_reader_mode_night_selector :
+//                R.drawable.book_reader_mode_selector);
+//        mTextImageView.setImageResource(isNight ? R.drawable.book_reader_text_size_night_selector :
+//                R.drawable.book_reader_text_size_selector);
         mView.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background
                 : R.color.book_reader_white);
-
-        mChapterTextView.setTextColor(getResources().getColorStateList(isNight ?
-                R.color.book_reader_bottom_text_night_selector :
-                R.color.book_reader_bottom_text_selector));
-        mProgressTextView.setTextColor(getResources().getColorStateList(isNight ?
-                R.color.book_reader_bottom_text_night_selector :
-                R.color.book_reader_bottom_text_selector));
-        mModeTextView.setTextColor(getResources().getColorStateList(isNight ?
-                R.color.book_reader_bottom_text_night_selector :
-                R.color.book_reader_bottom_text_selector));
-        mTextTextView.setTextColor(getResources().getColorStateList(isNight ?
-                R.color.book_reader_bottom_text_night_selector :
-                R.color.book_reader_bottom_text_selector));
+//
+//        mChapterTextView.setTextColor(getResources().getColorStateList(isNight ?
+//                R.color.book_reader_bottom_text_night_selector :
+//                R.color.book_reader_bottom_text_selector));
+//        mProgressTextView.setTextColor(getResources().getColorStateList(isNight ?
+//                R.color.book_reader_bottom_text_night_selector :
+//                R.color.book_reader_bottom_text_selector));
+//        mModeTextView.setTextColor(getResources().getColorStateList(isNight ?
+//                R.color.book_reader_bottom_text_night_selector :
+//                R.color.book_reader_bottom_text_selector));
+//        mTextTextView.setTextColor(getResources().getColorStateList(isNight ?
+//                R.color.book_reader_bottom_text_night_selector :
+//                R.color.book_reader_bottom_text_selector));
         mModeTextView.setText(isNight ? "日间模式" : "夜间模式");
     }
 

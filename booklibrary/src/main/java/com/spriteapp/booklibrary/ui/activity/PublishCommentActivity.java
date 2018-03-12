@@ -29,7 +29,7 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
     public static final String BOOK_ID_TAG = "bookIdTag";
     private EditText mCommentEditText,mCommentEditTitle;
     private com.spriteapp.booklibrary.widget.RatingBar score_bar;
-    private TextView mSendTextView;
+    private TextView mSendTextView,comment_score;
     private PublishCommentPresenter mPresenter;
     private int mBookId;
     private float rCount;
@@ -69,8 +69,31 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
             @Override
             public void onRatingChange(float ratingCount) {
                 rCount = ratingCount;
+                setCommentSore();
             }
         });
+    }
+
+    public void setCommentSore(){
+        String text =  "不好！";
+        switch ((int) rCount){
+            case 1:
+                text = "不好！";
+                break;
+            case 2:
+                text = "一般！";
+                break;
+            case 3:
+                text = "凑合！";
+                break;
+            case 4:
+                text = "不错哟！";
+                break;
+            case 5:
+                text = "强烈推荐";
+                break;
+        }
+        comment_score.setText(text);
     }
 
     private void addRightView() {
@@ -92,6 +115,7 @@ public class PublishCommentActivity extends TitleActivity implements PublishComm
         mCommentEditTitle = (EditText) findViewById(R.id.book_reader_comment_edit_title);
         mCommentEditText = (EditText) findViewById(R.id.book_reader_comment_edit_text);
         score_bar = (com.spriteapp.booklibrary.widget.RatingBar) findViewById(R.id.ratingBar);
+        comment_score = (TextView) findViewById(R.id.comment_score);
     }
 
     @Override

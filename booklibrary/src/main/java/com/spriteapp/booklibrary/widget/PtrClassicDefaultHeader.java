@@ -158,7 +158,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
         hideRotateView();
         mProgressBar.setVisibility(INVISIBLE);
         mTitleView.setVisibility(VISIBLE);
-        mTitleView.setText(is_add_shelf?R.string.hebut_ptr_update_complete:R.string.hebut_ptr_update_complete2);
+        mTitleView.setText(!is_add_shelf?R.string.hebut_ptr_update_complete:R.string.hebut_ptr_update_complete2);
 
         //update last update time
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(KEY_SharedPreferences, 0);

@@ -22,6 +22,7 @@ import de.greenrobot.event.EventBus;
 
 import static com.spriteapp.booklibrary.util.Util.PREFS_DEVICE_ID;
 import static com.spriteapp.booklibrary.util.Util.PREFS_FILE;
+import static com.spriteapp.booklibrary.util.Util.isFastClick;
 
 public class AppUtil {
 
@@ -106,7 +107,8 @@ public class AppUtil {
         if (!StringUtil.isEmpty(token)) {
             return true;
         } else {//直接跳登录页面
-            HuaXiSDK.getInstance().toLoginPage(context);
+            if (!isFastClick())
+                HuaXiSDK.getInstance().toLoginPage(context);
             return false;
         }
     }

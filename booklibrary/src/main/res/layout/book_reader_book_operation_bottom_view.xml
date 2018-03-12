@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="章节"
-            android:textColor="@color/book_reader_bottom_text_selector"
+            android:textColor="@color/book_reader_reader_text_color"
             android:textSize="@dimen/book_reader_bottom_operation_text_size" />
     </LinearLayout>
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="调整进度"
-            android:textColor="@color/book_reader_bottom_text_selector"
+            android:textColor="@color/book_reader_reader_text_color"
             android:textSize="@dimen/book_reader_bottom_operation_text_size" />
     </LinearLayout>
 
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="夜间模式"
-            android:textColor="@color/book_reader_bottom_text_selector"
+            android:textColor="@color/book_reader_reader_text_color"
             android:textSize="@dimen/book_reader_bottom_operation_text_size" />
     </LinearLayout>
 
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="字号"
-            android:textColor="@color/book_reader_bottom_text_selector"
+            android:textColor="@color/book_reader_reader_text_color"
             android:textSize="@dimen/book_reader_bottom_operation_text_size" />
     </LinearLayout>
 

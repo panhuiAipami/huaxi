@@ -225,7 +225,7 @@ public abstract class BaseReadView extends View {
                             pagefactory.cancelPage();
                             restoreAnimation();
                         }
-                    },180);
+                    },500);
                 }
 
                 if (cancel) {

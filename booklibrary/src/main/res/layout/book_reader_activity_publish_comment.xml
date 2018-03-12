@@ -26,6 +26,7 @@
         app:stepSize="Half" />
 
     <TextView
+        android:id="@+id/comment_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"

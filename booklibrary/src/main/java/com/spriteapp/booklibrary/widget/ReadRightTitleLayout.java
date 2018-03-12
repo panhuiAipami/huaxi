@@ -21,6 +21,7 @@ public class ReadRightTitleLayout extends LinearLayout {
     private Context mContext;
     private ImageView mBuyImageView;
     private ImageView mAddShelfImageView;
+    private ImageView mCommentImageView;
     private ImageView mHomeImageView;
     private ImageView mRewardImageView;
     private ImageView mMoreImageView;
@@ -46,6 +47,7 @@ public class ReadRightTitleLayout extends LinearLayout {
         addView(mView);
         mBuyImageView = (ImageView) mView.findViewById(R.id.book_reader_buy_image_view);
         mAddShelfImageView = (ImageView) mView.findViewById(R.id.book_reader_add_shelf_image_view);
+        mCommentImageView = (ImageView) mView.findViewById(R.id.book_reader_comment_image_view);
         mHomeImageView = (ImageView) mView.findViewById(R.id.book_reader_home_image_view);
         mRewardImageView = (ImageView) mView.findViewById(R.id.book_reader_reward_image_view);
         mMoreImageView = (ImageView) mView.findViewById(R.id.book_reader_more_image_view);
@@ -56,6 +58,7 @@ public class ReadRightTitleLayout extends LinearLayout {
     private void setListener() {
         click(mBuyImageView);
         click(mAddShelfImageView);
+        click(mCommentImageView);
         click(mRewardImageView);
         click(mMoreImageView);
         click(mHomeImageView);
@@ -72,7 +75,9 @@ public class ReadRightTitleLayout extends LinearLayout {
                     mTitleListener.clickBuy();
                 } else if (view == mAddShelfImageView) {//下载
                     mTitleListener.clickAddShelf();
-                } else if (view == mRewardImageView) {
+                } else if(view == mCommentImageView){//评论
+                    mTitleListener.clickComment();
+                }else if (view == mRewardImageView) {
                     mTitleListener.clickReward();
                 } else if (view == mMoreImageView) {
                     mTitleListener.clickMore();
@@ -86,12 +91,16 @@ public class ReadRightTitleLayout extends LinearLayout {
     public void changeMode(boolean isNight) {
         mBuyImageView.setImageResource(isNight ? R.drawable.book_reader_buy_night_selector
                 : R.drawable.book_reader_buy_day_selector);
+
         mAddShelfImageView.setImageResource(isNight ? R.drawable.book_reader_download_day_selector
                 : R.drawable.book_reader_download_day_selector);
+
         mRewardImageView.setImageResource(isNight ? R.drawable.book_reader_reward_night_selector
                 : R.drawable.book_reader_reward_day_selector);
+
         mMoreImageView.setImageResource(isNight ? R.drawable.book_reader_more_night_selector
                 : R.drawable.book_reader_more_day_selector);
+
         mHomeImageView.setImageResource(isNight ? R.drawable.book_reader_home_night_selector
                 : R.drawable.book_reader_home_day_selector);
     }
@@ -100,7 +109,7 @@ public class ReadRightTitleLayout extends LinearLayout {
         void clickBuy();
 
         void clickAddShelf();
-
+        void clickComment();
         void clickReward();
 
         void clickMore();
