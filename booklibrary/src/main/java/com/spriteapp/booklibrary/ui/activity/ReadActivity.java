@@ -595,7 +595,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 /**
                  *检查是否可以刷新，这里使用默认的PtrHandler进行判断
                  */
-                return AppUtil.isLogin(ReadActivity.this);
+                return true;
             }
 
             @Override
@@ -604,6 +604,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if(!AppUtil.isLogin(ReadActivity.this)){
+                            mPtrFrameLayout.refreshComplete();
+                            return ;
+                        }
                         if (isAddOrClean) {//书架中已存在,移除
                             addToShelf(true, true);
                             is_add_shelf.setVisibility(View.GONE);
