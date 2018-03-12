@@ -210,6 +210,12 @@ public interface BookApiService {
     //检查更新
     @GET("server_check")
     Observable<Base<CateBean>> app_cate();
+//    @Query("system") String system,
+//    @Query("system_version") String system_version,
+//    @Query("type") String type,
+//    @Query("type") String type,
+//    @Query("type") String type,
+//    @Query("type") String type
 
     //广场列表
     @GET("square_index")

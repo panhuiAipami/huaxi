@@ -343,7 +343,10 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     @Override
     public void setDeleteBookResponse() {
         try {
-            if (del_book.size() == 0) return;
+            if (del_book.size() == 0) {
+                onEventMainThread(UpdaterShelfEnum.UPDATE_SHELF);
+                return;
+            }
             List<Integer> pos = new ArrayList<>();
 
             // 获取所有键值对对象的集合

@@ -609,6 +609,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                                 is_add_shelf.setVisibility(View.GONE);
                                 isAddOrClean = false;
                                 header.setAddOrClean(!isAddOrClean);
+
+
+                                BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
+                                if (bookDetail != null || BookUtil.isBookAddShelf(bookDetail)) {
+                                    if (AppUtil.isLogin()) {
+                                        bookDetail.setBook_add_shelf(0);
+                                        mBookDb.update(bookDetail, 0);
+                                    }
+                                }
+
+
                             } else {//加书架
                                 addToShelf(true, false);
                                 is_add_shelf.setVisibility(View.VISIBLE);

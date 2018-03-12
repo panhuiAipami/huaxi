@@ -42,6 +42,7 @@ public class HeaderInterceptor implements Interceptor {
                 .addHeader(SignConstant.OS, android.os.Build.VERSION.RELEASE)
                 .addHeader(SignConstant.MAC, Util.getMacAddr())
                 .addHeader(SignConstant.IMEI, Util.getid())
+
                 .addHeader(SignConstant.SYSTEM, "Android")//操作系统
                 .addHeader(SignConstant.SYSTEM_VERSION, android.os.Build.VERSION.RELEASE)//系统版本
                 .addHeader(SignConstant.DEVICE, android.os.Build.MODEL)//手机型号
