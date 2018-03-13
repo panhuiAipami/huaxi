@@ -28,6 +28,7 @@ import com.spriteapp.booklibrary.util.CXAESUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -225,6 +226,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 balance -= total_price;
                 total_price = 0;
                 refreshUi(0, 0);
+                Util.getUserInfo();
             } else {
                 //下完一章接着下一章
                 contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), 1);
