@@ -166,7 +166,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 loading = 0;
                 downLoad_chapter.setText("下载中0%");
                 downLoad_chapter.setEnabled(false);
-                contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), selectChapter.get(loading).getChapter_is_sub());
+                contentPresenter.getContent(book_id, selectChapter.get(loading).getChapter_id(), 1);
             }
         }
 
@@ -194,7 +194,7 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
                 ToastUtil.showSingleToast(message);
                 return;
             }
-            if(data.getChapter_need_buy() == 0){//不需要购买不扣钱
+            if (data.getUsed_false_point() == 0 && data.getUsed_real_point() == 0) {//不需要购买不扣钱
                 total_price -= data.getChapter_price();
             }
 

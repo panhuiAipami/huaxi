@@ -92,8 +92,8 @@
     <string name="hebut_ptr_updating">添加中...</string>
     <string name="hebut_ptr_updating2">移除中...</string>
 
-    <string name="hebut_ptr_update_complete">添加成功</string>
-    <string name="hebut_ptr_update_complete2">移除成功</string>
+    <string name="hebut_ptr_update_complete">操作完成</string>
+    <string name="hebut_ptr_update_complete2">操作完成</string>
 
     <string name="hebut_ptr_last_update">last update: </string>
 
