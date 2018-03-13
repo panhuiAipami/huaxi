@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.BindPhoneActivity;
 import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
@@ -17,6 +18,7 @@ import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.TaskActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
+import com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity;
 
 /**
  * Created by kuangxiaoguo on 2017/7/15.
@@ -144,6 +146,14 @@ public class ActivityUtil {
     }
     public static void toTaskActivity(Context context) {
         Intent intent = new Intent(context, TaskActivity.class);
+        context.startActivity(intent);
+    }
+    public static void toBindPhoneActivity(Context context) {
+        Intent intent = new Intent(context, BindPhoneActivity.class);
+        context.startActivity(intent);
+    }
+    public static void toWithdrawalsActivity(Context context) {
+        Intent intent = new Intent(context, WithdrawalsActivity.class);
         context.startActivity(intent);
     }
 }

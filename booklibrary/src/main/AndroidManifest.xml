@@ -106,7 +106,10 @@
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.RechargeActivity" />
         <activity android:name=".ui.activity.DownloadChapterActivity" />
-        <activity android:name=".ui.activity.TaskActivity"></activity>
+        <activity android:name=".ui.activity.TaskActivity" />
+        <activity android:name=".ui.activity.InvitationActivity" />
+        <activity android:name=".ui.activity.BindPhoneActivity" />
+        <activity android:name=".ui.activity.WithdrawalsActivity"></activity>
     </application>
 
 </manifest>

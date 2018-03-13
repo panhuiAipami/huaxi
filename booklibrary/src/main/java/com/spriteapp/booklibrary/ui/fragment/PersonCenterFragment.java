@@ -54,8 +54,8 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
             recharge, bookshelf, recharge_record, records_of_consumption,
             award_record, remind, phone, setting, user_id;
-    private LinearLayout invitation_code_layout, task_layout;
-    private TextView invitation_code, task;
+    private LinearLayout invitation_code_layout, task_layout, withdrawals_layout;
+    private TextView invitation_code, task, withdrawals;
     private ImageView user_bg, user_head;
     private BookShelfPresenter mPresenter;
     public static int toSetting = 0;
@@ -117,11 +117,14 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         //花都
         invitation_code = (TextView) mView.findViewById(R.id.invitation_code);
         task = (TextView) mView.findViewById(R.id.task);
+        withdrawals = (TextView) mView.findViewById(R.id.withdrawals);
         invitation_code_layout = (LinearLayout) mView.findViewById(R.id.invitation_code_layout);
         task_layout = (LinearLayout) mView.findViewById(R.id.task_layout);
+        withdrawals_layout = (LinearLayout) mView.findViewById(R.id.withdrawals_layout);
         if (HomeActivity.ISHAUDU) {
             task_layout.setVisibility(View.VISIBLE);
             invitation_code_layout.setVisibility(View.VISIBLE);
+            withdrawals_layout.setVisibility(View.VISIBLE);
         }
 
 
@@ -148,6 +151,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         //花都
         task.setOnClickListener(this);
         invitation_code.setOnClickListener(this);
+        withdrawals.setOnClickListener(this);
         if (AppUtil.isLogin())
             getUserData();
 
@@ -221,6 +225,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         } else if (v == invitation_code) {//填写邀请码
             if (!AppUtil.isLogin(getActivity())) return;
             InvitationCodeDialog dialog = new InvitationCodeDialog(getActivity());
+        } else if (v == withdrawals) {
+            if (!AppUtil.isLogin(getActivity())) return;
+            ActivityUtil.toWithdrawalsActivity(getActivity());//去提现
         }
     }
 

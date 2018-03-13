@@ -12,9 +12,10 @@ public class BaseTwo<T> implements Serializable {
 
     private String status;
     private int code;
+    private String invitecode;
     @SerializedName(value = "message", alternate = {"hello_messages"})//分别适应不同名称的集合
     private String message;
-    @SerializedName(value = "hot", alternate = {"hotkeywords","data"})//分别适应不同名称的集合
+    @SerializedName(value = "hot", alternate = {"hotkeywords", "data"})//分别适应不同名称的集合
     private T hot;
 
     public T getHot() {
@@ -49,7 +50,13 @@ public class BaseTwo<T> implements Serializable {
         this.message = message;
     }
 
+    public String getInvitecode() {
+        return invitecode;
+    }
 
+    public void setInvitecode(String invitecode) {
+        this.invitecode = invitecode;
+    }
 
     @Override
     public String toString() {
