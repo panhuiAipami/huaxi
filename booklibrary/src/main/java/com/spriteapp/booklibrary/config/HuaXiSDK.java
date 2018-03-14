@@ -83,11 +83,11 @@ public class HuaXiSDK {
         mConfig.channelListener.toWXPay(response,push_id);
     }
 
-    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {
+    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode,int type) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }
-        mConfig.channelListener.showShareDialog(context, shareDetail, isNightMode);
+        mConfig.channelListener.showShareDialog(context, shareDetail, isNightMode,type);
     }
 
     public int getChannelId() {

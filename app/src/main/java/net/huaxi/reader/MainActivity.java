@@ -33,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
 
-
 //    public static final String SIGN_SECRET = "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
 //    public static final int CLIENT_ID = 40;
 
 
     private static final int CHANNEL_ID = 2;
     public static final String SHAREDATA = "share_data";
+    public static final String SHARETYPE = "share_type";
     private ShareDialog shareDialog;
 
     private ShareBean shareBean;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode) {
+                    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode, int type) {
 //                        Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
                         if (shareDetail != null) {
                             shareBean = new ShareBean();
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, ShareActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(SHAREDATA, shareBean);
+                            bundle.putInt(SHARETYPE, type);
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
@@ -101,24 +102,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initShareDialog() {
-        if (shareBean.getNid() == 0 && shareBean == null)
-            return;
-        if (shareDialog != null) {
-            shareDialog.dismiss();
-            shareDialog = null;
-        }
-        shareDialog = new ShareDialog(this, shareBean);
-        shareDialog.show();
+//        if (shareBean.getNid() == 0 && shareBean == null)
+//            return;
+//        if (shareDialog != null) {
+//            shareDialog.dismiss();
+//            shareDialog = null;
+//        }
+//        shareDialog = new ShareDialog(this, shareBean);
+//        shareDialog.show();
     }
 
     public void wxPay(WeChatBean response) {//微信支付
 //        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
 //        if (WXApi.isWXAppInstalled()) {
-            RequestMsg msg = new RequestMsg();
-            msg.setTokenId(response.getToken_id());
-            msg.setTradeType(MainApplication.WX_APP_TYPE);
-            msg.setAppId(LoginHelper.WX_APP_ID);
-            PayPlugin.unifiedAppPay(libActivity, msg);
+        RequestMsg msg = new RequestMsg();
+        msg.setTokenId(response.getToken_id());
+        msg.setTradeType(MainApplication.WX_APP_TYPE);
+        msg.setAppId(LoginHelper.WX_APP_ID);
+        PayPlugin.unifiedAppPay(libActivity, msg);
 //        } else {
 //            showToast("请先安装微信");
 //        }

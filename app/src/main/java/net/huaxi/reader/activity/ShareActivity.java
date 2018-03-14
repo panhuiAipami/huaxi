@@ -20,6 +20,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
     private ShareDialog shareDialog;
     private ShareBean shareBean;
     private TextView share;
+    private int type = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
     public void initData() {
         Intent intent = getIntent();
         shareBean = (ShareBean) intent.getSerializableExtra(MainActivity.SHAREDATA);
+        type = intent.getIntExtra(MainActivity.SHARETYPE, 1);
     }
 
     public void initListener() {
@@ -68,7 +70,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
             shareDialog.dismiss();
             shareDialog = null;
         }
-        shareDialog = new ShareDialog(this, shareBean);
+        shareDialog = new ShareDialog(this, shareBean,type);
         shareDialog.show();
         shareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

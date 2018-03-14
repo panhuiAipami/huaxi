@@ -2,25 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="@color/c10_themes_color2"
+    android:background="@color/c09_divider_color"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
     <View
         android:layout_width="5dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/code_btn_bg_color"></View>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/task_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:gravity="center_vertical"
         android:text="新手任务"
         android:textColor="@color/square_user_speak"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

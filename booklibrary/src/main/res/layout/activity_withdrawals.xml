@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tl="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,29 +8,11 @@
     android:paddingTop="47dp"
     tools:context="com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity">
 
-    <!--<com.flyco.tablayout.SlidingTabLayout-->
-    <!--android:id="@+id/tab_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="48dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp"-->
-    <!--tl:tl_indicator_color="@color/square_support_selector"-->
-    <!--tl:tl_indicator_height="3dp"-->
-    <!--tl:tl_indicator_width="20dp"-->
-    <!--tl:tl_tab_space_equal="true"-->
-    <!--tl:tl_textBold="true"-->
-    <!--tl:tl_textSelectColor="#333333"-->
-    <!--tl:tl_textUnselectColor="#666666"-->
-    <!--tl:tl_textsize="16sp"></com.flyco.tablayout.SlidingTabLayout>-->
-
-    <!--<android.support.v4.view.ViewPager-->
-    <!--android:id="@+id/view_pager"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></android.support.v4.view.ViewPager>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -100,6 +80,7 @@
 
 
     <LinearLayout
+        android:id="@+id/to_with_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -113,15 +94,27 @@
 
         <TextView
             android:id="@+id/setting_with"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:drawableEnd="@drawable/book_reader_right_arrow_image"
+            android:layout_weight="1"
+
             android:gravity="center_vertical"
             android:text="@string/alipay_with"
             android:textColor="@color/square_user_speak"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/alipay_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/book_reader_right_arrow_image"
+            android:drawablePadding="10dp"
+            android:maxLength="4"
+            android:textColor="@color/blue_color"
+            android:gravity="center_vertical"
+            android:text="" />
     </LinearLayout>
 
     <View

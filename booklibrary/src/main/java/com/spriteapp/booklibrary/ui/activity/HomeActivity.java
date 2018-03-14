@@ -46,6 +46,7 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.listener.DelBookShelf;
+import com.spriteapp.booklibrary.listener.GotoHomePage;
 import com.spriteapp.booklibrary.listener.HuaWeiPayCallBack;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.CateBean;
@@ -95,7 +96,7 @@ import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYP
  * Created by kuangxiaoguo on 2017/7/7.
  */
 
-public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks, HuaWeiPayCallBack {
+public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks, HuaWeiPayCallBack, GotoHomePage {
 
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
@@ -423,6 +424,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         mCommunityLayout.setOnClickListener(this);
         ListenerManager.getInstance().setDelBookShelf(this);
         ListenerManager.getInstance().setHuaWeiPayCallBack(this);
+        ListenerManager.getInstance().setGotoHomePage(this);
     }
 
     private void setAdapter() {
@@ -638,6 +640,15 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     public void info(double productPrice, String orderId, String key) {
         HuaWeiPayTask p = new HuaWeiPayTask(HomeActivity.getConnect(), new HuaweiPayResult(this, REQ_CODE_PAY));
         p.pay(key, "花溪小说", "充值", productPrice, orderId);
+    }
+
+    @Override
+    public void gotoPage() {//任务回调
+        if (mHomeViewPager != null) {
+            mHomeViewPager.setCurrentItem(BOOKSHELF_POSITION);
+            setSelectView(BOOKSHELF_POSITION);
+        }
+
     }
 
 

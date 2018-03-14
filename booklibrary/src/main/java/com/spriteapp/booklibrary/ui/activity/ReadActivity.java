@@ -913,7 +913,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
-                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
+                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight,1);
                 }
             }
         });

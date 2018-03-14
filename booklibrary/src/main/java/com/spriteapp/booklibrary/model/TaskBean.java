@@ -125,6 +125,15 @@ public class TaskBean {
             private String memo;
             private String rewardnum;
             private String classify;
+            private int tasktype;
+
+            public int getTasktype() {
+                return tasktype;
+            }
+
+            public void setTasktype(int tasktype) {
+                this.tasktype = tasktype;
+            }
 
             public String getId() {
                 return id;
@@ -172,8 +181,8 @@ public class TaskBean {
              * id : 10
              * title : 优质评论
              * memo : 单条评论点赞超过50，为优质评论
-
-             次日奖励200金币
+             * <p>
+             * 次日奖励200金币
              * rewardnum : 200
              * classify : 2
              */
@@ -183,6 +192,15 @@ public class TaskBean {
             private String memo;
             private String rewardnum;
             private String classify;
+            private int tasktype;
+
+            public int getTasktype() {
+                return tasktype;
+            }
+
+            public void setTasktype(int tasktype) {
+                this.tasktype = tasktype;
+            }
 
             public String getId() {
                 return id;

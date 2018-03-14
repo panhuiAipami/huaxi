@@ -13,7 +13,7 @@ public interface ChannelListener {
 
     void toLoginPage(Context context);
 
-    void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode);
+    void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode,int type);
 
     void toWXPay(WeChatBean response, String push_id);
 

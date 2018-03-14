@@ -2,12 +2,16 @@ package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
@@ -17,11 +21,14 @@ import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.TaskBean;
+import com.spriteapp.booklibrary.ui.adapter.TaskAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.youth.banner.Banner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -36,8 +43,10 @@ import io.reactivex.schedulers.Schedulers;
 public class TaskActivity extends TitleActivity {
     private TextView other_hint, money_num, goto_apprentice, goto_invition_code,
             success_apprentice, apprentice_profit, apprentice_num, apprentice_profit_gold_num;
-    private Banner banner;
+    private ImageView center_img;
     private RecyclerView recyclerView;
+    private TaskAdapter taskAdapter;
+    private List<TaskBean> taskBeanList = new ArrayList<>();
 
 
     @Override
@@ -45,7 +54,12 @@ public class TaskActivity extends TitleActivity {
         setTitle("任务");
         listener();
 //        getCode();
+        initList();
         getUser_task();
+    }
+
+    private void initList() {
+
     }
 
     @Override
@@ -65,9 +79,12 @@ public class TaskActivity extends TitleActivity {
         apprentice_profit = (TextView) findViewById(R.id.apprentice_profit);
         apprentice_num = (TextView) findViewById(R.id.apprentice_num);
         apprentice_profit_gold_num = (TextView) findViewById(R.id.apprentice_profit_gold_num);
-        banner = (Banner) findViewById(R.id.banner);
+        center_img = (ImageView) findViewById(R.id.center_img);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        taskAdapter = new TaskAdapter(this, taskBeanList);
+        recyclerView.setAdapter(taskAdapter);
     }
 
     public void listener() throws Exception {
@@ -98,7 +115,7 @@ public class TaskActivity extends TitleActivity {
         } else if (v == money_num) {//可提现金额
 
         } else if (v == goto_apprentice) {//去收徒
-            ActivityUtil.toBindPhoneActivity(this);
+
         } else if (v == success_apprentice) {//徒弟列表
 
         } else if (v == apprentice_profit) {//收徒总收益
@@ -177,8 +194,9 @@ public class TaskActivity extends TitleActivity {
                         if (taskResponse != null) {
                             int resultCode = taskResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-
-
+                                if (taskBeanList.size() != 0) taskBeanList.clear();
+                                taskBeanList.add(taskResponse);
+                                setTask();
                             }
                         }
 
@@ -195,4 +213,25 @@ public class TaskActivity extends TitleActivity {
                     }
                 });
     }
+
+    public void setTask() {
+
+        try {
+            if (taskBeanList != null && taskBeanList.size() != 0) {
+                TaskBean taskBean = taskBeanList.get(0);
+                if (taskBean == null) return;
+                goto_invition_code.setText(taskBean.getUser_invite_code());
+                apprentice_profit_gold_num.setText(taskBean.getApprentice_provide_money() + "金币");
+                apprentice_num.setText(taskBean.getApprentice_num() + "人");
+                GlideUtils.loadImage(center_img, taskBean.getTop_banner(), this);
+                taskAdapter.notifyDataSetChanged();
+                Log.d("setTask", "刷新适配器");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

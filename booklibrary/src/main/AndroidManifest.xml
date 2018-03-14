@@ -26,7 +26,6 @@
 
         <activity
             android:name=".ui.activity.HomeActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/HuaXiAppTheme" />
         <activity
@@ -109,7 +108,9 @@
         <activity android:name=".ui.activity.TaskActivity" />
         <activity android:name=".ui.activity.InvitationActivity" />
         <activity android:name=".ui.activity.BindPhoneActivity" />
-        <activity android:name=".ui.activity.WithdrawalsActivity"></activity>
+        <activity android:name=".ui.activity.WithdrawalsActivity" />
+        <activity android:name=".ui.activity.MangerAlipayActivity" />
+        <activity android:name=".ui.activity.ApprenticeListActivity"></activity>
     </application>
 
 </manifest>

@@ -348,6 +348,13 @@ public interface BookApiService {
     @GET("invite_activate")
     Observable<BaseTwo> invite_activate(@Query("code") String code);
 
+    //提现到支付宝
+    @GET("user_exchange")
+    Observable<Base> user_exchange(@Query("format") String format,
+                                   @Query("amount") String amount,
+                                   @Query("amount") String account,
+                                   @Query("real_name") String real_name);
+
     //获取短信验证码
     @GET("user_mobile")
     Observable<Base> user_mobile(@Query("mobile") String mobile,

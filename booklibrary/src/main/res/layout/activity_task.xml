@@ -26,7 +26,8 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="1"
-                android:text="用户 xxx提现一元到支付宝 45秒前" />
+                android:text="用户 xxx提现一元到支付宝 45秒前"
+                android:visibility="gone" />
             <!--提现金额模块-->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -86,7 +87,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/goto_apprentice"
@@ -109,7 +112,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:lines="1"
-                        android:text="每收一位徒弟可获得15金币" />
+                        android:text="每收一位徒弟可获得2元现金" />
 
 
                 </LinearLayout>
@@ -126,7 +129,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/goto_invition_code"
@@ -225,15 +230,24 @@
                     android:background="@color/c10_themes_color2"></View>
             </RelativeLayout>
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            <ImageView
+                android:id="@+id/center_img"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"></com.youth.banner.Banner>
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"></ImageView>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/other_hint_bg_color"
+                android:gravity="center"
+                android:text="@string/task_hint"
+                android:textSize="14sp" />
 
 
         </LinearLayout>
