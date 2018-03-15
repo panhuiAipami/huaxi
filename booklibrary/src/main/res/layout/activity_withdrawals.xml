@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:orientation="vertical"
+    android:paddingTop="47dp"
+    tools:context="com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/alipay_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center_horizontal|bottom"
+                android:text="支付宝"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/wechat_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:text="微信"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="4dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <View
+                    android:id="@+id/alipay_line"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/blue_color"></View>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <View
+                    android:id="@+id/wechat_line"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/green_color"></View>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/to_with_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ali_wx_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/alipay_with" />
+
+        <TextView
+            android:id="@+id/setting_with"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/alipay_with"
+            android:textColor="@color/square_user_speak"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/alipay_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/book_reader_right_arrow_image"
+            android:drawablePadding="10dp"
+            android:maxLength="4"
+            android:layout_gravity="center"
+            android:textColor="@color/blue_color"
+            android:gravity="center_vertical"
+            android:text="" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/c10_themes_color2"></View>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="当前金币"
+        android:textColor="@color/square_introduce"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/false_gold"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:text="0"
+        android:textColor="@color/code_btn_bg_color"
+        android:textSize="26sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_date_hint"
+        android:textColor="@color/square_user_speak"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/c10_themes_color2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/real_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="可兑换:0.0元"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/goto_with"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/yz_code_bg"
+            android:gravity="center"
+            android:text="立即兑换"
+            android:textColor="@color/app_background" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

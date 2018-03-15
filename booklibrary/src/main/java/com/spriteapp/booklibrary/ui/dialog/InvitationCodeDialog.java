@@ -14,9 +14,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.base.BaseTwo;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by userfirst on 2018/3/8.
@@ -24,7 +34,7 @@ import com.spriteapp.booklibrary.util.Util;
 
 public class InvitationCodeDialog extends BaseDialog {
     private Activity context;
-    private ImageView colse_img,remind;
+    private ImageView colse_img, remind;
     private RelativeLayout code_layout;
     private EditText edit_code;
     private TextView finish_text;
@@ -92,12 +102,64 @@ public class InvitationCodeDialog extends BaseDialog {
             } else if (v == finish_text) {
                 if (!TextUtils.isEmpty(code_num)) {
                 }
-                Log.d("finish_text", "code_num===" + code_num);
+                sendCode();
             } else if (remind == remind) {
                 Log.d("remind", "remind");
             }
         }
     };
+
+    public void sendCode() {//发送邀请码
+        try {
+            if (AppUtil.isNetAvailable(context)) {
+                BookApi.getInstance()
+                        .service
+                        .invite_activate(code_num)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<BaseTwo>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull BaseTwo bookStoreResponse) {
+                                if (bookStoreResponse != null) {
+                                    int resultCode = bookStoreResponse.getCode();
+                                    if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                        if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {
+                                            ToastUtil.showToast(bookStoreResponse.getMessage());
+                                            dismiss();//成功之后dismiss掉dialog
+                                        }
+
+                                    } else {
+                                        if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {
+                                            ToastUtil.showToast(bookStoreResponse.getMessage());
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public void dismiss() {
         if (mDialog.isShowing())

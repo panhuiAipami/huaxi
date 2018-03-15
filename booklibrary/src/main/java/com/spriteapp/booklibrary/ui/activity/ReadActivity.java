@@ -604,9 +604,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(!AppUtil.isLogin(ReadActivity.this)){
+                        if (!AppUtil.isLogin(ReadActivity.this)) {
                             mPtrFrameLayout.refreshComplete();
-                            return ;
+                            return;
                         }
                         if (isAddOrClean) {//书架中已存在,移除
                             addToShelf(true, true);
@@ -913,7 +913,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
-                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
+                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight,1);
                 }
             }
         });
@@ -923,7 +923,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (oldChapter_id != 0 && time != READTIME && time < READTIME && time != 0 && handler != null && AppUtil.isLogin()) {
+        if (HomeActivity.ISHAUDU && oldChapter_id != 0 && time != READTIME && time < READTIME && time != 0 && handler != null && AppUtil.isLogin()) {
             Log.d("handleMessage", "onRestart===" + time);
             handler.sendEmptyMessageDelayed(0, 1000);
         }
@@ -932,7 +932,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     protected void onStop() {
         super.onStop();
-        if (handler != null && AppUtil.isLogin()) {
+        if (HomeActivity.ISHAUDU && handler != null && AppUtil.isLogin()) {
             Log.d("handleMessage", "onStop====" + time);
             handler.removeCallbacksAndMessages(null);
         }
@@ -990,7 +990,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 int chapter_id = catalog.getChapter_id();
                 if (chapter_id == chapter) {
 
-                    if (AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id == chapter) {//当前章节等于跳转章节并且跳转章节为免费
+                    if (HomeActivity.ISHAUDU && AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id == chapter) {//当前章节等于跳转章节并且跳转章节为免费
 
 
                         Log.d("onChapterChanged", "选取章节等于" + "当前章节ID===" + oldChapter_id + "跳转的章节ID===" + chapter);
@@ -999,7 +999,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                         handler.sendEmptyMessageDelayed(0, 1000);//一秒
 
 
-                    } else if (AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id != chapter) {//当前章节不等于跳转章节并且跳转章节为免费
+                    } else if (HomeActivity.ISHAUDU && AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id != chapter) {//当前章节不等于跳转章节并且跳转章节为免费
 
                         Log.d("onChapterChanged", "选取章节不等于" + "当前章节ID===" + oldChapter_id + "跳转的章节ID===" + chapter);
                         time = READTIME;

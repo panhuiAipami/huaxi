@@ -7,6 +7,7 @@ import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.SquareBean;
+import com.spriteapp.booklibrary.model.TaskBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.UserModel;
@@ -334,4 +335,29 @@ public interface BookApiService {
     @GET("book_readhistroy")
     Observable<Base> book_readhistroy(@Query("book_id") String book_id,
                                       @Query("chapter_id") String chapter_id);
+
+    //获取用户邀请码
+    @GET("invite_getcode")
+    Observable<BaseTwo> invite_getcode();
+
+    //获取用户邀请码
+    @GET("user_task")
+    Observable<TaskBean> user_task(@Query("format") String type);
+
+    //填写邀请码
+    @GET("invite_activate")
+    Observable<BaseTwo> invite_activate(@Query("code") String code);
+
+    //提现到支付宝
+    @GET("user_exchange")
+    Observable<Base> user_exchange(@Query("format") String format,
+                                   @Query("amount") String amount,
+                                   @Query("amount") String account,
+                                   @Query("real_name") String real_name);
+
+    //获取短信验证码
+    @GET("user_mobile")
+    Observable<Base> user_mobile(@Query("mobile") String mobile,
+                                 @Query("captcha") String captcha,
+                                 @Query("u_action") String u_action);
 }

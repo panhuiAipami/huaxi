@@ -102,4 +102,10 @@
     <string name="hebut_ptr_minutes_ago"> minutes ago</string>
 
     <string name="hebut_ptr_hours_ago"> hours ago</string>
+
+
+    <string name="alipay_with">请先设置支付宝账号</string>
+    <string name="wechat_with">请先设置微信账号</string>
+    <string name="payment_date_hint">到账时间:正常情况下,三个工作日即可\n\n法定节假日略有延时,请耐心等待</string>
+    <string name="task_hint">提现须知及疑问详见界面右上角"奖励规则"按钮</string>
 </resources>

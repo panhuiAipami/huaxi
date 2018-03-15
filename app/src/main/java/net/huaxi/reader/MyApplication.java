@@ -15,10 +15,14 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
+import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.callback.CallBack;
+import net.huaxi.reader.callback.ShareBeanCallBack;
+import net.huaxi.reader.callback.ShareResult;
 import net.huaxi.reader.http.OKhttpRequest;
 import net.huaxi.reader.http.UrlUtils;
 import net.huaxi.reader.utils.LoginHelper;
+import net.huaxi.reader.utils.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +31,7 @@ import java.util.Map;
  * Created by Administrator on 2017/11/15.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends Application implements ShareResult {
     private static MyApplication mInstance;
     private LoginActivity.MyHandler handler = null;
 
@@ -46,6 +50,7 @@ public class MyApplication extends Application {
             mPushAgent.register(callback);
 //            mPushAgent.setNotificationClickHandler(notificationClickHandler);
             mPushAgent.setMessageHandler(messageHandler);
+            net.huaxi.reader.callback.ListenerManager.getInstance().setResult(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,5 +147,21 @@ public class MyApplication extends Application {
 
     public void setHandler(LoginActivity.MyHandler handler) {
         this.handler = handler;
+    }
+
+
+    @Override
+    public void success() {
+        ToastUtil.showShort("分享成功");
+    }
+
+    @Override
+    public void cancel() {
+        ToastUtil.showShort("分享取消");
+    }
+
+    @Override
+    public void faild() {
+        ToastUtil.showShort("分享失败");
     }
 }

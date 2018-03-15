@@ -6,9 +6,12 @@ import android.content.Intent;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.ApprenticeListActivity;
+import com.spriteapp.booklibrary.ui.activity.BindPhoneActivity;
 import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
+import com.spriteapp.booklibrary.ui.activity.MangerAlipayActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.activity.RechargeActivity;
@@ -17,6 +20,7 @@ import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.TaskActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
+import com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity;
 
 /**
  * Created by kuangxiaoguo on 2017/7/15.
@@ -77,10 +81,11 @@ public class ActivityUtil {
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
         context.startActivity(intent);
     }
-    public static void toReadActivityPassword(Activity context, int book_id, int chapter_id){
+
+    public static void toReadActivityPassword(Activity context, int book_id, int chapter_id) {
         Intent intent = new Intent(context, ReadActivity.class);
-        intent.putExtra("book_id", book_id+"");
-        intent.putExtra("chapter_id", chapter_id+"");
+        intent.putExtra("book_id", book_id + "");
+        intent.putExtra("chapter_id", chapter_id + "");
         context.startActivity(intent);
     }
 
@@ -142,8 +147,28 @@ public class ActivityUtil {
         Intent intent = new Intent(context, RechargeActivity.class);
         context.startActivityForResult(intent, 9);
     }
+
     public static void toTaskActivity(Context context) {
         Intent intent = new Intent(context, TaskActivity.class);
         context.startActivity(intent);
+    }
+
+    public static void toBindPhoneActivity(Context context) {
+        Intent intent = new Intent(context, BindPhoneActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void toWithdrawalsActivity(Context context) {
+        Intent intent = new Intent(context, WithdrawalsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void toMangerAlipayActivity(Activity context) {
+        Intent intent = new Intent(context, MangerAlipayActivity.class);
+        context.startActivityForResult(intent, 0);
+    }
+    public static void toApprenticeListActivity(Activity context) {
+        Intent intent = new Intent(context, ApprenticeListActivity.class);
+        context.startActivityForResult(intent, 0);
     }
 }

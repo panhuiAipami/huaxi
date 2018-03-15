@@ -75,9 +75,9 @@ public class ReadRightTitleLayout extends LinearLayout {
                     mTitleListener.clickBuy();
                 } else if (view == mAddShelfImageView) {//下载
                     mTitleListener.clickAddShelf();
-                } else if(view == mCommentImageView){//评论
+                } else if (view == mCommentImageView) {//评论
                     mTitleListener.clickComment();
-                }else if (view == mRewardImageView) {
+                } else if (view == mRewardImageView) {
                     mTitleListener.clickReward();
                 } else if (view == mMoreImageView) {
                     mTitleListener.clickMore();
@@ -109,7 +109,9 @@ public class ReadRightTitleLayout extends LinearLayout {
         void clickBuy();
 
         void clickAddShelf();
+
         void clickComment();
+
         void clickReward();
 
         void clickMore();
@@ -128,8 +130,8 @@ public class ReadRightTitleLayout extends LinearLayout {
         this.mTitleListener = mTitleListener;
     }
 
-    public void setBuyImageState(boolean show) {
-        mBuyImageView.setVisibility(show ? VISIBLE : GONE);
+    public void setBuyImageState(boolean show) {//购买按钮
+        mBuyImageView.setVisibility(show ? GONE : GONE);
     }
 
     public void setTitleName(String name) {

@@ -1,6 +1,7 @@
 package net.huaxi.reader.dialog;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -12,6 +13,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import net.huaxi.reader.R;
+import net.huaxi.reader.activity.ShareActivity;
 import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.utils.MLog;
 import net.huaxi.reader.utils.ToastUtil;
@@ -38,15 +40,17 @@ public class ShareDialog extends BaseDialog {
     private View ll_qq_qzone;
     private ShareBean shareBean;
     SHARE_MEDIA share_media = WEIXIN;
+    private int share_type = 1;
 
     //其他地方用的分享弹窗
-    public ShareDialog(Activity activity, ShareBean shareBean) {
-        initDialog(activity, shareBean);
+    public ShareDialog(Activity activity, ShareBean shareBean, int type) {
+        initDialog(activity, shareBean, type);
     }
 
-    public void initDialog(Activity activity, ShareBean shareBean) {
+    public void initDialog(Activity activity, ShareBean shareBean, int type) {
         this.activity = activity;
         this.shareBean = shareBean;
+        this.share_type = type;
         initDialog(activity, null, R.layout.book_share_layout, BaseDialog.TYPE_BOTTOM, true);
         WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
         lp.flags = lp.flags | (WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -146,22 +150,38 @@ public class ShareDialog extends BaseDialog {
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                ToastUtil.showLong("分享成功");
+                Log.d("share_qq", "成功");
+                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().success();
+                finishShareActivity();
 
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                ToastUtil.showLong("分享失败");
+                Log.d("share_qq", "失败");
+                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().faild();
+                finishShareActivity();
 
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
-                ToastUtil.showLong("分享失败");
+                Log.d("share_qq", "取消");
+                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().cancel();
+                finishShareActivity();
 
             }
         }).share();
+    }
+
+    private void finishShareActivity() {
+        if (activity != null && activity instanceof ShareActivity) {
+            ShareActivity shareActivity = (ShareActivity) activity;
+            shareActivity.qq_finish();
+        }
     }
 
 }

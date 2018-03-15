@@ -10,6 +10,7 @@ public class ListenerManager {
     private LoginSuccess loginSuccess;//登录成功
     private DelBookShelf delBookShelf;//删除书架接口
     private HuaWeiPayCallBack huaWeiPayCallBack;//华为支付回调
+    private GotoHomePage gotoHomePage;//去首页精选
 
     public static ListenerManager getInstance() {
         if (instance == null) {
@@ -48,5 +49,13 @@ public class ListenerManager {
 
     public void setHuaWeiPayCallBack(HuaWeiPayCallBack huaWeiPayCallBack) {
         this.huaWeiPayCallBack = huaWeiPayCallBack;
+    }
+
+    public GotoHomePage getGotoHomePage() {
+        return gotoHomePage;
+    }
+
+    public void setGotoHomePage(GotoHomePage gotoHomePage) {
+        this.gotoHomePage = gotoHomePage;
     }
 }
