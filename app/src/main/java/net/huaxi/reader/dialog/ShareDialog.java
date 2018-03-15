@@ -41,9 +41,11 @@ public class ShareDialog extends BaseDialog {
     private ShareBean shareBean;
     SHARE_MEDIA share_media = WEIXIN;
     private int share_type = 1;
+    public static boolean isFinish;
 
     //其他地方用的分享弹窗
     public ShareDialog(Activity activity, ShareBean shareBean, int type) {
+        isFinish = true;
         initDialog(activity, shareBean, type);
     }
 
@@ -85,31 +87,37 @@ public class ShareDialog extends BaseDialog {
                             name = "微信";
                             share_media = WEIXIN;
                             share(WEIXIN, name);
+                            isFinish = false;
                             break;
                         case R.id.ll_weixin_circle:
                             type = 2;
                             name = "微信";
                             share_media = WEIXIN_CIRCLE;
                             share(WEIXIN_CIRCLE, name);
+                            isFinish = false;
                             break;
                         case R.id.ll_weixin_shoucang:
                             type = 3;
                             name = "微信";
                             share_media = WEIXIN_FAVORITE;
                             share(WEIXIN_FAVORITE, name);
+                            isFinish = false;
                             break;
                         case R.id.ll_sina_weibo:
                             type = 0;
                             name = "新浪微博";
                             share(SINA, name);
+                            isFinish = false;
                             break;
                         case R.id.ll_qq:
                             name = "QQ";
                             share(QQ, name);
+                            isFinish = false;
                             break;
                         case R.id.ll_qq_qzone:
                             name = "QQ";
                             share(QZONE, name);
+                            isFinish = false;
                             break;
                         default:
                             break;

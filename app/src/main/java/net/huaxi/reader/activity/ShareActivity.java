@@ -78,7 +78,8 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener,
         shareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-//                finish();
+                if (ShareDialog.isFinish)
+                    finish();
             }
         });
     }

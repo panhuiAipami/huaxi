@@ -122,13 +122,16 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 gotoText = "去填写";
                 break;
             case 7://QQ收徒
-                gotoText = "去收徒";
+//                gotoText = "去收徒";
+                taskViewHolder.goto_finish_task.setVisibility(View.GONE);
                 break;
             case 8://朋友圈收徒
-                gotoText = "去收徒";
+//                gotoText = "去收徒";
+                taskViewHolder.goto_finish_task.setVisibility(View.GONE);
                 break;
             case 9://微信收徒
-                gotoText = "去收徒";
+//                gotoText = "去收徒";
+                taskViewHolder.goto_finish_task.setVisibility(View.GONE);
                 break;
             case 10://评论
                 gotoText = "去评论";

@@ -496,8 +496,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mTextSizeLayout = (TextSizeLayout) findViewById(R.id.book_reader_text_size_layout);
 
         book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
-        book_reader_title_textView.setMaxEms(6);
-        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_reader_text_color));
+//        book_reader_title_textView.setMaxEms(6);
+        book_reader_title_textView.setVisibility(View.GONE);
+//        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_reader_text_color));
         mShowView = mBottomLayout;
         mDismissView = mBottomLayout;
         mTextSizeLayout.setCallBack(mTextSizeCallback);
@@ -913,7 +914,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookDetailResponse shareDetail = mNewBookDetail != null ?
                         mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 if (shareDetail != null) {
-                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight,1);
+                    HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight, 1);
                 }
             }
         });
@@ -966,13 +967,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 }
                 mRightTitleLayout.setBuyImageState(!needAutoLoad);
                 if (!needAutoLoad) {
-                    if (BaseActivity.deviceWidth >= 1080) {
-                        book_reader_title_textView.setMaxEms(4);
-                    } else if (BaseActivity.deviceWidth < 1080 && BaseActivity.deviceWidth >= 720) {
-                        book_reader_title_textView.setMaxEms(2);
-                    } else if (BaseActivity.deviceWidth < 720) {
-                        book_reader_title_textView.setMaxEms(1);
-                    }
+//                    if (BaseActivity.deviceWidth >= 1080) {
+//                        book_reader_title_textView.setMaxEms(4);
+//                    } else if (BaseActivity.deviceWidth < 1080 && BaseActivity.deviceWidth >= 720) {
+//                        book_reader_title_textView.setMaxEms(2);
+//                    } else if (BaseActivity.deviceWidth < 720) {
+//                        book_reader_title_textView.setMaxEms(1);
+//                    }
                 }
             } else {
                 mRightTitleLayout.setBuyImageState(false);
@@ -1323,7 +1324,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         BookDetailResponse shareDetail = mNewBookDetail != null ?
                 mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
         if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
-            book_reader_title_textView.setText(shareDetail.getBook_name());
+//            book_reader_title_textView.setText(shareDetail.getBook_name());
         }
         if (mOldBookDetail != null || mNewBookDetail != null) {
             mBookDb.updateChapterTime(mBookId);
