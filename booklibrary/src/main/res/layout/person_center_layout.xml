@@ -348,7 +348,7 @@
                     android:layout_width="@dimen/person_icon_left_wight"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/task_img" />
+                    android:src="@mipmap/with_person_icon" />
 
                 <TextView
                     android:id="@+id/withdrawals"

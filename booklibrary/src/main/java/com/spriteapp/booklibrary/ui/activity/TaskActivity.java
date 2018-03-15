@@ -18,9 +18,12 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseTwo;
+import com.spriteapp.booklibrary.config.HuaXiConfig;
+import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.TaskBean;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.TaskAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
@@ -43,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TaskActivity extends TitleActivity {
     private TextView other_hint, money_num, goto_apprentice, goto_invition_code,
             success_apprentice, apprentice_profit, apprentice_num, apprentice_profit_gold_num;
-    private ImageView center_img;
+    private ImageView center_img, with_tip;
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private List<TaskBean> taskBeanList = new ArrayList<>();
@@ -80,6 +83,7 @@ public class TaskActivity extends TitleActivity {
         apprentice_num = (TextView) findViewById(R.id.apprentice_num);
         apprentice_profit_gold_num = (TextView) findViewById(R.id.apprentice_profit_gold_num);
         center_img = (ImageView) findViewById(R.id.center_img);
+        with_tip = (ImageView) findViewById(R.id.with_tip);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,6 +92,7 @@ public class TaskActivity extends TitleActivity {
     }
 
     public void listener() throws Exception {
+        with_tip.setOnClickListener(this);
         other_hint.setOnClickListener(this);
         money_num.setOnClickListener(this);
         goto_apprentice.setOnClickListener(this);
@@ -115,10 +120,19 @@ public class TaskActivity extends TitleActivity {
         } else if (v == money_num) {//可提现金额
 
         } else if (v == goto_apprentice) {//去收徒
+            BookDetailResponse bookDetailResponse = new BookDetailResponse();
+            bookDetailResponse.setBook_name("期待");
+            bookDetailResponse.setBook_intro("花都收徒");
+            bookDetailResponse.setBook_image("http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
+            bookDetailResponse.setBook_share_url("http://baidu.com");
+            HuaXiSDK.getInstance().showShareDialog(this, bookDetailResponse, true, 2);
 
         } else if (v == success_apprentice) {//徒弟列表
+            ActivityUtil.toApprenticeListActivity(this);
 
         } else if (v == apprentice_profit) {//收徒总收益
+
+        } else if (v == with_tip) {//提现规则
 
         }
 

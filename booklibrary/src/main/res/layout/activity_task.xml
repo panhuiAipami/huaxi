@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/new_person_bg" />
+                    android:src="@mipmap/with_bg" />
 
                 <TextView
                     android:id="@+id/money_hint"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="收徒即可获得"
+                    android:text="收徒即可获得(元)"
                     android:textColor="@color/app_background"
                     android:textSize="16sp" />
 
@@ -71,10 +71,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:background="@drawable/white_gold_bg"
+                        android:drawablePadding="3dp"
+                        android:drawableRight="@mipmap/gold_icon"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:text="+5000"
-                        android:textColor="@color/app_background"
+                        android:textColor="@color/code_btn_bg_color"
                         android:textSize="16sp" />
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/with_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:src="@mipmap/with_tip" />
             </RelativeLayout>
             <!--收徒与验证码模块-->
             <LinearLayout
@@ -97,6 +111,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/apprentice_bg"
+                        android:drawableLeft="@mipmap/plane"
+                        android:drawablePadding="3dp"
                         android:paddingBottom="5dp"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
@@ -187,7 +203,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:gravity="center_vertical"
-                    android:text="1人"
+                    android:text="0人"
                     android:textSize="14sp" />
 
                 <View
@@ -219,7 +235,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:gravity="center_vertical"
-                    android:text="400金币"
+                    android:text="0金币"
                     android:textColor="@color/code_btn_bg_color"
                     android:textSize="14sp" />
 
@@ -243,11 +259,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="28dp"
                 android:background="@color/other_hint_bg_color"
                 android:gravity="center"
                 android:text="@string/task_hint"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
 
         </LinearLayout>

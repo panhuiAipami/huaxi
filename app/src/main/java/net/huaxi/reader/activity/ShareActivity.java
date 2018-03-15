@@ -14,9 +14,11 @@ import net.huaxi.reader.BaseActivity;
 import net.huaxi.reader.MainActivity;
 import net.huaxi.reader.R;
 import net.huaxi.reader.bean.ShareBean;
+import net.huaxi.reader.callback.FinishActivity;
+import net.huaxi.reader.callback.ListenerManager;
 import net.huaxi.reader.dialog.ShareDialog;
 
-public class ShareActivity extends BaseActivity implements View.OnClickListener {
+public class ShareActivity extends BaseActivity implements View.OnClickListener, FinishActivity {
     private ShareDialog shareDialog;
     private ShareBean shareBean;
     private TextView share;
@@ -46,6 +48,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
 
     public void initListener() {
         share.setOnClickListener(this);
+        ListenerManager.getInstance().setFinishActivity(this);
     }
 
     @Override
@@ -70,12 +73,12 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
             shareDialog.dismiss();
             shareDialog = null;
         }
-        shareDialog = new ShareDialog(this, shareBean,type);
+        shareDialog = new ShareDialog(this, shareBean, type);
         shareDialog.show();
         shareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                finish();
+//                finish();
             }
         });
     }
@@ -86,4 +89,16 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+    public void qq_finish() {//qq,微博分享回来后销毁
+        if (!this.isFinishing()) {
+            finish();
+        }
+    }
+
+    @Override
+    public void finishActivity() {//微信分享回来后销毁
+        if (!this.isFinishing()) {
+            finish();
+        }
+    }
 }

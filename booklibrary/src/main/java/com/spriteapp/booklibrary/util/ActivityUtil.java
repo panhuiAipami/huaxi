@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.ApprenticeListActivity;
 import com.spriteapp.booklibrary.ui.activity.BindPhoneActivity;
 import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
@@ -164,6 +165,10 @@ public class ActivityUtil {
 
     public static void toMangerAlipayActivity(Activity context) {
         Intent intent = new Intent(context, MangerAlipayActivity.class);
+        context.startActivityForResult(intent, 0);
+    }
+    public static void toApprenticeListActivity(Activity context) {
+        Intent intent = new Intent(context, ApprenticeListActivity.class);
         context.startActivityForResult(intent, 0);
     }
 }

@@ -63,22 +63,27 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode, int type) {
 //                        Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
-                        if (shareDetail != null) {
-                            shareBean = new ShareBean();
-                            shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
-                            shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
-                            shareBean.setImgUrl(shareDetail.getBook_image().isEmpty() ? "" : shareDetail.getBook_image());
-                            shareBean.setShareUrl(shareDetail.getBook_share_url().isEmpty() ? "" : shareDetail.getBook_share_url());
-                            shareBean.setNid(shareDetail.getBook_id());
+                        try{
+                            if (shareDetail != null) {
+                                shareBean = new ShareBean();
+                                shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
+                                shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
+                                shareBean.setImgUrl(shareDetail.getBook_image().isEmpty() ? "" : shareDetail.getBook_image());
+                                shareBean.setShareUrl(shareDetail.getBook_share_url().isEmpty() ? "" : shareDetail.getBook_share_url());
+                                shareBean.setNid(shareDetail.getBook_id());
 
 //                        ListenerManager.getInstance().getShareBeanCallBack().getShareBean(shareBean);
-                            Intent intent = new Intent(MainActivity.this, ShareActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(SHAREDATA, shareBean);
-                            bundle.putInt(SHARETYPE, type);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
+                                Intent intent = new Intent(MainActivity.this, ShareActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(SHAREDATA, shareBean);
+                                bundle.putInt(SHARETYPE, type);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
+
                     }
 
                     @Override

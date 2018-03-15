@@ -9,6 +9,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
 import net.huaxi.reader.MyApplication;
+import net.huaxi.reader.callback.FinishActivity;
 import net.huaxi.reader.callback.ListenerManager;
 import net.huaxi.reader.callback.ShareResult;
 import net.huaxi.reader.utils.MLog;
@@ -19,6 +20,7 @@ import net.huaxi.reader.utils.MLog;
 
 public class WXEntryActivity extends WXCallbackActivity {
     ShareResult result;
+    FinishActivity finishActivity;
 
     @Override
     public void onReq(BaseReq req) {
@@ -40,6 +42,9 @@ public class WXEntryActivity extends WXCallbackActivity {
         } else {
             if (ListenerManager.getInstance().getResult() != null) {
                 result = ListenerManager.getInstance().getResult();
+            }
+            if (ListenerManager.getInstance().getFinishActivity() != null) {
+                finishActivity = ListenerManager.getInstance().getFinishActivity();
             }
             switch (resp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
@@ -63,7 +68,10 @@ public class WXEntryActivity extends WXCallbackActivity {
                 default:
 //                Log.i("onResp", "-----------未知错误-------------->");
                     break;
+
             }
+            if (finishActivity != null)
+                finishActivity.finishActivity();
         }
         finish();
     }

@@ -7,5 +7,5 @@ import net.huaxi.reader.dialog.ShareDialog;
  */
 
 public interface FinishActivity {
-    void finishActivity(ShareDialog dialog);
+    void finishActivity();
 }

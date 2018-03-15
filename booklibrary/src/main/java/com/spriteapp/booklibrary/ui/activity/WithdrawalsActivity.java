@@ -44,6 +44,13 @@ import static com.spriteapp.booklibrary.ui.activity.MangerAlipayActivity.ALIPAY_
  * 提现activity
  */
 public class WithdrawalsActivity extends TitleActivity {
+//    public static final String WITHDRAWALS_TYPE = "withdrawals_type";
+//    private SlidingTabLayout tab_layout;
+//    private ViewPager view_pager;
+//    private WithdrawalsFragment alipayFragment, wechatFragment;
+//    private List<Fragment> fragmentList = new ArrayList<>();
+//    private String[] mTitles = {"支付宝", "微信"};
+//    private HomePageTabAdapter adapter;
 
     //修改过的
     private TextView setting_with, false_gold, real_money, goto_with, alipay_name;
