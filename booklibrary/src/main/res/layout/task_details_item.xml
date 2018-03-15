@@ -62,7 +62,6 @@
             android:id="@+id/task_detail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="任务详情" />
@@ -78,6 +77,7 @@
                 android:layout_height="35dp"
                 android:background="@drawable/yz_code_bg"
                 android:gravity="center"
+                android:layout_marginLeft="10dp"
                 android:text="去完成"
                 android:textColor="@color/app_background" />
         </LinearLayout>

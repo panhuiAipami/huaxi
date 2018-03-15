@@ -22,7 +22,7 @@
         app:starHalf="@mipmap/score_gary_icon"
         app:starImageSize="25dp"
         app:starPadding="5dp"
-        app:starStep="5"
+        app:starStep="0"
         app:stepSize="Half" />
 
     <TextView
