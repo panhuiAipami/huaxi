@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="@color/book_reader_white" android:state_checked="true" />
+    <item android:color="@color/down_load_font_color1" />
+</selector>

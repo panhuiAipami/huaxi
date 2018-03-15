@@ -53,6 +53,14 @@
             android:visibility="gone"
             android:layout_margin="10dp"
             android:src="@mipmap/add_shelf_yellow_icon"/>
+
+        <com.spriteapp.booklibrary.widget.ReadMoreSettingLayout
+            android:id="@+id/readMoreSettingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true">
+        </com.spriteapp.booklibrary.widget.ReadMoreSettingLayout>
     </RelativeLayout>
 
     <LinearLayout

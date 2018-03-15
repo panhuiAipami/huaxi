@@ -24,8 +24,8 @@
         <LinearLayout
             android:id="@+id/linear_right"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
             android:background="@color/app_background"
             android:gravity="center_vertical"
             android:orientation="vertical"
@@ -35,7 +35,7 @@
                 android:id="@+id/book_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我曾卑微的爱过你"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/down_load_font_color1"
                 android:textSize="18sp" />
 
@@ -45,10 +45,12 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/author_avatar"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    app:riv_oval="true"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/man_head" />
 
                 <TextView
@@ -56,7 +58,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="名字"
                     android:textColor="@color/three_font_color"
                     android:textSize="14sp" />
 
@@ -69,6 +70,7 @@
             android:layout_height="90dp"
             android:layout_marginLeft="20dp"
             android:scaleType="centerCrop"
+            app:riv_corner_radius="5dp"
             android:src="@mipmap/book_default" />
     </RelativeLayout>
 
@@ -83,10 +85,12 @@
         <Switch
             android:id="@+id/switch_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginTop="10dp"
-            android:text="自动订阅下一章"
-            android:textColor="@color/down_load_font_color2" />
+            android:text="提示订阅下一章  "
+            android:textColor="@color/down_load_font_color2"
+            android:thumb="@drawable/switch_thumb_select"
+            android:track="@drawable/switch_track_select" />
 
         <View
             android:layout_width="match_parent"
@@ -115,28 +119,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:src="@mipmap/book_reader_mode_image" />
+                android:src="@mipmap/light_icon" />
 
             <SeekBar
                 android:id="@+id/seekBar"
-                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:progress="0" />
+                android:max="255"
+                android:maxHeight="3dp"
+                android:progress="1"
+                android:progressDrawable="@drawable/my_seekbar_style"
+                android:thumb="@drawable/seek_bar_violet_thumb" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/book_reader_mode_image" />
+                android:src="@mipmap/light_icon2" />
         </LinearLayout>
         <!--字号调节-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -148,38 +155,35 @@
 
             <TextView
                 android:id="@+id/tv_reduce"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/follow_bg"
-                android:paddingBottom="3dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="3dp"
+                android:gravity="center"
                 android:text="一"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_text_size"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="18" />
+                android:text="字号预览"
+                android:singleLine="true"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/follow_bg"
-                android:paddingBottom="3dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="3dp"
-                android:text="十"
+                android:gravity="center"
+                android:text="＋"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -187,7 +191,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -200,47 +204,75 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:scrollbars="none">
 
                 <RadioGroup
                     android:id="@+id/radio_font"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/font1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="宋体" />
+                        android:text="方正黑体"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/font2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="楷体" />
+                        android:text="思源字体"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/font3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="微软雅黑" />
+                        android:text="方正书宋"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/font4"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="方正楷体"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/font5"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="方正仿宋"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </RadioGroup>
             </HorizontalScrollView>
 
@@ -263,7 +295,8 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                android:scrollbars="none">
 
                 <RadioGroup
                     android:id="@+id/radio_format"
@@ -271,38 +304,39 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+
                     <RadioButton
                         android:id="@+id/format1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@drawable/button_violet_select"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="二" />
+                        android:text="亖"
+                        android:textColor="@drawable/font_text_white_color_select" />
 
                     <RadioButton
                         android:id="@+id/format2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@drawable/button_violet_select"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="三" />
+                        android:text="三"
+                        android:textColor="@drawable/font_text_white_color_select" />
 
                     <RadioButton
                         android:id="@+id/format3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@drawable/button_violet_select"
                         android:button="@null"
                         android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="亖" />
+                        android:text="二"
+                        android:textColor="@drawable/font_text_white_color_select" />
                 </RadioGroup>
             </HorizontalScrollView>
         </LinearLayout>
@@ -323,46 +357,118 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                android:fadeScrollbars="false"
+                android:scrollbars="none">
 
-                <RadioGroup
-                    android:id="@+id/radio_bg_color"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <RadioButton
-                        android:id="@+id/reader_bg_color1"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/line_color"
-                        android:button="@null" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/reader_bg_color2"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/line_color"
-                        android:button="@null" />
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color1"
+                            app:riv_oval="true" />
 
-                    <RadioButton
-                        android:id="@+id/reader_bg_color3"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/line_color"
-                        android:button="@null" />
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color2"
+                            app:riv_oval="true" />
 
-                    <RadioButton
-                        android:id="@+id/reader_bg_color4"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@color/line_color"
-                        android:button="@null" />
-                </RadioGroup>
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color3"
+                            app:riv_oval="true" />
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color4"
+                            app:riv_oval="true" />
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color5"
+                            app:riv_oval="true" />
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/reader_book_bg_color6"
+                            app:riv_oval="true" />
+                    </LinearLayout>
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_bg_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color4"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color5"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+
+                        <RadioButton
+                            android:id="@+id/reader_bg_color6"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/radiobutton_select_reader_bg1"
+                            android:button="@null" />
+                    </RadioGroup>
+                </FrameLayout>
             </HorizontalScrollView>
         </LinearLayout>
     </LinearLayout>

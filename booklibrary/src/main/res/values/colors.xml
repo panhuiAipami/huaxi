@@ -116,6 +116,8 @@
     <color name="square_introduce">#8083a0</color>
     <!--小字体文本颜色-->
     <color name="square_small">#b4b2c9</color>
+
+    <color name="gray">#f7f7f9</color>
     <!--点赞后-->
     <color name="square_support_selector">#ff74ac</color>
     <color name="code_finish">#FF173B</color>
@@ -136,7 +138,16 @@
     <color name="bg3">#fbeafd</color>
     <color name="bg4">#eceff6</color>
 
+    <!--阅读页可换背景色-->
+    <color name="reader_book_bg1">#EAEAEA</color>
+    <color name="reader_book_bg2">#F2E0E2</color>
+    <color name="reader_book_bg3">#C9E4DF</color>
+    <color name="reader_book_bg4">#C2E0F4</color>
+    <color name="reader_book_bg5">#EFD5BB</color>
+    <color name="reader_book_bg6">@color/gray</color>
+
     <!--下载页面橙色...字体-->
+    <color name="seek_bar_progress_color">#ff9c00</color>
     <color name="down_load_orange">#ff7050</color>
     <color name="down_load_font_color1">#404050</color>
     <color name="down_load_font_color2">#aeacbd</color>
