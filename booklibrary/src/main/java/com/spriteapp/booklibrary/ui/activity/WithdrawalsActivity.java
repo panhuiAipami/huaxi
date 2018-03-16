@@ -1,10 +1,6 @@
 package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
-import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
-import com.spriteapp.booklibrary.ui.adapter.HomePageTabAdapter;
-import com.spriteapp.booklibrary.ui.fragment.WithdrawalsFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -47,7 +36,7 @@ public class WithdrawalsActivity extends TitleActivity {
 //    public static final String WITHDRAWALS_TYPE = "withdrawals_type";
 //    private SlidingTabLayout tab_layout;
 //    private ViewPager view_pager;
-//    private WithdrawalsFragment alipayFragment, wechatFragment;
+//    private ApprenticeFragment alipayFragment, wechatFragment;
 //    private List<Fragment> fragmentList = new ArrayList<>();
 //    private String[] mTitles = {"支付宝", "微信"};
 //    private HomePageTabAdapter adapter;
@@ -125,8 +114,8 @@ public class WithdrawalsActivity extends TitleActivity {
     }
 
     private void initFragment() {
-//        alipayFragment = new WithdrawalsFragment();
-//        wechatFragment = new WithdrawalsFragment();
+//        alipayFragment = new ApprenticeFragment();
+//        wechatFragment = new ApprenticeFragment();
 //        Bundle bundle = new Bundle();
 //        Bundle bundle2 = new Bundle();
 //        bundle.putInt(WITHDRAWALS_TYPE, 0);

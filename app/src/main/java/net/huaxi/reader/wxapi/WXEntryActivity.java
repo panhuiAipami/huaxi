@@ -51,6 +51,7 @@ public class WXEntryActivity extends WXCallbackActivity {
                     if (result != null)
                         result.success();
                     Log.i("onResp111", "-----------分享成功-------------->");
+                    Log.d("ShareActivity--", "onResp");
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
 //                Log.i("onResp", "-----------分享取消-------------->");

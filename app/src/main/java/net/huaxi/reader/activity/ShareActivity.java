@@ -3,6 +3,7 @@ package net.huaxi.reader.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,6 +35,21 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener,
         initListener();
         initShareDialog();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("ShareActivity--", "onStart");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("ShareActivity--", "onRestart");
+        if (ShareDialog.isWeChat && !ShareDialog.isFinish) {
+            finish();
+        }
     }
 
     public void initView() {
@@ -87,6 +103,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ShareActivity--", "onActivityResult");
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 

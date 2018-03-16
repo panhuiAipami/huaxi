@@ -177,9 +177,9 @@ public class BindPhoneActivity extends TitleActivity {
                                 }
                                 if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {
                                     ToastUtil.showToast(bookStoreResponse.getMessage());
-                                    if (u_action.equals("activate"))
-                                        finish();
                                 }
+                                if (u_action.equals("activate"))
+                                    finish();
 
                             } else {
                                 if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {

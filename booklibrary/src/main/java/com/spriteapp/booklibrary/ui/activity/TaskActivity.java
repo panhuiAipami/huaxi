@@ -131,9 +131,9 @@ public class TaskActivity extends TitleActivity {
             ActivityUtil.toApprenticeListActivity(this);
 
         } else if (v == apprentice_profit) {//收徒总收益
-
+            ActivityUtil.toProfitDetailsActivity(this);
         } else if (v == with_tip) {//提现规则
-
+            ToastUtil.showToast("提现规则");
         }
 
     }
@@ -248,4 +248,15 @@ public class TaskActivity extends TitleActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TaskActivity--","onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TaskActivity--","onStop");
+    }
 }

@@ -110,7 +110,8 @@
         <activity android:name=".ui.activity.BindPhoneActivity" />
         <activity android:name=".ui.activity.WithdrawalsActivity" />
         <activity android:name=".ui.activity.MangerAlipayActivity" />
-        <activity android:name=".ui.activity.ApprenticeListActivity"></activity>
+        <activity android:name=".ui.activity.ApprenticeListActivity" />
+        <activity android:name=".ui.activity.ProfitDetailsActivity"></activity>
     </application>
 
 </manifest>

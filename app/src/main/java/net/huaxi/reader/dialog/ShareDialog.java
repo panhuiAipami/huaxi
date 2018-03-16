@@ -11,6 +11,8 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import net.huaxi.reader.R;
 import net.huaxi.reader.activity.ShareActivity;
@@ -42,10 +44,12 @@ public class ShareDialog extends BaseDialog {
     SHARE_MEDIA share_media = WEIXIN;
     private int share_type = 1;
     public static boolean isFinish;
+    public static boolean isWeChat;
 
     //其他地方用的分享弹窗
     public ShareDialog(Activity activity, ShareBean shareBean, int type) {
         isFinish = true;
+        isWeChat = false;
         initDialog(activity, shareBean, type);
     }
 
@@ -88,6 +92,7 @@ public class ShareDialog extends BaseDialog {
                             share_media = WEIXIN;
                             share(WEIXIN, name);
                             isFinish = false;
+                            isWeChat = true;
                             break;
                         case R.id.ll_weixin_circle:
                             type = 2;
@@ -181,6 +186,11 @@ public class ShareDialog extends BaseDialog {
                     net.huaxi.reader.callback.ListenerManager.getInstance().getResult().cancel();
                 finishShareActivity();
 
+            }
+        }).setShareboardclickCallback(new ShareBoardlistener() {
+            @Override
+            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                Log.d("share_qq", "setShareboardclickCallback");
             }
         }).share();
     }

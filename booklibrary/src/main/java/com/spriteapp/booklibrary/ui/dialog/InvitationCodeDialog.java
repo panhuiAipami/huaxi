@@ -103,8 +103,9 @@ public class InvitationCodeDialog extends BaseDialog {
                 if (!TextUtils.isEmpty(code_num)) {
                 }
                 sendCode();
-            } else if (remind == remind) {
+            } else if (v == remind) {
                 Log.d("remind", "remind");
+                ToastUtil.showToast("邀请码规则");
             }
         }
     };

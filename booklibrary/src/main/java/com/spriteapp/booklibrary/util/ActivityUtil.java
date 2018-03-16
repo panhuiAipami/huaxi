@@ -12,6 +12,7 @@ import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
 import com.spriteapp.booklibrary.ui.activity.MangerAlipayActivity;
+import com.spriteapp.booklibrary.ui.activity.ProfitDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.ui.activity.RechargeActivity;
@@ -169,6 +170,10 @@ public class ActivityUtil {
     }
     public static void toApprenticeListActivity(Activity context) {
         Intent intent = new Intent(context, ApprenticeListActivity.class);
+        context.startActivityForResult(intent, 0);
+    }
+    public static void toProfitDetailsActivity(Activity context) {
+        Intent intent = new Intent(context, ProfitDetailsActivity.class);
         context.startActivityForResult(intent, 0);
     }
 }
