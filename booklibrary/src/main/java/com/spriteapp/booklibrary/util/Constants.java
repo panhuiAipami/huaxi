@@ -24,6 +24,10 @@ public class Constants {
      */
     public static final String SDPath_cache = SDPath + "/cache";
     /**
+     * 下载字体
+     */
+    public static final String DOWNLOAD_FONTS = SDPath + "/download_fonts";
+    /**
      * 实体类
      */
     public static final String SDPath_bean = SDPath + "/bean";

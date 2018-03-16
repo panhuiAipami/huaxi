@@ -21,6 +21,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -602,6 +603,14 @@ public class PageFactory {
     public void setTextColor(int textColor, int titleColor) {
         mPaint.setColor(textColor);
         mTitlePaint.setColor(titleColor);
+    }
+
+    /**
+     * 设置字体样式
+     */
+    public void setTexTypeFace(Typeface tc) {
+        mPaint.setTypeface(tc);
+        mTitlePaint.setTypeface(tc);
     }
 
     public void setBgBitmap(Bitmap BG) {

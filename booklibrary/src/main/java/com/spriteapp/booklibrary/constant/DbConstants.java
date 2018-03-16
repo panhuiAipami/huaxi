@@ -32,7 +32,9 @@ public class DbConstants {
     public static final String BOOK_IS_RECOMMEND_DATA = "book_is_recommend_data";
     public static final String BOOK_INTRODUCTION = "book_introduction";
     public static final String BOOK_SHARE_URL = "book_share_url";
-
+    //增加  作者名字和头像
+    public static final String AUTHOR_AVATAR = "author_avatar";
+    public static final String AUTHOR_NAME = "author_name";
     /*
     private int book_id;
     private String chapter_title;

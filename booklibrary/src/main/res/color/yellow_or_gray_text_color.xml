@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/seek_bar_progress_color" android:state_enabled="true"></item>
+    <item android:color="@color/three_font_color" android:state_enabled="false"></item>
+
+</selector>

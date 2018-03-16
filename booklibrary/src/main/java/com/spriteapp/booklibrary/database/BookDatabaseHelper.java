@@ -12,7 +12,7 @@ import com.spriteapp.booklibrary.constant.DbConstants;
 
 public class BookDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DB_NAME = "HuaXiDb";
     private static BookDatabaseHelper mHelper;
     public static final Object dbLock = new Object();
@@ -53,6 +53,8 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         builder.append(DbConstants.BOOK_NAME).append(" text,");
         builder.append(DbConstants.LAST_UPDATE_CHAPTER_TITLE).append(" text,");
         builder.append(DbConstants.BOOK_IMAGE).append(" text,");
+        builder.append(DbConstants.AUTHOR_AVATAR).append(" text,");
+        builder.append(DbConstants.AUTHOR_NAME).append(" text,");
         builder.append(DbConstants.LAST_CHAPTER_ID).append(" integer,");
         builder.append(DbConstants.LAST_CHAPTER_INDEX).append(" integer,");
         builder.append(DbConstants.TOTAL_CHAPTER).append(" integer,");
@@ -115,11 +117,19 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
             String sql = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.LAST_UPDATE_CHAPTER_TITLE+"] nvarchar(300)";
             db.execSQL(sql);
         }else if(oldVersion == 2 && newVersion == 3){
+            //章节加 是否下载
             String sql = "alter table ["+DbConstants.CHAPTER_TABLE_NAME+"] add ["+DbConstants.CHAPTER_IS_DOWN_LOAD+"] nvarchar(300)";
             db.execSQL(sql);
 
+            //内容加 是否加密
             String sql2 = "alter table ["+DbConstants.CONTENT_TABLE_NAME+"] add ["+DbConstants.CHAPTER_ISAES+"] nvarchar(300)";
             db.execSQL(sql2);
+
+            //书架加 作者头像和名字
+            String sql3 = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.AUTHOR_AVATAR+"] nvarchar(300)";
+            String sql4 = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.AUTHOR_NAME+"] nvarchar(300)";
+            db.execSQL(sql3);
+            db.execSQL(sql4);
         }
     }
 }

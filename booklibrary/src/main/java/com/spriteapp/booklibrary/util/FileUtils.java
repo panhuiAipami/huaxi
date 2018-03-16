@@ -33,6 +33,10 @@ public class FileUtils {
         return content;
     }
 
+    public static boolean isExists(String path){
+        return  new File(path).exists();
+    }
+
     public static File getNativeStoreFile() {
         File file = new File(getNativeStorePath());
         if (!file.exists())

@@ -93,7 +93,7 @@
             android:id="@+id/book_reader_text_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="字号"
+            android:text="更多"
             android:textColor="@color/book_reader_reader_text_color"
             android:textSize="@dimen/book_reader_bottom_operation_text_size" />
     </LinearLayout>

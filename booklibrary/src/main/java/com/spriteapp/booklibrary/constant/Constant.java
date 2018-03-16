@@ -1,7 +1,5 @@
 package com.spriteapp.booklibrary.constant;
 
-import android.os.Environment;
-
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.FileUtils;
 
@@ -10,12 +8,6 @@ import com.spriteapp.booklibrary.util.FileUtils;
  */
 
 public class Constant {
-    /**
-     * SD卡根目录
-     */
-    public static final String SDROOTPath = Environment.getExternalStorageDirectory().getPath();
-    public static final String SDPath = SDROOTPath + "/huaxi";
-    public static final String BOOK_CONTENT_CACHE_Path = SDPath + "/cache/";
     /**
      * 首页书籍列表缓存文件名fragment
      */
@@ -49,7 +41,14 @@ public class Constant {
     public static final String READ_TEXT_SIZE_POSITION = "hua_xi_read_text_size_position";
     public static final String IS_BOOK_AUTO_SUB = "hua_xi_book_auto_sub";
     public static final String PAGE_CHANGE_STYLE = "hua_xi_page_change_style";
-
+    //阅读页亮度
+    public static final String READ_PAGE_BRIGHTNESS = "read_page_brightness";
+    //阅读页字体格式
+    public static final String READ_PAGE_FONT_STYLE = "read_page_font_style";
+    //阅读页字体间距排版
+    public static final String READ_PAGE_FONT_FORMAT = "read_page_font_format";
+    //阅读页背景
+    public static final String READ_PAGE_BG_COLOR = "read_page_bg_color";
     //数值单位（h）
     public static final int UPDATE_BOOK_DETAIL_INTERVAL = 3;
     public static final int UPDATE_CHAPTER_INTERVAL = 6;

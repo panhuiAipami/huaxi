@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -375,6 +376,16 @@ public abstract class BaseReadView extends View {
     public synchronized void setTextColor(int textColor, int titleColor) {
         resetTouchPoint();
         pagefactory.setTextColor(textColor, titleColor);
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
+            postInvalidate();
+        }
+    }
+
+    public synchronized void setTextTypeFace(Typeface tc) {
+        resetTouchPoint();
+        pagefactory.setTexTypeFace(tc);
         if (isPrepared) {
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
