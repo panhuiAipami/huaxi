@@ -144,7 +144,7 @@
     <color name="reader_book_bg3">#C9E4DF</color>
     <color name="reader_book_bg4">#C2E0F4</color>
     <color name="reader_book_bg5">#EFD5BB</color>
-    <color name="reader_book_bg6">@color/gray</color>
+    <color name="reader_book_bg6">#BBFFFF</color>
 
     <!--下载页面橙色...字体-->
     <color name="seek_bar_progress_color">#ff9c00</color>

@@ -505,10 +505,10 @@ public class PageWidget extends BaseReadView {
     }
 
     @Override
-    public synchronized void setTheme(int theme) {
+    public synchronized void setTheme(int theme,int color) {
         resetTouchPoint();
         calcCornerXY(mTouch.x, mTouch.y);
-        Bitmap bg = ThemeManager.getThemeDrawable(theme);
+        Bitmap bg = ThemeManager.getThemeDrawable(theme,color);
         if (bg != null && pagefactory != null) {
             pagefactory.setBgBitmap(bg);
             pagefactory.convertBatteryBitmap();

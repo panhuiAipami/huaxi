@@ -114,20 +114,20 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2) {
-            String sql = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.LAST_UPDATE_CHAPTER_TITLE+"] nvarchar(300)";
+            String sql = "alter table [" + DbConstants.BOOK_TABLE_NAME + "] add [" + DbConstants.LAST_UPDATE_CHAPTER_TITLE + "] nvarchar(300)";
             db.execSQL(sql);
-        }else if(oldVersion == 2 && newVersion == 3){
+        } else if (oldVersion == 2 && newVersion == 3) {
             //章节加 是否下载
-            String sql = "alter table ["+DbConstants.CHAPTER_TABLE_NAME+"] add ["+DbConstants.CHAPTER_IS_DOWN_LOAD+"] nvarchar(300)";
+            String sql = "alter table [" + DbConstants.CHAPTER_TABLE_NAME + "] add [" + DbConstants.CHAPTER_IS_DOWN_LOAD + "] nvarchar(300)";
             db.execSQL(sql);
 
             //内容加 是否加密
-            String sql2 = "alter table ["+DbConstants.CONTENT_TABLE_NAME+"] add ["+DbConstants.CHAPTER_ISAES+"] nvarchar(300)";
+            String sql2 = "alter table [" + DbConstants.CONTENT_TABLE_NAME + "] add [" + DbConstants.CHAPTER_ISAES + "] nvarchar(300)";
             db.execSQL(sql2);
-
+        } else if (oldVersion == 3 && newVersion == 4) {
             //书架加 作者头像和名字
-            String sql3 = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.AUTHOR_AVATAR+"] nvarchar(300)";
-            String sql4 = "alter table ["+DbConstants.BOOK_TABLE_NAME+"] add ["+DbConstants.AUTHOR_NAME+"] nvarchar(300)";
+            String sql3 = "alter table [" + DbConstants.BOOK_TABLE_NAME + "] add [" + DbConstants.AUTHOR_AVATAR + "] nvarchar(300)";
+            String sql4 = "alter table [" + DbConstants.BOOK_TABLE_NAME + "] add [" + DbConstants.AUTHOR_NAME + "] nvarchar(300)";
             db.execSQL(sql3);
             db.execSQL(sql4);
         }

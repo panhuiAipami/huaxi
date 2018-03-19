@@ -61,11 +61,11 @@ public class PageFactory {
      */
     private int mHeight, mWidth;
     /**
-     * 文字区域宽高
+     * 文字显示区域的面积
      */
     private int mVisibleHeight, mVisibleWidth;
     /**
-     * 间距
+     * marginWidth左右间距，marginHeight顶部和底部间距
      */
     private int marginHeight, marginWidth;
     /**
@@ -124,7 +124,9 @@ public class PageFactory {
         mWidth = width;
         mHeight = height;
         mFontSize = fontSize;
-        mLineSpace = mFontSize / 17 * 12;
+//        mLineSpace = mFontSize / 17 * 12;
+        int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
+        mLineSpace =  mFontSize / 17 * (5*(format+1));
         marginWidth = ScreenUtil.dpToPxInt(14);
         marginHeight = ScreenUtil.dpToPxInt(66);
         mVisibleHeight = mHeight - marginHeight * 2 + ScreenUtil.dpToPxInt(25);
@@ -566,8 +568,21 @@ public class PageFactory {
      */
     public void setTextFont(int fontSize) {
         mFontSize = fontSize;
-        mLineSpace = mFontSize / 17 * 12;
+//        mLineSpace = mFontSize / 17 * 12;
+        int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
+        mLineSpace =  mFontSize / 17 * (5*(format+1));
         mPaint.setTextSize(mFontSize);
+        mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
+        setChapterTotalPage();
+        setCurrentPageBeginPos();
+        nextPage();
+    }
+
+    /**
+     * 设置间距
+     */
+    public void setFontSpace(int space) {
+        mLineSpace = mFontSize / 17 * (5*(space+1));
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         setChapterTotalPage();
         setCurrentPageBeginPos();

@@ -130,7 +130,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private DrawerLayout mDrawerLayout;
     private ChapterDb mChapterDb;
     private ChapterAdapter mChapterAdapter;
-//    private TextSizeLayout mTextSizeLayout;
+    //    private TextSizeLayout mTextSizeLayout;
     private TextView book_reader_title_textView;
     private ImageView is_add_shelf;
 
@@ -282,7 +282,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     book_reader_title_textView.setText(shareDetail.getBook_name());
                 }
                 //更多设置里面内容显示
-                if(readMoreSettingLayout != null){
+                if (readMoreSettingLayout != null) {
                     readMoreSettingLayout.initRaderSetting(shareDetail);
                 }
             }
@@ -751,7 +751,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mRightTitleLayout.changeMode(isNight);
         readMoreSettingLayout.changeMode(isNight);
 
-        mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL);
+        int bg_color = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
+        mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(bg_color));
         mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_night_color
                         : R.color.book_reader_reader_text_color),
                 getResources().getColor(isNight ? R.color.book_reader_read_title_night_color
@@ -1265,12 +1266,19 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         @Override
         public void sengFontFormat(int format) {
-
+            if (mWidget != null) {
+                mWidget.setFontSpace(format);
+            }
         }
 
         @Override
         public void sengReaderBgColor(int color) {
+            if (isNight)
+                changeMode();
 
+            if (mWidget != null) {
+                mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(color));
+            }
         }
     };
 
@@ -1365,7 +1373,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 //            book_reader_title_textView.setText(shareDetail.getBook_name());
         }
         //更多设置里面内容显示
-        if(readMoreSettingLayout != null){
+        if (readMoreSettingLayout != null) {
             readMoreSettingLayout.initRaderSetting(shareDetail);
         }
 

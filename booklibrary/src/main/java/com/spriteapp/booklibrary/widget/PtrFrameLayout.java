@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.util.ActivityUtil;
-import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 
@@ -259,11 +258,11 @@ public class PtrFrameLayout extends ViewGroup {
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
                     return dispatchTouchEventSuper(e);
                 }
-                Log.i("dispatchTouchEvent" + Math.abs(actiondownX - x), actiondownY + "-----" + y + "-----------------" + actiondownX + "--------------------" + x);
+//                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
                     movePos(offsetY);
                     return true;
-                } else if (actiondownY - y > 100 && Math.abs(actiondownX - x) < 50) {
+                } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 80) {
                     if (Util.isFastClick(500)) {
 //                        ToastUtil.showSingleToast("添加评论");
                         ActivityUtil.toPublishCommentActivity(getContext(),book_id );

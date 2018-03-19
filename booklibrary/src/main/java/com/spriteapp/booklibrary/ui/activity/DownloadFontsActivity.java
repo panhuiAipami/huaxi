@@ -28,7 +28,7 @@ public class DownloadFontsActivity extends TitleActivity {
     private File updateFile = null;
     // 下载文件的存放路径
     private File updateDir;
-    private String BaseUrl = "http://img2.hxdrive.net//uploads//font/";
+    private String BaseUrl = "https://img2.hxdrive.net//uploads//font/";
     private String url;
 
 

@@ -21,7 +21,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -209,7 +208,7 @@ public abstract class BaseReadView extends View {
                     }
                     break;
                 }
-                Log.i("onTouchEvent", Math.abs(ux - dx) + "----x------------------------y-->" + Math.abs(uy - dy));
+//                Log.i("onTouchEvent", Math.abs(ux - dx) + "----x------------------------y-->" + Math.abs(uy - dy));
                 if (Math.abs(uy - dy) < Math.abs(ux - dx) || ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10))) {
                     if (t - et < 1000) { // 单击时间小于一秒为有效
                         startAnimation();//开始翻页
@@ -295,7 +294,7 @@ public abstract class BaseReadView extends View {
 
     protected abstract void setBitmaps(Bitmap mCurPageBitmap, Bitmap mNextPageBitmap);
 
-    public abstract void setTheme(int theme);
+    public abstract void setTheme(int theme,int bg_color);
 
     /**
      * 复位触摸点位
@@ -369,6 +368,16 @@ public abstract class BaseReadView extends View {
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
             SettingManager.getInstance().saveFontSize(fontSizePx);
+            postInvalidate();
+        }
+    }
+
+    public synchronized void setFontSpace(final int space) {
+        resetTouchPoint();
+        pagefactory.setFontSpace(space);
+        if (isPrepared) {
+            pagefactory.onDraw(mCurrentPageCanvas);
+            pagefactory.onDraw(mNextPageCanvas);
             postInvalidate();
         }
     }

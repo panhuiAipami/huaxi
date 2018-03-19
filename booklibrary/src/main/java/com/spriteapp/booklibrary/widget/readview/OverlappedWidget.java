@@ -197,9 +197,9 @@ public class OverlappedWidget extends BaseReadView {
     }
 
     @Override
-    public synchronized void setTheme(int theme) {
+    public synchronized void setTheme(int theme,int color) {
         resetTouchPoint();
-        Bitmap bg = ThemeManager.getThemeDrawable(theme);
+        Bitmap bg = ThemeManager.getThemeDrawable(theme,color);
         if (bg != null) {
             pagefactory.setBgBitmap(bg);
             pagefactory.convertBatteryBitmap();

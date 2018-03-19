@@ -238,7 +238,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
         tv_reduce.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (font_size <= 8) {
+                if (font_size <= 10) {
                     ToastUtil.showSingleToast("已是最小字体");
                     return;
                 }
@@ -323,7 +323,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 }
                 SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, color);
                 if (moreSettingCallback != null)
-                    moreSettingCallback.sengFontFormat(color);
+                    moreSettingCallback.sengReaderBgColor(color);
             }
         });
 
@@ -405,6 +405,31 @@ public class ReadMoreSettingLayout extends LinearLayout {
             if (moreSettingCallback != null)
                 moreSettingCallback.sendFontStyle(typeface);
         }
+    }
+
+    public static int getReaderBgCoor(int color_type) {
+        int color = R.color.reader_book_bg1;
+        switch (color_type) {
+            case 1:
+                color = R.color.reader_book_bg1;
+                break;
+            case 2:
+                color = R.color.reader_book_bg2;
+                break;
+            case 3:
+                color = R.color.reader_book_bg3;
+                break;
+            case 4:
+                color = R.color.reader_book_bg4;
+                break;
+            case 5:
+                color = R.color.reader_book_bg5;
+                break;
+            case 6:
+                color = R.color.reader_book_bg6;
+                break;
+        }
+        return color;
     }
 
 }
