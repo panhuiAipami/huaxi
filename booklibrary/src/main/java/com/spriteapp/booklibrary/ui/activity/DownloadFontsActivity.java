@@ -136,6 +136,10 @@ public class DownloadFontsActivity extends TitleActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        if (v == mLeftLayout) {
+            setResult(RESULT_OK);
+            finish();
+        }
         if (v == download_font_default) {
             downLoad(null, download_font_default, 0);
         } else if (v == download_font1) {
@@ -265,5 +269,12 @@ public class DownloadFontsActivity extends TitleActivity {
             }
         }
         return result;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }

@@ -138,7 +138,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
         font_size = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
         tv_text_size.setTextSize(font_size);
 
-        refreshFontSelect(false);
+        refreshFontSelect(true);
 
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
         RadioButton radioButton;
@@ -398,7 +398,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
 
     public void gotoDownLoadFont(Typeface typeface, int font_num) {
         if (font_num != 0 && typeface == null) {
-            mContext.startActivity(new Intent(mContext, DownloadFontsActivity.class));
+            mContext.startActivityForResult(new Intent(mContext, DownloadFontsActivity.class),99);
         } else {
             //修改页面字体
             SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, font_num);

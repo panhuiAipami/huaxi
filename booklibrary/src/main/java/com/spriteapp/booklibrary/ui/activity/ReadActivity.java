@@ -821,6 +821,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             updateCurrentProgress(mCurrentChapter);
         }
         openChapter();
+
+        //更多设置里面内容显示
+        if (readMoreSettingLayout != null) {
+            BookDetailResponse shareDetail = mNewBookDetail != null ?
+                    mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+            readMoreSettingLayout.initRaderSetting(shareDetail);
+        }
     }
 
     private void judgeNeedUpdatePayPage(SubscriberContent data) {
@@ -941,12 +948,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             Log.d("handleMessage", "onRestart===" + time);
             handler.sendEmptyMessageDelayed(0, 1000);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        readMoreSettingLayout.refreshFontSelect(true);
     }
 
     @Override
@@ -1372,10 +1373,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
 //            book_reader_title_textView.setText(shareDetail.getBook_name());
         }
-        //更多设置里面内容显示
-        if (readMoreSettingLayout != null) {
-            readMoreSettingLayout.initRaderSetting(shareDetail);
-        }
 
         if (mOldBookDetail != null || mNewBookDetail != null) {
             mBookDb.updateChapterTime(mBookId);
@@ -1446,9 +1443,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
             return;
         }
-//        Log.d("book_details1", data.toString());
         mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
-
         mRecentBookDb.insert(data);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 99) {
+            readMoreSettingLayout.refreshFontSelect(true);
+        }
     }
 }
