@@ -22,7 +22,7 @@ public class SignConstant {
     public static final String G_GENDER = "g-gender";
     //新加的头参数
     public static final String SYSTEM = "system";//Android
-    public static final String SYSTEM_VERSION = "system_version";//系统版本
+    public static final String SYSTEM_VERSION = "system-version";//系统版本
     public static final String DEVICE = "device";//机型
     public static final String LOCATION = "location";//地区
     public static final String LANGUAGE = "language";//语言

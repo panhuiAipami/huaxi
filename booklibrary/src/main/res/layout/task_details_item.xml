@@ -75,7 +75,7 @@
                 android:id="@+id/goto_finish_task"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
-                android:background="@drawable/yz_code_bg"
+                android:background="@drawable/invitation_code_bg"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
                 android:text="去完成"
