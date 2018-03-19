@@ -260,12 +260,14 @@ public class PtrFrameLayout extends ViewGroup {
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-                    movePos(offsetY);
-                    return true;
+                    if (Math.abs(actiondownX - x) < 80) {
+                        movePos(offsetY);
+                        return true;
+                    }
                 } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 80) {
                     if (Util.isFastClick(500)) {
 //                        ToastUtil.showSingleToast("添加评论");
-                        ActivityUtil.toPublishCommentActivity(getContext(),book_id );
+                        ActivityUtil.toPublishCommentActivity(getContext(), book_id);
                     }
                     return true;
                 }
@@ -412,9 +414,10 @@ public class PtrFrameLayout extends ViewGroup {
         mPtrUIHandler = handler;
     }
 
-    public void setBookId(int book_id){
+    public void setBookId(int book_id) {
         this.book_id = book_id;
     }
+
     public void setHeaderView(View header) {
         if (header == null) {
             return;
