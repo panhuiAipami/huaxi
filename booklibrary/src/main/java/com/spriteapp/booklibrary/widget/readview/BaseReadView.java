@@ -21,7 +21,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -213,11 +212,9 @@ public abstract class BaseReadView extends View {
                 if (Math.abs(uy - dy) < Math.abs(ux - dx) || ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10))) {
                     if (t - et < 1000) { // 单击时间小于一秒为有效
                         startAnimation();//开始翻页
-                        Log.e("a","-------开始翻页------");
                     } else { // 长按
                         pagefactory.cancelPage();
                         restoreAnimation();
-                        Log.e("a","-------长按取消翻页------");
                     }
                     postInvalidate();
                     return true;
@@ -229,14 +226,12 @@ public abstract class BaseReadView extends View {
                             restoreAnimation();
                         }
                     },500);
-                    Log.e("a","-------上下划取消翻页------");
                 }
 
                 if (cancel) {
                     pagefactory.cancelPage();
                     restoreAnimation();
                     postInvalidate();
-                    Log.e("a","------cancel-取消翻页------");
                 } else {
 //                    startAnimation();
 //                    postInvalidate();
