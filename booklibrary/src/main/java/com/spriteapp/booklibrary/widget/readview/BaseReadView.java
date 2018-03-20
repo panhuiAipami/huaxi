@@ -150,6 +150,7 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
+                        getParent().requestDisallowInterceptTouchEvent(false);
                     } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
                         if (mTouchPageListener != null) {
                             mTouchPageListener.touchPage();
@@ -164,6 +165,7 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
+                        getParent().requestDisallowInterceptTouchEvent(false);
                     }
                     listener.onFlip();
                     //判断是否为空
@@ -189,6 +191,7 @@ public abstract class BaseReadView extends View {
                 mTouch.y = my;
                 touch_down = mTouch.x - actiondownX;
                 this.postInvalidate();
+                getParent().requestDisallowInterceptTouchEvent(false);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:

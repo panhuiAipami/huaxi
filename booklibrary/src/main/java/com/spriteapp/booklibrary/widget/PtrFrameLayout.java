@@ -260,7 +260,7 @@ public class PtrFrameLayout extends ViewGroup {
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-                    if (Math.abs(actiondownX - x) < 80) {
+                    if (Math.abs(actiondownX - x) < 50) {
                         movePos(offsetY);
                         return true;
                     }
