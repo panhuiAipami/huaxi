@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.model.MyApprenticeBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.MyApprenticeAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -32,7 +33,7 @@ public class ProfixDetailsFragment extends BaseFragment implements SwipeRefreshL
     private SwipeRefreshLayout refresh;
     private RelativeLayout null_layout;
     private TextView front_hint, behind_hint;
-    private List<String> list = new ArrayList<>();
+    private List<MyApprenticeBean.PupilDataBean> list = new ArrayList<>();
     private MyApprenticeAdapter myApprenticeAdapter, activationApprenticeAdapter;
     private int list_type;
 

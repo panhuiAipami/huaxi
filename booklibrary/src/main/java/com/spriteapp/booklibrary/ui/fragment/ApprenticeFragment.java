@@ -2,7 +2,9 @@ package com.spriteapp.booklibrary.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +14,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseFragment;
+import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.MyApprenticeBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.MyApprenticeAdapter;
+import com.spriteapp.booklibrary.util.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.spriteapp.booklibrary.ui.activity.ApprenticeListActivity.WITHDRAWALS_TYPE;
 
@@ -32,8 +47,11 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
     private SwipeRefreshLayout refresh;
     private RelativeLayout null_layout;
     private TextView front_hint, behind_hint;
-    private List<String> list = new ArrayList<>();
+    private List<MyApprenticeBean.PupilDataBean> list = new ArrayList<>();
     private MyApprenticeAdapter myApprenticeAdapter, activationApprenticeAdapter;
+    private int page = 1;
+    private int lastPage = 0;
+    private int list_type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,16 +78,18 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         behind_hint = (TextView) mView.findViewById(R.id.behind_hint);
         refresh.setColorSchemeResources(R.color.square_comment_selector);
         Bundle bundle = getArguments();
-        int list_type = bundle.getInt(WITHDRAWALS_TYPE, 0);
+        list_type = bundle.getInt(WITHDRAWALS_TYPE, 0);
         if (list_type == 0) {
             front_hint.setText(R.string.front2_text);
-            myApprenticeAdapter = new MyApprenticeAdapter(getActivity(), list, list_type);
         } else if (list_type == 1) {
             front_hint.setText(R.string.front_text);
-            myApprenticeAdapter = new MyApprenticeAdapter(getActivity(), list, list_type);
         }
+        myApprenticeAdapter = new MyApprenticeAdapter(getActivity(), list, list_type);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(myApprenticeAdapter);
         goneOrShow();
         listener();
+        getData();
     }
 
     private void listener() {
@@ -114,6 +134,101 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
     @Override
     public void onRefresh() {//刷新
         refresh.setRefreshing(false);
+    }
+
+
+    public void getData() {
+        if (list_type == 0) {//我的徒弟
+            getApprenticeList();
+        } else if (list_type == 1) {//唤醒徒弟
+            getActivateApprenticeList();
+        }
+    }
+
+    public void getApprenticeList() {
+        if (!NetworkUtil.isAvailable(getActivity())) return;
+        showDialog();
+        BookApi.getInstance()
+                .service
+                .user_mypupillist(Constant.JSON_TYPE, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<MyApprenticeBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<MyApprenticeBean> myApprenticeResponse) {
+                        if (myApprenticeResponse != null) {
+                            int resultCode = myApprenticeResponse.getCode();
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                if (myApprenticeResponse.getData() != null && myApprenticeResponse.getData().getPupil_data() != null && myApprenticeResponse.getData().getPupil_data().size() != 0) {
+                                    if (page == 1) list.clear();
+                                    list.addAll(myApprenticeResponse.getData().getPupil_data());
+                                    myApprenticeAdapter.notifyDataSetChanged();
+                                    goneOrShow();
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+                });
+    }
+
+    public void getActivateApprenticeList() {
+        if (!NetworkUtil.isAvailable(getActivity())) return;
+        showDialog();
+        BookApi.getInstance()
+                .service
+                .user_myawakepupillist(Constant.JSON_TYPE, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<List<MyApprenticeBean.PupilDataBean>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<List<MyApprenticeBean.PupilDataBean>> activateResponse) {
+                        if (activateResponse != null) {
+                            int resultCode = activateResponse.getCode();
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                if (activateResponse.getData() != null && activateResponse.getData().size() != 0) {
+                                    if (page == 1) list.clear();
+                                    list.addAll(activateResponse.getData());
+                                    myApprenticeAdapter.notifyDataSetChanged();
+                                    goneOrShow();
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+                });
     }
 
 

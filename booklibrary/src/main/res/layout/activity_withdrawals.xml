@@ -78,6 +78,48 @@
         </LinearLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/with_bg" />
+
+        <TextView
+            android:id="@+id/gold_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="当前金币(个)"
+            android:textColor="@color/app_background"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/false_gold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gold_hint"
+            android:ellipsize="end"
+            android:lines="1"
+            android:padding="10dp"
+            android:text="0"
+            android:textColor="@color/app_background"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/c10_themes_color"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="提现账户"
+        android:textColor="@color/square_user_speak"
+        android:textSize="16sp" />
+
 
     <LinearLayout
         android:id="@+id/to_with_layout"
@@ -108,18 +150,18 @@
             android:id="@+id/alipay_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:drawableEnd="@drawable/book_reader_right_arrow_image"
             android:drawablePadding="10dp"
-            android:maxLength="4"
-            android:layout_gravity="center"
-            android:textColor="@color/blue_color"
             android:gravity="center_vertical"
-            android:text="" />
+            android:maxLength="4"
+            android:text=""
+            android:textColor="@color/blue_color" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="1dp"
         android:background="@color/c10_themes_color2"></View>
 
     <TextView
@@ -129,10 +171,11 @@
         android:gravity="center_horizontal"
         android:text="当前金币"
         android:textColor="@color/square_introduce"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
-        android:id="@+id/false_gold"
+        android:id="@+id/false_gold1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -141,30 +184,42 @@
         android:lines="1"
         android:text="0"
         android:textColor="@color/code_btn_bg_color"
-        android:textSize="26sp" />
+        android:textSize="26sp"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/c12_themes_color"
+        android:padding="10dp"
         android:text="@string/payment_date_hint"
-        android:textColor="@color/square_user_speak"
+        android:textColor="@color/square_introduce"
         android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/c10_themes_color2"
+        android:background="@color/app_background"
         android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="可兑换:"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/real_money"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="可兑换:0.0元"
+            android:text="0.0¥"
+            android:textColor="@color/code_btn_bg_color"
             android:textSize="18sp" />
 
         <TextView
@@ -173,7 +228,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
-            android:background="@drawable/yz_code_bg"
+            android:background="@drawable/invitation_code_bg"
             android:gravity="center"
             android:text="立即兑换"
             android:textColor="@color/app_background" />

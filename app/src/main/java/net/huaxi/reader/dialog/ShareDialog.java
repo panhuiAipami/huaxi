@@ -1,6 +1,7 @@
 package net.huaxi.reader.dialog;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +46,7 @@ public class ShareDialog extends BaseDialog {
     private int share_type = 1;
     public static boolean isFinish;
     public static boolean isWeChat;
+    private String title = null;
 
     //其他地方用的分享弹窗
     public ShareDialog(Activity activity, ShareBean shareBean, int type) {
@@ -76,6 +78,10 @@ public class ShareDialog extends BaseDialog {
         ll_sina_weibo.setOnClickListener(customListener);
         ll_qq.setOnClickListener(customListener);
         ll_qq_qzone.setOnClickListener(customListener);
+//        if (share_type == 2) {
+//            ll_qq_qzone.setVisibility(View.GONE);
+//            ll_qq.setVisibility(View.VISIBLE);
+//        }
     }
 
     int type = 0;
@@ -148,12 +154,29 @@ public class ShareDialog extends BaseDialog {
             ToastUtil.showLong("请先安装" + name + "客户端");
             return;
         }
-        UMImage thumb = new UMImage(activity, shareBean.getImgUrl());
-        MLog.d("thum", shareBean.getImgUrl());
-        UMWeb web = new UMWeb(shareBean.getShareUrl());
-        web.setThumb(thumb);
-        web.setDescription(shareBean.getDesc());
-        web.setTitle(shareBean.getTitle());
+        UMWeb web;
+        if (share_type == 1) {
+            UMImage thumb = new UMImage(activity, shareBean.getImgUrl());
+            MLog.d("thum", shareBean.getImgUrl());
+            web = new UMWeb(shareBean.getShareUrl());
+            web.setThumb(thumb);
+            web.setDescription(shareBean.getDesc());
+            web.setTitle(shareBean.getTitle());
+        } else{
+            UMImage thumb = new UMImage(activity, "http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
+            web = new UMWeb("http://baidu.com");
+            web.setThumb(thumb);
+            if (type == 1) {
+                title = "你想要的,我都懂,看小说也能赚钱的神器!";
+            } else if (type == 2) {
+                title = "划时代小说阅读神器,看小说也能赚钱!";
+            } else if (type == 3) {
+                title = "全新模式,读小说赚现金!";
+            }
+            web.setDescription(TextUtils.isEmpty(title) ? "划时代小说阅读神器,看小说也能赚钱!" : title);
+//            web.setTitle(shareBean.getTitle());
+        }
+
 
         new ShareAction(activity).withMedia(web).setPlatform(Platform).setCallback(new UMShareListener() {
             @Override

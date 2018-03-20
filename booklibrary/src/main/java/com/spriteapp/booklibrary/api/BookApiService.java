@@ -5,6 +5,7 @@ import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
+import com.spriteapp.booklibrary.model.MyApprenticeBean;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.TaskBean;
@@ -360,4 +361,22 @@ public interface BookApiService {
     Observable<Base> user_mobile(@Query("mobile") String mobile,
                                  @Query("captcha") String captcha,
                                  @Query("u_action") String u_action);
+
+    //我的徒弟列表
+    @GET("user_mypupillist")
+    Observable<Base<MyApprenticeBean>> user_mypupillist(@Query("format") String format,
+                                                        @Query("page") int page);
+
+    //待激活徒弟列表
+    @GET("user_myawakepupillist")
+    Observable<Base<List<MyApprenticeBean.PupilDataBean>>> user_myawakepupillist(@Query("format") String format,
+                                                                                 @Query("page") int page);
+
+    //激活徒弟
+    @GET("user_awakepupil")
+    Observable<Base> user_awakepupil(@Query("awake_user_id") int page);
+
+    //用户收益明细
+    @GET("user_coninslog")
+    Observable<Base> user_coninslog(@Query("page") int page);
 }

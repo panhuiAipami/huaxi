@@ -63,6 +63,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     private String WXURL = "";
     private int IsRead = 0;
     private TextView book_reader_title_textView;
+    private boolean isFirst = true;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -112,8 +113,6 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         getDataFromTopPage();
         if (StringUtil.isEmpty(mUrl)) {
             return;
-        } else if (mUrl.startsWith("https://statecheck.swiftpass.cn/pay/wappay") || mUrl.startsWith("http://statecheck.swiftpass.cn/pay/wappay")) {
-            WXURL = mUrl;//原生支付宝支付网页微信支付
         }
         if (!AppUtil.isNetAvailable(this)) {
             return;
@@ -186,7 +185,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             String DownloadImageURL = webViewHitTestResult.getExtra();
                             if (!TextUtils.isEmpty(DownloadImageURL)) {
-                                Log.d("DownloadImageURL","url==="+DownloadImageURL);
+                                Log.d("DownloadImageURL", "url===" + DownloadImageURL);
                                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(DownloadImageURL));
                                 request.allowScanningByMediaScanner();
                                 //设置图片的保存路径
@@ -204,8 +203,6 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     }
 
 
-
-
     @Override
     public void addContentView() {
         View view = getLayoutInflater().inflate(R.layout.book_reader_activity_web_view, null);
@@ -215,7 +212,10 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
     WebViewClient mClient = new WebViewClient() {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            showDialog();
+            if (!isFinishing()) {
+                showDialog();
+            }
+
         }
 
         @Override
@@ -227,24 +227,15 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url == null) return false;
             try {
-                Log.d("webUrl", "url===" + url);
                 if (url.startsWith("http:") || url.startsWith("https:")) {
-                    Log.d("webViewUrl", "url000===" + url);
-                    if (url.startsWith("https://statecheck.swiftpass.cn/pay/wappay") || url.startsWith("http://statecheck.swiftpass.cn/pay/wappay")) {
-                        WXURL = url;
-                    }
                     return true;
                 } else {
-                    Log.d("webViewUrl", "url111===" + url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
                     if (url.startsWith("weixin://")) {
-                        if (WXURL != null && !WXURL.isEmpty())
-                            view.loadUrl(WXURL);
-                        WXURL = "";
-//                        view.goBack();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                        view.stopLoading();
                     }
-                    return true;
+                    return false;
                 }
             } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
                 return false;
