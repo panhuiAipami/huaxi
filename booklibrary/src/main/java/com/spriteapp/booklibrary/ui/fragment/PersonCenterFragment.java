@@ -55,7 +55,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             recharge, bookshelf, recharge_record, records_of_consumption,
             award_record, remind, phone, setting, user_id;
     private LinearLayout invitation_code_layout, task_layout, withdrawals_layout;
-    private TextView invitation_code, task, withdrawals;
+    private TextView invitation_code, task, withdrawals, huaban_hint, gold_hint, user_sign;
     private ImageView user_bg, user_head;
     private BookShelfPresenter mPresenter;
     public static int toSetting = 0;
@@ -118,6 +118,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         invitation_code = (TextView) mView.findViewById(R.id.invitation_code);
         task = (TextView) mView.findViewById(R.id.task);
         withdrawals = (TextView) mView.findViewById(R.id.withdrawals);
+        user_sign = (TextView) mView.findViewById(R.id.user_sign);
+        huaban_hint = (TextView) mView.findViewById(R.id.huaban_hint);
+        gold_hint = (TextView) mView.findViewById(R.id.gold_hint);
         invitation_code_layout = (LinearLayout) mView.findViewById(R.id.invitation_code_layout);
         task_layout = (LinearLayout) mView.findViewById(R.id.task_layout);
         withdrawals_layout = (LinearLayout) mView.findViewById(R.id.withdrawals_layout);
@@ -125,6 +128,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             task_layout.setVisibility(View.VISIBLE);
             invitation_code_layout.setVisibility(View.VISIBLE);
             withdrawals_layout.setVisibility(View.VISIBLE);
+            huaban_hint.setVisibility(View.GONE);
+            gold_hint.setVisibility(View.VISIBLE);
+            hua_ban.setTextColor(getResources().getColor(R.color.code_btn_bg_color));
         }
 
 
@@ -148,6 +154,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         setting.setOnClickListener(this);
         user_bg.setOnClickListener(this);
         user_head.setOnClickListener(this);
+        user_sign.setOnClickListener(this);
         //花都
         task.setOnClickListener(this);
         invitation_code.setOnClickListener(this);
@@ -228,6 +235,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
         } else if (v == withdrawals) {
             if (!AppUtil.isLogin(getActivity())) return;
             ActivityUtil.toWithdrawalsActivity(getActivity());//去提现
+        } else if (v == user_sign) {
+            if (!AppUtil.isLogin(getActivity())) return;
+            ActivityUtil.toWebViewActivity(getActivity(), Constant.CHECK_IN_URL);//去签到
         }
     }
 
@@ -315,7 +325,12 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), getActivity());
         else
             GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, getActivity());
-        hua_ban.setText(Util.getString(UserBean.getInstance().getUser_false_point() + ""));
+        if (HomeActivity.ISHAUDU) {//是花都显示用户金币
+            hua_ban.setText(Util.getString(UserBean.getInstance().getGold_coins() + ""));
+        } else {//不是花都显示花瓣
+            hua_ban.setText(Util.getString(UserBean.getInstance().getUser_false_point() + ""));
+        }
+
         hua_bei.setText(Util.getString(UserBean.getInstance().getUser_real_point() + ""));
         user_name.setText(UserBean.getInstance().getUser_nickname());
         user_id.setText("uid:" + UserBean.getInstance().getUser_id());

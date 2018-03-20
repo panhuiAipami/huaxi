@@ -130,33 +130,49 @@
 
         <ImageView
             android:id="@+id/ali_wx_img"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/alipay_with" />
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/zhifubao_icon" />
 
-        <TextView
-            android:id="@+id/setting_with"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/alipay_with"
-            android:textColor="@color/square_user_speak"
-            android:textSize="16sp" />
+            android:orientation="vertical">
 
-        <TextView
+            <TextView
+                android:id="@+id/setting_with"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/alipay_with1"
+                android:textColor="@color/square_user_speak"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/setting_with_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/alipay_with"
+                android:textColor="@color/square_small"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <ImageView
             android:id="@+id/alipay_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableEnd="@drawable/book_reader_right_arrow_image"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:maxLength="4"
-            android:text=""
-            android:textColor="@color/blue_color" />
+            android:src="@drawable/goto_pay_selector" />
     </LinearLayout>
 
     <View

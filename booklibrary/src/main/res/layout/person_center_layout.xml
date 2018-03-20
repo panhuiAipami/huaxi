@@ -140,6 +140,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/huaban_hint"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@mipmap/huaban"
@@ -149,6 +150,18 @@
                                 android:textColor="@color/square_small"
                                 android:textSize="12sp" />
 
+                            <TextView
+                                android:id="@+id/gold_hint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@mipmap/gold_icon"
+                                android:drawablePadding="3dp"
+                                android:gravity="center"
+                                android:text="金币"
+                                android:textColor="@color/square_small"
+                                android:textSize="12sp"
+                                android:visibility="gone" />
+
 
                         </LinearLayout>
 
@@ -157,7 +170,7 @@
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
-
+        <!--关注与粉丝模块无效-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,48 +218,7 @@
                 android:textColor="@color/square_user_speak"
                 android:textSize="16sp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/person_line_left_padding"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/person_icon_left_wight"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/chongzhi" />
-
-                <TextView
-                    android:id="@+id/recharge"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/person_text_to_img"
-                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
-                    android:gravity="center_vertical"
-                    android:text="充值"
-                    android:textColor="@color/square_user_speak"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/person_line_left_padding"
-                android:background="@color/c10_themes_color"
-                android:visibility="visible"></View>
-        </LinearLayout>
-
+        <!--书架-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -286,11 +258,92 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
+        <!--签到-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/person_line_left_padding"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/xiaofei" />
+
+                <TextView
+                    android:id="@+id/user_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="签到"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
+                android:background="@color/c10_themes_color"
+                android:visibility="visible"></View>
+        </LinearLayout>
+        <!--充值-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/person_line_left_padding"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/person_icon_left_wight"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/chongzhi" />
+
+                <TextView
+                    android:id="@+id/recharge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/person_text_to_img"
+                    android:drawableEnd="@drawable/book_reader_right_arrow_image"
+                    android:gravity="center_vertical"
+                    android:text="充值"
+                    android:textColor="@color/square_user_speak"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/person_line_left_padding"
+                android:background="@color/c10_themes_color"
+                android:visibility="visible"></View>
+        </LinearLayout>
+        <!--任务-->
         <LinearLayout
             android:id="@+id/task_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
+            android:layout_marginTop="30dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:visibility="gone">
@@ -328,7 +381,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--提现-->
         <LinearLayout
             android:id="@+id/withdrawals_layout"
             android:layout_width="match_parent"
@@ -370,7 +423,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--邀请码-->
         <LinearLayout
             android:id="@+id/invitation_code_layout"
             android:layout_width="match_parent"
@@ -412,7 +465,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--充值记录-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -454,7 +507,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--消费记录-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -494,7 +547,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--奖励记录-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -534,7 +587,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--免提示订阅-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -576,7 +629,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--绑定手机无效-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
@@ -617,7 +670,7 @@
                 android:background="@color/c10_themes_color"
                 android:visibility="visible"></View>
         </LinearLayout>
-
+        <!--设置-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"

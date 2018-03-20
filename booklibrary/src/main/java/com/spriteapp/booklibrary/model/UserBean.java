@@ -62,6 +62,7 @@ public class UserBean implements Serializable {
     private int user_message;
     private int has_role;//0不是，1是
     private int read_timespan;//上传时长的秒数
+    private int gold_coins;//用户金币
 
     public int getId() {
         return id;
@@ -75,6 +76,14 @@ public class UserBean implements Serializable {
         if (user_nickname == null)
             user_nickname = "";
         return user_nickname;
+    }
+
+    public int getGold_coins() {
+        return gold_coins;
+    }
+
+    public void setGold_coins(int gold_coins) {
+        this.gold_coins = gold_coins;
     }
 
     public int getRead_timespan() {
