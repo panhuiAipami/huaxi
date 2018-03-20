@@ -1687,7 +1687,8 @@ public class Util {
     }
 
     static UserBean user;
-    public static UserBean  getUserInfo() {
+
+    public static UserBean getUserInfo() {
         try {
             Log.d("userInfo", "用户信息");
             if (!AppUtil.isLogin())
@@ -1781,6 +1782,7 @@ public class Util {
         layoutParams.height = (int) (h * weight);
         v.setLayoutParams(layoutParams);
     }
+
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static void printLine(String tag, boolean isTop) {
@@ -1790,6 +1792,7 @@ public class Util {
             Log.d(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
     }
+
     public static void printJson(String tag, String msg, String headString) {
 
         String message;
@@ -1816,19 +1819,27 @@ public class Util {
         }
         printLine(tag, false);
     }
+
     /**
      * 单独设置内部字体颜色
+     *
      * @param text
      * @param keyworld
      * @return
      */
-    public static SpannableStringBuilder getSpannableTextColor(String text, String keyworld){
-        SpannableStringBuilder spannableStringBuilder=new SpannableStringBuilder(text);
-        if(text.contains(keyworld)){
-            int spanStartIndex=text.indexOf(keyworld);
-            int spacEndIndex=spanStartIndex+keyworld.length();
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(AppUtil.getAppContext().getResources().getColor(R.color.toast_text_color)),spanStartIndex,spacEndIndex, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+    public static SpannableStringBuilder getSpannableTextColor(String text, String keyworld) {
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
+        if (text.contains(keyworld)) {
+            int spanStartIndex = text.indexOf(keyworld);
+            int spacEndIndex = spanStartIndex + keyworld.length();
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(AppUtil.getAppContext().getResources().getColor(R.color.toast_text_color)), spanStartIndex, spacEndIndex, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         return spannableStringBuilder;
+    }
+
+    public static String keepOne(float float_num) {
+        DecimalFormat fnum = new DecimalFormat("##0.0");
+        String number = fnum.format(float_num);
+        return number;
     }
 }

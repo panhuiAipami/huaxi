@@ -110,6 +110,13 @@ public class TaskActivity extends TitleActivity {
                 return true;
             }
         });
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -251,12 +258,18 @@ public class TaskActivity extends TitleActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("TaskActivity--","onPause");
+        Log.d("TaskActivity--", "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("TaskActivity--","onStop");
+        Log.d("TaskActivity--", "onStop");
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

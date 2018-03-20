@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.ui.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,11 +15,13 @@ import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -88,6 +91,13 @@ public class WithdrawalsActivity extends TitleActivity {
 
     private void listener() throws Exception {
 //        switchAliPay_WeChat();
+        int money = UserBean.getInstance().getGold_coins();
+        false_gold.setText(money + "");//获取用户资料里面的金币数量
+        if (money > 0) {
+            float v = (float) money / 33333;
+            real_money.setText(Util.keepOne(v));
+            Log.d("real_rmb", "比例兑换===" + Util.keepOne(v));
+        }
         to_with_layout.setOnClickListener(this);
         goto_with.setOnClickListener(this);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -102,6 +112,13 @@ public class WithdrawalsActivity extends TitleActivity {
                 }
             }
         });
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -110,7 +127,7 @@ public class WithdrawalsActivity extends TitleActivity {
         if (v == to_with_layout) {//管理支付宝
             ActivityUtil.toMangerAlipayActivity(this);
         } else if (v == goto_with) {//提现
-            gotoWithHttp(100000);
+            gotoWithHttp(UserBean.getInstance().getGold_coins());
         }
     }
 
@@ -180,8 +197,14 @@ public class WithdrawalsActivity extends TitleActivity {
                         if (bookStoreResponse != null) {
                             int resultCode = bookStoreResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-
-
+                                if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {
+                                    ToastUtil.showToast(bookStoreResponse.getMessage());
+                                    finish();
+                                }
+                            } else {
+                                if (!TextUtils.isEmpty(bookStoreResponse.getMessage())) {
+                                    ToastUtil.showToast(bookStoreResponse.getMessage());
+                                }
                             }
                         }
 
@@ -220,5 +243,11 @@ public class WithdrawalsActivity extends TitleActivity {
 //            String substring = name.substring(0, 1) + (length == 2 ? "*" : (length == 3 ? "**" : (length >= 4 ? "***" : "***")));
 //            alipay_name.setText(substring);
 //        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
