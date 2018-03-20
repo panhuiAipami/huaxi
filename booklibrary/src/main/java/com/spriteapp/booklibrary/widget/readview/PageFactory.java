@@ -31,9 +31,11 @@ import android.widget.ProgressBar;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.callback.ProgressCallback;
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
@@ -92,6 +94,7 @@ public class PageFactory {
     private Vector<String> mLines = new Vector<>();
 
     private Paint mPaint;
+    private Paint mChapterTitlePaint;
     private Paint mTitlePaint;
     private Bitmap mBookPageBg;
 
@@ -111,6 +114,7 @@ public class PageFactory {
     private ProgressCallback mProgressCallback;
     private ContentDb mContentDb;
     private int mBatteryWidth;
+    private String bookName;
 
     public PageFactory(Context context, String bookId, List<BookChapterResponse> chaptersList) {
         this(context, ScreenUtil.getScreenWidth(), ScreenUtil.getScreenHeight(),
@@ -126,7 +130,7 @@ public class PageFactory {
         mFontSize = fontSize;
 //        mLineSpace = mFontSize / 17 * 12;
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
-        mLineSpace =  mFontSize / 17 * (5*(format+1));
+        mLineSpace = mFontSize / 17 * (5 * (format + 1));
         marginWidth = ScreenUtil.dpToPxInt(14);
         marginHeight = ScreenUtil.dpToPxInt(66);
         mVisibleHeight = mHeight - marginHeight * 2 + ScreenUtil.dpToPxInt(25);
@@ -137,6 +141,11 @@ public class PageFactory {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mFontSize);
         mPaint.setColor(Color.BLACK);
+
+        mChapterTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mChapterTitlePaint.setTextSize(mFontSize-2);
+        mChapterTitlePaint.setColor(Color.BLACK);
+        mChapterTitlePaint.setFakeBoldText(true);
 
         mTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTitlePaint.setTextSize(ScreenUtil.dpToPxInt(11));
@@ -151,6 +160,9 @@ public class PageFactory {
         time = dateFormat.format(new Date());
         mContentDb = new ContentDb(mContext);
         mBatteryWidth = ScreenUtil.dpToPxInt(20);
+
+        BookDetailResponse bookDetailResponse = new BookDb(mContext).queryBook(Integer.valueOf(bookId));
+        bookName = bookDetailResponse.getBook_name();
     }
 
     /**
@@ -199,20 +211,25 @@ public class PageFactory {
             canvas.drawColor(AppUtil.getAppContext().getResources().
                     getColor(R.color.book_reader_read_page_default_background));
         }
-        // 绘制标题
-        if (!CollectionUtil.isEmpty(chaptersList)) {
+
+        //绘制书名
+        canvas.drawText(bookName, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(40), mTitlePaint);
+
+        // 绘制章节名
+        if (curBeginPos == 0 && !CollectionUtil.isEmpty(chaptersList)) {
             for (BookChapterResponse catalogResponse : chaptersList) {
                 int chapter_id = catalogResponse.getChapter_id();
                 if (chapter_id == currentChapter) {
                     String title = catalogResponse.getChapter_title();
-                    canvas.drawText(title, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(40), mTitlePaint);
+                    canvas.drawText(title, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(75), mChapterTitlePaint);
+                    y += ScreenUtil.dpToPx(35);
                     break;
                 }
             }
         }
 
-        y += ScreenUtil.dpToPx(3);
         // 绘制阅读页面文字
+        y += ScreenUtil.dpToPx(3);
         for (String line : mLines) {
             y += mLineSpace;
             if (line.endsWith("@")) {
@@ -570,8 +587,9 @@ public class PageFactory {
         mFontSize = fontSize;
 //        mLineSpace = mFontSize / 17 * 12;
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
-        mLineSpace =  mFontSize / 17 * (5*(format+1));
+        mLineSpace = mFontSize / 17 * (5 * (format + 1));
         mPaint.setTextSize(mFontSize);
+        mChapterTitlePaint.setTextSize(mFontSize-2);
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         setChapterTotalPage();
         setCurrentPageBeginPos();
@@ -582,7 +600,7 @@ public class PageFactory {
      * 设置间距
      */
     public void setFontSpace(int space) {
-        mLineSpace = mFontSize / 17 * (5*(space+1));
+        mLineSpace = mFontSize / 17 * (5 * (space + 1));
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         setChapterTotalPage();
         setCurrentPageBeginPos();
@@ -617,6 +635,7 @@ public class PageFactory {
      */
     public void setTextColor(int textColor, int titleColor) {
         mPaint.setColor(textColor);
+        mChapterTitlePaint.setColor(textColor);
         mTitlePaint.setColor(titleColor);
     }
 
@@ -625,6 +644,7 @@ public class PageFactory {
      */
     public void setTexTypeFace(Typeface tc) {
         mPaint.setTypeface(tc);
+        mChapterTitlePaint.setTypeface(tc);
         mTitlePaint.setTypeface(tc);
     }
 
