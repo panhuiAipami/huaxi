@@ -25,6 +25,7 @@ import com.spriteapp.booklibrary.model.MyApprenticeBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.MyApprenticeAdapter;
 import com.spriteapp.booklibrary.util.NetworkUtil;
+import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,13 @@ import static com.spriteapp.booklibrary.ui.activity.ApprenticeListActivity.WITHD
  * Created by userfirst on 2018/3/13.
  */
 
-public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, URecyclerView.LoadingListener {
     private View mView;
-    private RecyclerView recyclerView;
+    private URecyclerView recyclerView;
     private SwipeRefreshLayout refresh;
     private RelativeLayout null_layout;
-    private TextView front_hint, behind_hint;
+    private TextView front_hint, behind_hint, gold_num, behind_hint2;
+    private LinearLayout bottom_layout;
     private List<MyApprenticeBean.PupilDataBean> list = new ArrayList<>();
     private MyApprenticeAdapter myApprenticeAdapter, activationApprenticeAdapter;
     private int page = 1;
@@ -71,18 +73,23 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void findViewId() {
-        recyclerView = (RecyclerView) mView.findViewById(R.id.recyclerView);
+        recyclerView = (URecyclerView) mView.findViewById(R.id.recyclerView);
         refresh = (SwipeRefreshLayout) mView.findViewById(R.id.refresh);
         null_layout = (RelativeLayout) mView.findViewById(R.id.null_layout);
         front_hint = (TextView) mView.findViewById(R.id.front_hint);
         behind_hint = (TextView) mView.findViewById(R.id.behind_hint);
+        gold_num = (TextView) mView.findViewById(R.id.gold_num);
+        behind_hint2 = (TextView) mView.findViewById(R.id.behind_hint2);
+        bottom_layout = (LinearLayout) mView.findViewById(R.id.bottom_layout);
         refresh.setColorSchemeResources(R.color.square_comment_selector);
+        recyclerView.setLoadingListener(this);
         Bundle bundle = getArguments();
         list_type = bundle.getInt(WITHDRAWALS_TYPE, 0);
         if (list_type == 0) {
             front_hint.setText(R.string.front2_text);
         } else if (list_type == 1) {
             front_hint.setText(R.string.front_text);
+            bottom_layout.setVisibility(View.GONE);
         }
         myApprenticeAdapter = new MyApprenticeAdapter(getActivity(), list, list_type);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -115,8 +122,10 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
     private void goneOrShow() {
         if (list.size() == 0) {
             null_layout.setVisibility(View.VISIBLE);
+            bottom_layout.setVisibility(View.GONE);
         } else {
             null_layout.setVisibility(View.GONE);
+            bottom_layout.setVisibility(View.VISIBLE);
         }
 
     }
@@ -131,11 +140,6 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         super.initData();
     }
 
-    @Override
-    public void onRefresh() {//刷新
-        refresh.setRefreshing(false);
-    }
-
 
     public void getData() {
         if (list_type == 0) {//我的徒弟
@@ -145,9 +149,8 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         }
     }
 
-    public void getApprenticeList() {
+    public void getApprenticeList() {//得到我的徒弟列表
         if (!NetworkUtil.isAvailable(getActivity())) return;
-        showDialog();
         BookApi.getInstance()
                 .service
                 .user_mypupillist(Constant.JSON_TYPE, page)
@@ -164,12 +167,21 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
                         if (myApprenticeResponse != null) {
                             int resultCode = myApprenticeResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
-                                if (myApprenticeResponse.getData() != null && myApprenticeResponse.getData().getPupil_data() != null && myApprenticeResponse.getData().getPupil_data().size() != 0) {
-                                    if (page == 1) list.clear();
-                                    list.addAll(myApprenticeResponse.getData().getPupil_data());
-                                    myApprenticeAdapter.notifyDataSetChanged();
-                                    goneOrShow();
+                                if (myApprenticeResponse.getData() != null) {
+                                    if (myApprenticeResponse.getData().getTotal_data() != null) {
+                                        gold_num.setText(myApprenticeResponse.getData().getTotal_data().getTotal_gold_coins() + "");
+                                    }
+
+
+                                    if (myApprenticeResponse.getData().getPupil_data() != null && myApprenticeResponse.getData().getPupil_data().size() != 0) {
+                                        if (page == 1) list.clear();
+                                        list.addAll(myApprenticeResponse.getData().getPupil_data());
+                                        page++;
+                                        myApprenticeAdapter.notifyDataSetChanged();
+                                        goneOrShow();
+                                    }
                                 }
+
 
                             }
                         }
@@ -183,14 +195,14 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onComplete() {
+                        refresh.setRefreshing(false);
                         dismissDialog();
                     }
                 });
     }
 
-    public void getActivateApprenticeList() {
+    public void getActivateApprenticeList() {//得到待唤醒徒弟列表
         if (!NetworkUtil.isAvailable(getActivity())) return;
-        showDialog();
         BookApi.getInstance()
                 .service
                 .user_myawakepupillist(Constant.JSON_TYPE, page)
@@ -210,6 +222,7 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
                                 if (activateResponse.getData() != null && activateResponse.getData().size() != 0) {
                                     if (page == 1) list.clear();
                                     list.addAll(activateResponse.getData());
+                                    page++;
                                     myApprenticeAdapter.notifyDataSetChanged();
                                     goneOrShow();
                                 }
@@ -226,10 +239,27 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
 
                     @Override
                     public void onComplete() {
+                        refresh.setRefreshing(false);
                         dismissDialog();
                     }
                 });
     }
 
+    @Override
+    public void onRefresh() {//刷新
+        page = 1;
+        lastPage = 0;
+        getData();
 
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (page > lastPage) {
+            lastPage = page;
+            showDialog();
+            getData();
+        }
+
+    }
 }

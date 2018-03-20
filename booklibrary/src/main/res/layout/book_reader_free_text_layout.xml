@@ -10,7 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         android:src="@mipmap/paixu" />
 
     <ImageView
@@ -21,7 +23,8 @@
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
-        android:src="@mipmap/bianji" />
+        android:src="@mipmap/bianji"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/selector_or_close"

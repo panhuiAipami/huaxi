@@ -42,8 +42,8 @@ public class WithdrawalsActivity extends TitleActivity {
 //    private HomePageTabAdapter adapter;
 
     //修改过的
-    private TextView setting_with, false_gold, real_money, goto_with, alipay_name;
-    private ImageView ali_wx_img;
+    private TextView setting_with, false_gold, real_money, goto_with, setting_with_hint;
+    private ImageView ali_wx_img, alipay_name;
     private RadioGroup radio_group;
     private View alipay_line, wechat_line;
     private LinearLayout to_with_layout;
@@ -77,7 +77,8 @@ public class WithdrawalsActivity extends TitleActivity {
         false_gold = (TextView) findViewById(R.id.false_gold);
         real_money = (TextView) findViewById(R.id.real_money);
         goto_with = (TextView) findViewById(R.id.goto_with);
-        alipay_name = (TextView) findViewById(R.id.alipay_name);
+        setting_with_hint = (TextView) findViewById(R.id.setting_with_hint);
+        alipay_name = (ImageView) findViewById(R.id.alipay_name);
         to_with_layout = (LinearLayout) findViewById(R.id.to_with_layout);
         ali_wx_img = (ImageView) findViewById(R.id.ali_wx_img);
         radio_group = (RadioGroup) findViewById(R.id.radio_group);
@@ -109,7 +110,7 @@ public class WithdrawalsActivity extends TitleActivity {
         if (v == to_with_layout) {//管理支付宝
             ActivityUtil.toMangerAlipayActivity(this);
         } else if (v == goto_with) {//提现
-            gotoWithHttp(100);
+            gotoWithHttp(100000);
         }
     }
 
@@ -207,11 +208,17 @@ public class WithdrawalsActivity extends TitleActivity {
     }
 
     public void setNameText() {
-        String name = SharedPreferencesUtil.getInstance().getString(ALIPAY_NAME);
-        int length = name.length();
-        if (!TextUtils.isEmpty(name) && length > 1) {
-            String substring = name.substring(0, 1) + (length == 2 ? "*" : (length == 3 ? "**" : (length >= 4 ? "***" : "***")));
-            alipay_name.setText(substring);
+        if (TextUtils.isEmpty(SharedPreferencesUtil.getInstance().getString(ALIPAY_NAME))) {
+            alipay_name.setEnabled(true);
+            setting_with_hint.setVisibility(View.VISIBLE);
+        } else {
+            alipay_name.setEnabled(false);
+            setting_with_hint.setVisibility(View.GONE);
         }
+
+//        if (!TextUtils.isEmpty(name) && length > 1) {
+//            String substring = name.substring(0, 1) + (length == 2 ? "*" : (length == 3 ? "**" : (length >= 4 ? "***" : "***")));
+//            alipay_name.setText(substring);
+//        }
     }
 }
