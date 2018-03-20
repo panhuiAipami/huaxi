@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.database.ChapterDb;
 import com.spriteapp.booklibrary.enumeration.ChapterEnum;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.util.CollectionUtil;
@@ -26,11 +27,22 @@ public class ChapterAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private int mCurrentChapter;
     private boolean isNight;
+    private int book_id;
 
-    public ChapterAdapter(Context mContext, List<BookChapterResponse> mCatalogList) {
+    public ChapterAdapter(Context mContext, List<BookChapterResponse> mCatalogList, int book_id) {
         this.mContext = mContext;
         this.mCatalogList = mCatalogList;
+        this.book_id = book_id;
         mInflater = LayoutInflater.from(mContext);
+
+        List<BookChapterResponse> chapterResponses = new ChapterDb(mContext).queryCatalog(book_id);
+        for (BookChapterResponse c : chapterResponses) {
+            for (BookChapterResponse b : mCatalogList) {
+                if (b.getChapter_id() == c.getChapter_id() && c.getIs_download()) {
+                    b.setIs_download(1);
+                }
+            }
+        }
     }
 
     public void setCurrentChapter(int mCurrentChapter) {
@@ -90,9 +102,16 @@ public class ChapterAdapter extends BaseAdapter {
                             hasRead ? R.color.book_reader_common_text_color :
                                     R.color.book_reader_chapter_not_read_day_color));
         }
-        boolean isVipChapter = ChapterEnum.CHAPTER_IS_VIP.getCode()
-                == bookChapterResponse.getChapter_is_vip();
-        holder.freeChapterTextView.setVisibility(isVipChapter ? View.GONE : View.VISIBLE);
+
+        if (bookChapterResponse.getIs_download()) {
+            holder.freeChapterTextView.setText("已下载");
+            holder.freeChapterTextView.setVisibility(View.VISIBLE);
+        } else {
+            boolean isVipChapter = ChapterEnum.CHAPTER_IS_VIP.getCode()
+                    == bookChapterResponse.getChapter_is_vip();
+            holder.freeChapterTextView.setText("免费");
+            holder.freeChapterTextView.setVisibility(isVipChapter ? View.GONE : View.VISIBLE);
+        }
         if (isCurrentChapter) {
             holder.freeChapterTextView.setTextColor(mContext.getResources()
                     .getColor(isNight ? R.color.book_reader_chapter_free_text_night_color :
@@ -102,6 +121,7 @@ public class ChapterAdapter extends BaseAdapter {
                     .getColor(isNight ? R.color.book_reader_chapter_not_read_night_color :
                             R.color.book_reader_chapter_not_read_day_color));
         }
+        
         holder.lineView.setBackgroundResource(isNight ? R.color.book_reader_divide_line_night_color :
                 R.color.book_reader_divide_line_color);
         return convertView;

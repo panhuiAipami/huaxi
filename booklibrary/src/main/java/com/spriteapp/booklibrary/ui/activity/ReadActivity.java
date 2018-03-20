@@ -459,7 +459,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mChapterList == null) {
             mChapterList = new ArrayList<>();
         }
-        mChapterAdapter = new ChapterAdapter(this, mChapterList);
+        mChapterAdapter = new ChapterAdapter(this, mChapterList,mBookId);
         mChapterListView.setAdapter(mChapterAdapter);
         mChapterListView.setSelectionFromTop(
                 BookUtil.getCurrentChapterPosition(mChapterList, mCurrentChapter),
@@ -755,10 +755,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         int bg_color = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
         mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(bg_color));
-        mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_night_color
+        mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_new_night_color
                         : R.color.book_reader_reader_text_color),
-                getResources().getColor(isNight ? R.color.book_reader_read_title_night_color
-                        : R.color.book_reader_read_title_color));
+                getResources().getColor(R.color.c06_themes_color));
         //返回按钮
 //        mBackImageView.setImageResource(isNight ? R.drawable.book_reader_title_back_night_selector :
 //                R.drawable.book_reader_title_back_selector);

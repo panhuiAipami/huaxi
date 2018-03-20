@@ -29,8 +29,10 @@
     <color name="book_reader_common_press_color">#f7f7f7</color>
     <color name="book_reader_common_press_night_color">#1a1a1a</color>
     <!--阅读页面-->
+
     <color name="book_reader_reader_text_color">#333333</color>
     <color name="book_reader_reader_text_night_color">#434343</color>
+    <color name="book_reader_reader_text_new_night_color">#959595</color>
     <color name="book_reader_read_day_background">#f6f6f8</color>
     <color name="book_reader_read_night_background">#111113</color>
     <color name="book_reader_read_title_color">#bbbbbb</color>
@@ -139,12 +141,12 @@
     <color name="bg4">#eceff6</color>
 
     <!--阅读页可换背景色-->
-    <color name="reader_book_bg1">#EAEAEA</color>
-    <color name="reader_book_bg2">#F2E0E2</color>
+    <color name="reader_book_bg1">#FAF5ED</color>
+    <color name="reader_book_bg2">#F7E7DE</color>
     <color name="reader_book_bg3">#C9E4DF</color>
     <color name="reader_book_bg4">#C2E0F4</color>
-    <color name="reader_book_bg5">#EFD5BB</color>
-    <color name="reader_book_bg6">#BBFFFF</color>
+    <color name="reader_book_bg5">#F7E3D6</color>
+    <color name="reader_book_bg6">#CEEBCE</color>
 
     <!--下载页面橙色...字体-->
     <color name="seek_bar_progress_color">#ff9c00</color>

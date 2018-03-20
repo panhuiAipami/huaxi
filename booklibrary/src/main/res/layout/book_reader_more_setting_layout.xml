@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bb212121"
+    android:background="#66212121"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="bottom"
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
-            android:text="提示订阅下一章  "
+            android:text="自动订阅下一章  "
             android:textColor="@color/down_load_font_color2"
             android:thumb="@drawable/switch_thumb_select"
             android:track="@drawable/switch_track_select" />
