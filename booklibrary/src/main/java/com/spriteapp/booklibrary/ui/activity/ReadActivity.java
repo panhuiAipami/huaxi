@@ -751,6 +751,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mRightTitleLayout.changeMode(isNight);
         readMoreSettingLayout.changeMode(isNight);
 
+        is_add_shelf.setImageResource(isNight ? R.mipmap.add_shelf_night_icon : R.mipmap.add_shelf_yellow_icon);
+
         int bg_color = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
         mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(bg_color));
         mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_night_color
