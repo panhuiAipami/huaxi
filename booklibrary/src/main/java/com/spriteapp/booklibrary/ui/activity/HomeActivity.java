@@ -136,34 +136,18 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
 
     /**
-     * 花溪小说打包需要改变的常量规则
-     * <p>
-     * 华为版本需要改变CLIENT_ID与SIGN_SECRET
-     * <p>
-     * 华为渠道CLIENT_ID=73，SIGN_SECRET=4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc，CHANNEL_IS_HUAWEI=true;
-     * <p>
-     * 正常CLIENT_ID=40，SIGN_SECRET=fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6，CHANNEL_IS_HUAWEI=false;
-     */
-
-
-    /**
      * 花都小说打包需要改变的常量规则
-     * <p>
-     * 正常CLIENT_ID=72，SIGN_SECRET=xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri;
+     * 花都CLIENT_ID=72，SIGN_SECRET=xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri;
+     * 华为渠道CLIENT_ID=73，SIGN_SECRET=4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc，CHANNEL_IS_HUAWEI=true;
+     * 花溪CLIENT_ID=40，SIGN_SECRET=fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6，CHANNEL_IS_HUAWEI=false;
      */
 
-    //打华为包需为true，否则为false（华为渠道需要用华为支付）
-    public static boolean CHANNEL_IS_HUAWEI = false;//华为渠道必须修改
-    public static final String SIGN_SECRET = "xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri";//华为渠道必须修改
-    public static final int CLIENT_ID = 72;//华为渠道必须修改
-
-
-    /**
-     * 花都打包修改为:true,花溪打包修改为:false;
-     * <p>
-     * （花都需要添加拉新功能）
-     */
-    public static final boolean ISHAUDU = true;
+    //华为打包为true，否则为false（华为渠道需要用华为支付）
+    public static boolean CHANNEL_IS_HUAWEI = false;
+    //花都打包为:true,否则为false (添加拉新功能)
+    public static final boolean ISHAUDU = false;
+    public static final String SIGN_SECRET = CHANNEL_IS_HUAWEI ? "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc" : ISHAUDU ? "xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri" : "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
+    public static final int CLIENT_ID = CHANNEL_IS_HUAWEI ? 73 : ISHAUDU ? 72 : 40;//华为渠道必须修改
 
 
     //华为移动服务Client

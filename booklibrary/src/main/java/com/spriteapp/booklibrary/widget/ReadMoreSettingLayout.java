@@ -1,9 +1,11 @@
 package com.spriteapp.booklibrary.widget;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -130,10 +132,13 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 .getInt(Constant.IS_BOOK_AUTO_SUB) == AutoSubEnum.AUTO_SUB.getValue();
         switch_button.setChecked(isAutoSub);
 
-        int brightness = SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_BRIGHTNESS, 100);
-        if (brightness == 0) brightness += 1;
-        seekBar.setProgress(brightness);
-        setBrightness(mContext, brightness);
+        int brightness = SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_BRIGHTNESS, -1);
+        if (brightness >= 0) {
+            setBrightness(mContext, brightness == 0 ? brightness + 1 : brightness);
+        } else {
+            brightness = getScreenBrightness(mContext);
+        }
+        seekBar.setProgress(brightness == 0 ? brightness + 1 : brightness);
 
         font_size = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
         tv_text_size.setTextSize(font_size);
@@ -357,6 +362,19 @@ public class ReadMoreSettingLayout extends LinearLayout {
         });
     }
 
+    /**
+     * 获取屏幕的亮度
+     */
+    public static int getScreenBrightness(Context context) {
+        int nowBrightnessValue = 0;
+        ContentResolver resolver = context.getContentResolver();
+        try {
+            nowBrightnessValue = android.provider.Settings.System.getInt(resolver, Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nowBrightnessValue;
+    }
 
     /**
      * 设置当前Activity显示时的亮度
@@ -398,7 +416,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
 
     public void gotoDownLoadFont(Typeface typeface, int font_num) {
         if (font_num != 0 && typeface == null) {
-            mContext.startActivityForResult(new Intent(mContext, DownloadFontsActivity.class),99);
+            mContext.startActivityForResult(new Intent(mContext, DownloadFontsActivity.class), 99);
         } else {
             //修改页面字体
             SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, font_num);
