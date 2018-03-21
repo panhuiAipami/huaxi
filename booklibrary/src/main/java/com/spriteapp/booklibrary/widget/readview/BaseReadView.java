@@ -151,7 +151,6 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
-//                        getParent().requestDisallowInterceptTouchEvent(false);
                     } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
                         if (mTouchPageListener != null) {
                             mTouchPageListener.touchPage();
@@ -166,7 +165,6 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
-//                        getParent().requestDisallowInterceptTouchEvent(false);
                     }
                     listener.onFlip();
                     //判断是否为空
@@ -192,7 +190,6 @@ public abstract class BaseReadView extends View {
                 mTouch.y = my;
                 touch_down = mTouch.x - actiondownX;
                 this.postInvalidate();
-                getParent().requestDisallowInterceptTouchEvent(false);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
@@ -212,7 +209,7 @@ public abstract class BaseReadView extends View {
                     }
                     break;
                 }
-//                Log.i("onTouchEvent", Math.abs(ux - dx) + "----x------------------------y-->" + Math.abs(uy - dy));
+//                Log.e("onTouchEvent", Math.abs(ux - dx) + "----x----------ACTION_UP--------------y-->" + Math.abs(uy - dy));
                 if (Math.abs(uy - dy) < Math.abs(ux - dx) || ((Math.abs(ux - dx) < 10) && (Math.abs(uy - dy) < 10))) {
                     if (t - et < 1000) { // 单击时间小于一秒为有效
                         startAnimation();//开始翻页
@@ -222,24 +219,22 @@ public abstract class BaseReadView extends View {
                     }
                     postInvalidate();
                     return true;
-                }else{//当为上下划取消翻页
+                } else {//当为上下划取消翻页
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             pagefactory.cancelPage();
-                            restoreAnimation();
                         }
-                    },500);
+                    }, 500);
                 }
 
                 if (cancel) {
                     pagefactory.cancelPage();
                     restoreAnimation();
-                    postInvalidate();
                 } else {
-//                    startAnimation();
-//                    postInvalidate();
+                    restoreAnimation();
                 }
+                postInvalidate();
                 cancel = false;
                 center = false;
                 break;
@@ -298,7 +293,7 @@ public abstract class BaseReadView extends View {
 
     protected abstract void setBitmaps(Bitmap mCurPageBitmap, Bitmap mNextPageBitmap);
 
-    public abstract void setTheme(int theme,int bg_color);
+    public abstract void setTheme(int theme, int bg_color);
 
     /**
      * 复位触摸点位

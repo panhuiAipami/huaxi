@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "612417910316",
+    "firebase_url": "https://lgcf85.firebaseio.com",
+    "project_id": "lgcf85",
+    "storage_bucket": "lgcf85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612417910316:android:d739fe247c53997a",
+        "android_client_info": {
+          "package_name": "net.huaxi.reader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612417910316-a929rtuu9tkqai1kr5fmis69bt8lt0b3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfy0947aPie5AWtY4X7PBL7U0dTxh7di0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
