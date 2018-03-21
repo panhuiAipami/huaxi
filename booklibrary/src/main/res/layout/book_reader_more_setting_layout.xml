@@ -130,7 +130,7 @@
                 android:layout_weight="1"
                 android:max="255"
                 android:maxHeight="3dp"
-                android:progress="1"
+                android:progress="-1"
                 android:progressDrawable="@drawable/my_seekbar_style"
                 android:thumb="@drawable/seek_bar_violet_thumb" />
 

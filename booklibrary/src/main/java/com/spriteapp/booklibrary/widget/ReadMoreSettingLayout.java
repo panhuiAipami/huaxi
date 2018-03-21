@@ -135,10 +135,9 @@ public class ReadMoreSettingLayout extends LinearLayout {
         int brightness = SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_BRIGHTNESS, -1);
         if (brightness >= 0) {
             setBrightness(mContext, brightness == 0 ? brightness + 1 : brightness);
-        } else {
-            brightness = getScreenBrightness(mContext);
+            seekBar.setProgress(brightness == 0 ? brightness + 1 : brightness);
         }
-        seekBar.setProgress(brightness == 0 ? brightness + 1 : brightness);
+
 
         font_size = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
         tv_text_size.setTextSize(font_size);

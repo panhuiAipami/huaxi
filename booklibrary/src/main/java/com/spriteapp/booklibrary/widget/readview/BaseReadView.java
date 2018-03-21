@@ -114,6 +114,7 @@ public abstract class BaseReadView extends View {
         }
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                getParent().requestDisallowInterceptTouchEvent(true);
                 et = System.currentTimeMillis();
                 dx = (int) e.getX();
                 dy = (int) e.getY();
@@ -150,7 +151,7 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
-                        getParent().requestDisallowInterceptTouchEvent(false);
+//                        getParent().requestDisallowInterceptTouchEvent(false);
                     } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
                         if (mTouchPageListener != null) {
                             mTouchPageListener.touchPage();
@@ -165,7 +166,7 @@ public abstract class BaseReadView extends View {
                         } else {
                             return false;
                         }
-                        getParent().requestDisallowInterceptTouchEvent(false);
+//                        getParent().requestDisallowInterceptTouchEvent(false);
                     }
                     listener.onFlip();
                     //判断是否为空

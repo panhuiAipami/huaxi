@@ -133,7 +133,7 @@ public class PageFactory {
         mLineSpace = mFontSize / 17 * (5 * (format + 1));
         marginWidth = ScreenUtil.dpToPxInt(14);
         marginHeight = ScreenUtil.dpToPxInt(66);
-        mVisibleHeight = mHeight - marginHeight * 2 + ScreenUtil.dpToPxInt(25);
+        mVisibleHeight = mHeight - marginHeight * 2 + ScreenUtil.dpToPxInt(20);
         mVisibleWidth = mWidth - marginWidth * 2;
         mPageLineCount = mVisibleHeight / (mFontSize + mLineSpace);
         rectF = new Rect(0, 0, mWidth, mHeight);
@@ -221,8 +221,8 @@ public class PageFactory {
                 int chapter_id = catalogResponse.getChapter_id();
                 if (chapter_id == currentChapter) {
                     String title = catalogResponse.getChapter_title();
-                    canvas.drawText(title, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(75), mChapterTitlePaint);
-                    y += ScreenUtil.dpToPx(35);
+                    canvas.drawText(title, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(70), mChapterTitlePaint);
+                    y += ScreenUtil.dpToPx(25);
                     break;
                 }
             }
