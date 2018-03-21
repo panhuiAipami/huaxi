@@ -128,10 +128,6 @@ public class TaskActivity extends TitleActivity {
 
         } else if (v == goto_apprentice) {//去收徒
             BookDetailResponse bookDetailResponse = new BookDetailResponse();
-            bookDetailResponse.setBook_name("期待");
-            bookDetailResponse.setBook_intro("花都收徒");
-            bookDetailResponse.setBook_image("http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
-            bookDetailResponse.setBook_share_url("http://baidu.com");
             HuaXiSDK.getInstance().showShareDialog(this, bookDetailResponse, true, 2);
 
         } else if (v == success_apprentice) {//徒弟列表

@@ -56,9 +56,9 @@ public class MyApprenticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             MyApprenticeListViewHolder myApprenticeListViewHolder = (MyApprenticeListViewHolder) holder;
             MyApprenticeBean.PupilDataBean pupilDataBean = list.get(position);
             if (pupilDataBean == null) return;
-            myApprenticeListViewHolder.number.setText(position + "");
+            myApprenticeListViewHolder.number.setText(position + 1 + "");
             myApprenticeListViewHolder.apprentice_name.setText(pupilDataBean.getPupil_user_name());
-            myApprenticeListViewHolder.gold_num.setText(pupilDataBean.getGold_coins());
+            myApprenticeListViewHolder.gold_num.setText(pupilDataBean.getGold_coins() + "");
             GlideUtils.loadImage(myApprenticeListViewHolder.apprentice_head, pupilDataBean.getPupil_user_avatar(), context);
             if (pupilDataBean.getGender() == 1) {//性别标识
                 myApprenticeListViewHolder.sex_img.setEnabled(true);
@@ -68,6 +68,17 @@ public class MyApprenticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else if (holder instanceof ActivationApprenticeListViewHolder) {
             ActivationApprenticeListViewHolder activationApprenticeListViewHolder = (ActivationApprenticeListViewHolder) holder;
+            MyApprenticeBean.PupilDataBean pupilDataBean = list.get(position);
+            if (pupilDataBean == null) return;
+            activationApprenticeListViewHolder.apprentice_name.setText(pupilDataBean.getPupil_user_name());
+            activationApprenticeListViewHolder.phone_num.setText(pupilDataBean.getMobile());
+            GlideUtils.loadImage(activationApprenticeListViewHolder.apprentice_head, pupilDataBean.getPupil_user_avatar(), context);
+            if (pupilDataBean.getGender() == 1) {//性别标识
+                activationApprenticeListViewHolder.sex_img.setEnabled(true);
+            } else {
+                activationApprenticeListViewHolder.sex_img.setEnabled(false);
+            }
+
         } else if (holder instanceof ButtonViewHolder) {
             ButtonViewHolder buttonViewHolder = (ButtonViewHolder) holder;
             buttonViewHolder.goto_activation.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +100,8 @@ public class MyApprenticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return position == list.size() && position != 0 ? BUTTON : MYAPPRENTICE;
+    public int getItemViewType(int position) {//
+        return position == list.size() && position != 0 ? BUTTON : type == 0 ? MYAPPRENTICE : ACTIVATIONAPPRENTICE;
     }
 
     private class MyApprenticeListViewHolder extends RecyclerView.ViewHolder {//我的徒弟
@@ -108,11 +119,15 @@ public class MyApprenticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private class ActivationApprenticeListViewHolder extends RecyclerView.ViewHolder {//激活徒弟
-
+        private TextView apprentice_name, phone_num;
+        private ImageView sex_img, apprentice_head;
 
         public ActivationApprenticeListViewHolder(View itemView) {
             super(itemView);
-
+            apprentice_name = (TextView) itemView.findViewById(R.id.apprentice_name);
+            phone_num = (TextView) itemView.findViewById(R.id.phone_num);
+            sex_img = (ImageView) itemView.findViewById(R.id.sex_img);
+            apprentice_head = (ImageView) itemView.findViewById(R.id.apprentice_head);
         }
     }
 

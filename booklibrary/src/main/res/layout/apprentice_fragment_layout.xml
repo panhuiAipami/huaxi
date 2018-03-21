@@ -2,45 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:visibility="gone"
-        android:paddingRight="10dp">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="金币累计:"
-            android:textColor="@color/square_small"
-            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c10_themes_color"></View>
 
-        <TextView
-            android:id="@+id/gold_num"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawablePadding="3dp"
-            android:drawableRight="@mipmap/gold_icon"
-            android:gravity="center_vertical"
-            android:text="0"
-            android:textColor="@color/code_btn_bg_color"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-        <TextView
-            android:id="@+id/behind_hint2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="@string/behind_text"
-            android:textColor="@color/code_finish"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="金币累计:"
+                android:textColor="@color/square_small"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/gold_num"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="3dp"
+                android:drawableRight="@mipmap/gold_icon"
+                android:gravity="center_vertical"
+                android:text="0"
+                android:textColor="@color/code_btn_bg_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/behind_hint2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="@string/behind_text"
+                android:textColor="@color/code_finish"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
@@ -95,8 +110,6 @@
 
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

@@ -110,10 +110,6 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
     public void onClick(View v) {
         if (v == behind_hint) {
             BookDetailResponse bookDetailResponse = new BookDetailResponse();
-            bookDetailResponse.setBook_name("期待");
-            bookDetailResponse.setBook_intro("花都收徒");
-            bookDetailResponse.setBook_image("http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
-            bookDetailResponse.setBook_share_url("http://baidu.com");
             HuaXiSDK.getInstance().showShareDialog(getActivity(), bookDetailResponse, true, 2);
         }
 
@@ -122,10 +118,12 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
     private void goneOrShow() {
         if (list.size() == 0) {
             null_layout.setVisibility(View.VISIBLE);
-            bottom_layout.setVisibility(View.GONE);
+            if (list_type == 0)
+                bottom_layout.setVisibility(View.GONE);
         } else {
             null_layout.setVisibility(View.GONE);
-            bottom_layout.setVisibility(View.VISIBLE);
+            if (list_type == 0)
+                bottom_layout.setVisibility(View.VISIBLE);
         }
 
     }
@@ -153,7 +151,7 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         if (!NetworkUtil.isAvailable(getActivity())) return;
         BookApi.getInstance()
                 .service
-                .user_mypupillist(Constant.JSON_TYPE, page)
+                .user_mypupillist(Constant.JSON_TYPE, page, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<MyApprenticeBean>>() {
@@ -171,8 +169,6 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
                                     if (myApprenticeResponse.getData().getTotal_data() != null) {
                                         gold_num.setText(myApprenticeResponse.getData().getTotal_data().getTotal_gold_coins() + "");
                                     }
-
-
                                     if (myApprenticeResponse.getData().getPupil_data() != null && myApprenticeResponse.getData().getPupil_data().size() != 0) {
                                         if (page == 1) list.clear();
                                         list.addAll(myApprenticeResponse.getData().getPupil_data());
@@ -205,7 +201,7 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         if (!NetworkUtil.isAvailable(getActivity())) return;
         BookApi.getInstance()
                 .service
-                .user_myawakepupillist(Constant.JSON_TYPE, page)
+                .user_myawakepupillist(Constant.JSON_TYPE, page, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<MyApprenticeBean.PupilDataBean>>>() {

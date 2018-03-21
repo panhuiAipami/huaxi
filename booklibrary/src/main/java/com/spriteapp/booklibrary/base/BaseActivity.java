@@ -44,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setStatusBarColor() {
+        Log.d("setStatusBarColor", "BaseActivity重新创建");
         HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
         int statusBarColor = config.getStatusBarColor();
         if (statusBarColor == 0) {

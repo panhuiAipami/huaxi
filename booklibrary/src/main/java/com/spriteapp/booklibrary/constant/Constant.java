@@ -17,7 +17,10 @@ public class Constant {
     public final static String START_PAGE_URL = "start_page_url";
     public final static String HOT_LIST = "hot_list";
 
-    public static final String BASE_URL = "https://s.hxdrive.net/";
+
+    private static final boolean ISONLINE = false;
+
+    public static final String BASE_URL = ISONLINE ? "https://s.hxdrive.net/" : "http://wuyang.api.huayux.com/api/";
     public static final String IMG_URL = "https:\\/\\/img.hxdrive.net";
     public static final String BOOK_STORE_URL = BASE_URL + "book_store";
     public static final String BOOK_ME_URL = BASE_URL + "user_index";
