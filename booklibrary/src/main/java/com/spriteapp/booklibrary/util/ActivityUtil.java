@@ -23,6 +23,8 @@ import com.spriteapp.booklibrary.ui.activity.TaskActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
 import com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity;
 
+import static com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment.BACKREFRESH;
+
 /**
  * Created by kuangxiaoguo on 2017/7/15.
  */
@@ -146,12 +148,12 @@ public class ActivityUtil {
 
     public static void toRechargeActivity(Activity context) {
         Intent intent = new Intent(context, RechargeActivity.class);
-        context.startActivityForResult(intent, 9);
+        context.startActivityForResult(intent, BACKREFRESH);
     }
 
-    public static void toTaskActivity(Context context) {
+    public static void toTaskActivity(Activity context) {
         Intent intent = new Intent(context, TaskActivity.class);
-        context.startActivity(intent);
+        context.startActivityForResult(intent,BACKREFRESH);
     }
 
     public static void toBindPhoneActivity(Context context) {
@@ -159,19 +161,21 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toWithdrawalsActivity(Context context) {
+    public static void toWithdrawalsActivity(Activity context) {
         Intent intent = new Intent(context, WithdrawalsActivity.class);
-        context.startActivity(intent);
+        context.startActivityForResult(intent, BACKREFRESH);
     }
 
     public static void toMangerAlipayActivity(Activity context) {
         Intent intent = new Intent(context, MangerAlipayActivity.class);
         context.startActivityForResult(intent, 0);
     }
+
     public static void toApprenticeListActivity(Activity context) {
         Intent intent = new Intent(context, ApprenticeListActivity.class);
         context.startActivityForResult(intent, 0);
     }
+
     public static void toProfitDetailsActivity(Activity context) {
         Intent intent = new Intent(context, ProfitDetailsActivity.class);
         context.startActivityForResult(intent, 0);

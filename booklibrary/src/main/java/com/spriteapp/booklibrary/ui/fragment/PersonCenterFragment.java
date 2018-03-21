@@ -50,6 +50,7 @@ import static com.spriteapp.booklibrary.util.ActivityUtil.LOGIN_BACK;
  */
 
 public class PersonCenterFragment extends BaseFragment implements View.OnClickListener, LoginSuccess {
+    public static final int BACKREFRESH = 9;
     private View mView;
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
             recharge, bookshelf, recharge_record, records_of_consumption,
@@ -254,7 +255,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
                 case LOGIN_BACK://登录返回
                     getUserData();
                     break;
-                case 9:
+                case BACKREFRESH:
                     Log.d("user_go", "充值返回");
                     getUserData();
                     break;
