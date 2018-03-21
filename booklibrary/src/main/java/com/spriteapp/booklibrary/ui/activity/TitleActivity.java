@@ -403,7 +403,13 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {//关键字
                                     //识别码直接跳转到阅读界面
-                                    ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
+                                    if (cbm.getText().toString().startsWith("hxb")) {//直接跳转不管章节id
+                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
+                                    } else if (cbm.getText().toString().startsWith("hxc")) {
+                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
+                                    } else {
+                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
+                                    }
                                     cbm.setText("");//清空剪切板
                                 }
 

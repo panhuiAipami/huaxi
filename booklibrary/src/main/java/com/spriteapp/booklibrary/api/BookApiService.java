@@ -365,12 +365,14 @@ public interface BookApiService {
     //我的徒弟列表
     @GET("user_mypupillist")
     Observable<Base<MyApprenticeBean>> user_mypupillist(@Query("format") String format,
-                                                        @Query("page") int page);
+                                                        @Query("page") int page,
+                                                        @Query("userid") int userid);
 
     //待激活徒弟列表
     @GET("user_myawakepupillist")
     Observable<Base<List<MyApprenticeBean.PupilDataBean>>> user_myawakepupillist(@Query("format") String format,
-                                                                                 @Query("page") int page);
+                                                                                 @Query("page") int page,
+                                                                                 @Query("userid") int userid);
 
     //激活徒弟
     @GET("user_awakepupil")
@@ -378,5 +380,6 @@ public interface BookApiService {
 
     //用户收益明细
     @GET("user_coninslog")
-    Observable<Base> user_coninslog(@Query("page") int page);
+    Observable<Base> user_coninslog(@Query("page") int page,
+                                    @Query("userid") int userid);
 }
