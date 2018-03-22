@@ -26,7 +26,7 @@ public class ChoiceContentPresenter implements BasePresenter<ChoiceView> {
         attachView(view);
     }
 
-    public void requestGetData(int page) {
+    public void requestGetData(final int page) {
         BookApi.getInstance()
                 .service
                 .book_weekly("json",page)

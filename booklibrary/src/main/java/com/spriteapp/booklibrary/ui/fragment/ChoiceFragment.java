@@ -64,6 +64,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
                 onRefreshData();
             }
         });
+        getWeekData();
     }
 
     @Override
@@ -74,11 +75,17 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
         miaoshu.setText("竟然没有加载出来");
         swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
         URecyclerView recyclerView = (URecyclerView) mParentView.findViewById(R.id.list);
+        recyclerView.setStartLoadMorePos(2);
         recyclerView.setLoadingListener(this);
         adapter = new ChoiceAdapter(lists, getActivity());
         recyclerView.setAdapter(adapter);
         goneOrShow();
 
+
+    }
+
+    @Override
+    protected void lazyLoad() {
 
     }
 
@@ -92,12 +99,11 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
 
     public void onRefreshData() {
         page = 1;
-        lazyLoad();
+        getWeekData();
     }
 
 
-    @Override
-    protected void lazyLoad() {
+    protected void getWeekData() {
         lastPage = page;
         contentPresenter.requestGetData(page);
     }
@@ -108,6 +114,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
 
     @Override
     public void setData(Base<List<ChoiceBean>> result) {
+
         if (page == 1)
             lists.clear();
 
@@ -139,7 +146,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
     @Override
     public void onLoadMore() {
         if (page > lastPage) {
-            lazyLoad();
+            getWeekData();
         }
     }
 }
