@@ -262,8 +262,8 @@ public class PtrFrameLayout extends ViewGroup {
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
                     if (Math.abs(actiondownX - x) < 50) {
                         movePos(offsetY);
-                        return true;
                     }
+                    return true;
                 } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 80) {
                     if (Util.isFastClick(500)) {
 //                        ToastUtil.showSingleToast("添加评论");

@@ -14,8 +14,6 @@ import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.switfpass.pay.MainApplication;
 import com.switfpass.pay.activity.PayPlugin;
 import com.switfpass.pay.bean.RequestMsg;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import net.huaxi.reader.activity.ShareActivity;
 import net.huaxi.reader.bean.ShareBean;
@@ -26,7 +24,6 @@ import net.huaxi.reader.utils.PreferenceHelper;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.ADVERTISEMENT;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.libActivity;
-import static com.spriteapp.booklibrary.util.ToastUtil.showToast;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SEXTIME = "sextime";
@@ -108,10 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 .setSex(PreferenceHelper.getInt(SEX, 0))//性别
                 .setSignSecret(HomeActivity.SIGN_SECRET).build();
         HuaXiSDK.getInstance().init(config);
+
         Intent intent1 = new Intent(this, HomeActivity.class);
         intent1.putExtra(ADVERTISEMENT, toJump);
         startActivity(intent1);
         finish();
+
     }
 
     public void initShareDialog() {
