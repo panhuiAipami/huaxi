@@ -197,17 +197,21 @@ public class OverlappedWidget extends BaseReadView {
     }
 
     @Override
-    public synchronized void setTheme(int theme,int color) {
-        resetTouchPoint();
-        Bitmap bg = ThemeManager.getThemeDrawable(theme,color);
-        if (bg != null) {
-            pagefactory.setBgBitmap(bg);
-            pagefactory.convertBatteryBitmap();
-            if (isPrepared) {
-                pagefactory.onDraw(mCurrentPageCanvas);
-                pagefactory.onDraw(mNextPageCanvas);
-                postInvalidate();
+    public synchronized void setTheme(int theme, int color) {
+        try {
+            resetTouchPoint();
+            Bitmap bg = ThemeManager.getThemeDrawable(theme, color);
+            if (bg != null) {
+                pagefactory.setBgBitmap(bg);
+                pagefactory.convertBatteryBitmap();
+                if (isPrepared) {
+                    pagefactory.onDraw(mCurrentPageCanvas);
+                    pagefactory.onDraw(mNextPageCanvas);
+                    postInvalidate();
+                }
             }
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
         }
     }
 }
