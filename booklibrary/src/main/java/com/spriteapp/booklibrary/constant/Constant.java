@@ -18,7 +18,7 @@ public class Constant {
     public final static String HOT_LIST = "hot_list";
 
 
-    private static final boolean ISONLINE = false;
+    private static final boolean ISONLINE = true;
 
     public static final String BASE_URL = ISONLINE ? "https://s.hxdrive.net/" : "http://wuyang.api.huayux.com/api/";
     public static final String IMG_URL = "https:\\/\\/img.hxdrive.net";
