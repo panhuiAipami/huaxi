@@ -380,11 +380,34 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
      * 口令书籍
      *
      * @param cbm 剪切板
-     * @throws Exception
+     * @throws Exception 1208  443573
      */
     public void getBook(final ClipboardManager cbm) throws Exception {
         if (!AppUtil.isNetAvailable(this))
             return;
+        String parmes = cbm.getText().toString().trim();
+        if (TextUtils.isEmpty(parmes)) return;
+        if (parmes.startsWith("hxb") && !parmes.contains("c")) {//不包含chapter_id
+            String substring = parmes.substring(3);
+            if (!TextUtils.isEmpty(substring) && Util.isNumeric(substring)) {
+                ActivityUtil.toReadActivity(this, Integer.parseInt(substring), 0);
+                cbm.setText("");//清空剪切板
+            }
+            return;
+        } else if (parmes.startsWith("hxb") && parmes.contains("c")) {//包含chapter_id
+            String substring = parmes.substring(3);
+            String[] cs = substring.split("c");
+            if (cs.length == 2) {
+                if (!TextUtils.isEmpty(cs[0]) && !TextUtils.isEmpty(cs[1])) {//判断两个变量是否为空
+                    if (Util.isNumeric(cs[0]) && Util.isNumeric(cs[1])) {//判断两个变量是否为纯数字,如成立则跳转阅读页
+                        ActivityUtil.toReadActivity(this, Integer.parseInt(cs[0]), Integer.parseInt(cs[1]));
+                        cbm.setText("");//清空剪切板
+                    }
+                }
+            }
+
+            return;
+        }
         BookApi.getInstance()
                 .service
                 .book_command(cbm.getText().toString().trim())
@@ -403,13 +426,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (bookDetailResponse.getData() != null && bookDetailResponse.getData().size() != 0) {//关键字
                                     //识别码直接跳转到阅读界面
-                                    if (cbm.getText().toString().startsWith("hxb")) {//直接跳转不管章节id
-                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), 0);
-                                    } else if (cbm.getText().toString().startsWith("hxc")) {
-                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
-                                    } else {
-                                        ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
-                                    }
+                                    ActivityUtil.toReadActivityPassword(TitleActivity.this, bookDetailResponse.getData().get(0).getBook_id(), bookDetailResponse.getData().get(0).getChapter_id());
                                     cbm.setText("");//清空剪切板
                                 }
 

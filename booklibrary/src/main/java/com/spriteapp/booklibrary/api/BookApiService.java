@@ -9,6 +9,7 @@ import com.spriteapp.booklibrary.model.MyApprenticeBean;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.SquareBean;
 import com.spriteapp.booklibrary.model.TaskBean;
+import com.spriteapp.booklibrary.model.TaskRewardBean;
 import com.spriteapp.booklibrary.model.UpLoadImgBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.UserModel;
@@ -363,23 +364,34 @@ public interface BookApiService {
                                  @Query("u_action") String u_action);
 
     //我的徒弟列表
+    //@Query("userid") int userid
     @GET("user_mypupillist")
     Observable<Base<MyApprenticeBean>> user_mypupillist(@Query("format") String format,
-                                                        @Query("page") int page,
-                                                        @Query("userid") int userid);
+                                                        @Query("page") int page);
 
     //待激活徒弟列表
+    //@Query("userid") int userid
     @GET("user_myawakepupillist")
     Observable<Base<List<MyApprenticeBean.PupilDataBean>>> user_myawakepupillist(@Query("format") String format,
-                                                                                 @Query("page") int page,
-                                                                                 @Query("userid") int userid);
+                                                                                 @Query("page") int page);
 
     //激活徒弟
     @GET("user_awakepupil")
     Observable<Base> user_awakepupil(@Query("awake_user_id") int page);
 
     //用户收益明细
+    //@Query("userid") int userid
     @GET("user_coninslog")
-    Observable<Base> user_coninslog(@Query("page") int page,
-                                    @Query("userid") int userid);
+    Observable<Base> user_coninslog(@Query("page") int page);
+
+
+    //用户收徒明细
+    @GET("user_coninspupillog")
+    Observable<Base<List<TaskRewardBean>>> user_coninspupillog(@Query("format") String format,
+                                         @Query("page") int page);
+
+    //用户任务明细
+    @GET("user_coninsselflog")
+    Observable<Base<List<TaskRewardBean>>> user_coninsselflog(@Query("format") String format,
+                                                              @Query("page") int page);
 }

@@ -151,7 +151,7 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         if (!NetworkUtil.isAvailable(getActivity())) return;
         BookApi.getInstance()
                 .service
-                .user_mypupillist(Constant.JSON_TYPE, page, 1)
+                .user_mypupillist(Constant.JSON_TYPE, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<MyApprenticeBean>>() {
@@ -201,7 +201,7 @@ public class ApprenticeFragment extends BaseFragment implements SwipeRefreshLayo
         if (!NetworkUtil.isAvailable(getActivity())) return;
         BookApi.getInstance()
                 .service
-                .user_myawakepupillist(Constant.JSON_TYPE, page, 1)
+                .user_myawakepupillist(Constant.JSON_TYPE, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<MyApprenticeBean.PupilDataBean>>>() {

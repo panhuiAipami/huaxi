@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -212,7 +213,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         String bookid = intent.getStringExtra("book_id");
         String push_id = intent.getStringExtra("push_id");
         String chapter_id = intent.getStringExtra("chapter_id");
-        BookDetailResponse bookDetail;
+        BookDetailResponse bookDetail = null;
+
         if (bookid != null && !bookid.isEmpty()) {//推送
             bookDetail = new BookDetailResponse();
             bookDetail.setBook_id(parseInt(bookid));
@@ -224,7 +226,26 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mCurrentChapter = chapter;//赋值给当前章节id
             }
         } else {
-            bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
+            String action = intent.getAction();
+            if (Intent.ACTION_VIEW.equals(action)) {//从网页跳转过来
+                Log.d("readActivity--", "从网页跳转过来");
+                Uri uri = intent.getData();
+                if (uri != null) {
+                    Log.d("readActivity--", "uri不为空");
+                    bookDetail = new BookDetailResponse();
+                    String book = uri.getQueryParameter("book_id");
+                    String chapter = uri.getQueryParameter("chapter_id");
+                    if (!TextUtils.isEmpty(book)) {//书籍id不为空
+                        Log.d("readActivity--", "书籍id不为空");
+                        bookDetail.setBook_id(Integer.parseInt(book));
+                        bookDetail.setChapter_id(TextUtils.isEmpty(chapter) ? 0 : Integer.parseInt(chapter));
+                    }
+                }
+            } else {
+                bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
+            }
+
+
         }
 
         DialogUtil.setDialogListener(mDialogListener);
@@ -459,7 +480,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mChapterList == null) {
             mChapterList = new ArrayList<>();
         }
-        mChapterAdapter = new ChapterAdapter(this, mChapterList,mBookId);
+        mChapterAdapter = new ChapterAdapter(this, mChapterList, mBookId);
         mChapterListView.setAdapter(mChapterAdapter);
         mChapterListView.setSelectionFromTop(
                 BookUtil.getCurrentChapterPosition(mChapterList, mCurrentChapter),

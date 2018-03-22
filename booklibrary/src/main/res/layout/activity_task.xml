@@ -11,8 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:isScrollContainer="false"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:isScrollContainer="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@color/c10_themes_color2"></View>
+                    android:background="@color/c10_themes_color"></View>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -180,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
-                android:background="@color/c10_themes_color2"></View>
+                android:background="@color/c10_themes_color"></View>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -211,12 +211,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/c10_themes_color2"></View>
+                    android:background="@color/c10_themes_color"></View>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/apprentice_profit"
@@ -244,7 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/c10_themes_color2"></View>
+                    android:background="@color/c10_themes_color"></View>
             </RelativeLayout>
 
             <ImageView
@@ -256,8 +257,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:overScrollMode="never"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
             <TextView
                 android:layout_width="match_parent"

@@ -72,7 +72,8 @@ public class HuaXiSDK {
         }
         mConfig.channelListener.toLoginPage(context);
     }
-    public void toWXPay(WeChatBean response,String push_id) {
+
+    public void toWXPay(WeChatBean response, String push_id) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }
@@ -80,14 +81,14 @@ public class HuaXiSDK {
 //            ToastUtil.showSingleToast("登录中");
 //            return;
 //        }
-        mConfig.channelListener.toWXPay(response,push_id);
+        mConfig.channelListener.toWXPay(response, push_id);
     }
 
-    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode,int type) {
+    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode, int type) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }
-        mConfig.channelListener.showShareDialog(context, shareDetail, isNightMode,type);
+        mConfig.channelListener.showShareDialog(context, shareDetail, isNightMode, type);
     }
 
     public int getChannelId() {
@@ -133,6 +134,7 @@ public class HuaXiSDK {
         }
         return String.valueOf(mConfig.clientId);
     }
+
     public int getSex() {
         if (mConfig == null) {
             throw new NullPointerException("HuaXiConfig 不能为空");

@@ -1837,9 +1837,29 @@ public class Util {
         return spannableStringBuilder;
     }
 
-    public static String keepOne(float float_num) {
-        DecimalFormat fnum = new DecimalFormat("##0.0");
+    public static String keepOne(double float_num) {//保留一位小数,其他地方不能使用
+        double rmb = UserBean.getInstance().getRmb();
+        if (rmb != 0) {
+            float_num = rmb + float_num;
+        }
+        DecimalFormat fnum = new DecimalFormat("##0.00");
         String number = fnum.format(float_num);
         return number;
+    }
+
+    public static boolean isNumeric(String str) {//判断字符串是否为纯数字
+
+        for (int i = str.length(); --i >= 0; ) {
+
+            if (!Character.isDigit(str.charAt(i))) {
+
+                return false;
+
+            }
+
+        }
+
+        return true;
+
     }
 }

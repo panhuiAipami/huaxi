@@ -80,45 +80,175 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="180dp"
+        android:background="@color/with_new_bg">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/with_bg" />
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@mipmap/with_bg" />-->
 
         <TextView
             android:id="@+id/gold_hint"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="当前金币(个)"
-            android:textColor="@color/app_background"
-            android:textSize="16sp" />
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="当前可提现金额(元)"
+            android:textColor="@color/seven_white"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/false_gold"
-            android:layout_width="wrap_content"
+            android:id="@+id/money_num"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/gold_hint"
             android:ellipsize="end"
+            android:gravity="center"
             android:lines="1"
             android:padding="10dp"
             android:text="0"
             android:textColor="@color/app_background"
-            android:textSize="30sp" />
+            android:textSize="40sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/money_num"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:lines="1"
+                    android:text="历史累积收益(金币)"
+                    android:textColor="@color/seven_white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/new_false_gold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:lines="1"
+                    android:text="+0"
+                    android:textColor="@color/app_background"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/c10_themes_color2"></View>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:lines="1"
+                    android:text="历史累积收益(元)"
+                    android:textColor="@color/seven_white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/new_real_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:lines="1"
+                    android:text="+0"
+                    android:textColor="@color/app_background"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/c10_themes_color"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:text="提现账户"
-        android:textColor="@color/square_user_speak"
-        android:textSize="16sp" />
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <com.spriteapp.booklibrary.widget.DrawableCenterTextView
+            android:id="@+id/apprentice_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/shoutu_img"
+            android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:text="收徒奖励"
+            android:textColor="@color/square_user_speak"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/c10_themes_color2"></View>
+
+        <com.spriteapp.booklibrary.widget.DrawableCenterTextView
+            android:id="@+id/task_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/renwu_img"
+            android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:text="任务奖励"
+            android:textColor="@color/square_user_speak"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/c10_themes_color2"></View>
+
+        <com.spriteapp.booklibrary.widget.DrawableCenterTextView
+            android:id="@+id/with_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/tixian_img"
+            android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:text="提现明细"
+            android:textColor="@color/square_user_speak"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/c10_themes_color" />
 
 
     <LinearLayout
@@ -205,9 +335,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/c12_themes_color"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/payment_date_hint"
         android:textColor="@color/square_introduce"
@@ -216,7 +344,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/app_background"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TextView
@@ -226,7 +355,8 @@
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:text="可兑换:"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/real_money"
@@ -236,18 +366,20 @@
             android:gravity="center_vertical"
             android:text="0.0¥"
             android:textColor="@color/code_btn_bg_color"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/goto_with"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:background="@drawable/invitation_code_bg"
             android:gravity="center"
             android:text="立即兑换"
-            android:textColor="@color/app_background" />
+            android:textColor="@color/app_background"
+            android:textSize="18sp" />
 
 
     </LinearLayout>

@@ -98,6 +98,7 @@ public class TaskActivity extends TitleActivity {
         goto_apprentice.setOnClickListener(this);
         success_apprentice.setOnClickListener(this);
         apprentice_profit.setOnClickListener(this);
+        center_img.setOnClickListener(this);
         goto_invition_code.setOnLongClickListener(new View.OnLongClickListener() {//复制邀请码到剪切板
             @Override
             public boolean onLongClick(View v) {
@@ -134,9 +135,11 @@ public class TaskActivity extends TitleActivity {
             ActivityUtil.toApprenticeListActivity(this);
 
         } else if (v == apprentice_profit) {//收徒总收益
-            ActivityUtil.toProfitDetailsActivity(this);
+//            ActivityUtil.toProfitDetailsActivity(this);
         } else if (v == with_tip) {//提现规则
             ToastUtil.showToast("提现规则");
+        } else if (v == center_img) {
+            ToastUtil.showToast("中间广告");
         }
 
     }

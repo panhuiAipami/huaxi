@@ -32,7 +32,7 @@ import java.util.Map;
  */
 
 public class MyApplication extends Application implements ShareResult {
-    private static MyApplication mInstance;
+    public static MyApplication mInstance;
     private LoginActivity.MyHandler handler = null;
 
     @Override

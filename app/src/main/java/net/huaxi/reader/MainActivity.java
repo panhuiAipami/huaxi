@@ -2,8 +2,11 @@ package net.huaxi.reader;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
@@ -22,6 +25,8 @@ import net.huaxi.reader.utils.LoginHelper;
 import net.huaxi.reader.utils.PreferenceHelper;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.ADVERTISEMENT;
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.BOOK_ID;
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.CHAPTER_ID;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.libActivity;
 
@@ -42,12 +47,28 @@ public class MainActivity extends AppCompatActivity {
     private ShareBean shareBean;
     private int toJump = 0;
 
+
+    private String book_id = null;
+    private String chapter_id = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceHelper.putBoolean(SEXTIME, false);//存入本地性别选择
         Intent intent = getIntent();
+
+        String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {//从网页跳转过来
+            Log.d("MainActivity--", "从网页跳转过来");
+            Uri uri = intent.getData();
+            if (uri != null) {
+                Log.d("MainActivity--", "uri不为空");
+                book_id = uri.getQueryParameter("book_id");
+                chapter_id = uri.getQueryParameter("chapter_id");
+            }
+        }
+
         toJump = intent.getIntExtra(ADVERTISEMENT, 0);
         HuaXiConfig config = new HuaXiConfig.Builder().setContext(this)
                 .setChannelListener(new ChannelListener() {
@@ -108,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent1 = new Intent(this, HomeActivity.class);
         intent1.putExtra(ADVERTISEMENT, toJump);
+        intent1.putExtra(BOOK_ID, book_id);
+        intent1.putExtra(CHAPTER_ID, chapter_id);
         startActivity(intent1);
         finish();
 

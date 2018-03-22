@@ -32,7 +32,11 @@
         <activity
             android:name=".ui.activity.ReadActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HuaXiAppTheme" />
+            android:theme="@style/HuaXiAppTheme">
+
+
+
+        </activity>
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"

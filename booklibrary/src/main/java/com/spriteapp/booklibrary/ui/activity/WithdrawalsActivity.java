@@ -45,12 +45,13 @@ public class WithdrawalsActivity extends TitleActivity {
 //    private HomePageTabAdapter adapter;
 
     //修改过的
-    private TextView setting_with, false_gold, real_money, goto_with, setting_with_hint;
+    private TextView setting_with, money_num, real_money, goto_with, setting_with_hint;
     private ImageView ali_wx_img, alipay_name;
     private RadioGroup radio_group;
     private View alipay_line, wechat_line;
     private LinearLayout to_with_layout;
     private int pos = 0;
+    private TextView new_false_gold, new_real_money, apprentice_text, task_text, with_text;
 
 
     @Override
@@ -58,7 +59,20 @@ public class WithdrawalsActivity extends TitleActivity {
         setTitle("提现收益");
 //        initFragment();
         listener();
+        setUserData();
         setNameText();
+
+    }
+
+    private void setUserData() {
+        new_false_gold.setText("+" + UserBean.getInstance().getGold_coins());
+        new_real_money.setText("+" + UserBean.getInstance().getRmb());
+        int money = UserBean.getInstance().getGold_coins();
+        if (money > 0) {
+            double v = (float) money / 33333;
+            money_num.setText(Util.keepOne(v));//计算出金币与人民币共同金额
+            Log.d("real_rmb", "比例兑换===" + Util.keepOne(v));
+        }
 
     }
 
@@ -77,7 +91,7 @@ public class WithdrawalsActivity extends TitleActivity {
 
 
         setting_with = (TextView) findViewById(R.id.setting_with);
-        false_gold = (TextView) findViewById(R.id.false_gold);
+        money_num = (TextView) findViewById(R.id.money_num);
         real_money = (TextView) findViewById(R.id.real_money);
         goto_with = (TextView) findViewById(R.id.goto_with);
         setting_with_hint = (TextView) findViewById(R.id.setting_with_hint);
@@ -87,18 +101,23 @@ public class WithdrawalsActivity extends TitleActivity {
         radio_group = (RadioGroup) findViewById(R.id.radio_group);
         alipay_line = findViewById(R.id.alipay_line);
         wechat_line = findViewById(R.id.wechat_line);
+        new_false_gold = (TextView) findViewById(R.id.new_false_gold);
+        new_real_money = (TextView) findViewById(R.id.new_real_money);
+        apprentice_text = (TextView) findViewById(R.id.apprentice_text);
+        task_text = (TextView) findViewById(R.id.task_text);
+        with_text = (TextView) findViewById(R.id.with_text);
+
     }
 
     private void listener() throws Exception {
 //        switchAliPay_WeChat();
-        int money = UserBean.getInstance().getGold_coins();
-        false_gold.setText(money + "");//获取用户资料里面的金币数量
-        if (money > 0) {
-            float v = (float) money / 33333;
-            real_money.setText(Util.keepOne(v));
-            Log.d("real_rmb", "比例兑换===" + Util.keepOne(v));
-        }
+
         to_with_layout.setOnClickListener(this);
+        new_false_gold.setOnClickListener(this);
+        new_real_money.setOnClickListener(this);
+        apprentice_text.setOnClickListener(this);
+        task_text.setOnClickListener(this);
+        with_text.setOnClickListener(this);
         goto_with.setOnClickListener(this);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -128,6 +147,12 @@ public class WithdrawalsActivity extends TitleActivity {
             ActivityUtil.toMangerAlipayActivity(this);
         } else if (v == goto_with) {//提现
             gotoWithHttp(UserBean.getInstance().getGold_coins());
+        } else if (v == apprentice_text) {//徒弟奖励
+            ActivityUtil.toProfitDetailsActivity(this, 0);
+        } else if (v == task_text) {//任务奖励
+            ActivityUtil.toProfitDetailsActivity(this, 1);
+        } else if (v == with_text) {//提现明细
+            ActivityUtil.toProfitDetailsActivity(this, 2);
         }
     }
 

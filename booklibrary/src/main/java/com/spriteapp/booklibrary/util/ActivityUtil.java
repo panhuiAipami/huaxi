@@ -37,6 +37,8 @@ public class ActivityUtil {
     public static final String REPLYTITLE = "comment_reply_title";
     public static final String COMMENT_ID = "comment_id";
     public static final String USER_ID = "user_id";
+    public static final String REWARDTYPE = "reward_type";
+
 
     public static final String BOOK_ID = "book_id";
 
@@ -153,7 +155,7 @@ public class ActivityUtil {
 
     public static void toTaskActivity(Activity context) {
         Intent intent = new Intent(context, TaskActivity.class);
-        context.startActivityForResult(intent,BACKREFRESH);
+        context.startActivityForResult(intent, BACKREFRESH);
     }
 
     public static void toBindPhoneActivity(Context context) {
@@ -176,8 +178,9 @@ public class ActivityUtil {
         context.startActivityForResult(intent, 0);
     }
 
-    public static void toProfitDetailsActivity(Activity context) {
+    public static void toProfitDetailsActivity(Activity context, int type) {
         Intent intent = new Intent(context, ProfitDetailsActivity.class);
+        intent.putExtra(REWARDTYPE, type);
         context.startActivityForResult(intent, 0);
     }
 }

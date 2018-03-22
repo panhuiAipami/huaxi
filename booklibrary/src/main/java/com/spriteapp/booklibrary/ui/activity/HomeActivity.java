@@ -98,6 +98,13 @@ import static com.spriteapp.booklibrary.ui.fragment.HomePageFragment.FRAGMENTTYP
 
 public class HomeActivity extends TitleActivity implements View.OnClickListener, DelBookShelf, HuaweiApiClient.OnConnectionFailedListener, HuaweiApiClient.ConnectionCallbacks, HuaWeiPayCallBack, GotoHomePage {
 
+    //从网页进入app
+    public static final String BOOK_ID = "book_id";
+    public static final String CHAPTER_ID = "chapter_id";
+    private String book_id = null;
+    private String chapter_id = null;
+
+
     private static final String TAG = "HomeActivity";
     public static final String SEX = "sex";
     public static final String ADVERTISEMENT = "advertisement";
@@ -145,7 +152,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     //华为打包为true，否则为false（华为渠道需要用华为支付）
     public static boolean CHANNEL_IS_HUAWEI = false;
     //花都打包为:true,否则为false (添加拉新功能)
-    public static final boolean ISHAUDU = false;
+    public static final boolean ISHAUDU = true;
     public static final String SIGN_SECRET = CHANNEL_IS_HUAWEI ? "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc" : ISHAUDU ? "xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri" : "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
     public static final int CLIENT_ID = CHANNEL_IS_HUAWEI ? 73 : ISHAUDU ? 72 : 40;//华为渠道必须修改
 
@@ -229,6 +236,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                 }
             } else {
                 Log.d("toJump", "不跳转广告页");
+                book_id = intent.getStringExtra(BOOK_ID);
+                chapter_id = intent.getStringExtra(CHAPTER_ID);
+                if (!TextUtils.isEmpty(book_id)) {//直接跳转到阅读页并销毁
+                    Log.d("toJump", "直接跳转到阅读页并销毁");
+                    ActivityUtil.toReadActivity(this, Integer.parseInt(book_id), TextUtils.isEmpty(chapter_id) ? 0 : Integer.parseInt(chapter_id));
+                    finish();
+                }
             }
 
             setTitle("精选");
