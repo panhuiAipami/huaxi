@@ -117,7 +117,7 @@ public class AppUtil {
 
     public static void loginOut() {
         clearToken();
-//        clearBookInfo();
+        clearBookInfo();
         HuaXiSDK.getInstance().setRegisterModelNull();
         clearShare();
         HuaXiSDK.mLoginState = LoginStateEnum.UN_LOGIN;
@@ -133,11 +133,11 @@ public class AppUtil {
     }
 
     public static void clearBookInfo() {
-        BookDb bookDb = new BookDb(mContext);
-        ContentDb contentDb = new ContentDb(mContext);
+//        BookDb bookDb = new BookDb(mContext);
+//        ContentDb contentDb = new ContentDb(mContext);
         ChapterDb chapterDb = new ChapterDb(mContext);
-        bookDb.deleteDb();
-        contentDb.deleteDb();
+//        bookDb.deleteDb();
+//        contentDb.deleteDb();
         chapterDb.deleteDb();
     }
 

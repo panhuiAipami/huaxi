@@ -355,6 +355,11 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void loginState(int state) {
+        if (getActivity() == null) {
+            Log.d("loginState", "getActivity为空");
+            return;
+        }
+        Log.d("loginState", "getActivity不为空");
         if (state == 1) {
             getUserData();
         } else if (state == 2) {
