@@ -115,7 +115,8 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
             page++;
             lists.addAll(result.getData());
         }
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
         goneOrShow();
     }
 

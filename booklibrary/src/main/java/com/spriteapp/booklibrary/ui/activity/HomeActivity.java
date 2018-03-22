@@ -230,13 +230,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             } else {
                 Log.d("toJump", "不跳转广告页");
             }
-            setTitle("精选");
-//        addFreeTextView();
 
-            //判断华为渠道的CHANNEL_IS_HUAWEI变量
-//            if (!TextUtils.isEmpty(Util.getAppMetaData(this)) && Util.getAppMetaData(this).equals(HUAWEI)) {
-//                CHANNEL_IS_HUAWEI = true;
-//            }
+            setTitle("精选");
             UserBean.getInstance().restData();
             addSearchView();
             initFragment();

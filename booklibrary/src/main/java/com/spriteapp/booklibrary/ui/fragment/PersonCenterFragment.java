@@ -30,7 +30,6 @@ import com.spriteapp.booklibrary.ui.dialog.InvitationCodeDialog;
 import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
-import com.spriteapp.booklibrary.util.CustomToastUtils;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 import com.spriteapp.booklibrary.util.Util;
@@ -91,7 +90,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && AppUtil.isLogin())
+        if (isVisibleToUser && AppUtil.isLogin() && getActivity()!= null)
             getUserData();
     }
 

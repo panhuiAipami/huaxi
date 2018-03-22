@@ -295,7 +295,7 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
+        if (mWebView != null && mWebView.canGoBack()) {
             mWebView.goBack();
             return;
         }
@@ -394,7 +394,8 @@ public class WebViewActivity extends TitleActivity implements WebViewView {
         super.onDestroy();
         dismissDialog();
         EventBus.getDefault().unregister(this);
-        mPresenter.detachView();
+        if (mPresenter != null)
+            mPresenter.detachView();
     }
 
     public void finishBack() {

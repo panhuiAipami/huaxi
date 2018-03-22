@@ -400,11 +400,12 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
-                DisplayMetrics display = new DisplayMetrics();
-                display = AppUtil.getAppContext().getResources().getDisplayMetrics();
-                int kuan = display.widthPixels;
-                Log.d("kuan", "分辨率===" + kuan);
-                Util.setIndicator(tabLayout, 40, 40);
+                DisplayMetrics display;
+                if (AppUtil.getAppContext() != null) {
+                    display = AppUtil.getAppContext().getResources().getDisplayMetrics();
+                    int kuan = display.widthPixels;
+                    Util.setIndicator(tabLayout, 40, 40);
+                }
 //                if (kuan < 400) {
 //                    Util.setIndicator(tabLayout, 40, 40);
 //                }else if(kuan==400){

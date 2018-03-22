@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.SslErrorHandler;
@@ -66,10 +67,15 @@ public class ReaderWebView extends WebView {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (client != null) {
-                    client.shouldOverrideUrlLoading(view, url);
+                try {
+                    if (client != null && !TextUtils.isEmpty(url)) {
+                        client.shouldOverrideUrlLoading(view, url);
+                    }
+                    return WebViewUtil.getInstance().getJumpUrl(getContext(), url);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                return WebViewUtil.getInstance().getJumpUrl(getContext(), url);
+                return false;
             }
 
             @Override

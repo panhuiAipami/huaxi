@@ -115,11 +115,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showDialog() {
-        if (dialog == null) {
-            dialog = CustomDialog.instance(this);
-            dialog.setCancelable(true);
+        try {
+            if (dialog == null) {
+                dialog = CustomDialog.instance(this);
+                dialog.setCancelable(true);
+            }
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        dialog.show();
     }
 
     public void dismissDialog() {
