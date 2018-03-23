@@ -1410,6 +1410,11 @@ public class Util {
                 String vn = appUpDateModel.getVersion();
                 String desc = appUpDateModel.getContent();
                 int versionName;
+                if (TextUtils.isEmpty(vn)) {
+                    if (isHint)
+                        ToastUtil.showSingleToast("当前已是最新版本");
+                    return;
+                }
                 if (vn.contains(".")) {
                     versionName = Integer.parseInt(vn.replace(".", ""));
                 } else {
