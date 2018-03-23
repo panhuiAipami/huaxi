@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/down_load_font_color1"
+                android:textColor="@color/toast_bg_color"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -95,8 +95,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:background="@color/line_color"
             android:paddingLeft="-12dp"
             android:paddingRight="-12dp"></View>
@@ -171,6 +171,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/toast_bg_color"
                 android:text="字号预览"
                 android:singleLine="true"
                 android:textSize="16sp" />
