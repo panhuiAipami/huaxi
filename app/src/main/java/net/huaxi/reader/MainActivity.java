@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.spriteapp.booklibrary.config.HuaXiConfig;
@@ -126,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 .setSex(PreferenceHelper.getInt(SEX, 0))//性别
                 .setSignSecret(HomeActivity.SIGN_SECRET).build();
         HuaXiSDK.getInstance().init(config);
-
         Intent intent1 = new Intent(this, HomeActivity.class);
         intent1.putExtra(ADVERTISEMENT, toJump);
         intent1.putExtra(BOOK_ID, book_id);
@@ -136,16 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void initShareDialog() {
-//        if (shareBean.getNid() == 0 && shareBean == null)
-//            return;
-//        if (shareDialog != null) {
-//            shareDialog.dismiss();
-//            shareDialog = null;
-//        }
-//        shareDialog = new ShareDialog(this, shareBean);
-//        shareDialog.show();
-    }
 
     public void wxPay(WeChatBean response) {//微信支付
 //        IWXAPI WXApi = WXAPIFactory.createWXAPI(this, LoginHelper.WX_APP_ID, true);
