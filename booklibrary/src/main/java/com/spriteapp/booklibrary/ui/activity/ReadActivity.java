@@ -631,6 +631,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 //刷新操作
+                if (!isDismiss)
+                    dismissView(mTitleLayout, mDismissView);//隐藏顶部和底部栏
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {

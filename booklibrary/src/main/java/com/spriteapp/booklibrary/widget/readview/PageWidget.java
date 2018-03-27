@@ -396,6 +396,10 @@ public class PageWidget extends BaseReadView {
         canvas.restore();
     }
 
+    /**
+     * 绘制翻起页背面
+     * @param canvas
+     */
     @Override
     protected void drawCurrentBackArea(Canvas canvas) {
         int i = (int) (mBezierStart1.x + mBezierControl1.x) / 2;

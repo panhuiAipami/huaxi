@@ -60,7 +60,7 @@ public class SubscriberContentPresenter implements BasePresenter<SubscriberConte
     }
 
     public void getContent(int bookId, int chapterId, int isAutoSub, boolean isShowDialog) {
-        if (!NetworkUtil.isAvailable(mView.getMyContext())) {
+        if (mView != null && !NetworkUtil.isAvailable(mView.getMyContext())) {
             ContentDb contentDb = new ContentDb(mView.getMyContext());
             SubscriberContent subscriberContent = contentDb.queryContent(bookId, chapterId);
             Base<SubscriberContent> result = new Base<>();
