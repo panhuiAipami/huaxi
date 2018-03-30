@@ -77,9 +77,13 @@ public class DownloadChapterActivity extends TitleActivity implements Subscriber
     @Override
     protected void onResume() {
         super.onResume();
-        if (AppUtil.isLogin()) {
-            balance = UserBean.getInstance().getUser_real_point() + UserBean.getInstance().getUser_false_point();
-            my_balance.setText("（余额：" + balance + "花贝/花瓣)");
+        try {
+            if (AppUtil.isLogin()) {
+                balance = UserBean.getInstance().getUser_real_point() + UserBean.getInstance().getUser_false_point();
+                my_balance.setText("（余额：" + balance + "花贝/花瓣)");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
