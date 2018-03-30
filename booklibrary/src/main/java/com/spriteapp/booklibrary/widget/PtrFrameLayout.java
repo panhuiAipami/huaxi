@@ -264,7 +264,7 @@ public class PtrFrameLayout extends ViewGroup {
                         movePos(offsetY);
                     }
                     return true;
-                } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 80) {
+                } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 50) {
                     if (Util.isFastClick(500)) {
 //                        ToastUtil.showSingleToast("添加评论");
                         ActivityUtil.toPublishCommentActivity(getContext(), book_id);
