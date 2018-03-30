@@ -584,20 +584,24 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (!isDismiss) {
-                    hideReadBar();
+                try {
+                    if (!isDismiss) {
+                        hideReadBar();
+                    }
+                    if (hasNotifyAdapter) {
+                        return;
+                    }
+                    mCurrentChapter = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), mCurrentChapter);
+                    if (mCurrentChapter != mChapterAdapter.getCurrentChapter()) {
+                        mChapterAdapter.setCurrentChapter(mCurrentChapter);
+                        mChapterDb.updateReadState(mBookId, mCurrentChapter);
+                        updateReadState();
+                        mChapterAdapter.notifyDataSetChanged();
+                    }
+                    hasNotifyAdapter = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (hasNotifyAdapter) {
-                    return;
-                }
-                mCurrentChapter = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), mCurrentChapter);
-                if (mCurrentChapter != mChapterAdapter.getCurrentChapter()) {
-                    mChapterAdapter.setCurrentChapter(mCurrentChapter);
-                    mChapterDb.updateReadState(mBookId, mCurrentChapter);
-                    updateReadState();
-                    mChapterAdapter.notifyDataSetChanged();
-                }
-                hasNotifyAdapter = true;
             }
 
             @Override

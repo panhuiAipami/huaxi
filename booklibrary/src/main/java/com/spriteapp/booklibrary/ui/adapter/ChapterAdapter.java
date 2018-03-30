@@ -25,7 +25,7 @@ public class ChapterAdapter extends BaseAdapter {
     private Context mContext;
     private List<BookChapterResponse> mCatalogList;
     private LayoutInflater mInflater;
-    private int mCurrentChapter;
+    private int mCurrentChapter = 0;
     private boolean isNight;
     private int book_id;
 
