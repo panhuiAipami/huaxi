@@ -122,7 +122,8 @@ public class CommunityFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fragmentList.get(0).onActivityResult(requestCode, resultCode, data);
+        if (fragmentList.size() > 0)
+            fragmentList.get(0).onActivityResult(requestCode, resultCode, data);
 //        fragmentList.get(1).onActivityResult(requestCode, resultCode, data);
 
     }

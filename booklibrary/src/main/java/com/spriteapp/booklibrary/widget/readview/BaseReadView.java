@@ -393,7 +393,8 @@ public abstract class BaseReadView extends View {
 
     public synchronized void setTextTypeFace(Typeface tc) {
         resetTouchPoint();
-        pagefactory.setTexTypeFace(tc);
+        if (tc != null)
+            pagefactory.setTexTypeFace(tc);
         if (isPrepared) {
             pagefactory.onDraw(mCurrentPageCanvas);
             pagefactory.onDraw(mNextPageCanvas);
