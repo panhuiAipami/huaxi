@@ -39,6 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             configViews();
         } catch (Exception e) {
             e.printStackTrace();
+            Intent i = getBaseContext().getPackageManager()
+                    .getLaunchIntentForPackage(getBaseContext().getPackageName());
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
 
     }
