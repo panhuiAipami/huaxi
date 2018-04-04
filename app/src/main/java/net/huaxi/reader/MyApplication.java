@@ -4,7 +4,6 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 
-import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -15,9 +14,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.utils.Log;
 
-import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.callback.CallBack;
-import net.huaxi.reader.callback.ShareBeanCallBack;
 import net.huaxi.reader.callback.ShareResult;
 import net.huaxi.reader.http.OKhttpRequest;
 import net.huaxi.reader.http.UrlUtils;
@@ -73,11 +70,7 @@ public class MyApplication extends Application implements ShareResult {
 
         @Override
         public void setPrevMessage(UMessage uMessage) {
-
             android.util.Log.d("getNotification", "通知点击777");
-            if (ListenerManager.getInstance().getReadActivityFinish() != null) {//销毁readActivity
-                ListenerManager.getInstance().getReadActivityFinish().setActivityFinish();
-            }
             super.setPrevMessage(uMessage);
         }
     };
