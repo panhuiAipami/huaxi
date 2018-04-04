@@ -32,6 +32,9 @@ import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 
 import java.util.List;
 
+/**
+ * 弃用
+ */
 public class PageWidget extends BaseReadView {
 
     private int mCornerX = 1; // 拖拽点对应的页脚

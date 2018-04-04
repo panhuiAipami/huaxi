@@ -35,6 +35,7 @@ import com.spriteapp.booklibrary.util.ToastUtil;
 import java.util.List;
 
 /**
+ * 弃用
  * @author yuyh.
  * @date 2016/10/18.
  */

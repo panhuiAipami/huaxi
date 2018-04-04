@@ -13,8 +13,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.util.ActivityUtil;
-import com.spriteapp.booklibrary.util.Util;
 
 
 /**
@@ -260,14 +258,8 @@ public class PtrFrameLayout extends ViewGroup {
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-                    if (Math.abs(actiondownX - x) < 50) {
+                    if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 50) {
                         movePos(offsetY);
-                    }
-                    return true;
-                } else if (actiondownY - y > 250 && Math.abs(actiondownX - x) < 50) {
-                    if (Util.isFastClick(500)) {
-//                        ToastUtil.showSingleToast("添加评论");
-                        ActivityUtil.toPublishCommentActivity(getContext(), book_id);
                     }
                     return true;
                 }

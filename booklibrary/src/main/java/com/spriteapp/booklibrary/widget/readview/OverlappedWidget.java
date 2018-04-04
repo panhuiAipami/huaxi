@@ -30,6 +30,7 @@ import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import java.util.List;
 
 /**
+ * 弃用
  * @author yuyh.
  * @date 2016/10/18.
  */

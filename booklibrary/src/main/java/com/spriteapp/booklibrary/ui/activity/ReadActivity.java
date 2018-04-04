@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,12 +40,9 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.enumeration.AutoSubEnum;
 import com.spriteapp.booklibrary.enumeration.BookEnum;
 import com.spriteapp.booklibrary.enumeration.ChapterEnum;
-import com.spriteapp.booklibrary.enumeration.PageStyleEnum;
 import com.spriteapp.booklibrary.enumeration.PayResultEnum;
 import com.spriteapp.booklibrary.enumeration.UpdaterPayEnum;
 import com.spriteapp.booklibrary.listener.DialogListener;
-import com.spriteapp.booklibrary.listener.ListenerManager;
-import com.spriteapp.booklibrary.listener.ReadActivityFinish;
 import com.spriteapp.booklibrary.listener.ReadDialogListener;
 import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.manager.ThemeManager;
@@ -80,14 +76,13 @@ import com.spriteapp.booklibrary.widget.ReadBottomLayout;
 import com.spriteapp.booklibrary.widget.ReadMoreSettingLayout;
 import com.spriteapp.booklibrary.widget.ReadProgressLayout;
 import com.spriteapp.booklibrary.widget.ReadRightTitleLayout;
-import com.spriteapp.booklibrary.widget.readview.BaseReadView;
+import com.spriteapp.booklibrary.widget.readview.Config;
+import com.spriteapp.booklibrary.widget.readview.MyPageWidget;
 import com.spriteapp.booklibrary.widget.readview.OnReadStateChangeListener;
-import com.spriteapp.booklibrary.widget.readview.OverlappedWidget;
-import com.spriteapp.booklibrary.widget.readview.PageWidget;
+import com.spriteapp.booklibrary.widget.readview.PageFactory2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -106,18 +101,20 @@ import static java.lang.Integer.parseInt;
  * Created by kuangxiaoguo on 2017/7/10.
  */
 
-public class ReadActivity extends TitleActivity implements SubscriberContentView, ReadActivityFinish {
+public class ReadActivity extends TitleActivity implements SubscriberContentView {
 
     private static final String TAG = "ReadActivity";
     public static final String BOOK_DETAIL_TAG = "BookDetailTag";
     private static final int ANIMATION_TIME = 300;
     public static final String LAST_CHAPTER = "last_chapter";
-    private FrameLayout mBookContainer;
+    private MyPageWidget bookpage;
+    private TextView tv_open_hint;
     private PtrFrameLayout mPtrFrameLayout;
     private ReadMoreSettingLayout readMoreSettingLayout;
     private ReadBottomLayout mBottomLayout;
     private SubscriberContentPresenter mPresenter;
-    private BaseReadView mWidget;
+    private Config config;
+    protected PageFactory2 pagefactory = null;
     private List<BookChapterResponse> mChapterList;
     private int mTitleHeight;
     private boolean isDismiss = true;
@@ -139,6 +136,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      * 是否开始阅读章节
      **/
     private boolean startRead = false;
+    private boolean selectChapter = false;
     private static int mBookId;
     private int mCurrentChapter;
     private ReadProgressLayout mReadProgressLayout;
@@ -148,7 +146,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private int mBottomHeight;
     private int mReadProgressHeight;
     private int mTempHeight;
-    private boolean isChangeTextSize;
     private boolean hasNotifyAdapter;
     private Context mContext;
     private AlertDialog mPayChapterDialog;
@@ -156,7 +153,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private BookDb mBookDb;
     private BookDetailResponse mOldBookDetail;
     private BookDetailResponse mNewBookDetail;
-    private boolean hasInitWidget;
     private ReadRightTitleLayout mRightTitleLayout;
     private ContentDb mContentDb;
     private SubscriberContent mQueryContent;
@@ -181,27 +177,24 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (time == 0) {
-                Log.d("handleMessage", "上传时长");
                 if (mBookId != 0 && oldChapter_id != 0)
                     HistoryTime.getHistory(mBookId + "", oldChapter_id + "");
             } else if (time > 0) {
                 time--;
                 handler.sendEmptyMessageDelayed(0, 1000);
-                Log.d("handleMessage", "time===" + time);
             }
         }
     };
 
     @Override
     public void initData() {
+        Config.createConfig(this);
         if (IsRegister) {
             EventBus.getDefault().register(this);
-//            IsRegister = !IsRegister;
         }
         if (AppUtil.isLogin() && UserBean.getInstance().getRead_timespan() != 0) {
             READTIME = UserBean.getInstance().getRead_timespan();
             time = READTIME;
-            Log.d("READTIME", "READTIME===" + READTIME);
         }
         //标题栏
         mRightTitleLayout = new ReadRightTitleLayout(this);
@@ -244,8 +237,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             } else {
                 bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
             }
-
-
         }
 
         DialogUtil.setDialogListener(mDialogListener);
@@ -273,16 +264,16 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
 
         if (mCurrentChapter == 0) {
-            Log.d("mCurrentChapter", lastChapterId + "上一次chapter_id");
+            Log.d("mCurrentChapter", "上一次chapter_id" + lastChapterId);
             mCurrentChapter = lastChapterId;
         } else {
             if (mCurrentChapter != lastChapterId) {
                 SettingManager.getInstance().saveReadProgress(String.valueOf(mBookId), mCurrentChapter, 0, 0);
             }
         }
-        Log.d("IsHttp", "setMode");
         initChapterAdapter();
         openChapter();
+
         if (mOldBookDetail == null) {
             Log.d("IsHttp", "http请求");
             mPresenter.getBookDetail(mBookId);
@@ -308,11 +299,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 }
             }
         }
-        int textSizePosition = SharedPreferencesUtil.getInstance().getInt(Constant.READ_TEXT_SIZE_POSITION);
-//        mTextSizeLayout.setPosition(textSizePosition);
-
         setBatteryState();
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -335,7 +324,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mOldBookDetail = null;
             mNewBookDetail = null;
             mChapterList = null;
-            mWidget = null;
             addContentView();
             findViewId();
             initData();
@@ -361,33 +349,20 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     }
 
-    @Override
-    public void setActivityFinish() {
-//        if (!this.isFinishing()) {
-//            finish();
-//            Log.d("getNotification", "setActivityFinish");
-//            Log.d("setActivityFinish", "setActivityFinish1");
-//        }
-//        Log.d("setActivityFinish", "setActivityFinish");
-    }
 
     class ReadReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            try {
-                String action = intent.getAction();
-                if (mWidget != null) {
-                    if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
-                        int level = intent.getIntExtra("level", 0);
-                        mWidget.setBattery(100 - level);
-                    } else if (Intent.ACTION_TIME_TICK.equals(action)) {
-                        mWidget.setTime(mDateFormat.format(new Date()));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
+                Log.e(TAG, Intent.ACTION_BATTERY_CHANGED);
+                int level = intent.getIntExtra("level", 0);
+                if (pagefactory != null)
+                    pagefactory.updateBattery(level);
+            } else if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
+                Log.e(TAG, Intent.ACTION_TIME_TICK);
+                if (pagefactory != null)
+                    pagefactory.updateTime();
             }
-
         }
     }
 
@@ -410,39 +385,46 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
+
+    /**
+     * 打开内容阅读
+     */
     private void openChapter() {
         if (!isCurrentChapterExists(mCurrentChapter) && mCurrentChapter != 0) {
             mPresenter.getContent(mBookId, mCurrentChapter);
             mLoadChapterId = mCurrentChapter;
             return;
         }
+
         if (!CollectionUtil.isEmpty(mChapterList)) {
-            if (mWidget == null) {
-                int pageStyle = SharedPreferencesUtil.getInstance().getInt(Constant.PAGE_CHANGE_STYLE);
-                mWidget = pageStyle == PageStyleEnum.DEFAULT_STYLE.getValue() ?
-                        new OverlappedWidget(this, String.valueOf(mBookId), mChapterList, mReadListener)
-                        : new PageWidget(this, String.valueOf(mBookId), mChapterList, mReadListener);
-                mBookContainer.addView(mWidget);
-                isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE);
-                if (mWidget.getPageFactory() == null) {
-                    return;
-                }
-                setMode();
-                mWidget.setProgressCallback(mProgressCallback);
-                mWidget.setTouchPageListener(mTouchPageListener);
+            int status;
+            int pos[];
+            //首次打开阅读
+            if (pagefactory == null) {
+                pagefactory = new PageFactory2(this, mBookId, mChapterList);
+                config = Config.getInstance();
+                bookpage.setPageMode(config.getPageMode());
+                pagefactory.setPageWidget(bookpage);
+                pagefactory.setOnReadStateChangeListener(mReadListener);
+                pagefactory.setProgressCallback(mProgressCallback);
             }
-            if (!startRead) {
+
+
+            //切换章节阅读
+            if (!startRead && selectChapter) {
                 startRead = true;
-                if (!mWidget.isPrepared) {
-                    mWidget.init();
-                    hasInitWidget = true;
-                    dismissDialog();
-                } else {
-                    mWidget.jumpToChapter(mCurrentChapter);
-                }
+                selectChapter = false;
+                pos = new int[]{mCurrentChapter, 0, 0};
+            } else {//正常打开
+                pos = SettingManager.getInstance().getReadProgress(mBookId + "");
+            }
+            status = pagefactory.openBook(pos[0], new int[]{pos[1], pos[2]}, true);
+            if (status == 0) {
+                mReadListener.onLoadChapterFailure(mCurrentChapter);
+            } else {
+                tv_open_hint.setVisibility(View.GONE);
             }
         }
-
     }
 
     private void showPayChapterDialog() {
@@ -500,15 +482,60 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         boolean isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE);
-        mBookContainer.setBackgroundColor(getResources().getColor(isNight ? R.color.book_reader_read_night_background :
+        bookpage.setBackgroundColor(getResources().getColor(isNight ? R.color.book_reader_read_night_background :
                 R.color.book_reader_read_day_background));
+
+        bookpage.setTouchListener(new MyPageWidget.TouchListener() {
+            @Override
+            public Boolean center() {
+                toggleReadBar();
+                return isDismiss;
+            }
+
+            @Override
+            public Boolean prePage() {
+                if (!isDismiss) {
+                    return false;
+                }
+
+                if (pagefactory != null)
+                    pagefactory.prePage();
+                if (pagefactory != null && pagefactory.isfirstPage()) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            @Override
+            public Boolean nextPage() {
+                if (!isDismiss) {
+                    return false;
+                }
+
+                if (pagefactory != null)
+                    pagefactory.nextPage();
+
+                if (pagefactory != null && pagefactory.islastPage()) {
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public void cancel() {
+                pagefactory.cancelPage();
+            }
+        });
+
     }
 
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
+        tv_open_hint = (TextView) findViewById(R.id.tv_open_hint);
         mPtrFrameLayout = (PtrFrameLayout) findViewById(R.id.mPtrFrameLayout);
-        mBookContainer = (FrameLayout) findViewById(R.id.book_reader_read_container);
+        bookpage = (MyPageWidget) findViewById(R.id.book_reader_read_container);
         mBottomLayout = (ReadBottomLayout) findViewById(R.id.book_reader_bottom_layout);
         readMoreSettingLayout = (ReadMoreSettingLayout) findViewById(R.id.readMoreSettingLayout);
         readMoreSettingLayout.setActivity(this);
@@ -561,7 +588,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     private void setListener() {
-        ListenerManager.getInstance().setReadActivityFinish(this);
         mChapterLayout.setOnClickListener(this);
         mProgressLayout.setOnClickListener(this);
         mModeLayout.setOnClickListener(this);
@@ -577,6 +603,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mChapterList.get(position).setChapterReadState(ChapterEnum.HAS_READ.getCode());
                 mChapterAdapter.notifyDataSetChanged();
                 startRead = false;
+                selectChapter = true;
                 openChapter();
                 mDrawerLayout.closeDrawer(linear_left_view);
             }
@@ -584,24 +611,20 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                try {
-                    if (!isDismiss) {
-                        hideReadBar();
-                    }
-                    if (hasNotifyAdapter) {
-                        return;
-                    }
-                    mCurrentChapter = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), mCurrentChapter);
-                    if (mCurrentChapter != mChapterAdapter.getCurrentChapter()) {
-                        mChapterAdapter.setCurrentChapter(mCurrentChapter);
-                        mChapterDb.updateReadState(mBookId, mCurrentChapter);
-                        updateReadState();
-                        mChapterAdapter.notifyDataSetChanged();
-                    }
-                    hasNotifyAdapter = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!isDismiss) {
+                    hideReadBar();
                 }
+                if (hasNotifyAdapter) {
+                    return;
+                }
+                mCurrentChapter = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), mCurrentChapter);
+                if (mCurrentChapter != mChapterAdapter.getCurrentChapter()) {
+                    mChapterAdapter.setCurrentChapter(mCurrentChapter);
+                    mChapterDb.updateReadState(mBookId, mCurrentChapter);
+                    updateReadState();
+                    mChapterAdapter.notifyDataSetChanged();
+                }
+                hasNotifyAdapter = true;
             }
 
             @Override
@@ -687,9 +710,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mDismissView = mBottomLayout;
             mDrawerLayout.openDrawer(linear_left_view);
         } else if (v == mProgressLayout) {
-            if (mWidget != null) {
-                mReadProgressLayout.setProgress(mWidget.getCurrentProgress());
+            if (pagefactory != null) {
+                mReadProgressLayout.setProgress(pagefactory.getCurrentProgress());
             }
+            //获取进度
             mReadProgressLayout.setVisibility(View.VISIBLE);
             mShowView = mReadProgressLayout;
             mDismissView = mBottomLayout;
@@ -762,9 +786,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     }
 
     private void changeMode() {
-        if (mWidget == null) {
-            return;
-        }
         isNight = !isNight;
         SharedPreferencesUtil.getInstance().putBoolean(Constant.IS_NIGHT_MODE, isNight);
         setMode();
@@ -780,11 +801,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         is_add_shelf.setImageResource(isNight ? R.mipmap.add_shelf_night_icon : R.mipmap.add_shelf_yellow_icon);
 
-        int bg_color = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
-        mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(bg_color));
-        mWidget.setTextColor(getResources().getColor(isNight ? R.color.book_reader_reader_text_new_night_color
-                        : R.color.book_reader_reader_text_color),
-                getResources().getColor(R.color.c06_themes_color));
+        int bg_color = SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_BG_COLOR, 1);
+        if (pagefactory != null) {
+            pagefactory.setDayOrNight(isNight);
+        }
         //返回按钮
 //        mBackImageView.setImageResource(isNight ? R.drawable.book_reader_title_back_night_selector :
 //                R.drawable.book_reader_title_back_selector);
@@ -806,15 +826,22 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
+    /**
+     * 加载阅读内容完成《3》
+     *
+     * @param result
+     */
     @Override
     public void setData(Base<SubscriberContent> result) {
         String message = result.getMessage();
         int code = result.getCode();
         SubscriberContent data = result.getData();
         if (data == null) {
+            tv_open_hint.setText("打开书本失败！");
             ToastUtil.showSingleToast(message);
             return;
         }
+        tv_open_hint.setVisibility(View.GONE);
         String key = data.getChapter_content_key();
         String content = data.getChapter_content();
         if (StringUtil.isEmpty(key)) {
@@ -848,6 +875,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (NetworkUtil.isAvailable(mContext)) {
             updateCurrentProgress(mCurrentChapter);
         }
+
+        //开始阅读内容
         openChapter();
 
         //更多设置里面内容显示
@@ -902,11 +931,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                 @Override
                 public void clickMore() {
-//                    BookDetailResponse shareDetail = mNewBookDetail != null ?
-//                            mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-//                    if (shareDetail != null) {
-//                        HuaXiSDK.getInstance().showShareDialog(mContext, shareDetail, isNight);
-//                    }
                     //弹出pop
                     showpopWindow(mRightTitleLayout);
                 }
@@ -1027,9 +1051,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mRightTitleLayout.setBuyImageState(false);
             }
             mReadProgressLayout.setTitle(getCurrentChapterTitle(chapter));
-            if (mWidget != null) {
-                mReadProgressLayout.setCount(mWidget.getChapterTotalPage());
-                mReadProgressLayout.setProgress(mWidget.getCurrentProgress());
+            if (pagefactory != null) {
+                mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
+                mReadProgressLayout.setProgress(pagefactory.getCurrentProgress());
             }
             if (CollectionUtil.isEmpty(mChapterList)) {
                 return;
@@ -1077,7 +1101,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
         @Override
         public void onPageChanged(int chapter, int page) {
-            if (!isChangeTextSize && !isDismiss) {
+            if (!isDismiss) {
                 hideReadBar();
             }
         }
@@ -1210,9 +1234,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void disMissProgress() {
-        if (hasInitWidget) {
-            dismissDialog();
-        }
+        dismissDialog();
     }
 
     @Override
@@ -1257,6 +1279,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mShowView = mBottomLayout;
     }
 
+    //阅读进度显示
     private ProgressCallback mProgressCallback = new ProgressCallback() {
         @Override
         public void sendProgress(float progress) {
@@ -1264,12 +1287,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     };
 
+    //滑动进度，读取内容
     private ReadProgressLayout.PositionCallback mPositionCallback = new ReadProgressLayout.PositionCallback() {
         @Override
         public void sendPosition(int position) {
-            if (mWidget != null) {
-                mWidget.setSelectPage(position);
-            }
+            pagefactory.changeChapter(position);
         }
     };
 
@@ -1279,24 +1301,28 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     ReaderMoreSettingCallback moreSettingCallback = new ReaderMoreSettingCallback() {
         @Override
         public void sendTextSize(int textSize) {
-            if (mWidget != null) {
-                mWidget.setFontSize(ScreenUtil.dpToPxInt(textSize));
-                mWidget.setChapterTotalPage();
-                mReadProgressLayout.setCount(mWidget.getChapterTotalPage());
+            if (pagefactory != null) {
+                pagefactory.changeFontSize(textSize);
+
+                pagefactory.setChapterTotalPage();
+                mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
             }
         }
 
         @Override
         public void sendFontStyle(Typeface typeface) {
-            if (mWidget != null) {
-                mWidget.setTextTypeFace(typeface);
+            if (pagefactory != null) {
+                pagefactory.changeTypeface(typeface);
             }
         }
 
         @Override
         public void sengFontFormat(int format) {
-            if (mWidget != null) {
-                mWidget.setFontSpace(format);
+            if (pagefactory != null) {
+                pagefactory.setFontSpace(format);
+
+                pagefactory.setChapterTotalPage();
+                mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
             }
         }
 
@@ -1305,9 +1331,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (isNight)
                 changeMode();
 
-            if (mWidget != null) {
-                mWidget.setTheme(isNight ? ThemeManager.NIGHT : ThemeManager.NORMAL, ReadMoreSettingLayout.getReaderBgCoor(color));
-            }
+            if (pagefactory != null)
+                pagefactory.changeBookBg(color);
         }
     };
 
@@ -1340,12 +1365,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         animator.start();
     }
 
-    private BaseReadView.TouchPageListener mTouchPageListener = new BaseReadView.TouchPageListener() {
-        @Override
-        public void touchPage() {
-            isChangeTextSize = false;
-        }
-    };
 
     @Override
     protected void onPause() {
@@ -1380,8 +1399,33 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+        pagefactory = null;
     }
 
+    /**
+     * 加载书籍详情完成《1》
+     *
+     * @param data
+     */
+    @Override
+    public void setBookDetail(BookDetailResponse data) {
+        mNewBookDetail = data;
+        judgeChapterNeedLoad();
+        if (mOldBookDetail != null) {
+            mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
+            return;
+        }
+        mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
+        mRecentBookDb.insert(data);
+
+
+    }
+
+    /**
+     * 加载章节完成《2》
+     *
+     * @param catalogList
+     */
     @Override
     public void setChapter(List<BookChapterResponse> catalogList) {
         if (CollectionUtil.isEmpty(catalogList)) {
@@ -1411,7 +1455,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mChapterList.get(0).setChapterReadState(ChapterEnum.HAS_READ.getCode());
             SettingManager.DEFAULT_LAST_CHAPTER = mCurrentChapter;
         }
-        if (mWidget == null) {
+        if (pagefactory == null) {
             mPresenter.getContent(mBookId, mCurrentChapter);
         }
     }
@@ -1457,24 +1501,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mCurrentChapter != mLoadChapterId) {
             return;
         }
-        if (mWidget != null) {
-            mWidget.setCurrentChapter();
+        if (pagefactory != null) {
+            pagefactory.setCurrentChapter();
         }
         HuaXiSDK.getInstance().toLoginPage(mContext);
-    }
-
-    @Override
-    public void setBookDetail(BookDetailResponse data) {
-        mNewBookDetail = data;
-        judgeChapterNeedLoad();
-        if (mOldBookDetail != null) {
-            mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
-            return;
-        }
-        mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
-        mRecentBookDb.insert(data);
-
-
     }
 
     @Override

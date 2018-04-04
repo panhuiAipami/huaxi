@@ -15,13 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
+            <com.spriteapp.booklibrary.widget.readview.MyPageWidget
                 android:id="@+id/book_reader_read_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="false"
-                android:focusable="false"
-                android:layerType="hardware" />
+                android:layout_height="match_parent" />
+
         </com.spriteapp.booklibrary.widget.PtrFrameLayout>
 
         <com.spriteapp.booklibrary.widget.ReadProgressLayout
@@ -50,17 +48,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
             android:layout_margin="10dp"
-            android:src="@mipmap/add_shelf_yellow_icon"/>
+            android:src="@mipmap/add_shelf_yellow_icon"
+            android:visibility="gone" />
 
         <com.spriteapp.booklibrary.widget.ReadMoreSettingLayout
             android:id="@+id/readMoreSettingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true">
-        </com.spriteapp.booklibrary.widget.ReadMoreSettingLayout>
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"></com.spriteapp.booklibrary.widget.ReadMoreSettingLayout>
+
+        <TextView
+            android:id="@+id/tv_open_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/reader_book_bg1"
+            android:gravity="center"
+            android:text="正在打开书本..."
+            android:textColor="@color/two_font_color"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <LinearLayout
