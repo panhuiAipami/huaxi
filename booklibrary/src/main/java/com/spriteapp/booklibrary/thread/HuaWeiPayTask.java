@@ -11,6 +11,7 @@ import com.huawei.hms.support.api.entity.pay.PayReq;
 import com.huawei.hms.support.api.pay.HuaweiPay;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.spriteapp.booklibrary.util.AppUtil;
 
 
@@ -50,18 +51,18 @@ public class HuaWeiPayTask {
     //开发者联盟提供的支付公钥 华为移动服务配置 替换成实际的公钥
 //    public  static String publicKey ="";
 //    //开发者联盟网站申请的支付私钥，请妥善保管，最好存储在服务器端 华为移动服务配置 替换成实际的私钥
-    private  static String privateKey ="";
+    private static String privateKey = "";
     //使用加密算法规则
-    public  static String SIGN_ALGORITHMS = "SHA256WithRSA";
+    public static String SIGN_ALGORITHMS = "SHA256WithRSA";
 
-    public  static String charset = "UTF-8";
+    public static String charset = "UTF-8";
     //启动参数，区分startactivityforresult的处理结果,调用支付接口
     public static final int REQ_CODE_PAY = 4001;
     public static final int REQUEST_HMS_RESOLVE_ERROR = 1000;
 
     ResultCallback<com.huawei.hms.support.api.pay.PayResult> result;
 
-    public HuaWeiPayTask(HuaweiApiClient client, ResultCallback<com.huawei.hms.support.api.pay.PayResult> result){
+    public HuaWeiPayTask(HuaweiApiClient client, ResultCallback<com.huawei.hms.support.api.pay.PayResult> result) {
         this.result = result;
         this.client = client;
     }
@@ -70,14 +71,14 @@ public class HuaWeiPayTask {
     /**
      * 支付接口，CP可以直接参照该方法写法
      */
-    public void pay(String privateKey,String productName,String productDesc,double productPrice,String orderId) {
-        if(!client.isConnected()) {
+    public void pay(String privateKey, String productName, String productDesc, double productPrice, String orderId) {
+        if (!client.isConnected()) {
             Log.i(TAG, "支付失败，原因：HuaweiApiClient未连接");
-            client.connect();
+            client.connect(HomeActivity.libActivity);
             return;
         }
         this.privateKey = privateKey;
-        PendingResult<com.huawei.hms.support.api.pay.PayResult> payResult = HuaweiPay.HuaweiPayApi.pay(client, createPayReq(productName,productDesc,productPrice,orderId));
+        PendingResult<com.huawei.hms.support.api.pay.PayResult> payResult = HuaweiPay.HuaweiPayApi.pay(client, createPayReq(productName, productDesc, productPrice, orderId));
         payResult.setResultCallback(result);
     }
 
@@ -86,8 +87,8 @@ public class HuaWeiPayTask {
      * 生成PayReq对象，用来在进行支付请求的时候携带支付相关信息
      * payReq订单参数需要商户使用在华为开发者联盟申请的RSA私钥进行签名，强烈建议将签名操作在商户服务端处理，避免私钥泄露
      */
-    private PayReq createPayReq(String productName,String productDesc,double productPrice,String orderId) {
-        getPaySignInfo(productName,productDesc,productPrice,orderId);
+    private PayReq createPayReq(String productName, String productDesc, double productPrice, String orderId) {
+        getPaySignInfo(productName, productDesc, productPrice, orderId);
         PayReq payReq = new PayReq();
 
         //商品名称
@@ -95,7 +96,7 @@ public class HuaWeiPayTask {
         //商品描述
         payReq.productDesc = (String) params.get(HwPayConstant.KEY_PRODUCTDESC);
         // 商户ID
-        payReq.merchantId = (String)params.get(HwPayConstant.KEY_MERCHANTID);
+        payReq.merchantId = (String) params.get(HwPayConstant.KEY_MERCHANTID);
         // 应用ID
         payReq.applicationID = (String) params.get(HwPayConstant.KEY_APPLICATIONID);
         // 支付金额
@@ -103,9 +104,9 @@ public class HuaWeiPayTask {
         // 支付订单号
         payReq.requestId = (String) params.get(HwPayConstant.KEY_REQUESTID);
         // 国家码
-        payReq.country = (String)params.get(HwPayConstant.KEY_COUNTRY);
+        payReq.country = (String) params.get(HwPayConstant.KEY_COUNTRY);
         //币种
-        payReq.currency = (String)params.get(HwPayConstant.KEY_CURRENCY);
+        payReq.currency = (String) params.get(HwPayConstant.KEY_CURRENCY);
         // 渠道号
         payReq.sdkChannel = (Integer) params.get(HwPayConstant.KEY_SDKCHANNEL);
         // 回调接口版本号
@@ -121,7 +122,7 @@ public class HuaWeiPayTask {
         // X31 话费充值,X32 机票/酒店,X33 电影票,X34 团购,X35 手机预购,X36 公共缴费,X39 流量充值
         payReq.serviceCatalog = "X10";
         //商户保留信息，选填不参与签名，支付成功后会华为支付平台会原样 回调CP服务端
-        payReq.extReserved = productName+"_"+productDesc+"_"+productPrice;
+        payReq.extReserved = productName + "_" + productDesc + "_" + productPrice;
 
         return payReq;
     }
@@ -133,18 +134,18 @@ public class HuaWeiPayTask {
      * HwPayConstant.KEY_PRODUCTNAME 必选参数 商品名称 此名称将会在支付时显示给用户确认 注意：该字段中不能包含特殊字符，包括# " & / ? $ ^ *:) \ < > ,
      * HwPayConstant.KEY_PRODUCTDESC 必选参数 商品描述 注意：该字段中不能包含特殊字符，包括# " & / ? $ ^ *:) \ < > , |
      * HwPayConstant.KEY_REQUESTID  必选参数 请求订单号。其值由商户定义生成，用于标识一次支付请求，每次请求需唯一，不可重复。
-     * 					支付平台在服务器回调接口中会原样返回requestId的值。注意：该字段中不能包含特殊字符，包括# " & / ? $ ^ *:) \ < > , .以及中文字符
+     * 支付平台在服务器回调接口中会原样返回requestId的值。注意：该字段中不能包含特殊字符，包括# " & / ? $ ^ *:) \ < > , .以及中文字符
      * HwPayConstant.KEY_AMOUNT 必选参数 支付金额 string类型，精确到小数点后2位 比如 20.00
      * HwPayConstant.KEY_CURRENCY必选参数 币种 币种，用于支付的币种，如USD、CNY、MYR。符合ISO 4217，默认CNY，
      * 参见： http://www.iso.org/iso/home/standards/currency_codes.htm
      * HwPayConstant.KEY_COUNTRY 必选参数 国家码.用于区分国家信息，如US、CN、MY，符合ISO 3166标准，参见：http://www.iso.org/iso/home/standards/country_codes.htm
      * HwPayConstant.KEY_URL 可选参数 支付结果回调URL. 华为服务器收到后检查该应用有无在开发者联盟配置回调URL，如果配置了则使用应用配置的URL，否则使用此url
-     *   					作为该次支付的回调URL,建议直接 以配置在 华为开发者联盟的回调URL为准
+     * 作为该次支付的回调URL,建议直接 以配置在 华为开发者联盟的回调URL为准
      * HwPayConstant.KEY_URLVER 可选参数  回调接口版本号。如果传值则必须传2， 额外回调信息，具体参考接口文档
      * HwPayConstant.KEY_SDKCHANNEL 必选参数 渠道信息。 取值如下：0 代表自有应用，无渠道 1 代表应用市场渠道 2 代表预装渠道 3 代表游戏中心渠道
      */
-    private void getPaySignInfo(String productName,String productDesc,double productPrice,String orderId) {
-        if(params != null) {
+    private void getPaySignInfo(String productName, String productDesc, double productPrice, String orderId) {
+        if (params != null) {
             params.clear();
         } else {
             params = new HashMap<>();
@@ -157,8 +158,8 @@ public class HuaWeiPayTask {
         params.put(HwPayConstant.KEY_PRODUCTDESC, productDesc);
 
         params.put(HwPayConstant.KEY_REQUESTID, orderId);
-        DecimalFormat    df   = new DecimalFormat("######0.00");
-        params.put(HwPayConstant.KEY_AMOUNT, df.format(productPrice/100)+"");
+        DecimalFormat df = new DecimalFormat("######0.00");
+        params.put(HwPayConstant.KEY_AMOUNT, df.format(productPrice / 100) + "");
 
         //币种 用于支付的获知
         params.put(HwPayConstant.KEY_CURRENCY, "CNY");
@@ -173,6 +174,7 @@ public class HuaWeiPayTask {
      * 将商户id，应用id, 商品名称，商品说明，支付金额，订单号，渠道号，回调地址版本号等信息按照key值升序排列后
      * 以key=value并以&的方式连接起来生成待签名的字符串，将生成的代签名字符串使用开发者联盟网站提供的应用支付私钥
      * 进行签名
+     *
      * @return
      */
     public static String getSign(Map<String, Object> params) {
@@ -209,6 +211,7 @@ public class HuaWeiPayTask {
      * 使用开发者联盟网站分配的支付私钥对支付信息进行签名
      * 强烈建议在 商户服务端做签名处理，且私钥存储在服务端，防止信息泄露
      * CP通过服务器获取服务器端的签名之后，再进行支付请求
+     *
      * @param content
      * @return
      */
@@ -242,11 +245,10 @@ public class HuaWeiPayTask {
     }
 
 
-
-
     /**
      * 将商户id，应用id, 商品名称，商品说明，支付金额，订单号，渠道号，回调地址版本号等信息按照key值升序排列后
      * 以key=value并以&的方式连接起来生成待签名的字符串
+     *
      * @return
      */
     public static String getNoSign(Map<String, Object> params) {
@@ -284,6 +286,7 @@ public class HuaWeiPayTask {
      * 使用开发者联盟提供的支付公钥对支付成功结果中的签名信息进行验证
      * 如果签名验证成功，则表明支付流程正确
      * 如果签名验证不成功，那么支付已经成功，但是签名有误，CP需要到服务器上查询支付情况
+     *
      * @param content
      * @param sign
      * @return

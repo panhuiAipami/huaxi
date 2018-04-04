@@ -271,10 +271,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     private void signInHuawei() {
         if (!HomeActivity.getConnect().isConnected()) {
-            HomeActivity.getConnect().connect();
+            HomeActivity.getConnect().connect(this);
             return;
         }
-        PendingResult<SignInResult> signInResult = HuaweiId.HuaweiIdApi.signIn(HomeActivity.getConnect());
+        PendingResult<SignInResult> signInResult = HuaweiId.HuaweiIdApi.signIn(this, HomeActivity.getConnect());
         signInResult.setResultCallback(new SignInResultCallback());
     }
 

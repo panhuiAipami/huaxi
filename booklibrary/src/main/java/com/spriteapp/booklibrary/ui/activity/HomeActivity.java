@@ -908,7 +908,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     if (result == ConnectionResult.SUCCESS) {
                         Log.i(HuaWeiPayTask.TAG, "错误成功解决");
                         if (!client.isConnecting() && !client.isConnected()) {
-                            client.connect();
+                            client.connect(this);
                         }
                     } else if (result == ConnectionResult.CANCELED) {
                         Log.i(HuaWeiPayTask.TAG, "解决错误过程被用户取消");
@@ -1067,7 +1067,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
             //建议在oncreate的时候连接华为移动服务
             //业务可以根据自己业务的形态来确定client的连接和断开的时机，但是确保connect和disconnect必须成对出现
-            client.connect();
+            client.connect(this);
         }
     }
 
