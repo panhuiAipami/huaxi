@@ -125,7 +125,7 @@ public class MyPageWidget extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        Log.e("onTouchEvent", "------------onTouchEvent--------" + PageFactory2.getStatus());
+//        Log.e("onTouchEvent", "------------onTouchEvent--------" + PageFactory2.getStatus());
         if (PageFactory2.getStatus() == PageFactory2.Status.OPENING) {
             return true;
         }
@@ -149,7 +149,6 @@ public class MyPageWidget extends View {
             abortAnimation();
             Log.e(TAG, "ACTION_DOWN");
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            getParent().requestDisallowInterceptTouchEvent(true);
             final int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
             //判断是否移动了
             if (!isMove) {
@@ -214,6 +213,7 @@ public class MyPageWidget extends View {
                 this.postInvalidate();
             }
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            getParent().requestDisallowInterceptTouchEvent(false);
             Log.e(TAG, "ACTION_UP");
             if (!isMove) {
                 cancelPage = false;
