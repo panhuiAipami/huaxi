@@ -67,7 +67,7 @@
             android:gravity="center"
             android:text="正在打开书本..."
             android:textColor="@color/two_font_color"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <LinearLayout

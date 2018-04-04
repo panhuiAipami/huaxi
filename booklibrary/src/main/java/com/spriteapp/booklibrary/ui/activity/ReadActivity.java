@@ -841,7 +841,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             ToastUtil.showSingleToast(message);
             return;
         }
-        tv_open_hint.setVisibility(View.GONE);
         String key = data.getChapter_content_key();
         String content = data.getChapter_content();
         if (StringUtil.isEmpty(key)) {

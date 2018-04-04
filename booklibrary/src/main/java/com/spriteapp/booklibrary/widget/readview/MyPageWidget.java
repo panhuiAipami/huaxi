@@ -125,7 +125,7 @@ public class MyPageWidget extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-//        Log.e("onTouchEvent", "------------onTouchEvent--------" + PageFactory2.getStatus());
+        Log.e("onTouchEvent", "------------onTouchEvent--------" + PageFactory2.getStatus());
         if (PageFactory2.getStatus() == PageFactory2.Status.OPENING) {
             return true;
         }
@@ -254,6 +254,7 @@ public class MyPageWidget extends View {
             }
 
             Log.e(TAG, "isNext:" + isNext);
+
             if (!noNext) {
                 isRuning = true;
                 mAnimationProvider.startAnimation(mScroller);
@@ -295,6 +296,7 @@ public class MyPageWidget extends View {
     }
 
     public interface TouchListener {
+
         Boolean center();
 
         Boolean prePage();

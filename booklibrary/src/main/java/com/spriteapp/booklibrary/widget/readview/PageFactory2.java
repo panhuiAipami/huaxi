@@ -13,7 +13,6 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.spriteapp.booklibrary.R;
@@ -335,7 +334,7 @@ public class PageFactory2 {
         //绘制时间
         c.drawText(date, marginWidth + ScreenUtil.dpToPxInt(LEFT_PLUS_MARGIN * 2) +
                         width
-                , mHeight - ScreenUtil.dpToPxInt(10), mTitlePaint);
+                , mHeight - ScreenUtil.dpToPxInt(9.5f), mTitlePaint);
 
         SettingManager.getInstance().saveReadProgress(book_id + "", currentChapter, curBeginPos, curEndPos);
         mBookPageWidget.postInvalidate();
@@ -554,10 +553,8 @@ public class PageFactory2 {
 
         TRPage trPage = new TRPage();
         trPage.setBegin(currentPage.getEnd());
-        Log.e("begin", currentPage.getEnd() + "");
         trPage.setLines(getNextLines());
-        Log.e("getNextPage", "<--getNextPage--下一页--" + trPage.getLines());
-        Log.e("end", mBookUtil.getPosition() + "");
+//        Log.e("getNextPage", "<--getNextPage--下一页--" + trPage.getLines());
         trPage.setEnd(mBookUtil.getPosition());
         return trPage;
     }
@@ -567,10 +564,8 @@ public class PageFactory2 {
 
         TRPage trPage = new TRPage();
         trPage.setEnd(mBookUtil.getPosition() - 1);
-        Log.e("end", mBookUtil.getPosition() - 1 + "");
         trPage.setLines(getPreLines());
-        Log.e("getPrePage", "<--getPrePage-上一页--" + trPage.getLines());
-        Log.e("begin", mBookUtil.getPosition() + "");
+//        Log.e("getPrePage", "<--getPrePage-上一页--" + trPage.getLines());
         trPage.setBegin(mBookUtil.getPosition());
         return trPage;
     }
@@ -664,7 +659,7 @@ public class PageFactory2 {
         while ((lines.size() < mPageLineCount) && (curBeginPos > 0)) {
             Vector<String> paraLines = new Vector<>(); // 段落行
             String strParagraph = readUpParagraph(curBeginPos);
-            Log.e("getPreLines", "----上一页的行： " + strParagraph);
+//            Log.e("getPreLines", "----上一页的行： " + strParagraph);
             mBookUtil.setPostition(currentPage.getBegin() - strParagraph.length());
             currentPage.setBegin(currentPage.getBegin() - strParagraph.length());
 
