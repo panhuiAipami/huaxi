@@ -52,106 +52,42 @@ public class Config {
     private float light = 0;
     private int bookBG;
 
-    private Config(Context mContext){
+    private Config(Context mContext) {
         this.mContext = mContext.getApplicationContext();
-        sp = this.mContext.getSharedPreferences(SP_NAME,Context.MODE_PRIVATE);
+        sp = this.mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
     }
 
-    public static synchronized Config getInstance(){
+    public static synchronized Config getInstance() {
         return config;
     }
 
-    public static synchronized Config createConfig(Context context){
-        if (config == null){
+    public static synchronized Config createConfig(Context context) {
+        if (config == null) {
             config = new Config(context);
         }
 
         return config;
     }
 
-    public int getPageMode(){
+    public int getPageMode() {
         return SharedPreferencesUtil.getInstance().getInt(Constant.PAGE_CHANGE_STYLE);
     }
 
-    public void setPageMode(int pageMode){
-        sp.edit().putInt(PAGE_MODE_KEY,pageMode).commit();
-    }
 
-    public int getBookBgType(){
+    public int getBookBgType() {
         return SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
     }
 
-    public void setBookBg(int type){
-        sp.edit().putInt(BOOK_BG_KEY,type).commit();
+
+    public float getFontSize() {
+        return SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, (int) mContext.getResources().getDimension(R.dimen.reading_default_text_size))*2;
     }
 
-    public Typeface getTypeface(){
-        if (typeface == null) {
-            String typePath = sp.getString(FONT_TYPE_KEY,FONTTYPE_QIHEI);
-            typeface = getTypeface(typePath);
-        }
-        return typeface;
-    }
-
-    public String getTypefacePath(){
-        String path = sp.getString(FONT_TYPE_KEY,FONTTYPE_QIHEI);
-        return path;
-    }
-
-    public Typeface getTypeface(String typeFacePath){
-        Typeface mTypeface;
-        if (typeFacePath.equals(FONTTYPE_DEFAULT)){
-            mTypeface = Typeface.DEFAULT;
-        }else{
-            mTypeface = Typeface.createFromAsset(mContext.getAssets(),typeFacePath);
-        }
-        return mTypeface;
-    }
-
-    public void setTypeface(String typefacePath){
-        typeface = getTypeface(typefacePath);
-        sp.edit().putString(FONT_TYPE_KEY,typefacePath).commit();
-    }
-
-    public float getFontSize(){
-        if (mFontSize == 0){
-            mFontSize = sp.getFloat(FONT_SIZE_KEY, mContext.getResources().getDimension(R.dimen.reading_default_text_size));
-        }
-        return mFontSize;
-    }
-
-    public void setFontSize(float fontSize){
-        mFontSize = fontSize;
-        sp.edit().putFloat(FONT_SIZE_KEY,fontSize).commit();
-    }
 
     /**
      * 获取夜间还是白天阅读模式,true为夜晚，false为白天
      */
     public boolean getDayOrNight() {
         return SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE, false);
-    }
-
-
-    public Boolean isSystemLight(){
-       return sp.getBoolean(SYSTEM_LIGHT_KEY,true);
-    }
-
-    public void setSystemLight(Boolean isSystemLight){
-        sp.edit().putBoolean(SYSTEM_LIGHT_KEY,isSystemLight).commit();
-    }
-
-    public float getLight(){
-        if (light == 0){
-            light = sp.getFloat(LIGHT_KEY,0.1f);
-        }
-        return light;
-    }
-    /**
-     * 记录配置文件中亮度值
-     */
-    public void setLight(float light) {
-        this.light = light;
-        sp.edit().putFloat(LIGHT_KEY,light).commit();
     }
 }

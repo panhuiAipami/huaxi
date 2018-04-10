@@ -90,10 +90,12 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
     }
 
     public void goneOrShow() {
-        if (lists.size() == 0) {
-            null_layout.setVisibility(View.VISIBLE);
-        } else {
-            null_layout.setVisibility(View.GONE);
+        if (null_layout != null) {
+            if (lists.size() == 0) {
+                null_layout.setVisibility(View.VISIBLE);
+            } else {
+                null_layout.setVisibility(View.GONE);
+            }
         }
     }
 

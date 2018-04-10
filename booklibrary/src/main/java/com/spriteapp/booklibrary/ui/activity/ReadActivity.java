@@ -1228,7 +1228,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void showNetWorkProgress() {
-        showDialog();
+        if (selectChapter)
+            showDialog();
     }
 
     @Override

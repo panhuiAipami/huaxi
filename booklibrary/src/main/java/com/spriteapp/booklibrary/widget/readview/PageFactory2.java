@@ -73,8 +73,6 @@ public class PageFactory2 {
     private float statusMarginBottom;
     //行间距
     private float lineSpace;
-    //字体
-    private Typeface typeface;
     //文字画笔
     private Paint mPaint, waitPaint;
     //加载画笔
@@ -120,7 +118,7 @@ public class PageFactory2 {
     private int percentLen = 0;
 
     private String mCurrentContent;
-    private float mPageLineCount;
+    private float mPageLineCount, measureMarginWidth;
     private int currentChapter, tempChapter, currentPageNum;
     private OnReadStateChangeListener listener;
     private Map<Integer, Integer> mPageMap;
@@ -203,6 +201,7 @@ public class PageFactory2 {
         bookName = bookDetailResponse.getBook_name();
 
         initBg(config.getDayOrNight());
+        measureMarginWidth();
     }
 
     //初始化背景
@@ -273,7 +272,7 @@ public class PageFactory2 {
                 int chapter_id = catalogResponse.getChapter_id();
                 if (chapter_id == currentChapter) {
                     String chapter_title = catalogResponse.getChapter_title();
-                    c.drawText(chapter_title, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(70), mChapterTitlePaint);
+                    c.drawText(chapter_title, measureMarginWidth, ScreenUtil.dpToPx(70), mChapterTitlePaint);
                     y += ScreenUtil.dpToPx(30);
                     break;
                 }
@@ -285,10 +284,10 @@ public class PageFactory2 {
             y += ScreenUtil.dpToPx(10);
             for (String strLine : mLines) {
                 if (strLine.endsWith("@")) {
-                    c.drawText(strLine.substring(0, strLine.length() - 1), marginWidth + ScreenUtil.dpToPxInt(5), y, mPaint);
+                    c.drawText(strLine.substring(0, strLine.length() - 1), measureMarginWidth, y, mPaint);
                     y += lineSpace;
                 } else {
-                    c.drawText(strLine, marginWidth + ScreenUtil.dpToPxInt(5), y, mPaint);
+                    c.drawText(strLine, measureMarginWidth, y, mPaint);
                 }
                 y += lineSpace + m_fontSize;
             }
@@ -745,16 +744,17 @@ public class PageFactory2 {
         mPaint.setTextSize(m_fontSize);
         mChapterTitlePaint.setTextSize(m_fontSize - 2);
         currentPage = getPageForBegin(currentPage.getBegin());
+        measureMarginWidth();
         currentPage(true);
     }
 
     //改变字体
     public void changeTypeface(Typeface typeface) {
-        this.typeface = typeface;
         mPaint.setTypeface(typeface);
         mTitlePaint.setTypeface(typeface);
         mChapterTitlePaint.setTypeface(typeface);
         currentPage = getPageForBegin(currentPage.getBegin());
+        measureMarginWidth();
         currentPage(true);
     }
 
@@ -765,7 +765,14 @@ public class PageFactory2 {
         lineSpace = m_fontSize / 17 * (5 * (space + 1));
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
         currentPage = getPageForBegin(currentPage.getBegin());
+        measureMarginWidth();
         currentPage(true);
+    }
+
+    private void measureMarginWidth() {
+        float wordWidth = mPaint.measureText("\u3000");
+        float width = mVisibleWidth % wordWidth;
+        measureMarginWidth = marginWidth + width / 2;
     }
 
     //设置页面的背景
