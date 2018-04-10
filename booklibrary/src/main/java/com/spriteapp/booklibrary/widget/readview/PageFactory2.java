@@ -160,7 +160,7 @@ public class PageFactory2 {
         marginHeight = mContext.getResources().getDimension(R.dimen.readingMarginHeight);
         statusMarginBottom = mContext.getResources().getDimension(R.dimen.reading_status_margin_bottom);
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
-        m_fontSize = config.getFontSize();
+        m_fontSize = config.getFontSize()*2;
         lineSpace = m_fontSize / 17 * (5 * (format + 1));
         mVisibleWidth = mWidth - marginWidth * 2;
         mVisibleHeight = mHeight - marginHeight * 2;
