@@ -3,7 +3,6 @@ package com.spriteapp.booklibrary.ui.activity;
 import android.app.ActivityManager;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -11,13 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
@@ -66,7 +63,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
     LinearLayout mCenterLayout;
     FrameLayout mContainerLayout;
     RelativeLayout mTitleLayout;
-    View mLineView;
+    View mLineView, status_height;
     public static boolean isActive; //全局变量
     private static boolean isLogin = true;//是否登录
 
@@ -85,6 +82,7 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
         mContainerLayout = (FrameLayout) findViewById(R.id.book_reader_container_layout);
         mCenterLayout = (LinearLayout) findViewById(R.id.book_reader_center_layout);
         mTitleLayout = (RelativeLayout) findViewById(R.id.book_reader_title_layout);
+        status_height = findViewById(R.id.status_height);
         mLineView = findViewById(R.id.book_reader_title_line_view);
         addContentView();
         mLeftLayout.setOnClickListener(this);
@@ -100,6 +98,11 @@ public abstract class TitleActivity extends BaseActivity implements View.OnClick
         int titleColor = config.getTitleColor();
         if (titleColor != 0) {
             mTitleTextView.setTextColor(titleColor);
+        }
+        if (Build.VERSION.SDK_INT >= Constant.ANDROID_P_API) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) status_height.getLayoutParams();
+            lp.height = Util.getStatusBarHeight(this);
+            status_height.setLayoutParams(lp);
         }
         int backImageResource = config.getBackImageResource();
         if (backImageResource != 0) {

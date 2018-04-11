@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -69,6 +71,7 @@ import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.PtrClassicDefaultHeader;
 import com.spriteapp.booklibrary.widget.PtrFrameLayout;
 import com.spriteapp.booklibrary.widget.PtrHandler;
@@ -479,8 +482,18 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mReadProgressLayout.measure(0, 0);
         mReadProgressHeight = mReadProgressLayout.getMeasuredHeight();
         mTitleLayout.setVisibility(View.GONE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        if (Build.VERSION.SDK_INT < Constant.ANDROID_P_API) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {//android p 沉浸式标题栏
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+            mChapterListView.setPadding(0, Util.getStatusBarHeight(this), 0, 0);
+        }
+
         boolean isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE);
         bookpage.setBackgroundColor(getResources().getColor(isNight ? R.color.book_reader_read_night_background :
                 R.color.book_reader_read_day_background));
@@ -566,6 +579,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     /**
      * 在加载时调用，当前加载的chapterId是否存在
      */
+
     private boolean isCurrentChapterExists(int chapterId) {
         SubscriberContent content = mContentDb.queryContent(mBookId, chapterId);
         if (content != null) {
@@ -724,6 +738,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             changeMode();
         } else if (v == mTextLayout) {//更多
             readMoreSettingLayout.setVisibility(View.VISIBLE);
+            status_height.setVisibility(View.GONE);
             mShowView = readMoreSettingLayout;
             mDismissView = mBottomLayout;
             doBottomAnimation(mDismissView, false);
@@ -805,9 +820,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (pagefactory != null) {
             pagefactory.setDayOrNight(isNight);
         }
-        //返回按钮
-//        mBackImageView.setImageResource(isNight ? R.drawable.book_reader_title_back_night_selector :
-//                R.drawable.book_reader_title_back_selector);
+        status_height.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background :
+                R.color.book_reader_white);
         mTitleLayout.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background :
                 R.color.book_reader_white);
         mLineView.setBackgroundResource(isNight ? R.color.book_reader_read_bottom_night_background :
@@ -1244,7 +1258,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     private synchronized void hideReadBar() {
         dismissView(mTitleLayout, mDismissView);
-        hideStatusBar();
+        status_height.setVisibility(View.GONE);
+//        hideStatusBar();
     }
 
     private synchronized void showReadBar() {
@@ -1254,7 +1269,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mBottomLayout.getVisibility() == View.GONE) {
             mBottomLayout.setVisibility(View.VISIBLE);
         }
+//        showStatusBar();
         showView(mTitleLayout, mBottomLayout);
+        if (Build.VERSION.SDK_INT >= Constant.ANDROID_P_API)
+            status_height.setVisibility(View.VISIBLE);
     }
 
     private synchronized void toggleReadBar() {

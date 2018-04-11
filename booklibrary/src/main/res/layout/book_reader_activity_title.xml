@@ -11,9 +11,16 @@
         android:layout_height="match_parent"
         android:background="@color/book_reader_container_color" />
 
+    <View
+        android:id="@+id/status_height"
+        android:layout_width="match_parent"
+        android:background="@color/book_reader_top_bar_color"
+        android:visibility="gone"
+        android:layout_height="30dp"></View>
     <RelativeLayout
         android:id="@+id/book_reader_title_layout"
         android:layout_width="match_parent"
+        android:layout_below="@+id/status_height"
         android:layout_height="@dimen/book_reader_top_bar_height"
         android:background="@color/book_reader_top_bar_color">
 

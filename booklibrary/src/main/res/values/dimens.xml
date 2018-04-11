@@ -21,7 +21,7 @@
     <!-- 书本宽边距 -->
     <dimen name="readingMarginWidth">15dp</dimen>
     <!-- 书本高边距 -->
-    <dimen name="readingMarginHeight">65dp</dimen>
+    <dimen name="readingMarginHeight">68dp</dimen>
     <!-- 状态栏离底部距离 -->
     <dimen name="reading_status_margin_bottom">3dp</dimen>
     <!-- 行间距 -->

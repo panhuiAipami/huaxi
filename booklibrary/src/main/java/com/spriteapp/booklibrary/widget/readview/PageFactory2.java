@@ -12,11 +12,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.callback.ProgressCallback;
+import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ContentDb;
 import com.spriteapp.booklibrary.manager.SettingManager;
@@ -56,6 +58,7 @@ public class PageFactory2 {
     private int mWidth;
     //页面高
     private int mHeight;
+    private int statusHeight;
     //文字字体大小
     private float m_fontSize;
     //时间格式
@@ -160,11 +163,15 @@ public class PageFactory2 {
         marginHeight = mContext.getResources().getDimension(R.dimen.readingMarginHeight);
         statusMarginBottom = mContext.getResources().getDimension(R.dimen.reading_status_margin_bottom);
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
-        m_fontSize = config.getFontSize()*2;
+        m_fontSize = config.getFontSize() * 2;
         lineSpace = m_fontSize / 17 * (5 * (format + 1));
         mVisibleWidth = mWidth - marginWidth * 2;
         mVisibleHeight = mHeight - marginHeight * 2;
 
+        if (Build.VERSION.SDK_INT >= Constant.ANDROID_P_API) {
+            statusHeight = Util.getStatusBarHeight(mContext);
+            mVisibleHeight -= statusHeight;
+        }
         waitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);// 画笔
         waitPaint.setTextAlign(Paint.Align.LEFT);// 左对齐
         waitPaint.setTextSize(mContext.getResources().getDimension(R.dimen.reading_max_text_size));// 字体大小
@@ -256,7 +263,10 @@ public class PageFactory2 {
             return;
         }
 
-        float y = marginHeight;
+        float y = ScreenUtil.dpToPxInt(35);
+        if (Build.VERSION.SDK_INT >= Constant.ANDROID_P_API) {
+            y += statusHeight;
+        }
         Canvas c = new Canvas(bitmap);
         c.drawBitmap(getBgBitmap(), 0, 0, null);
         mPaint.setTextSize(getFontSize());
@@ -264,7 +274,8 @@ public class PageFactory2 {
         mChapterTitlePaint.setColor(getTextColor());
 
         //画书名
-        c.drawText(bookName, marginWidth + ScreenUtil.dpToPxInt(5), ScreenUtil.dpToPx(35), mTitlePaint);
+        c.drawText(bookName, marginWidth + ScreenUtil.dpToPxInt(5), y, mTitlePaint);
+        y+=ScreenUtil.dpToPx(35);
 
         // 绘制章节名
         if (curBeginPos == 0 && !CollectionUtil.isEmpty(chaptersList)) {
@@ -272,7 +283,7 @@ public class PageFactory2 {
                 int chapter_id = catalogResponse.getChapter_id();
                 if (chapter_id == currentChapter) {
                     String chapter_title = catalogResponse.getChapter_title();
-                    c.drawText(chapter_title, measureMarginWidth, ScreenUtil.dpToPx(70), mChapterTitlePaint);
+                    c.drawText(chapter_title, measureMarginWidth, y, mChapterTitlePaint);
                     y += ScreenUtil.dpToPx(30);
                     break;
                 }

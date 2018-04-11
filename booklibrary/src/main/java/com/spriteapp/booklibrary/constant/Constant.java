@@ -8,6 +8,8 @@ import com.spriteapp.booklibrary.util.FileUtils;
  */
 
 public class Constant {
+
+    public final static int ANDROID_P_API = 27;
     /**
      * 首页书籍列表缓存文件名fragment
      */
