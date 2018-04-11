@@ -163,7 +163,7 @@ public class PageFactory2 {
         marginHeight = mContext.getResources().getDimension(R.dimen.readingMarginHeight);
         statusMarginBottom = mContext.getResources().getDimension(R.dimen.reading_status_margin_bottom);
         int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
-        m_fontSize = config.getFontSize() * 2;
+        m_fontSize = config.getFontSize();
         lineSpace = m_fontSize / 17 * (5 * (format + 1));
         mVisibleWidth = mWidth - marginWidth * 2;
         mVisibleHeight = mHeight - marginHeight * 2;
@@ -751,7 +751,7 @@ public class PageFactory2 {
 
     //改变字体大小
     public void changeFontSize(int fontSize) {
-        this.m_fontSize = fontSize * 2;
+        this.m_fontSize = fontSize;
         mPaint.setTextSize(m_fontSize);
         mChapterTitlePaint.setTextSize(m_fontSize - 2);
         currentPage = getPageForBegin(currentPage.getBegin());

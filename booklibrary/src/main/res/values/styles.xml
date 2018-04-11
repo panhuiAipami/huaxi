@@ -50,6 +50,11 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/book_reader_main_color</item>
     </style>
+    <!-- 全屏dialog样式 -->
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <!-- 自定义对话框样式 -->
     <style name="popBottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">#ca272a</item>

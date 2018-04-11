@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 
 import com.spriteapp.booklibrary.constant.Constant;
+import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 
 /**
@@ -79,7 +80,8 @@ public class Config {
 
 
     public float getFontSize() {
-        return SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
+        int font = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
+        return ScreenUtil.dpToPxInt(font);
     }
 
 

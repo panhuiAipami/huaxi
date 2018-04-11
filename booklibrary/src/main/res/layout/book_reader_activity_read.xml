@@ -63,6 +63,7 @@
             android:id="@+id/tv_open_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:background="@color/reader_book_bg1"
             android:gravity="center"
             android:text="正在打开书本..."

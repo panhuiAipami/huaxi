@@ -191,6 +191,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void initData() {
+        showReaderDialog("正在打开书本...");
         Config.createConfig(this);
         if (IsRegister) {
             EventBus.getDefault().register(this);
@@ -425,7 +426,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (status == 0) {
                 mReadListener.onLoadChapterFailure(mCurrentChapter);
             } else {
-                tv_open_hint.setVisibility(View.GONE);
+                dismissReaderDialog();
+//                tv_open_hint.setVisibility(View.GONE);
             }
         }
     }
@@ -851,8 +853,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         int code = result.getCode();
         SubscriberContent data = result.getData();
         if (data == null) {
-            tv_open_hint.setText("打开书本失败！");
+//            tv_open_hint.setText("打开书本失败！");
             ToastUtil.showSingleToast(message);
+            dismissReaderDialog();
             return;
         }
         String key = data.getChapter_content_key();
@@ -1320,7 +1323,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         @Override
         public void sendTextSize(int textSize) {
             if (pagefactory != null) {
-                pagefactory.changeFontSize(textSize);
+                pagefactory.changeFontSize(ScreenUtil.dpToPxInt(textSize));
 
                 pagefactory.setChapterTotalPage();
                 mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());

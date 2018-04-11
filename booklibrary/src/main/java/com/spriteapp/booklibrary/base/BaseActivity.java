@@ -1,13 +1,20 @@
 package com.spriteapp.booklibrary.base;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiConfig;
@@ -134,6 +141,37 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
+        }
+    }
+
+    Dialog loadingDialog;
+
+    public void showReaderDialog(String str) {
+        dismissReaderDialog();
+
+        LayoutInflater inflater = LayoutInflater.from(BaseActivity.this);
+        View view = inflater.inflate(R.layout.reader_loading_layout, null);
+        TextView tv_text = (TextView) view.findViewById(R.id.loading_dialog_textview);
+        if (!TextUtils.isEmpty(str))
+            tv_text.setText(str);
+        ImageView iv = (ImageView) view.findViewById(R.id.image_anim);
+        AnimationDrawable animationDrawable = (AnimationDrawable) iv.getDrawable();
+        animationDrawable.start();
+        loadingDialog = new Dialog(this, R.style.Dialog_Fullscreen);
+        loadingDialog.show();
+        loadingDialog.setContentView(view);
+        loadingDialog.setCanceledOnTouchOutside(false);
+
+    }
+
+    public void dismissReaderDialog() {
+        if (loadingDialog != null) {
+            try {
+                loadingDialog.dismiss();
+                loadingDialog = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
