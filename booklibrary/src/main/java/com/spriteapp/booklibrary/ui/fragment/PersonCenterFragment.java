@@ -322,9 +322,9 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     public void setUserData() {
         if (!UserBean.getInstance().getUser_avatar().isEmpty())
-            GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), AppUtil.getAppContext());
+            GlideUtils.loadImage(user_head, UserBean.getInstance().getUser_avatar(), getActivity());
         else
-            GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, AppUtil.getAppContext());
+            GlideUtils.loadImage(user_head, R.mipmap.deafultheadicon, getActivity());
         if (HomeActivity.ISHAUDU) {//是花都显示用户金币
             hua_ban.setText(Util.getString(UserBean.getInstance().getGold_coins() + ""));
         } else {//不是花都显示花瓣

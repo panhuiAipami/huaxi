@@ -394,4 +394,8 @@ public interface BookApiService {
     @GET("user_coninsselflog")
     Observable<Base<List<TaskRewardBean>>> user_coninsselflog(@Query("format") String format,
                                                               @Query("page") int page);
+
+    @GET("user_novelpackage")
+    Observable<Base<List<BookDetailResponse>>> user_novelpackage(@Query("format") String format,
+                                                                 @Query("page") int page);
 }

@@ -28,16 +28,20 @@ import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
+import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
+import com.spriteapp.booklibrary.util.ToastUtil;
 
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+
+import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.IS_BAG;
 
 
 /**
@@ -62,6 +66,9 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private LinearLayout del_layout;
     private TextView is_del;
     private int num = 0;
+
+    private static boolean IS_HAVE_ONE = false;
+
     private static Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -112,7 +119,8 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        final BookDetailResponse detail = mDetailList.get(position);
+        if (position > mDetailList.size()) return;
+        final BookDetailResponse detail = mDetailList.get(position == mDetailList.size() ? mDetailList.size() - 1 : position);
         if (detail == null) {
             return;
 
@@ -240,21 +248,64 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
         } else if (holder instanceof ShelfViewHolder) {
+            final int newposition;
             final ShelfViewHolder shelfViewHolder = (BookShelfAdapter.ShelfViewHolder) holder;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) shelfViewHolder.mShadowLayout.getLayoutParams();
             params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
             shelfViewHolder.mShadowLayout.setLayoutParams(params);
-            Glide.with(mContext)
-                    .load(detail.getBook_image())
-                    .into(shelfViewHolder.logoImageView);
-            if (!StringUtil.isEmpty(detail.getBook_name())) {
-                shelfViewHolder.titleTextView.setText(detail.getBook_name());
+            BookDetailResponse detailResponse = detail;
+            final BookDetailResponse realBookDetailResponse;
+            Log.d("realBookDetailResponse", "IS_HAVE_ONE===" + IS_HAVE_ONE);
+            if (IS_BAG == 1) {
+                if (position > 0) {
+                    realBookDetailResponse = mDetailList.get(position - 1);
+                    newposition = position - 1;
+                } else {
+                    realBookDetailResponse = detailResponse;
+                    newposition = position;
+
+                }
+
+                if (IS_HAVE_ONE && position == 1 || !IS_HAVE_ONE && position == 0) {
+                    IS_HAVE_ONE = false;
+                    Glide.with(mContext)
+                            .load(R.mipmap.huaxi_icon)
+                            .into(shelfViewHolder.logoImageView);
+                    shelfViewHolder.titleTextView.setText("书包");
+                    shelfViewHolder.progressTextView.setVisibility(View.INVISIBLE);
+                    shelfViewHolder.deleteImageView.setVisibility(View.INVISIBLE);
+                    shelfViewHolder.purchaseImageView.setVisibility(View.VISIBLE);
+                    shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            ToastUtil.showToast("书包");
+                            ActivityUtil.toBagActivity(mContext);
+                        }
+                    });
+                    return;
+
+                } else {
+                    shelfViewHolder.purchaseImageView.setVisibility(View.GONE);
+                }
+
+            } else {
+                newposition = position;
+                realBookDetailResponse = detailResponse;
+                shelfViewHolder.purchaseImageView.setVisibility(View.GONE);
             }
-            if (detail.getBook_chapter_total() != 0 && !isRecentReadBook) {
+            if (realBookDetailResponse == null) return;
+
+            Glide.with(mContext)
+                    .load(realBookDetailResponse.getBook_image())
+                    .into(shelfViewHolder.logoImageView);
+            if (!StringUtil.isEmpty(realBookDetailResponse.getBook_name())) {
+                shelfViewHolder.titleTextView.setText(realBookDetailResponse.getBook_name());
+            }
+            if (realBookDetailResponse.getBook_chapter_total() != 0 && !isRecentReadBook) {
                 shelfViewHolder.progressTextView.setVisibility(View.VISIBLE);
                 shelfViewHolder.progressTextView.setText
                         (String.format(mContext.getResources().getString(R.string.book_reader_read_progress_text),
-                                detail.getLast_chapter_index() * 100 / detail.getBook_chapter_total()));
+                                realBookDetailResponse.getLast_chapter_index() * 100 / realBookDetailResponse.getBook_chapter_total()));
             } else {
                 shelfViewHolder.progressTextView.setVisibility(View.GONE);
             }
@@ -274,21 +325,26 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return true;
                 }
             });
-            if (position == 0) {//没有头部时调用
+            if (newposition == 0) {//没有头部时调用
+                Log.d("getDelBookShelf", "没有头部时调用");
                 if (num == 0 && isDeleteBook) {//取消全选
+                    Log.d("getDelBookShelf", "取消全选");
                     if (ListenerManager.getInstance().getDelBookShelf() != null) {
                         ListenerManager.getInstance().getDelBookShelf().del_book(1, 0, 0, 0);
                     }
                     for (int i = 0; i < mDetailList.size(); i++) {
                         mDetailList.get(i).setSelector(false);
+                        Log.d("getDelBookShelf", "取消全选setSelector");
                     }
                 }
                 if (num == mDetailList.size()) {//全选
+                    Log.d("getDelBookShelf", "num=="+mDetailList.size());
                     shelfViewHolder.deleteImageView.setSelected(true);
                     for (int i = 0; i < mDetailList.size(); i++) {
                         mDetailList.get(i).setSelector(true);
                         if (ListenerManager.getInstance().getDelBookShelf() != null) {
                             ListenerManager.getInstance().getDelBookShelf().del_book(mDetailList.get(i).getBook_id(), i, i + 1, 1);
+                            Log.d("getDelBookShelf", "num===" + (i + 1));
                         }
                     }
                 }
@@ -297,14 +353,17 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View v) {
                     if (isDeleteBook) {
-                        setShelfState(shelfViewHolder, position, detail);
+                        setShelfState(shelfViewHolder, newposition, realBookDetailResponse);
                         return;//删除时不进入阅读页
                     }
-                    int layoutPosition = holder.getLayoutPosition();
-                    if (CollectionUtil.isEmpty(mDetailList) || layoutPosition >= mDetailList.size()) {
+//                    int layoutPosition = holder.getLayoutPosition();
+//                    if (CollectionUtil.isEmpty(mDetailList) || layoutPosition >= mDetailList.size()) {
+//                        return;
+//                    }
+                    if (CollectionUtil.isEmpty(mDetailList) || newposition >= mDetailList.size()) {
                         return;
                     }
-                    BookDetailResponse bookDetail = mDetailList.get(layoutPosition);
+                    BookDetailResponse bookDetail = mDetailList.get(newposition);
                     mBookDb.updateReadTime(bookDetail.getBook_id());
                     mRecentBookDb.updateReadTime(bookDetail.getBook_id());
                     Intent intent = new Intent(mContext, ReadActivity.class);
@@ -315,7 +374,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
             if (num == 0) shelfViewHolder.deleteImageView.setSelected(false);
             if (isDeleteBook) {
-                if (detail.isSelector()) {
+                if (realBookDetailResponse.isSelector()) {
                     shelfViewHolder.deleteImageView.setSelected(true);
                 } else {
                     shelfViewHolder.deleteImageView.setSelected(false);
@@ -329,7 +388,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             shelfViewHolder.deleteImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setShelfState(shelfViewHolder, position, detail);
+                    setShelfState(shelfViewHolder, newposition, realBookDetailResponse);
                 }
             });
             judgeShowDeleteView(shelfViewHolder.deleteImageView);
@@ -411,6 +470,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if (type == 2 && mDetailList.size() != 0) {
             num = mDetailList.size();
             isDeleteBook = true;
+            Log.d("setNum", "mDetailList.size===" + mDetailList.size());
         } else if (type == 3 && mDetailList.size() != 0) {
             num = 0;
             isDeleteBook = true;
@@ -439,13 +499,14 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return CollectionUtil.isEmpty(mDetailList) ? 0 : mDetailList.size();
+        return CollectionUtil.isEmpty(mDetailList) ? 0 : (IS_BAG == 1) ? mDetailList.size() + 1 : mDetailList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false)) {
             Log.d("getItemViewType", "返回头部");
+            IS_HAVE_ONE = true;
             return ITEM_ONE;
         }
 
@@ -458,7 +519,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView titleTextView;
         ImageView logoImageView;
         RelativeLayout mShadowLayout;
-        ImageView deleteImageView;
+        ImageView deleteImageView, purchaseImageView;
 
         ShelfViewHolder(View itemView) {
             super(itemView);
@@ -466,6 +527,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             titleTextView = (TextView) itemView.findViewById(R.id.book_reader_title_text_view);
             logoImageView = (ImageView) itemView.findViewById(R.id.book_reader_logo_image_view);
             deleteImageView = (ImageView) itemView.findViewById(R.id.book_reader_delete_image_view);
+            purchaseImageView = (ImageView) itemView.findViewById(R.id.book_reader_purchase_image_view);
             mShadowLayout = (RelativeLayout) itemView.findViewById(R.id.book_reader_image_layout);
         }
     }
