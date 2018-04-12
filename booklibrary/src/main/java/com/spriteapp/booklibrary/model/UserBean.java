@@ -64,6 +64,7 @@ public class UserBean implements Serializable {
     private int read_timespan;//上传时长的秒数
     private int gold_coins;//用户金币
     private double rmb;//人民币
+    private int user_package;
 
     public int getId() {
         return id;
@@ -77,6 +78,14 @@ public class UserBean implements Serializable {
         if (user_nickname == null)
             user_nickname = "";
         return user_nickname;
+    }
+
+    public int getUser_package() {
+        return user_package;
+    }
+
+    public void setUser_package(int user_package) {
+        this.user_package = user_package;
     }
 
     public double getRmb() {

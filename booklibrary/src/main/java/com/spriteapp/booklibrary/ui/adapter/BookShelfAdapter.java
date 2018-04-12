@@ -29,6 +29,7 @@ import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.util.ActivityUtil;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
 import com.spriteapp.booklibrary.util.PreferenceHelper;
 import com.spriteapp.booklibrary.util.RecyclerViewUtil;
@@ -41,7 +42,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.IS_BAG;
+
 
 
 /**
@@ -256,7 +257,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             BookDetailResponse detailResponse = detail;
             final BookDetailResponse realBookDetailResponse;
             Log.d("realBookDetailResponse", "IS_HAVE_ONE===" + IS_HAVE_ONE);
-            if (IS_BAG == 1) {
+            if (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) {
                 if (position > 0) {
                     realBookDetailResponse = mDetailList.get(position - 1);
                     newposition = position - 1;
@@ -338,7 +339,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
                 if (num == mDetailList.size()) {//全选
-                    Log.d("getDelBookShelf", "num=="+mDetailList.size());
+                    Log.d("getDelBookShelf", "num==" + mDetailList.size());
                     shelfViewHolder.deleteImageView.setSelected(true);
                     for (int i = 0; i < mDetailList.size(); i++) {
                         mDetailList.get(i).setSelector(true);
@@ -499,7 +500,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return CollectionUtil.isEmpty(mDetailList) ? 0 : (IS_BAG == 1) ? mDetailList.size() + 1 : mDetailList.size();
+        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) ? mDetailList.size() + 1 : mDetailList.size();
     }
 
     @Override
