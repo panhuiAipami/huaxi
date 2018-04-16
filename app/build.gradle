@@ -7,8 +7,8 @@ android {
         applicationId "net.huaxi.reader"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 13
-        versionName "2.5.3"
+        versionCode 15
+        versionName "2.5.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

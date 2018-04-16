@@ -193,13 +193,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     public void initData() {
         showReaderDialog("正在打开书本...");
         Config.createConfig(this);
+        isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE);
+
         if (IsRegister) {
             EventBus.getDefault().register(this);
         }
+
         if (AppUtil.isLogin() && UserBean.getInstance().getRead_timespan() != 0) {
             READTIME = UserBean.getInstance().getRead_timespan();
             time = READTIME;
         }
+
         //标题栏
         mRightTitleLayout = new ReadRightTitleLayout(this);
         mRightLayout.addView(mRightTitleLayout);
@@ -211,6 +215,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         String push_id = intent.getStringExtra("push_id");
         String chapter_id = intent.getStringExtra("chapter_id");
         BookDetailResponse bookDetail = null;
+
 
         if (bookid != null && !bookid.isEmpty()) {//推送
             bookDetail = new BookDetailResponse();
@@ -242,6 +247,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 bookDetail = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
             }
         }
+
 
         DialogUtil.setDialogListener(mDialogListener);
         mPresenter = new SubscriberContentPresenter();
@@ -275,14 +281,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 SettingManager.getInstance().saveReadProgress(String.valueOf(mBookId), mCurrentChapter, 0, 0);
             }
         }
+
         initChapterAdapter();
         openChapter();
 
         if (mOldBookDetail == null) {
-            Log.d("IsHttp", "http请求");
+            //请求书的详情
             mPresenter.getBookDetail(mBookId);
         } else {//缓存显示
-            Log.d("IsHttp", "http不请求");
             mRecentBookDb.insert(mOldBookDetail);
             long lastUpdateBookTime = mOldBookDetail.getLast_update_book_datetime();
             int hour = TimeUtil.getTimeInterval(lastUpdateBookTime);
@@ -372,7 +378,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     private void judgeChapterNeedLoad() {
         if (CollectionUtil.isEmpty(mChapterList) || mOldBookDetail == null) {
-            Log.d("bookIds", "bookId=====" + mBookId);
+            //请求章节目录
             mPresenter.getChapter(mBookId);
         } else {
             //判断是否完结
@@ -426,7 +432,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (status == 0) {
                 mReadListener.onLoadChapterFailure(mCurrentChapter);
             } else {
-                dismissReaderDialog();
+                //延迟关闭，防止黑屏闪过
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissReaderDialog();
+                    }
+                }, 50);
 //                tv_open_hint.setVisibility(View.GONE);
             }
         }
@@ -476,6 +488,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void configViews() {
+        setMode();
         mTitleLayout.measure(0, 0);
         mTitleHeight = mTitleLayout.getMeasuredHeight();
         mBottomLayout.measure(0, 0);
@@ -495,10 +508,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
             mChapterListView.setPadding(0, Util.getStatusBarHeight(this), 0, 0);
         }
-
-        boolean isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.IS_NIGHT_MODE);
-        bookpage.setBackgroundColor(getResources().getColor(isNight ? R.color.book_reader_read_night_background :
-                R.color.book_reader_read_day_background));
 
         bookpage.setTouchListener(new MyPageWidget.TouchListener() {
             @Override
@@ -842,77 +851,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
-    /**
-     * 加载阅读内容完成《3》
-     *
-     * @param result
-     */
-    @Override
-    public void setData(Base<SubscriberContent> result) {
-        String message = result.getMessage();
-        int code = result.getCode();
-        SubscriberContent data = result.getData();
-        if (data == null) {
-//            tv_open_hint.setText("打开书本失败！");
-            ToastUtil.showSingleToast(message);
-            dismissReaderDialog();
-            return;
-        }
-        String key = data.getChapter_content_key();
-        String content = data.getChapter_content();
-        if (StringUtil.isEmpty(key)) {
-            ToastUtil.showSingleToast("key为空" + data.getChapter_id());
-            return;
-        }
-        if (StringUtil.isEmpty(content)) {
-            ToastUtil.showSingleToast("content为空" + data.getChapter_id());
-            return;
-        }
-        judgeNeedUpdatePayPage(data);
-        if (code == ApiCodeEnum.SUCCESS.getValue()) {
-            data.setChapter_need_buy(ChapterEnum.DO_NOT_NEED_BUY.getCode());
-            if (isClickPayChapter) {
-                ToastUtil.showSingleToast(R.string.book_reader_buy_successful_text);
-                isClickPayChapter = false;
-            }
-        } else {
-            if (code == ChapterEnum.BALANCE_SHORT.getCode()) {
-                data.setChapter_pay_type(ChapterEnum.TO_PAY_PAGE.getCode());
-            } else if (code == ChapterEnum.UN_SUBSCRIBER.getCode()) {
-                data.setChapter_pay_type(ChapterEnum.AUTO_BUY.getCode());
-            }
-            data.setChapter_need_buy(ChapterEnum.NEED_BUY.getCode());
-        }
-        if (isCurrentChapterExists(data.getChapter_id())) {
-            mContentDb.update(mBookId, data.getChapter_id(), data);
-        } else {
-            mContentDb.insert(data);
-        }
-        if (NetworkUtil.isAvailable(mContext)) {
-            updateCurrentProgress(mCurrentChapter);
-        }
-
-        //开始阅读内容
-        openChapter();
-
-        //更多设置里面内容显示
-        if (readMoreSettingLayout != null) {
-            BookDetailResponse shareDetail = mNewBookDetail != null ?
-                    mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-            readMoreSettingLayout.initRaderSetting(shareDetail);
-        }
-    }
-
-    private void judgeNeedUpdatePayPage(SubscriberContent data) {
-        if (data == null) {
-            return;
-        }
-        int realPoint = data.getUsed_real_point();
-        int falsePoint = data.getUsed_false_point();
-        if (realPoint > 0 || falsePoint > 0) {
-            EventBus.getDefault().post(UpdaterPayEnum.UPDATE_PAY_RESULT);
-        }
-    }
 
     /**
      * 标题栏的点击事件
@@ -1423,24 +1361,78 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         pagefactory = null;
     }
 
+
     /**
-     * 加载书籍详情完成《1》
+     * 加载阅读内容完成《3》
      *
-     * @param data
+     * @param result
      */
     @Override
-    public void setBookDetail(BookDetailResponse data) {
-        mNewBookDetail = data;
-        judgeChapterNeedLoad();
-        if (mOldBookDetail != null) {
-            mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
+    public void setData(Base<SubscriberContent> result) {
+        String message = result.getMessage();
+        int code = result.getCode();
+        final SubscriberContent data = result.getData();
+        if (data == null) {
+//            tv_open_hint.setText("打开书本失败！");
+            ToastUtil.showSingleToast(message);
+            dismissReaderDialog();
             return;
         }
-        mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
-        mRecentBookDb.insert(data);
+        String key = data.getChapter_content_key();
+        String content = data.getChapter_content();
+        if (StringUtil.isEmpty(key)) {
+            ToastUtil.showSingleToast("key为空" + data.getChapter_id());
+            return;
+        }
+        if (StringUtil.isEmpty(content)) {
+            ToastUtil.showSingleToast("content为空" + data.getChapter_id());
+            return;
+        }
+        judgeNeedUpdatePayPage(data);
+
+        if (code == ApiCodeEnum.SUCCESS.getValue()) {
+            data.setChapter_need_buy(ChapterEnum.DO_NOT_NEED_BUY.getCode());
+            if (isClickPayChapter) {
+                ToastUtil.showSingleToast(R.string.book_reader_buy_successful_text);
+                isClickPayChapter = false;
+            }
+        } else {
+            if (code == ChapterEnum.BALANCE_SHORT.getCode()) {
+                data.setChapter_pay_type(ChapterEnum.TO_PAY_PAGE.getCode());
+            } else if (code == ChapterEnum.UN_SUBSCRIBER.getCode()) {
+                data.setChapter_pay_type(ChapterEnum.AUTO_BUY.getCode());
+            }
+            data.setChapter_need_buy(ChapterEnum.NEED_BUY.getCode());
+        }
+
+        //当前章节内容存在更新，否则存入
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (isCurrentChapterExists(data.getChapter_id())) {
+                    mContentDb.update(mBookId, data.getChapter_id(), data);
+                } else {
+                    mContentDb.insert(data);
+                }
+            }
+        }).start();
 
 
+        //开始阅读内容
+        openChapter();
+
+        //更多设置里面内容显示
+        if (readMoreSettingLayout != null) {
+            BookDetailResponse shareDetail = mNewBookDetail != null ?
+                    mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+            readMoreSettingLayout.initRaderSetting(shareDetail);
+        }
+        //更新进度
+        if (NetworkUtil.isAvailable(mContext)) {
+            updateCurrentProgress(mCurrentChapter);
+        }
     }
+
 
     /**
      * 加载章节完成《2》
@@ -1458,26 +1450,76 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
         mChapterList.clear();
         mChapterList.addAll(catalogList);
-        saveChapterToDb();
         mChapterAdapter.notifyDataSetChanged();
-        //添加标题
-        BookDetailResponse shareDetail = mNewBookDetail != null ?
-                mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-        if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
-//            book_reader_title_textView.setText(shareDetail.getBook_name());
-        }
 
-        if (mOldBookDetail != null || mNewBookDetail != null) {
-            mBookDb.updateChapterTime(mBookId);
-        }
+        //添加标题
+//        BookDetailResponse shareDetail = mNewBookDetail != null ?
+//                mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+//        if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
+//            book_reader_title_textView.setText(shareDetail.getBook_name());
+//        }
+
+        //保存章节目录
+        saveChapterToDb();
+
+        //首次打开本书，读第一章，存阅读记录
         if (mCurrentChapter == 0) {
             mCurrentChapter = mChapterList.get(0).getChapter_id();
-            mChapterDb.updateReadState(mBookId, mCurrentChapter);
             mChapterList.get(0).setChapterReadState(ChapterEnum.HAS_READ.getCode());
             SettingManager.DEFAULT_LAST_CHAPTER = mCurrentChapter;
         }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //更新本地章节最后更新时间
+                if (mOldBookDetail != null || mNewBookDetail != null) {
+                    mBookDb.updateChapterTime(mBookId);
+                }
+                //更新阅读章节
+                mChapterDb.updateReadState(mBookId, mCurrentChapter);
+            }
+        }).start();
+
+        //获取阅读内容
         if (pagefactory == null) {
             mPresenter.getContent(mBookId, mCurrentChapter);
+        }
+    }
+
+    /**
+     * 加载书籍详情完成《1》
+     *
+     * @param data
+     */
+    @Override
+    public void setBookDetail(final BookDetailResponse data) {
+        mNewBookDetail = data;
+        judgeChapterNeedLoad();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (mOldBookDetail != null) {
+                    mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
+                    return;
+                }
+                //插入数据库
+                mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
+                mRecentBookDb.insert(data);
+            }
+        }).start();
+    }
+
+
+    private void judgeNeedUpdatePayPage(SubscriberContent data) {
+        if (data == null) {
+            return;
+        }
+        int realPoint = data.getUsed_real_point();
+        int falsePoint = data.getUsed_false_point();
+        if (realPoint > 0 || falsePoint > 0) {
+            EventBus.getDefault().post(UpdaterPayEnum.UPDATE_PAY_RESULT);
         }
     }
 
