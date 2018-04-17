@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -522,10 +521,11 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {//android p 沉浸式标题栏
             getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-            mChapterListView.setPadding(0, Util.getStatusBarHeight(this), 0, 0);
+            int statusH = Util.getStatusBarHeight(this);
+            is_add_shelf.setPadding(0, statusH + Util.dp2px(this, 10), 0, 0);
+            mChapterListView.setPadding(0, statusH, 0, 0);
         }
 
         bookpage.setTouchListener(new MyPageWidget.TouchListener() {

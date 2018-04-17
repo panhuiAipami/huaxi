@@ -14,14 +14,15 @@
     <View
         android:id="@+id/status_height"
         android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:background="@color/book_reader_top_bar_color"
-        android:visibility="gone"
-        android:layout_height="30dp"></View>
+        android:visibility="gone"></View>
+
     <RelativeLayout
         android:id="@+id/book_reader_title_layout"
         android:layout_width="match_parent"
-        android:layout_below="@+id/status_height"
         android:layout_height="@dimen/book_reader_top_bar_height"
+        android:layout_below="@+id/status_height"
         android:background="@color/book_reader_top_bar_color">
 
         <LinearLayout
@@ -51,11 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxEms="10"
                 android:lines="1"
+                android:maxEms="10"
                 android:maxLength="12"
-                android:scrollHorizontally="true"
                 android:maxWidth="150dp"
+                android:scrollHorizontally="true"
                 android:textColor="#333333"
                 android:textSize="18sp"
                 android:textStyle="bold" />

@@ -5,7 +5,7 @@
     <color name="book_reader_main_night_color">#1a3c6e</color>
 
     <color name="book_reader_main_night_press_color">#122748</color>
-
+    <color name="status_bg">#99989898</color>
     <color name="book_reader_white">#ffffff</color>
     <color name="seven_white">#70ffffff</color>
     <color name="book_reader_black">#000000</color>

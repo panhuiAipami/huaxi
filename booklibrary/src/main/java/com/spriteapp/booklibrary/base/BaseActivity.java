@@ -4,20 +4,16 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.config.HuaXiConfig;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.util.StatusBarUtil;
 import com.spriteapp.booklibrary.widget.loading.CustomDialog;
@@ -55,13 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setStatusBarColor() {
-        Log.d("setStatusBarColor", "BaseActivity重新创建");
-        HuaXiConfig config = HuaXiSDK.getInstance().getConfig();
-        int statusBarColor = config.getStatusBarColor();
-        if (statusBarColor == 0) {
-            statusBarColor = ContextCompat.getColor(this, R.color.book_reader_black);
-        }
-        StatusBarUtil.setWindowStatusBarColor(this, statusBarColor);
+        StatusBarUtil.setWindowStatusBarColor(this);
     }
 
     public abstract int getLayoutResId() throws Exception;
