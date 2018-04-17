@@ -170,6 +170,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private String titleFile = "";
     private boolean isAddOrClean = false;
 
+    public final int BOOKDETAIL = 1;
+    public final int BOOKCHAPTER = 2;
+    public final int BOOKCONTENT = 3;
+
 
     //上传阅读时长
     public static int READTIME = 120;//测试10秒,正式使用用户信息里的字段，如果没有则默认使用120秒;
@@ -179,12 +183,27 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (time == 0) {
-                if (mBookId != 0 && oldChapter_id != 0)
-                    HistoryTime.getHistory(mBookId + "", oldChapter_id + "");
-            } else if (time > 0) {
-                time--;
-                handler.sendEmptyMessageDelayed(0, 1000);
+            switch (msg.what) {
+                case 0:
+                    if (time == 0) {
+                        if (mBookId != 0 && oldChapter_id != 0)
+                            HistoryTime.getHistory(mBookId + "", oldChapter_id + "");
+                    } else if (time > 0) {
+                        time--;
+                        handler.sendEmptyMessageDelayed(0, 1000);
+                    }
+                    break;
+                case BOOKDETAIL:
+                    bookDetailResult();
+                    break;
+                case BOOKCHAPTER:
+                    List<BookChapterResponse> catalogList = (List<BookChapterResponse>) msg.obj;
+                    bookChapterDataResult(catalogList);
+                    break;
+                case BOOKCONTENT:
+                    Base<SubscriberContent> result = (Base<SubscriberContent>) msg.obj;
+                    bookContentResult(result);
+                    break;
             }
         }
     };
@@ -1189,7 +1208,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void disMissProgress() {
-        dismissDialog();
+        if (selectChapter)
+            dismissDialog();
     }
 
     @Override
@@ -1359,6 +1379,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mPresenter.detachView();
         }
         pagefactory = null;
+        bookpage = null;
     }
 
 
@@ -1369,50 +1390,57 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      */
     @Override
     public void setData(Base<SubscriberContent> result) {
+        Message msg = new Message();
+        msg.obj = result;
+        msg.what = BOOKCONTENT;
+        handler.sendMessage(msg);
+    }
+
+    public void bookContentResult(Base<SubscriberContent> result) {
         String message = result.getMessage();
         int code = result.getCode();
-        final SubscriberContent data = result.getData();
-        if (data == null) {
+        final SubscriberContent bookContentData = result.getData();
+        if (bookContentData == null) {
 //            tv_open_hint.setText("打开书本失败！");
             ToastUtil.showSingleToast(message);
             dismissReaderDialog();
             return;
         }
-        String key = data.getChapter_content_key();
-        String content = data.getChapter_content();
+        String key = bookContentData.getChapter_content_key();
+        String content = bookContentData.getChapter_content();
         if (StringUtil.isEmpty(key)) {
-            ToastUtil.showSingleToast("key为空" + data.getChapter_id());
+            ToastUtil.showSingleToast("key为空" + bookContentData.getChapter_id());
             return;
         }
         if (StringUtil.isEmpty(content)) {
-            ToastUtil.showSingleToast("content为空" + data.getChapter_id());
+            ToastUtil.showSingleToast("content为空" + bookContentData.getChapter_id());
             return;
         }
-        judgeNeedUpdatePayPage(data);
+        judgeNeedUpdatePayPage(bookContentData);
 
         if (code == ApiCodeEnum.SUCCESS.getValue()) {
-            data.setChapter_need_buy(ChapterEnum.DO_NOT_NEED_BUY.getCode());
+            bookContentData.setChapter_need_buy(ChapterEnum.DO_NOT_NEED_BUY.getCode());
             if (isClickPayChapter) {
                 ToastUtil.showSingleToast(R.string.book_reader_buy_successful_text);
                 isClickPayChapter = false;
             }
         } else {
             if (code == ChapterEnum.BALANCE_SHORT.getCode()) {
-                data.setChapter_pay_type(ChapterEnum.TO_PAY_PAGE.getCode());
+                bookContentData.setChapter_pay_type(ChapterEnum.TO_PAY_PAGE.getCode());
             } else if (code == ChapterEnum.UN_SUBSCRIBER.getCode()) {
-                data.setChapter_pay_type(ChapterEnum.AUTO_BUY.getCode());
+                bookContentData.setChapter_pay_type(ChapterEnum.AUTO_BUY.getCode());
             }
-            data.setChapter_need_buy(ChapterEnum.NEED_BUY.getCode());
+            bookContentData.setChapter_need_buy(ChapterEnum.NEED_BUY.getCode());
         }
 
         //当前章节内容存在更新，否则存入
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (isCurrentChapterExists(data.getChapter_id())) {
-                    mContentDb.update(mBookId, data.getChapter_id(), data);
+                if (isCurrentChapterExists(bookContentData.getChapter_id())) {
+                    mContentDb.update(mBookId, bookContentData.getChapter_id(), bookContentData);
                 } else {
-                    mContentDb.insert(data);
+                    mContentDb.insert(bookContentData);
                 }
             }
         }).start();
@@ -1441,6 +1469,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      */
     @Override
     public void setChapter(List<BookChapterResponse> catalogList) {
+        Message msg = new Message();
+        msg.obj = catalogList;
+        msg.what = BOOKCHAPTER;
+        handler.sendMessage(msg);
+
+    }
+
+    public void bookChapterDataResult(List<BookChapterResponse> catalogList) {
         if (CollectionUtil.isEmpty(catalogList)) {
             ToastUtil.showSingleToast("章节列表为空" + mBookId);
             return;
@@ -1487,6 +1523,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
+
     /**
      * 加载书籍详情完成《1》
      *
@@ -1495,18 +1532,23 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     public void setBookDetail(final BookDetailResponse data) {
         mNewBookDetail = data;
+        handler.sendEmptyMessage(BOOKDETAIL);
+    }
+
+    public void bookDetailResult() {
+
         judgeChapterNeedLoad();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if (mOldBookDetail != null) {
-                    mBookDb.update(data, mOldBookDetail.getBook_add_shelf());
+                    mBookDb.update(mNewBookDetail, mOldBookDetail.getBook_add_shelf());
                     return;
                 }
                 //插入数据库
-                mBookDb.insert(data, BookEnum.NOT_ADD_SHELF);
-                mRecentBookDb.insert(data);
+                mBookDb.insert(mNewBookDetail, BookEnum.NOT_ADD_SHELF);
+                mRecentBookDb.insert(mNewBookDetail);
             }
         }).start();
     }

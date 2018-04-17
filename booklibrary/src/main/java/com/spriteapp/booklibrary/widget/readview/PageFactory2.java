@@ -13,6 +13,7 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -121,6 +122,7 @@ public class PageFactory2 {
     private int percentLen = 0;
 
     private String mCurrentContent;
+    private String chapterName;
     private float mPageLineCount, measureMarginWidth;
     private int currentChapter, tempChapter, currentPageNum;
     private OnReadStateChangeListener listener;
@@ -275,19 +277,21 @@ public class PageFactory2 {
 
         //画书名
         c.drawText(bookName, marginWidth + ScreenUtil.dpToPxInt(5), y, mTitlePaint);
-        y+=ScreenUtil.dpToPx(35);
+        y += ScreenUtil.dpToPx(35);
 
         // 绘制章节名
-        if (curBeginPos == 0 && !CollectionUtil.isEmpty(chaptersList)) {
-            for (BookChapterResponse catalogResponse : chaptersList) {
-                int chapter_id = catalogResponse.getChapter_id();
-                if (chapter_id == currentChapter) {
-                    String chapter_title = catalogResponse.getChapter_title();
-                    c.drawText(chapter_title, measureMarginWidth, y, mChapterTitlePaint);
-                    y += ScreenUtil.dpToPx(30);
-                    break;
+        if (curBeginPos == 0) {
+            //切换章节需要找章节名
+            if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
+                for (BookChapterResponse catalogResponse : chaptersList) {
+                    if (catalogResponse.getChapter_id() == currentChapter) {
+                        chapterName = catalogResponse.getChapter_title();
+                        break;
+                    }
                 }
             }
+            c.drawText(chapterName, measureMarginWidth, y, mChapterTitlePaint);
+            y += ScreenUtil.dpToPx(30);
         }
 
         // 绘制阅读页面文字
@@ -360,8 +364,8 @@ public class PageFactory2 {
      * @throws IOException
      */
     public int openBook(int chapter, int[] position, boolean isfirstPage) {
+        chapterName = null;
         this.currentChapter = chapter;
-
         drawStatus(mBookPageWidget.getCurPage());
         drawStatus(mBookPageWidget.getNextPage());
         SubscriberContent subscriberContent = new ContentDb(mContext).queryContent(book_id, chapter);
@@ -383,6 +387,7 @@ public class PageFactory2 {
                 currentPage(true);
             }
         }
+
         return 1;
     }
 
@@ -409,7 +414,8 @@ public class PageFactory2 {
                 if (catalog.getChapter_id() == currentChapter) {
                     if (i + 1 < size) {
                         currentChapter = chaptersList.get(i + 1).getChapter_id();
-//                        Log.d("nextPage", "-------章节-------" + currentChapter);
+                        chapterName = chaptersList.get(i + 1).getChapter_title();
+//                        Log.d("nextPage", currentChapter+"-------下一章节-------" + chaptersList.get(i + 1).getChapter_title());
                         break;
                     }
                 }
@@ -468,8 +474,10 @@ public class PageFactory2 {
             for (int i = 0, size = chaptersList.size(); i < size; i++) {
                 BookChapterResponse catalog = chaptersList.get(i);
                 int chapter_id = catalog.getChapter_id();
+                //上一章
                 if (chapter_id == currentChapter && i != 0) {
                     currentChapter = chaptersList.get(i - 1).getChapter_id();
+                    chapterName = chaptersList.get(i - 1).getChapter_title();
                     break;
                 }
             }
