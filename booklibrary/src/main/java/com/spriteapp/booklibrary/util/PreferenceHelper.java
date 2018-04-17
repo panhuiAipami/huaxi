@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 public class PreferenceHelper {
 	//分享的标题
 	public static final String AES_KEY = "aes_key";
+	//引导去市场评论
+	public final static String GOTOAPPSTORE = "gotoAppStore";
 
 	public static boolean getBoolean(String key, boolean defValue) {
 

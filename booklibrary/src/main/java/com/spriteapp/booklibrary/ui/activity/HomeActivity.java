@@ -56,6 +56,7 @@ import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.store.AppUpDateModel;
 import com.spriteapp.booklibrary.thread.HuaWeiPayTask;
+import com.spriteapp.booklibrary.ui.dialog.GoToAppStoreDialog;
 import com.spriteapp.booklibrary.ui.dialog.MessageRemindDialog;
 import com.spriteapp.booklibrary.ui.dialog.SortPop;
 import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
@@ -253,7 +254,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             setListener();
             appUpdate();
             addFlag();
-            getUserInfo();
+
             libContent = getApplicationContext();//获取lib上下文
             libActivity = this;
 //        requestPermissions();
@@ -261,13 +262,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             if (!open) {
                 messagePermisssion();
             }
+            gotoAppStoreComment();
             connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
+
+
 
     private void messagePermisssion() {
         //前三天每天提醒一次，三天后不提示
@@ -300,9 +302,30 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         startActivity(localIntent);
     }
 
-    public void getUserInfo() {
-//        if (AppUtil.isLogin())
-//            Util.getUserInfo();
+    /**
+     * 五天后提示去市场评分
+     */
+    public void gotoAppStoreComment() {
+        long time = PreferenceHelper.getLong(PreferenceHelper.GOTOAPPSTORE, 0);
+        if (time > 0 && System.currentTimeMillis() - time >= 1000 * 60 * 60 * 24 * 5) {
+            PreferenceHelper.putLong(PreferenceHelper.GOTOAPPSTORE, -1);
+            new GoToAppStoreDialog(this, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        ToastUtil.showLongToast("您的手机没有安装Android应用市场");
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else if (time == 0) {
+            PreferenceHelper.putLong(PreferenceHelper.GOTOAPPSTORE, System.currentTimeMillis());
+        }
     }
 
     public void addFlag() {
