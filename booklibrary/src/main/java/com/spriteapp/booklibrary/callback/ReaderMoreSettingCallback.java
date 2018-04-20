@@ -8,8 +8,10 @@ import android.graphics.Typeface;
 
 public interface ReaderMoreSettingCallback {
 
-    void sendTextSize(int textSize);
+    void sendTextSize(float textSize);
     void sendFontStyle(Typeface typeface);
-    void sengFontFormat(int format);
-    void sengReaderBgColor(int color);
+    void sendFontFormat(int format);
+    void sendReaderBgColor(int color);
+    void sendPageMode(int pageMode);
+    void sendProgressFormat(int progressFormat);
 }

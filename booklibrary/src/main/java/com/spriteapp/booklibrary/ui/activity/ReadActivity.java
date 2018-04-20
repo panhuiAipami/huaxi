@@ -110,7 +110,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private static final int ANIMATION_TIME = 300;
     public static final String LAST_CHAPTER = "last_chapter";
     private MyPageWidget bookpage;
-    private TextView tv_open_hint;
     private PtrFrameLayout mPtrFrameLayout;
     private ReadMoreSettingLayout readMoreSettingLayout;
     private ReadBottomLayout mBottomLayout;
@@ -321,10 +320,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
                     book_reader_title_textView.setText(shareDetail.getBook_name());
                 }
-                //更多设置里面内容显示
-                if (readMoreSettingLayout != null) {
-                    readMoreSettingLayout.initRaderSetting(shareDetail);
-                }
+
             }
         }
         setBatteryState();
@@ -450,6 +446,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (status == 0) {
                 mReadListener.onLoadChapterFailure(mCurrentChapter);
             } else {
+                Log.e("openChapter","---------------openChapter------------");
+                //更多设置里面内容显示
+                if (readMoreSettingLayout != null) {
+                    BookDetailResponse shareDetail = mNewBookDetail != null ?
+                            mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+                    readMoreSettingLayout.initRaderSetting(shareDetail);
+                }
                 //延迟关闭，防止黑屏闪过
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -576,7 +579,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     public void findViewId() throws Exception {
         super.findViewId();
-        tv_open_hint = (TextView) findViewById(R.id.tv_open_hint);
         mPtrFrameLayout = (PtrFrameLayout) findViewById(R.id.mPtrFrameLayout);
         bookpage = (MyPageWidget) findViewById(R.id.book_reader_read_container);
         mBottomLayout = (ReadBottomLayout) findViewById(R.id.book_reader_bottom_layout);
@@ -1279,7 +1281,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
      */
     ReaderMoreSettingCallback moreSettingCallback = new ReaderMoreSettingCallback() {
         @Override
-        public void sendTextSize(int textSize) {
+        public void sendTextSize(float textSize) {
             if (pagefactory != null) {
                 pagefactory.changeFontSize(ScreenUtil.dpToPxInt(textSize));
 
@@ -1296,7 +1298,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
 
         @Override
-        public void sengFontFormat(int format) {
+        public void sendFontFormat(int format) {
             if (pagefactory != null) {
                 pagefactory.setFontSpace(format);
 
@@ -1306,12 +1308,24 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
 
         @Override
-        public void sengReaderBgColor(int color) {
+        public void sendReaderBgColor(int color) {
             if (isNight)
                 changeMode();
 
             if (pagefactory != null)
                 pagefactory.changeBookBg(color);
+        }
+
+        @Override
+        public void sendPageMode(int pageMode) {
+            if (pagefactory != null)
+                pagefactory.setPageMode(pageMode);
+        }
+
+        @Override
+        public void sendProgressFormat(int progressFormat) {
+            if (pagefactory != null)
+                pagefactory.setPProgressFormat(progressFormat);
         }
     };
 
@@ -1449,12 +1463,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         //开始阅读内容
         openChapter();
 
-        //更多设置里面内容显示
-        if (readMoreSettingLayout != null) {
-            BookDetailResponse shareDetail = mNewBookDetail != null ?
-                    mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-            readMoreSettingLayout.initRaderSetting(shareDetail);
-        }
         //更新进度
         if (NetworkUtil.isAvailable(mContext)) {
             updateCurrentProgress(mCurrentChapter);

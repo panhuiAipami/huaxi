@@ -855,6 +855,14 @@ public class PageFactory2 {
         currentPage(false);
     }
 
+    public void setPageMode(int mode){
+        mBookPageWidget.setPageMode(mode);
+    }
+
+    public void setPProgressFormat(int format){
+
+    }
+
     public void clear() {
         bookPath = "";
         bookName = "";

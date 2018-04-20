@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.spriteapp.booklibrary.manger.SystemBarTintManager;
+import com.spriteapp.booklibrary.manager.SystemBarTintManager;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 
 /**

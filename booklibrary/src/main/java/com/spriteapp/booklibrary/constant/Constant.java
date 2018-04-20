@@ -48,12 +48,16 @@ public class Constant {
     public static final String PAGE_CHANGE_STYLE = "hua_xi_page_change_style";
     //阅读页亮度
     public static final String READ_PAGE_BRIGHTNESS = "read_page_brightness";
+    //阅读页系统亮度
+    public static final String READ_PAGE_SYSTEM_BRIGHTNESS = "read_page_system_brightness";
     //阅读页字体格式
     public static final String READ_PAGE_FONT_STYLE = "read_page_font_style";
     //阅读页字体间距排版
     public static final String READ_PAGE_FONT_FORMAT = "read_page_font_format";
     //阅读页背景
     public static final String READ_PAGE_BG_COLOR = "read_page_bg_color";
+    //阅读页进度显示方式
+    public static final String READ_PAGE_PROGRESS_FORMAT = "read_page_progress_format";
     //数值单位（h）
     public static final int UPDATE_BOOK_DETAIL_INTERVAL = 3;
     public static final int UPDATE_CHAPTER_INTERVAL = 6;

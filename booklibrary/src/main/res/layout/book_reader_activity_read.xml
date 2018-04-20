@@ -59,16 +59,6 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"></com.spriteapp.booklibrary.widget.ReadMoreSettingLayout>
 
-        <TextView
-            android:id="@+id/tv_open_hint"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="@color/reader_book_bg1"
-            android:gravity="center"
-            android:text="正在打开书本..."
-            android:textColor="@color/two_font_color"
-            android:textSize="24sp" />
     </RelativeLayout>
 
     <LinearLayout

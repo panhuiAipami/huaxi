@@ -86,7 +86,6 @@
             android:id="@+id/switch_button"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
             android:text="自动订阅下一章  "
             android:textColor="@color/down_load_font_color2"
             android:thumb="@drawable/switch_thumb_select"
@@ -138,6 +137,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/light_icon2" />
+
+            <CheckBox
+                android:id="@+id/btn_system_brightness"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="14sp"
+                android:background="@drawable/button_violet_select"
+                android:button="@null"
+                android:gravity="center"
+                android:text="恢复默认"
+                android:textColor="@drawable/font_text_white_color_select" />
         </LinearLayout>
         <!--字号调节-->
         <LinearLayout
@@ -351,6 +362,7 @@
                 </RadioGroup>
             </HorizontalScrollView>
         </LinearLayout>
+
         <!--背景-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -481,6 +493,120 @@
                     </RadioGroup>
                 </FrameLayout>
             </HorizontalScrollView>
+        </LinearLayout>
+
+        <!--翻页-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="字体"
+
+                android:textColor="@color/down_load_font_color2" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:scrollbars="none">
+
+                <RadioGroup
+                    android:id="@+id/radio_flip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/flip_style1"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="覆盖"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        />
+                    <RadioButton
+                        android:id="@+id/flip_style2"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="仿真"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/flip_style3"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="滑动"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                         />
+                </RadioGroup>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <!--显示进度-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="显示进度"
+                android:textColor="@color/down_load_font_color2" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:scrollbars="none">
+
+                <RadioGroup
+                    android:id="@+id/radio_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/progress_format1"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="20dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="百分比"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                         />
+                    <RadioButton
+                        android:id="@+id/progress_format2"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="页码"
+                        android:textColor="@drawable/font_text_violet_color_select"
+                        android:textSize="16sp"
+                        />
+                </RadioGroup>
+            </HorizontalScrollView>
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

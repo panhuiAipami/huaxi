@@ -10,7 +10,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,8 +32,10 @@ import com.spriteapp.booklibrary.ui.activity.DownloadFontsActivity;
 import com.spriteapp.booklibrary.util.Constants;
 import com.spriteapp.booklibrary.util.FileUtils;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
+import com.spriteapp.booklibrary.widget.readview.Config;
 
 /**
  * 阅读器更多设置
@@ -47,6 +51,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
 
     private ReaderMoreSettingCallback moreSettingCallback;
     private Activity mContext;
+    private boolean isBrightness = false;
     private View empty_view;
     private RelativeLayout relative_center_view;
     private LinearLayout linear_right, linear_bottom_view;
@@ -59,9 +64,10 @@ public class ReadMoreSettingLayout extends LinearLayout {
     private TextView tv_reduce;
     private TextView tv_add;
     private TextView tv_text_size;
-    private RadioGroup radio_font, radio_format, radio_bg_color;
+    private RadioGroup radio_font, radio_format, radio_bg_color,radio_flip,radio_progress;
     private RadioButton font0, font1, font2, font3, font4, font5;
-    private int font_size = 16;
+    private CheckBox btn_system_brightness;
+    private float font_size = 16;
     private View mView;
 
     public ReaderMoreSettingCallback getMoreSettingCallback() {
@@ -102,24 +108,33 @@ public class ReadMoreSettingLayout extends LinearLayout {
         author_name = (TextView) mView.findViewById(R.id.author_name);
         switch_button = (Switch) mView.findViewById(R.id.switch_button);
         seekBar = (SeekBar) mView.findViewById(R.id.seekBar);
+        btn_system_brightness = (CheckBox) mView.findViewById(R.id.btn_system_brightness);
         tv_reduce = (TextView) mView.findViewById(R.id.tv_reduce);
         tv_add = (TextView) mView.findViewById(R.id.tv_add);
         tv_text_size = (TextView) mView.findViewById(R.id.tv_text_size);
         radio_font = (RadioGroup) mView.findViewById(R.id.radio_font);
         radio_format = (RadioGroup) mView.findViewById(R.id.radio_format);
         radio_bg_color = (RadioGroup) mView.findViewById(R.id.radio_bg_color);
+        radio_flip = (RadioGroup) mView.findViewById(R.id.radio_flip);
+        radio_progress = (RadioGroup) mView.findViewById(R.id.radio_progress);
         font0 = (RadioButton) mView.findViewById(R.id.font0);
         font1 = (RadioButton) mView.findViewById(R.id.font1);
         font2 = (RadioButton) mView.findViewById(R.id.font2);
         font3 = (RadioButton) mView.findViewById(R.id.font3);
         font4 = (RadioButton) mView.findViewById(R.id.font4);
         font5 = (RadioButton) mView.findViewById(R.id.font5);
+
+
         setListener();
         initTypeFace();
 
     }
 
 
+    /**
+     * 初始化阅读设置信息
+     * @param bookDetail
+     */
     public void initRaderSetting(BookDetailResponse bookDetail) {
         if (bookDetail != null) {
             book_title.setText(bookDetail.getBook_name());
@@ -128,23 +143,34 @@ public class ReadMoreSettingLayout extends LinearLayout {
             GlideUtils.loadImage(author_avater, bookDetail.getAuthor_avatar(), mContext);
         }
 
+
+        //是否订阅
         boolean isAutoSub = SharedPreferencesUtil.getInstance()
                 .getInt(Constant.IS_BOOK_AUTO_SUB) == AutoSubEnum.AUTO_SUB.getValue();
         switch_button.setChecked(isAutoSub);
 
-        int brightness = SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_BRIGHTNESS, -1);
+        //亮度
+        float brightness = Config.getInstance().getBrightness();
+        btn_system_brightness.setChecked(Config.getInstance().getSystemBrightness());
         if (brightness >= 0) {
-            setBrightness(mContext, brightness == 0 ? brightness + 1 : brightness);
-            seekBar.setProgress(brightness == 0 ? brightness + 1 : brightness);
+            seekBar.setProgress((int) (brightness*255));
+            setBrightness(mContext, brightness);
+        }else{
+            btn_system_brightness.setChecked(true);
+            seekBar.setProgress(getScreenBrightness2(mContext));
         }
 
 
-        font_size = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
+        //字号
+        font_size = ScreenUtil.pxToDp(Config.getInstance().getFontSize());
         tv_text_size.setTextSize(font_size);
 
+        //字体
         refreshFontSelect(true);
 
-        int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
+
+        //阅读行间距
+        int format = Config.getInstance().getFontFormat();
         RadioButton radioButton;
         switch (format) {
             case 1:
@@ -161,7 +187,8 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 break;
         }
 
-        int bg_color = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
+        //背景颜色
+        int bg_color = Config.getInstance().getBookBgType();
         RadioButton radioButtonColor;
         switch (bg_color) {
             case 1:
@@ -190,10 +217,43 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 break;
 
         }
+
+        //翻页
+        int page_mode = Config.getInstance().getPageMode();
+        RadioButton radioButtonPageMode;
+        switch (page_mode) {
+            case 0:
+                radioButtonPageMode = (RadioButton) radio_flip.findViewById(R.id.flip_style1);
+                radioButtonPageMode.setChecked(true);
+                break;
+            case 1:
+                radioButtonPageMode = (RadioButton) radio_flip.findViewById(R.id.flip_style2);
+                radioButtonPageMode.setChecked(true);
+                break;
+            case 2:
+                radioButtonPageMode = (RadioButton) radio_flip.findViewById(R.id.flip_style3);
+                radioButtonPageMode.setChecked(true);
+                break;
+        }
+
+        //显示进度
+        int progress_format = Config.getInstance().getReaderProgressFormat();
+        RadioButton radioButtonProgressFormat;
+        switch (progress_format) {
+            case 0:
+                radioButtonProgressFormat = (RadioButton) radio_progress.findViewById(R.id.progress_format1);
+                radioButtonProgressFormat.setChecked(true);
+                break;
+            case 1:
+                radioButtonProgressFormat = (RadioButton) radio_progress.findViewById(R.id.progress_format2);
+                radioButtonProgressFormat.setChecked(true);
+                break;
+        }
+
     }
 
     public void refreshFontSelect(boolean resetPageFont) {
-        int check_font = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, 0);
+        int check_font = Config.getInstance().getFontStyle();
         Typeface tf = null;
         if (check_font == 0) {
             font0.setChecked(true);
@@ -247,7 +307,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
                     return;
                 }
                 tv_text_size.setTextSize(font_size -= 2);
-                SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, font_size);
+                Config.getInstance().setFontSize(font_size);
                 if (moreSettingCallback != null)
                     moreSettingCallback.sendTextSize(font_size);
             }
@@ -260,7 +320,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
                     return;
                 }
                 tv_text_size.setTextSize(font_size += 2);
-                SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, font_size);
+                Config.getInstance().setFontSize(font_size);
                 if (moreSettingCallback != null)
                     moreSettingCallback.sendTextSize(font_size);
             }
@@ -300,9 +360,9 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 } else if (checkedId == R.id.format3) {
                     format = 3;
                 }
-                SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, format);
+                Config.getInstance().setFontFormat(format);
                 if (moreSettingCallback != null)
-                    moreSettingCallback.sengFontFormat(format);
+                    moreSettingCallback.sendFontFormat(format);
             }
         });
 
@@ -325,12 +385,47 @@ public class ReadMoreSettingLayout extends LinearLayout {
                 } else if (checkedId == R.id.reader_bg_color6) {
                     color = 6;
                 }
-                SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, color);
+                Config.getInstance().setBookBgType(color);
                 if (moreSettingCallback != null)
-                    moreSettingCallback.sengReaderBgColor(color);
+                    moreSettingCallback.sendReaderBgColor(color);
             }
         });
 
+        //翻页
+        radio_flip.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (!group.findViewById(checkedId).isPressed()) return;
+                int page_mode = 0 ;
+                if (checkedId == R.id.flip_style1) {
+                    page_mode = 0;
+                } else if (checkedId == R.id.flip_style2) {
+                    page_mode = 1;
+                } else if (checkedId == R.id.flip_style3) {
+                    page_mode = 2;
+                }
+                Config.getInstance().setPageMode(page_mode);
+                if (moreSettingCallback != null)
+                    moreSettingCallback.sendPageMode(page_mode);
+            }
+        });
+
+        //显示进度
+        radio_progress.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (!group.findViewById(checkedId).isPressed()) return;
+                int progress_format = 0 ;
+                if (checkedId == R.id.progress_format1) {
+                    progress_format = 0;
+                } else if (checkedId == R.id.progress_format2) {
+                    progress_format = 1;
+                }
+                Config.getInstance().setReaderProgressFormat(progress_format);
+                if (moreSettingCallback != null)
+                    moreSettingCallback.sendProgressFormat(progress_format);
+            }
+        });
         //自动订阅按钮
         switch_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -345,18 +440,39 @@ public class ReadMoreSettingLayout extends LinearLayout {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mContext != null)
-                    setBrightness(mContext, progress);
+                if (mContext != null && isBrightness) {
+                    setBrightness(mContext, Float.valueOf(progress) * (1f / 255f));
+                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                isBrightness = true;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                btn_system_brightness.setChecked(false);
 
+            }
+        });
+
+        btn_system_brightness.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Config.getInstance().setSystemBrightness(isChecked);
+                if(isChecked){
+                    float system_brightness = getScreenBrightness(mContext);
+                    setBrightness(mContext,-1);
+                    seekBar.setProgress((int) (system_brightness*255));
+                }else{
+                    float brightness = Config.getInstance().getBrightness();
+                    if(brightness <0){
+                        brightness = Float.valueOf(getScreenBrightness2(mContext) ) * (1f / 255f);
+                    }
+                    setBrightness(mContext,brightness);
+                    seekBar.setProgress((int) (brightness*255));
+                }
             }
         });
     }
@@ -364,7 +480,7 @@ public class ReadMoreSettingLayout extends LinearLayout {
     /**
      * 获取屏幕的亮度
      */
-    public static int getScreenBrightness(Context context) {
+    public static int getScreenBrightness2(Context context) {
         int nowBrightnessValue = 0;
         ContentResolver resolver = context.getContentResolver();
         try {
@@ -372,7 +488,15 @@ public class ReadMoreSettingLayout extends LinearLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         return nowBrightnessValue;
+    }
+
+    public static float getScreenBrightness(Activity activity) {
+        Window localWindow = activity.getWindow();
+        WindowManager.LayoutParams params = localWindow.getAttributes();
+        return params.screenBrightness;
     }
 
     /**
@@ -380,11 +504,12 @@ public class ReadMoreSettingLayout extends LinearLayout {
      * 屏幕亮度最大数值一般为255，各款手机有所不同
      * screenBrightness 的取值范围在[0,1]之间
      */
-    public static void setBrightness(Activity activity, int brightness) {
-        SharedPreferencesUtil.getInstance().putInt(Constant.READ_PAGE_BRIGHTNESS, brightness);
+    public static void setBrightness(Activity activity, float brightness) {
+        Config.getInstance().setBrightness(brightness);
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+        lp.screenBrightness = brightness;//Float.valueOf(brightness) * (1f / 255f)
         activity.getWindow().setAttributes(lp);
+
     }
 
     public static void initTypeFace() {
@@ -413,40 +538,15 @@ public class ReadMoreSettingLayout extends LinearLayout {
         return Constants.DOWNLOAD_FONTS + "/" + font;
     }
 
+
     public void gotoDownLoadFont(Typeface typeface, int font_num) {
         if (font_num != 0 && typeface == null) {
             mContext.startActivityForResult(new Intent(mContext, DownloadFontsActivity.class), 99);
         } else {
             //修改页面字体
-            SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, font_num);
+            Config.getInstance().setFontStyle(font_num);
             if (moreSettingCallback != null)
                 moreSettingCallback.sendFontStyle(typeface);
         }
     }
-
-    public static int getReaderBgCoor(int color_type) {
-        int color = R.color.reader_book_bg1;
-        switch (color_type) {
-            case 1:
-                color = R.color.reader_book_bg1;
-                break;
-            case 2:
-                color = R.color.reader_book_bg2;
-                break;
-            case 3:
-                color = R.color.reader_book_bg3;
-                break;
-            case 4:
-                color = R.color.reader_book_bg4;
-                break;
-            case 5:
-                color = R.color.reader_book_bg5;
-                break;
-            case 6:
-                color = R.color.reader_book_bg6;
-                break;
-        }
-        return color;
-    }
-
 }

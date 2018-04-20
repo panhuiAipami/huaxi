@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.spriteapp.booklibrary.manger;
+package com.spriteapp.booklibrary.manager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

@@ -3,11 +3,14 @@ package com.spriteapp.booklibrary.widget.readview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.text.Layout;
+import android.text.Selection;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
@@ -23,7 +26,8 @@ import com.spriteapp.booklibrary.widget.readview.animation.SlideAnimation;
 /**
  * Created by Administrator on 2016/8/29 0029.
  */
-public class MyPageWidget extends View {
+public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
+    private int off; //字符串的偏移值
     private final static String TAG = "MyPageWidget";
     private int mScreenWidth = 0; // 屏幕宽
     private int mScreenHeight = 0; // 屏幕高
@@ -68,6 +72,17 @@ public class MyPageWidget extends View {
         initPage();
         mScroller = new Scroller(getContext(), new LinearInterpolator());
         mAnimationProvider = new CoverAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
+
+        setTextIsSelectable(true);
+        setGravity(Gravity.TOP);
+        setBackgroundColor(Color.WHITE);
+
+    }
+
+    @Override
+    public boolean getDefaultEditable() {
+        // 返回false，屏蔽掉系统自带的ActionMenu
+        return true;
     }
 
     private void initPage() {
@@ -88,14 +103,14 @@ public class MyPageWidget extends View {
             case Config.PAGE_MODE_COVER://仿真
                 mAnimationProvider = new SimulationAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
                 break;
-            case Config.PAGE_MODE_SLIDE://平移(暂时没用到)
+            case Config.PAGE_MODE_SLIDE://平移滑动
                 mAnimationProvider = new SlideAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
                 break;
             case Config.PAGE_MODE_NONE://无效果(暂时没用到)
                 mAnimationProvider = new NoneAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
                 break;
             default:
-                mAnimationProvider = new SimulationAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
+                mAnimationProvider = new CoverAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
         }
     }
 
@@ -130,11 +145,19 @@ public class MyPageWidget extends View {
             return true;
         }
 
+        int action = event.getAction();
+        Layout layout = getLayout();
+        int line = 0;
+
         int x = (int) event.getX();
         int y = (int) event.getY();
 
         mAnimationProvider.setTouchPoint(x, y);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            line = layout.getLineForVertical(getScrollY()+ (int)event.getY());
+            off = layout.getOffsetForHorizontal(line, (int)event.getX());
+            Selection.setSelection(getEditableText(), off);
+
             getParent().requestDisallowInterceptTouchEvent(true);
             downX = (int) event.getX();
             downY = (int) event.getY();
@@ -156,6 +179,9 @@ public class MyPageWidget extends View {
             }
 
             if (isMove) {
+                line = layout.getLineForVertical(getScrollY()+(int)event.getY());
+                int curOff = layout.getOffsetForHorizontal(line, (int)event.getX());
+                Selection.setSelection(getEditableText(), off, curOff);
                 isMove = true;
                 if (moveX == 0 && moveY == 0) {
                     Log.e(TAG, "isMove");
@@ -214,6 +240,9 @@ public class MyPageWidget extends View {
             }
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             getParent().requestDisallowInterceptTouchEvent(false);
+            line = layout.getLineForVertical(getScrollY()+(int)event.getY());
+            int curOff = layout.getOffsetForHorizontal(line, (int)event.getX());
+            Selection.setSelection(getEditableText(), off, curOff);
             Log.e(TAG, "ACTION_UP");
             if (!isMove) {
                 cancelPage = false;

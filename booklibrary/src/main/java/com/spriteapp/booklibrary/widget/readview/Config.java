@@ -1,8 +1,6 @@
 package com.spriteapp.booklibrary.widget.readview;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.util.ScreenUtil;
@@ -43,18 +41,9 @@ public class Config {
 
     private Context mContext;
     private static Config config;
-    private SharedPreferences sp;
-    //字体
-    private Typeface typeface;
-    //字体大小
-    private float mFontSize = 0;
-    //亮度值
-    private float light = 0;
-    private int bookBG;
 
     private Config(Context mContext) {
         this.mContext = mContext.getApplicationContext();
-        sp = this.mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
     }
 
     public static synchronized Config getInstance() {
@@ -69,19 +58,105 @@ public class Config {
         return config;
     }
 
-    public int getPageMode() {
-        return SharedPreferencesUtil.getInstance().getInt(Constant.PAGE_CHANGE_STYLE);
+    /**
+     * 设置亮度
+     *
+     * @param brightness
+     */
+    public void setBrightness(float brightness) {
+        SharedPreferencesUtil.getInstance().putFloat(Constant.READ_PAGE_BRIGHTNESS, brightness);
     }
 
+    public float getBrightness() {
+        return SharedPreferencesUtil.getInstance().getFloat(Constant.READ_PAGE_BRIGHTNESS, -1);
+    }
 
+    public void setSystemBrightness(boolean isSystemBrightness) {
+        SharedPreferencesUtil.getInstance().putBoolean(Constant.READ_PAGE_SYSTEM_BRIGHTNESS, isSystemBrightness);
+    }
+
+    public boolean getSystemBrightness() {
+        return SharedPreferencesUtil.getInstance().getBoolean(Constant.READ_PAGE_SYSTEM_BRIGHTNESS);
+    }
+
+    /**
+     * 字体大小
+     *
+     * @return
+     */
+    public int getFontSize() {
+        float font = SharedPreferencesUtil.getInstance().getFloat(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
+        return ScreenUtil.dpToPxInt(font);
+    }
+
+    public void setFontSize(float fontSize) {
+        SharedPreferencesUtil.getInstance().putFloat(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, fontSize);
+    }
+
+    /**
+     * 字体格式
+     * @return
+     */
+    public int getFontStyle() {
+        int s = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, 0);
+        return s;
+    }
+
+    public void setFontStyle(int font_num) {
+        SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_STYLE, font_num);
+    }
+
+    /**
+     * 阅读行间距
+     * @return
+     */
+    public int getFontFormat() {
+        int s = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
+        return s;
+    }
+
+    public void setFontFormat(int format) {
+        SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, format);
+    }
+
+    /**
+     * 阅读背景
+     *
+     * @return
+     */
     public int getBookBgType() {
         return SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, 1);
     }
 
+    public void setBookBgType(int bookBgType) {
+        SharedPreferencesUtil.getInstance().putInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_BG_COLOR, bookBgType);
+    }
 
-    public float getFontSize() {
-        int font = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
-        return ScreenUtil.dpToPxInt(font);
+
+
+    /**
+     * 翻页模式(0覆盖，1仿真，2滑动)
+     *
+     * @return
+     */
+    public int getPageMode() {
+        return SharedPreferencesUtil.getInstance().getInt(Constant.PAGE_CHANGE_STYLE);
+    }
+
+    public void setPageMode(int pageMode) {
+        SharedPreferencesUtil.getInstance().putInt(Constant.PAGE_CHANGE_STYLE, pageMode);
+    }
+
+    /**
+     * 进度显示方式
+     * @return
+     */
+    public int getReaderProgressFormat() {
+        return SharedPreferencesUtil.getInstance().getInt(Constant.READ_PAGE_PROGRESS_FORMAT);
+    }
+
+    public void setReaderProgressFormat(int progressFormat) {
+        SharedPreferencesUtil.getInstance().putInt(Constant.READ_PAGE_PROGRESS_FORMAT, progressFormat);
     }
 
 
