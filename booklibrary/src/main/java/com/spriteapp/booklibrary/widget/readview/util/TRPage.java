@@ -8,7 +8,7 @@ import java.util.List;
 public class TRPage {
     private int begin = 0;
     private int end = 0;
-    private List<String> lines;
+    private List<ShowLine> lines;
 
     public int getBegin() {
         return begin;
@@ -26,21 +26,22 @@ public class TRPage {
         this.end = end;
     }
 
-    public List<String> getLines() {
+    public List<ShowLine> getLines() {
         return lines;
     }
 
     public String getLineToString(){
         String text ="";
         if (lines != null){
-            for (String line : lines){
-                text += line;
+            for (ShowLine  s: lines){
+                text += s.getLineData();
             }
         }
         return text;
     }
 
-    public void setLines(List<String> lines) {
+
+    public void setLines(List<ShowLine> lines) {
         this.lines = lines;
     }
 }

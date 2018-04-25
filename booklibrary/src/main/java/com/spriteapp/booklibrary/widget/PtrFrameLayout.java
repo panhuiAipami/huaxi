@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.widget.readview.MyPageWidget;
 
 
 /**
@@ -196,6 +197,10 @@ public class PtrFrameLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent e) {
         if (!isEnabled() || mHeaderView == null || mContentView == null) {
+            return dispatchTouchEventSuper(e);
+        }
+        Log.e("dispatchTouchEvent",MyPageWidget.mCurrentMode+"-------------------"+MyPageWidget.Mode.Normal);
+        if(MyPageWidget.mCurrentMode  != MyPageWidget.Mode.Normal){
             return dispatchTouchEventSuper(e);
         }
 

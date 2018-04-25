@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
@@ -37,7 +38,11 @@ import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
+import com.spriteapp.booklibrary.widget.readview.util.BreakResult;
+import com.spriteapp.booklibrary.widget.readview.util.ShowChar;
+import com.spriteapp.booklibrary.widget.readview.util.ShowLine;
 import com.spriteapp.booklibrary.widget.readview.util.TRPage;
+import com.spriteapp.booklibrary.widget.readview.util.TextBreakUtil;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -186,6 +191,8 @@ public class PageFactory2 {
         mPaint.setTextSize(m_fontSize);
         mPaint.setColor(Color.BLACK);
         mPaint.setSubpixelText(true);
+        Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+        TextHeight = Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent);
 
         mChapterTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mChapterTitlePaint.setTextAlign(Paint.Align.LEFT);// 左对齐
@@ -259,8 +266,7 @@ public class PageFactory2 {
     }
 
     @SuppressLint("WrongConstant")
-    public void onDraw(Bitmap bitmap, List<String> mLines, Boolean updateCharter) {
-
+    public void onDraw(Bitmap bitmap, List<ShowLine> mLines, Boolean updateCharter) {
         if (mLines.size() <= 0) {
             return;
         }
@@ -294,17 +300,12 @@ public class PageFactory2 {
             y += ScreenUtil.dpToPx(30);
         }
 
+
         // 绘制阅读页面文字
         if (mLines.size() > 0) {
             y += ScreenUtil.dpToPx(10);
-            for (String strLine : mLines) {
-                if (strLine.endsWith("@")) {
-                    c.drawText(strLine.substring(0, strLine.length() - 1), measureMarginWidth, y, mPaint);
-                    y += lineSpace;
-                } else {
-                    c.drawText(strLine, measureMarginWidth, y, mPaint);
-                }
-                y += lineSpace + m_fontSize;
+            for (ShowLine strLine : mLines) {
+                y = drawLineText(strLine, c, y);
             }
         }
 
@@ -351,8 +352,58 @@ public class PageFactory2 {
                 , mHeight - ScreenUtil.dpToPxInt(9.5f), mTitlePaint);
 
         SettingManager.getInstance().saveReadProgress(book_id + "", currentChapter, curBeginPos, curEndPos);
+        mBookPageWidget.getListData(mLines);
         mBookPageWidget.postInvalidate();
     }
+
+    private float TextHeight = 0;
+
+    private float drawLineText(ShowLine lines, Canvas cs, float y) {
+        boolean isChangeLine = false;
+        String text = lines.getLineData();
+        if (text.endsWith("\n")) {
+            cs.drawText(text, measureMarginWidth, y, mPaint);
+            y += lineSpace;
+            isChangeLine = true;
+        } else {
+            isChangeLine = false;
+            cs.drawText(text, measureMarginWidth, y, mPaint);
+        }
+
+        float leftposition = ScreenUtil.dpToPxInt(20);
+        float rightposition = 0;
+        float bottomposition = (isChangeLine?y-lineSpace:y) + mPaint.getFontMetrics().descent;
+
+        for (ShowChar c : lines.CharsData) {
+
+            rightposition = leftposition + c.charWidth;
+            Point tlp = new Point();
+            c.TopLeftPosition = tlp;
+            tlp.x = (int) leftposition;
+            tlp.y = (int) (bottomposition - TextHeight);
+
+            Point blp = new Point();
+            c.BottomLeftPosition = blp;
+            blp.x = (int) leftposition;
+            blp.y = (int) bottomposition;
+
+            Point trp = new Point();
+            c.TopRightPosition = trp;
+            trp.x = (int) rightposition;
+            trp.y = (int) (bottomposition - TextHeight);
+
+            Point brp = new Point();
+            c.BottomRightPosition = brp;
+            brp.x = (int) rightposition;
+            brp.y = (int) bottomposition;
+
+            leftposition = rightposition;
+
+        }
+        y += lineSpace + m_fontSize;
+        return y;
+    }
+
 
     public void setProgressCallback(ProgressCallback mProgressCallback) {
         this.mProgressCallback = mProgressCallback;
@@ -603,10 +654,10 @@ public class PageFactory2 {
     /**
      * 根据起始位置指针，读取一页内容
      */
-    private Vector<String> getNextLines() {
+    private Vector<ShowLine> getNextLines() {
         if (currentPage == null)
             currentPage = new TRPage();
-        Vector<String> lines = new Vector<>();
+        Vector<ShowLine> lines = new Vector<>();
         int paraSpace = 0;
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
 
@@ -619,10 +670,18 @@ public class PageFactory2 {
             curEndPos += strParagraph.length();
 
             boolean isParagraphEmpty = StringUtil.isEmpty(strParagraph);
+//            String text = strParagraph;
+//            if (!TextUtils.isEmpty(text)) {
+//                text += "@";
+//            }
             while (strParagraph.length() > 0) {
                 //截取最大宽度能容纳文本数
                 int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
-                lines.add(strParagraph.substring(0, paintSize));
+
+                BreakResult breakResult = TextBreakUtil.BreakText(strParagraph.substring(0, paintSize), mVisibleWidth, 0, mPaint);
+                ShowLine showLine = new ShowLine();
+                showLine.CharsData = breakResult.showChars;
+                lines.add(showLine);
 
                 //剩下无法容纳的文本
                 strParagraph = strParagraph.substring(paintSize);
@@ -632,7 +691,18 @@ public class PageFactory2 {
             }
             //在段落末尾加上区分符号
             if (!CollectionUtil.isEmpty(lines) && !isParagraphEmpty) {
-                lines.set(lines.size() - 1, lines.get(lines.size() - 1) + "@");
+//                ShowLine sl = lines.get(lines.size() - 1);
+//                List<ShowChar> CharsData = sl.CharsData;
+//                ShowChar sc = CharsData.get(CharsData.size() - 1);
+//                String text = String.valueOf(sc.chardata);
+//                text += "@";
+//                for (int i = 0, size = text.toCharArray().length; i < size; i++) {
+//                    sc.chardata+=text.toCharArray()[i];
+//                }
+//                Log.e("getNextLiness","--------getNextLines----------"+sc.chardata);
+//                CharsData.set(CharsData.size() - 1, sc);
+//                sl.CharsData = CharsData;
+//                lines.set(lines.size() - 1, sl);
             }
             //减去多余文本
             if (strParagraph.length() != 0) {
@@ -642,6 +712,13 @@ public class PageFactory2 {
             }
             paraSpace += lineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (m_fontSize + lineSpace);
+        }
+
+        int index = 0;
+        for (ShowLine l : lines) {
+            for (ShowChar c : l.CharsData) {
+                c.Index = index++;
+            }
         }
         return lines;
     }
@@ -670,12 +747,12 @@ public class PageFactory2 {
     /**
      * 指针移到上一页页首
      */
-    private Vector<String> getPreLines() {
-        Vector<String> lines = new Vector<>(); // 页面行
+    private Vector<ShowLine> getPreLines() {
+        Vector<ShowLine> lines = new Vector<>(); // 页面行
         int paraSpace = 0;
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
         while ((lines.size() < mPageLineCount) && (curBeginPos > 0)) {
-            Vector<String> paraLines = new Vector<>(); // 段落行
+            Vector<ShowLine> paraLines = new Vector<>(); // 段落行
             String strParagraph = readUpParagraph(curBeginPos);
 //            Log.e("getPreLines", "----上一页的行： " + strParagraph);
             mBookUtil.setPostition(currentPage.getBegin() - strParagraph.length());
@@ -684,20 +761,32 @@ public class PageFactory2 {
             curBeginPos -= strParagraph.length();
             while (strParagraph.length() > 0) { // 3.逐行添加到lines
                 int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
-                paraLines.add(strParagraph.substring(0, paintSize));
+
+                BreakResult breakResult = TextBreakUtil.BreakText(strParagraph.substring(0, paintSize), mVisibleWidth, 0, mPaint);
+                ShowLine showLine = new ShowLine();
+                showLine.CharsData = breakResult.showChars;
+                paraLines.add(showLine);
                 strParagraph = strParagraph.substring(paintSize);
             }
+
             lines.addAll(0, paraLines);
 
             while (lines.size() > mPageLineCount) { // 4.如果段落添加完，但是超出一页，则超出部分需删减
-                currentPage.setBegin(currentPage.getBegin() + lines.get(0).length());
-                curBeginPos += lines.get(0).length(); // 5.删减行数同时起始位置指针也要跟着偏移
+                currentPage.setBegin(currentPage.getBegin() + lines.get(0).CharsData.size());
+                curBeginPos += lines.get(0).CharsData.size(); // 5.删减行数同时起始位置指针也要跟着偏移
                 lines.remove(0);
             }
             currentPage.setBegin(currentPage.getBegin());
             curEndPos = curBeginPos; // 6.最后结束指针指向下一段的开始处
             paraSpace += lineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (m_fontSize + lineSpace); // 添加段落间距，实时更新容纳行数
+        }
+
+        int index = 0;
+        for (ShowLine l : lines) {
+            for (ShowChar c : l.CharsData) {
+                c.Index = index++;
+            }
         }
         return lines;
     }
@@ -855,11 +944,11 @@ public class PageFactory2 {
         currentPage(false);
     }
 
-    public void setPageMode(int mode){
+    public void setPageMode(int mode) {
         mBookPageWidget.setPageMode(mode);
     }
 
-    public void setPProgressFormat(int format){
+    public void setPProgressFormat(int format) {
 
     }
 
@@ -1005,4 +1094,5 @@ public class PageFactory2 {
         }
         return mTotalPage;
     }
+
 }

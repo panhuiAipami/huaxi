@@ -3,32 +3,42 @@ package com.spriteapp.booklibrary.widget.readview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.text.Layout;
-import android.text.Selection;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.Region;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.readview.animation.AnimationProvider;
 import com.spriteapp.booklibrary.widget.readview.animation.CoverAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.NoneAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.SimulationAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.SlideAnimation;
+import com.spriteapp.booklibrary.widget.readview.dialog.MyPopupWindow;
+import com.spriteapp.booklibrary.widget.readview.util.ShowChar;
+import com.spriteapp.booklibrary.widget.readview.util.ShowLine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by Administrator on 2016/8/29 0029.
  */
-public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
-    private int off; //字符串的偏移值
-    private final static String TAG = "MyPageWidget";
+public class MyPageWidget extends View {
     private int mScreenWidth = 0; // 屏幕宽
     private int mScreenHeight = 0; // 屏幕高
     private Context mContext;
@@ -56,7 +66,11 @@ public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
     Scroller mScroller;
     private int mBgColor = 0xFAF5ED;
     private TouchListener mTouchListener;
-    private boolean dismissTopView = true;
+    private Paint mBorderPointPaint, mTextSelectPaint = null;
+    private List<ShowLine> mLinseData = null;
+    private List<ShowLine> mSelectLines = new ArrayList<>();
+    private float TextHeight;
+    private MyPopupWindow popupWindow;
 
     public MyPageWidget(Context context) {
         this(context, null);
@@ -68,22 +82,24 @@ public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
 
     public MyPageWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        popupWindow = new MyPopupWindow(context, null);
+        mBorderPointPaint = new Paint();
+        mBorderPointPaint.setColor(ContextCompat.getColor(context, R.color.square_comment_selector));
+        mBorderPointPaint.setStrokeWidth(5);//宽度
+
+        mTextSelectPaint = new Paint();
+        mTextSelectPaint.setColor(ContextCompat.getColor(context, R.color.select_font_bg));
+
         mContext = context;
         initPage();
         mScroller = new Scroller(getContext(), new LinearInterpolator());
         mAnimationProvider = new CoverAnimation(mCurPageBitmap, mNextPageBitmap, mScreenWidth, mScreenHeight);
+        Paint.FontMetrics fontMetrics = mBorderPointPaint.getFontMetrics();
+        TextHeight = Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent);
 
-        setTextIsSelectable(true);
-        setGravity(Gravity.TOP);
-        setBackgroundColor(Color.WHITE);
-
+        setOnLongClickListener(mLongClickListener);
     }
 
-    @Override
-    public boolean getDefaultEditable() {
-        // 返回false，屏蔽掉系统自带的ActionMenu
-        return true;
-    }
 
     private void initPage() {
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -126,16 +142,42 @@ public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
         mBgColor = color;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawColor(mBgColor);
-//        Log.e("onDraw","isNext:" + isNext + "          isRuning:" + isRuning);
-        if (isRuning) {
-            mAnimationProvider.drawMove(canvas);
-        } else {
-            mAnimationProvider.drawStatic(canvas);
+    public void getListData(List<ShowLine> list) {
+        mLinseData = list;
+        for (ShowLine c : list) {
+            Log.e("getListData", "--------getListData-----------" + c.getLineData());
         }
     }
+
+    boolean isDown = false;
+    private OnLongClickListener mLongClickListener = new OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            if (mCurrentMode == Mode.Normal && isDown) {
+                Log.e("onLongClick", Down_X + "---x-------onLongClick-----------------y--" + Down_Y);
+                if (Down_X > 0 && Down_Y > 0) {// 说明还没释放，是长按事件
+                    mCurrentMode = Mode.PressSelectText;
+                    postInvalidate();
+                }
+            }
+            return false;
+        }
+    };
+
+    public void showPopWindow() {
+        popupWindow.showAtLocation(this,  Gravity.TOP|Gravity.LEFT, (int) Down_X, (int) Down_Y);
+    }
+
+    public void dismissPopWindow() {
+        if (popupWindow != null)
+            popupWindow.dismiss();
+    }
+
+    private float Tounch_X = 0, Tounch_Y = 0;
+    private float Down_X = -1, Down_Y = -1;
+    public static Mode mCurrentMode = Mode.Normal;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -145,154 +187,389 @@ public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
             return true;
         }
 
-        int action = event.getAction();
-        Layout layout = getLayout();
-        int line = 0;
 
         int x = (int) event.getX();
         int y = (int) event.getY();
+        Tounch_X = x;
+        Tounch_Y = y;
 
         mAnimationProvider.setTouchPoint(x, y);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            line = layout.getLineForVertical(getScrollY()+ (int)event.getY());
-            off = layout.getOffsetForHorizontal(line, (int)event.getX());
-            Selection.setSelection(getEditableText(), off);
-
+            isDown = true;
             getParent().requestDisallowInterceptTouchEvent(true);
-            downX = (int) event.getX();
-            downY = (int) event.getY();
-            moveX = 0;
-            moveY = 0;
-            isMove = false;
+            Down_X = Tounch_X;
+            Down_Y = Tounch_Y;
+            dismissPopWindow();
+            if (mCurrentMode != Mode.Normal) {
+                Boolean isTrySelectMove = CheckIfTrySelectMove(Down_X, Down_Y);
+                if (!isTrySelectMove) {// 如果不是准备滑动选择文字，转变为正常模式，隐藏选择框
+                    mCurrentMode = Mode.Normal;
+                    invalidate();
+                }
+            } else {
+                downX = (int) event.getX();
+                downY = (int) event.getY();
+                moveX = 0;
+                moveY = 0;
+                isMove = false;
 //            cancelPage = false;
-            noNext = false;
-            isNext = false;
-            isRuning = false;
-            mAnimationProvider.setStartPoint(downX, downY);
-            abortAnimation();
-            Log.e(TAG, "ACTION_DOWN");
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            final int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-            //判断是否移动了
-            if (!isMove) {
-                isMove = Math.abs(downX - x) > slop || Math.abs(downY - y) > slop;
+                noNext = false;
+                isNext = false;
+                isRuning = false;
+                mAnimationProvider.setStartPoint(downX, downY);
+                abortAnimation();
+                Log.e("ACTION_MOVE", "ACTION_DOWN");
             }
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            Log.e("ACTION_MOVE", "-----ACTION_MOVE--------mCurrentMode = " + mCurrentMode);
+            getParent().requestDisallowInterceptTouchEvent(true);
+            if (mCurrentMode == Mode.SelectMoveForward) {
 
-            if (isMove) {
-                line = layout.getLineForVertical(getScrollY()+(int)event.getY());
-                int curOff = layout.getOffsetForHorizontal(line, (int)event.getX());
-                Selection.setSelection(getEditableText(), off, curOff);
-                isMove = true;
-                if (moveX == 0 && moveY == 0) {
-                    Log.e(TAG, "isMove");
-                    //判断翻得是上一页还是下一页
-                    if (x - downX > 0) {
+                if (CanMoveForward(event.getX(), event.getY())) {// 判断是否是向上移动
+
+                    Log.e("is CanMoveForward", "-----ACTION_MOVE--------CanMoveForward");
+
+                    ShowChar firstselectchar = DetectPressShowChar(event.getX(), event.getY());
+                    if (firstselectchar != null) {
+                        FirstSelectShowChar = firstselectchar;
+                        invalidate();
+                    } else {
+                        Log.e("firstselectchar", "------ACTION_MOVE------firstselectchar is null");
+                    }
+
+                } else {
+                    Log.e("is CanMoveForward", "CanMoveForward");
+                }
+
+            } else if (mCurrentMode == Mode.SelectMoveBack) {
+
+                if (CanMoveBack(event.getX(), event.getY())) {// 判断是否可以向下移动
+                    Log.e("CanMoveBack", "not CanMoveBack");
+
+                    ShowChar lastselectchar = DetectPressShowChar(event.getX(), event.getY());
+
+                    if (lastselectchar != null) {
+                        LastSelectShowChar = lastselectchar;
+                        invalidate();
+                    } else {
+                        Log.e("is lastselectchar", "lastselectchar is null");
+                    }
+
+                } else {
+                    Log.e("is CanMoveBack", "not CanMoveBack");
+                }
+            } else if (mCurrentMode == Mode.PressSelectText) {
+            } else {
+
+
+                final int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+                //判断是否移动了
+                if (!isMove) {
+                    isMove = Math.abs(downX - x) > slop || Math.abs(downY - y) > slop;
+                }
+
+                if (isMove) {
+                    isMove = true;
+                    if (moveX == 0 && moveY == 0) {
+                        Log.e("ACTION_MOVE", "--------->isMove");
+                        //判断翻得是上一页还是下一页
+                        if (x - downX > 0) {
+                            isNext = false;
+                        } else {
+                            isNext = true;
+                        }
+                        cancelPage = false;
+                        if (isNext) {
+                            Boolean isNext = mTouchListener.nextPage();
+//                        calcCornerXY(downX,mScreenHeight);
+                            mAnimationProvider.setDirection(AnimationProvider.Direction.next);
+                            Log.e("ACTION_MOVE", "-----nextPage---->" + isNext);
+                            if (!isNext) {
+                                noNext = true;
+                                return true;
+                            }
+                        } else {
+                            Boolean isPre = mTouchListener.prePage();
+                            mAnimationProvider.setDirection(AnimationProvider.Direction.pre);
+                            Log.e("ACTION_MOVE", "-----prePage---->" + isPre);
+
+                            if (!isPre) {
+                                noNext = true;
+                                return true;
+                            }
+                        }
+                        Log.e("ACTION_MOVE", "isNext:" + isNext);
+                    } else {
+                        //判断是否取消翻页
+                        if (isNext) {
+                            if (x - moveX > 0) {
+                                cancelPage = true;
+                                mAnimationProvider.setCancel(true);
+                            } else {
+                                cancelPage = false;
+                                mAnimationProvider.setCancel(false);
+                            }
+                        } else {
+                            if (x - moveX < 0) {
+                                mAnimationProvider.setCancel(true);
+                                cancelPage = true;
+                            } else {
+                                mAnimationProvider.setCancel(false);
+                                cancelPage = false;
+                            }
+                        }
+                        Log.e("ACTION_MOVE", "cancelPage:" + cancelPage);
+                    }
+
+                    moveX = x;
+                    moveY = y;
+                    isRuning = true;
+                    this.postInvalidate();
+                }
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            getParent().requestDisallowInterceptTouchEvent(true);
+            //确定popWindow的位置
+            if (mCurrentMode != Mode.Normal) {
+                Down_X = BaseActivity.deviceWidth/2-Util.dp2px(mContext,75);
+                Down_Y = FirstSelectShowChar.TopLeftPosition.y- Util.dp2px(mContext,50);
+                showPopWindow();
+                Release();
+            } else {
+                Log.e("ACTION_UP", "-------->ACTION_UP");
+                if (!isMove) {
+                    cancelPage = false;
+                    //是否点击了中间
+                    if (downX > mScreenWidth / 5 && downX < mScreenWidth * 4 / 5 && downY > mScreenHeight / 3 && downY < mScreenHeight * 2 / 3) {
+                        if (mTouchListener != null) {
+                            mTouchListener.center();
+                        }
+                        Log.e("ACTION_UP", "-------->center");
+//                    mCornerX = 1; // 拖拽点对应的页脚
+//                    mCornerY = 1;
+//                    mTouch.x = 0.1f;
+//                    mTouch.y = 0.1f;
+                        return true;
+                    } else if (x < mScreenWidth / 2) {
                         isNext = false;
                     } else {
                         isNext = true;
                     }
-                    cancelPage = false;
+
                     if (isNext) {
                         Boolean isNext = mTouchListener.nextPage();
-//                        calcCornerXY(downX,mScreenHeight);
                         mAnimationProvider.setDirection(AnimationProvider.Direction.next);
-
                         if (!isNext) {
-                            noNext = true;
                             return true;
                         }
                     } else {
                         Boolean isPre = mTouchListener.prePage();
                         mAnimationProvider.setDirection(AnimationProvider.Direction.pre);
-
                         if (!isPre) {
-                            noNext = true;
                             return true;
                         }
                     }
-                    Log.e(TAG, "isNext:" + isNext);
-                } else {
-                    //判断是否取消翻页
-                    if (isNext) {
-                        if (x - moveX > 0) {
-                            cancelPage = true;
-                            mAnimationProvider.setCancel(true);
-                        } else {
-                            cancelPage = false;
-                            mAnimationProvider.setCancel(false);
-                        }
-                    } else {
-                        if (x - moveX < 0) {
-                            mAnimationProvider.setCancel(true);
-                            cancelPage = true;
-                        } else {
-                            mAnimationProvider.setCancel(false);
-                            cancelPage = false;
-                        }
-                    }
-                    Log.e(TAG, "cancelPage:" + cancelPage);
                 }
 
-                moveX = x;
-                moveY = y;
-                isRuning = true;
-                this.postInvalidate();
-            }
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            getParent().requestDisallowInterceptTouchEvent(false);
-            line = layout.getLineForVertical(getScrollY()+(int)event.getY());
-            int curOff = layout.getOffsetForHorizontal(line, (int)event.getX());
-            Selection.setSelection(getEditableText(), off, curOff);
-            Log.e(TAG, "ACTION_UP");
-            if (!isMove) {
-                cancelPage = false;
-                //是否点击了中间
-                if (downX > mScreenWidth / 5 && downX < mScreenWidth * 4 / 5 && downY > mScreenHeight / 3 && downY < mScreenHeight * 2 / 3) {
-                    if (mTouchListener != null) {
-                        dismissTopView = mTouchListener.center();
-                    }
-                    Log.e(TAG, "center");
-//                    mCornerX = 1; // 拖拽点对应的页脚
-//                    mCornerY = 1;
-//                    mTouch.x = 0.1f;
-//                    mTouch.y = 0.1f;
-                    return true;
-                } else if (x < mScreenWidth / 2) {
-                    isNext = false;
-                } else {
-                    isNext = true;
+                if (cancelPage && mTouchListener != null) {
+                    mTouchListener.cancel();
                 }
 
-                if (isNext) {
-                    Boolean isNext = mTouchListener.nextPage();
-                    mAnimationProvider.setDirection(AnimationProvider.Direction.next);
-                    if (!isNext) {
-                        return true;
-                    }
-                } else {
-                    Boolean isPre = mTouchListener.prePage();
-                    mAnimationProvider.setDirection(AnimationProvider.Direction.pre);
-                    if (!isPre) {
-                        return true;
-                    }
+                Log.e("ACTION_UP", "-------->isNext:" + isNext);
+
+                if (!noNext) {
+                    isRuning = true;
+                    mAnimationProvider.startAnimation(mScroller);
+                    this.postInvalidate();
                 }
-            }
-
-            if (cancelPage && mTouchListener != null) {
-                mTouchListener.cancel();
-            }
-
-            Log.e(TAG, "isNext:" + isNext);
-
-            if (!noNext) {
-                isRuning = true;
-                mAnimationProvider.startAnimation(mScroller);
-                this.postInvalidate();
             }
         }
 
         return true;
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(mBgColor);
+//        Log.e("onDraw","isNext:" + isNext + "          isRuning:" + isRuning);
+        if (isRuning) {
+            mAnimationProvider.drawMove(canvas);
+        } else {
+            mAnimationProvider.drawStatic(canvas);
+        }
+
+        if (mCurrentMode != Mode.Normal) {
+            Log.e("onDraw", "---x-------onDraw-----------------y--" + mCurrentMode);
+            DrawSelectText(canvas);
+        }
+    }
+
+    private float BorderPointradius = 20;
+    private Path mSelectTextPath = new Path();
+    private ShowChar FirstSelectShowChar = null;
+    private ShowChar LastSelectShowChar = null;
+
+    private void DrawSelectText(Canvas canvas) {
+        if (mCurrentMode == Mode.PressSelectText) {
+            DrawPressSelectText(canvas, true);
+            DrawMoveSelectText(canvas);
+        } else if (mCurrentMode == Mode.SelectMoveForward) {
+            DrawMoveSelectText(canvas);
+        } else if (mCurrentMode == Mode.SelectMoveBack) {
+            DrawMoveSelectText(canvas);
+        }
+    }
+
+    private void DrawMoveSelectText(Canvas canvas) {
+        if (FirstSelectShowChar == null || LastSelectShowChar == null)
+            return;
+        GetSelectData();
+        DrawSeletLines(canvas);
+        DrawBorderPoint(canvas);
+    }
+
+    //文字两边的光标
+    private void DrawBorderPoint(Canvas canvas) {
+        float Padding = 0;
+
+        canvas.drawCircle(FirstSelectShowChar.TopLeftPosition.x - Padding,
+                FirstSelectShowChar.TopLeftPosition.y - Padding, BorderPointradius, mBorderPointPaint);
+
+        canvas.drawCircle(LastSelectShowChar.BottomRightPosition.x + Padding,
+                LastSelectShowChar.BottomRightPosition.y + Padding, BorderPointradius, mBorderPointPaint);
+
+        canvas.drawLine(FirstSelectShowChar.TopLeftPosition.x - Padding,
+                FirstSelectShowChar.TopLeftPosition.y - Padding, FirstSelectShowChar.BottomLeftPosition.x - Padding,
+                FirstSelectShowChar.BottomLeftPosition.y, mBorderPointPaint);
+
+        canvas.drawLine(LastSelectShowChar.BottomRightPosition.x + Padding,
+                LastSelectShowChar.BottomRightPosition.y + Padding, LastSelectShowChar.TopRightPosition.x + Padding,
+                LastSelectShowChar.TopRightPosition.y, mBorderPointPaint);
+    }
+
+    // 绘制椭圆型的选中背景
+    private void DrawSeletLines(Canvas canvas) {
+        for (ShowLine l : mSelectLines) {
+            Log.e("selectline---------->", l.getLineData() + "");
+
+            if (l.CharsData != null && l.CharsData.size() > 0) {
+
+
+                ShowChar fistchar = l.CharsData.get(0);
+                ShowChar lastchar = l.CharsData.get(l.CharsData.size() - 1);
+
+                float fw = fistchar.charWidth;
+                float lw = lastchar.charWidth;
+
+                RectF rect = new RectF(fistchar.TopLeftPosition.x, fistchar.TopLeftPosition.y,
+                        lastchar.TopRightPosition.x, lastchar.BottomRightPosition.y);
+
+                canvas.drawRoundRect(rect, fw / 2,
+                        TextHeight / 2, mTextSelectPaint);
+
+            }
+        }
+    }
+
+    private void GetSelectData() {
+
+        Boolean Started = false;
+        Boolean Ended = false;
+
+        mSelectLines.clear();
+
+        // 找到选择的字符数据，转化为选择的行，然后将行选择背景画出来
+        for (ShowLine l : mLinseData) {
+
+            ShowLine selectline = new ShowLine();
+            selectline.CharsData = new ArrayList<ShowChar>();
+
+            for (ShowChar c : l.CharsData) {
+
+                if (!Started) {
+                    if (c.Index == FirstSelectShowChar.Index) {
+                        Started = true;
+                        selectline.CharsData.add(c);
+                        if (c.Index == LastSelectShowChar.Index) {
+                            Ended = true;
+                            break;
+                        }
+                    }
+                } else {
+
+                    if (c.Index == LastSelectShowChar.Index) {
+                        Ended = true;
+                        if (!selectline.CharsData.contains(c)) {
+                            selectline.CharsData.add(c);
+                        }
+                        break;
+                    } else {
+                        selectline.CharsData.add(c);
+                    }
+                }
+            }
+
+            mSelectLines.add(selectline);
+
+            if (Started && Ended) {
+                break;
+            }
+        }
+    }
+
+
+    //按下时查找字符串所在位置，画上下左右
+    private void DrawPressSelectText(Canvas canvas, boolean isFirst) {
+        ShowChar p = DetectPressShowChar(Down_X, Down_Y, isFirst);
+
+        Log.e("DrawPressSelectText", "---------------ShowChar=" + p);
+
+        // 找到了选择的字符，首次按下选一行，不走这
+        if (p != null && !isFirst) {
+//            FirstSelectShowChar = LastSelectShowChar = p;
+            mSelectTextPath.reset();
+            mSelectTextPath.moveTo(p.TopLeftPosition.x, p.TopLeftPosition.y);
+            mSelectTextPath.lineTo(p.TopRightPosition.x, p.TopRightPosition.y);
+            mSelectTextPath.lineTo(p.BottomRightPosition.x, p.BottomRightPosition.y);
+            mSelectTextPath.lineTo(p.BottomLeftPosition.x, p.BottomLeftPosition.y);
+            canvas.drawPath(mSelectTextPath, mTextSelectPaint);
+
+            DrawBorderPoint(canvas);
+        }
+    }
+
+    /**
+     * 查找字符串在哪一个的哪个字
+     *
+     * @param down_X2
+     * @param down_Y2
+     * @return
+     */
+    private ShowChar DetectPressShowChar(float down_X2, float down_Y2) {
+        return DetectPressShowChar(down_X2, down_Y2, false);
+    }
+
+    private ShowChar DetectPressShowChar(float down_X2, float down_Y2, boolean isFirst) {
+        for (ShowLine l : mLinseData) {
+            for (ShowChar c : l.CharsData) {
+                if (down_Y2 > c.BottomLeftPosition.y) {
+                    break;// 说明是在下一行
+                }
+                if (down_X2 >= c.BottomLeftPosition.x && down_X2 <= c.BottomRightPosition.x) {
+                    //首次按下把这一行都选中
+                    if (isFirst) {
+                        FirstSelectShowChar = l.getCharsData().get(0);
+                        LastSelectShowChar = l.getCharsData().get(l.getCharsData().size() - 1);
+                        Log.e("DetectPressShowChar", "--------------这一行都选中=" + FirstSelectShowChar.chardata);
+
+                    }
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public void computeScroll() {
@@ -335,4 +612,97 @@ public class MyPageWidget extends android.support.v7.widget.AppCompatEditText {
         void cancel();
     }
 
+    public static enum Mode {
+        Normal, PullDown, PressSelectText, SelectMoveForward, SelectMoveBack
+    }
+
+    private boolean CanMoveBack(float Tounchx, float Tounchy) {
+
+        Path p = new Path();
+        p.moveTo(FirstSelectShowChar.TopLeftPosition.x, FirstSelectShowChar.TopLeftPosition.y);
+        p.lineTo(getWidth(), FirstSelectShowChar.TopLeftPosition.y);
+        p.lineTo(getWidth(), getHeight());
+        p.lineTo(0, getHeight());
+        p.lineTo(0, FirstSelectShowChar.BottomLeftPosition.y);
+        p.lineTo(FirstSelectShowChar.BottomLeftPosition.x, FirstSelectShowChar.BottomLeftPosition.y);
+        p.lineTo(FirstSelectShowChar.TopLeftPosition.x, FirstSelectShowChar.TopLeftPosition.y);
+
+        return computeRegion(p).contains((int) Tounchx, (int) Tounchy);
+    }
+
+    private boolean CanMoveForward(float Tounchx, float Tounchy) {
+
+        Path p = new Path();
+        p.moveTo(LastSelectShowChar.TopRightPosition.x, LastSelectShowChar.TopRightPosition.y);
+        p.lineTo(getWidth(), LastSelectShowChar.TopRightPosition.y);
+        p.lineTo(getWidth(), 0);
+        p.lineTo(0, 0);
+        p.lineTo(0, LastSelectShowChar.BottomRightPosition.y);
+        p.lineTo(LastSelectShowChar.BottomRightPosition.x, LastSelectShowChar.BottomRightPosition.y);
+        p.lineTo(LastSelectShowChar.TopRightPosition.x, LastSelectShowChar.TopRightPosition.y);
+
+        return computeRegion(p).contains((int) Tounchx, (int) Tounchy);
+    }
+
+    private void Release() {
+        Down_X = -1;// 释放
+        Down_Y = -1;
+    }
+
+    // 检测是否准备滑动选择文字
+    private Boolean CheckIfTrySelectMove(float xposition, float yposition) {
+        if (FirstSelectShowChar == null || LastSelectShowChar == null) {
+            return false;
+        }
+
+        float flx, fty, frx, fby;
+
+        float hPadding = FirstSelectShowChar.charWidth;
+        Log.e("CheckIfTrySelectMove", "------------hPadding---------" + hPadding);
+        hPadding = hPadding < 10 ? 10 : hPadding;
+
+        flx = FirstSelectShowChar.TopLeftPosition.x - hPadding;
+        frx = FirstSelectShowChar.TopLeftPosition.x;
+
+        fty = FirstSelectShowChar.TopLeftPosition.y;
+        fby = FirstSelectShowChar.BottomLeftPosition.y;
+
+        float llx, lty, lrx, lby;
+
+        llx = LastSelectShowChar.BottomRightPosition.x;
+        lrx = LastSelectShowChar.BottomRightPosition.x + hPadding;
+
+        lty = LastSelectShowChar.TopRightPosition.y;
+        lby = LastSelectShowChar.BottomRightPosition.y;
+
+        Log.i("up1x", xposition + "-----1----->=" + flx + "--------------<=" + frx);
+        Log.i("up2y", yposition + "-----2----->=" + fty + "--------------<=" + fby);
+        if ((xposition + 30 >= flx && xposition <= frx) && (yposition >= fty && yposition <= fby)) {
+            mCurrentMode = Mode.SelectMoveForward;
+            return true;
+        }
+        Log.w("down1x", xposition + "---------1------->=" + llx + "--------------<=" + lrx);
+        Log.w("down2y", yposition + "---------2------->=" + lty + "--------------<=" + lby);
+        if ((xposition + 30 >= llx && xposition <= lrx) && (yposition >= lty)) {
+            mCurrentMode = Mode.SelectMoveBack;
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 通过路径计算区域
+     *
+     * @param path 路径对象
+     * @return 路径的Region
+     */
+    private Region computeRegion(Path path) {
+        Region region = new Region();
+        RectF f = new RectF();
+        path.computeBounds(f, true);
+        region.setPath(path, new Region((int) f.left, (int) f.top, (int) f.right, (int) f.bottom));
+        return region;
+    }
 }

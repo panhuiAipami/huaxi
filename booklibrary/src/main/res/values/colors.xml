@@ -155,6 +155,7 @@
     <color name="down_load_font_color1">#404050</color>
     <color name="down_load_font_color2">#aeacbd</color>
     <color name="down_load_violet">#7d50ff</color>
+    <color name="select_font_bg">#337d50ff</color>
 
 
     <!--花都颜色-->
