@@ -1,4 +1,4 @@
-package com.spriteapp.booklibrary.ui.dialog;
+package com.spriteapp.booklibrary.listener;
 
 import android.view.KeyEvent;
 import android.view.MotionEvent;

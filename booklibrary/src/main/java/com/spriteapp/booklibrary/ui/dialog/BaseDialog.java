@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.listener.DialogTouchListener;
 
 
 /**

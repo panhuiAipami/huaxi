@@ -199,8 +199,8 @@ public class PtrFrameLayout extends ViewGroup {
         if (!isEnabled() || mHeaderView == null || mContentView == null) {
             return dispatchTouchEventSuper(e);
         }
-        Log.e("dispatchTouchEvent",MyPageWidget.mCurrentMode+"-------------------"+MyPageWidget.Mode.Normal);
-        if(MyPageWidget.mCurrentMode  != MyPageWidget.Mode.Normal){
+        Log.e("dispatchTouchEvent", MyPageWidget.mCurrentMode + "-------------------" + MyPageWidget.Mode.Normal);
+        if (MyPageWidget.mCurrentMode != MyPageWidget.Mode.Normal) {
             return dispatchTouchEventSuper(e);
         }
 
@@ -208,6 +208,7 @@ public class PtrFrameLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                MyPageWidget.isPullDown = false;
                 mPtrIndicator.onRelease();
                 if (mPtrIndicator.hasLeftStartPosition()) {
                     onRelease();
@@ -254,11 +255,10 @@ public class PtrFrameLayout extends ViewGroup {
                 boolean moveUp = !moveDown;
                 boolean canMoveUp = mPtrIndicator.hasLeftStartPosition();
 
-                if (DEBUG) {
-                    boolean canMoveDown = mPtrHandler != null &&
-                            mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView);
-                }
 
+                if (moveDown) {
+                    MyPageWidget.isPullDown = true;
+                }
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
                     return dispatchTouchEventSuper(e);
                 }

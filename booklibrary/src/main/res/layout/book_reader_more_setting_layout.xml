@@ -506,8 +506,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="字体"
-
+                android:text="翻页"
                 android:textColor="@color/down_load_font_color2" />
 
             <HorizontalScrollView

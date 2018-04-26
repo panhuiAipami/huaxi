@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.widget.readview;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -21,13 +23,17 @@ import android.widget.Scroller;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.dialog.MyPopupWindow;
+import com.spriteapp.booklibrary.ui.dialog.ShareSelectTextDialog;
+import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.readview.animation.AnimationProvider;
 import com.spriteapp.booklibrary.widget.readview.animation.CoverAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.NoneAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.SimulationAnimation;
 import com.spriteapp.booklibrary.widget.readview.animation.SlideAnimation;
-import com.spriteapp.booklibrary.widget.readview.dialog.MyPopupWindow;
 import com.spriteapp.booklibrary.widget.readview.util.ShowChar;
 import com.spriteapp.booklibrary.widget.readview.util.ShowLine;
 
@@ -38,7 +44,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/8/29 0029.
  */
-public class MyPageWidget extends View {
+public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     private int mScreenWidth = 0; // 屏幕宽
     private int mScreenHeight = 0; // 屏幕高
     private Context mContext;
@@ -63,14 +69,17 @@ public class MyPageWidget extends View {
     Bitmap mNextPageBitmap = null;
     private AnimationProvider mAnimationProvider;
 
-    Scroller mScroller;
+    private Scroller mScroller;
     private int mBgColor = 0xFAF5ED;
     private TouchListener mTouchListener;
     private Paint mBorderPointPaint, mTextSelectPaint = null;
     private List<ShowLine> mLinseData = null;
     private List<ShowLine> mSelectLines = new ArrayList<>();
+    public static boolean isPullDown = false;
     private float TextHeight;
+    private String selectText = "";
     private MyPopupWindow popupWindow;
+    private BookDetailResponse bookDetailResponse;
 
     public MyPageWidget(Context context) {
         this(context, null);
@@ -82,7 +91,8 @@ public class MyPageWidget extends View {
 
     public MyPageWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        popupWindow = new MyPopupWindow(context, null);
+        ListenerManager.getInstance().setOnButtonClick(this);
+        popupWindow = new MyPopupWindow(context);
         mBorderPointPaint = new Paint();
         mBorderPointPaint.setColor(ContextCompat.getColor(context, R.color.square_comment_selector));
         mBorderPointPaint.setStrokeWidth(5);//宽度
@@ -144,20 +154,16 @@ public class MyPageWidget extends View {
 
     public void getListData(List<ShowLine> list) {
         mLinseData = list;
-        for (ShowLine c : list) {
-            Log.e("getListData", "--------getListData-----------" + c.getLineData());
-        }
     }
 
-    boolean isDown = false;
     private OnLongClickListener mLongClickListener = new OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
 
-            if (mCurrentMode == Mode.Normal && isDown) {
-                Log.e("onLongClick", Down_X + "---x-------onLongClick-----------------y--" + Down_Y);
+            if (mCurrentMode == Mode.Normal && !isMove && !isPullDown) {
                 if (Down_X > 0 && Down_Y > 0) {// 说明还没释放，是长按事件
+                    selectText = "";
                     mCurrentMode = Mode.PressSelectText;
                     postInvalidate();
                 }
@@ -167,7 +173,7 @@ public class MyPageWidget extends View {
     };
 
     public void showPopWindow() {
-        popupWindow.showAtLocation(this,  Gravity.TOP|Gravity.LEFT, (int) Down_X, (int) Down_Y);
+        popupWindow.showAtLocation(this, Gravity.TOP | Gravity.LEFT, (int) Down_X, (int) Down_Y);
     }
 
     public void dismissPopWindow() {
@@ -178,6 +184,7 @@ public class MyPageWidget extends View {
     private float Tounch_X = 0, Tounch_Y = 0;
     private float Down_X = -1, Down_Y = -1;
     public static Mode mCurrentMode = Mode.Normal;
+    Boolean isTrySelectMove = true;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -195,18 +202,18 @@ public class MyPageWidget extends View {
 
         mAnimationProvider.setTouchPoint(x, y);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            isDown = true;
             getParent().requestDisallowInterceptTouchEvent(true);
             Down_X = Tounch_X;
             Down_Y = Tounch_Y;
             dismissPopWindow();
             if (mCurrentMode != Mode.Normal) {
-                Boolean isTrySelectMove = CheckIfTrySelectMove(Down_X, Down_Y);
-                if (!isTrySelectMove) {// 如果不是准备滑动选择文字，转变为正常模式，隐藏选择框
-                    mCurrentMode = Mode.Normal;
-                    invalidate();
-                }
+                isTrySelectMove = CheckIfTrySelectMove(Down_X, Down_Y);
+//                if (!isTrySelectMove) {// 如果不是准备滑动选择文字，转变为正常模式，隐藏选择框
+//                    mCurrentMode = Mode.Normal;
+//                    invalidate();
+//                }
             } else {
+                isTrySelectMove = true;
                 downX = (int) event.getX();
                 downY = (int) event.getY();
                 moveX = 0;
@@ -259,6 +266,7 @@ public class MyPageWidget extends View {
                     Log.e("is CanMoveBack", "not CanMoveBack");
                 }
             } else if (mCurrentMode == Mode.PressSelectText) {
+                return false;
             } else {
 
 
@@ -271,11 +279,11 @@ public class MyPageWidget extends View {
                 if (isMove) {
                     isMove = true;
                     if (moveX == 0 && moveY == 0) {
-                        Log.e("ACTION_MOVE", "--------->isMove");
+                        Log.e("ACTION_MOVE", y - downY + "<---------isMove--X=>" + (x - downX));
                         //判断翻得是上一页还是下一页
-                        if (x - downX > 0) {
+                        if (x - downX > 0 && Math.abs(y - downY) < Math.abs(x - downX)) {
                             isNext = false;
-                        } else {
+                        } else if (x - downX < 0 && Math.abs(y - downY) < Math.abs(x - downX)) {
                             isNext = true;
                         }
                         cancelPage = false;
@@ -330,10 +338,16 @@ public class MyPageWidget extends View {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             getParent().requestDisallowInterceptTouchEvent(true);
             //确定popWindow的位置
-            if (mCurrentMode != Mode.Normal) {
-                Down_X = BaseActivity.deviceWidth/2-Util.dp2px(mContext,75);
-                Down_Y = FirstSelectShowChar.TopLeftPosition.y- Util.dp2px(mContext,50);
-                showPopWindow();
+            if (mCurrentMode != Mode.Normal && FirstSelectShowChar != null) {
+                Down_X = BaseActivity.deviceWidth / 2 - Util.dp2px(mContext, 90);
+                Down_Y = FirstSelectShowChar.TopLeftPosition.y - Util.dp2px(mContext, 70);
+                if (!isTrySelectMove) {// 如果不是准备滑动选择文字，转变为正常模式，隐藏选择框
+                    dismissPopWindow();
+                    mCurrentMode = Mode.Normal;
+                    invalidate();
+                } else {
+                    showPopWindow();
+                }
                 Release();
             } else {
                 Log.e("ACTION_UP", "-------->ACTION_UP");
@@ -450,6 +464,7 @@ public class MyPageWidget extends View {
     // 绘制椭圆型的选中背景
     private void DrawSeletLines(Canvas canvas) {
         for (ShowLine l : mSelectLines) {
+            selectText += l.getLineData();
             Log.e("selectline---------->", l.getLineData() + "");
 
             if (l.CharsData != null && l.CharsData.size() > 0) {
@@ -601,6 +616,7 @@ public class MyPageWidget extends View {
         this.mTouchListener = mTouchListener;
     }
 
+
     public interface TouchListener {
 
         Boolean center();
@@ -612,7 +628,7 @@ public class MyPageWidget extends View {
         void cancel();
     }
 
-    public static enum Mode {
+    public enum Mode {
         Normal, PullDown, PressSelectText, SelectMoveForward, SelectMoveBack
     }
 
@@ -655,7 +671,7 @@ public class MyPageWidget extends View {
             return false;
         }
 
-        float flx, fty, frx, fby;
+        float flx, fty, frx, fby;//第一个字左边 X，右边 X，顶部Y，底部Y
 
         float hPadding = FirstSelectShowChar.charWidth;
         Log.e("CheckIfTrySelectMove", "------------hPadding---------" + hPadding);
@@ -667,7 +683,7 @@ public class MyPageWidget extends View {
         fty = FirstSelectShowChar.TopLeftPosition.y;
         fby = FirstSelectShowChar.BottomLeftPosition.y;
 
-        float llx, lty, lrx, lby;
+        float llx, lty, lrx, lby;//最后一个字右边 X，右边加上字的宽度 X，顶部Y，底部Y
 
         llx = LastSelectShowChar.BottomRightPosition.x;
         lrx = LastSelectShowChar.BottomRightPosition.x + hPadding;
@@ -677,19 +693,23 @@ public class MyPageWidget extends View {
 
         Log.i("up1x", xposition + "-----1----->=" + flx + "--------------<=" + frx);
         Log.i("up2y", yposition + "-----2----->=" + fty + "--------------<=" + fby);
-        if ((xposition + 30 >= flx && xposition <= frx) && (yposition >= fty && yposition <= fby)) {
+        if ((xposition + 20 >= flx && xposition - 20 <= frx) && (yposition >= fty && yposition <= fby)) {
             mCurrentMode = Mode.SelectMoveForward;
             return true;
         }
         Log.w("down1x", xposition + "---------1------->=" + llx + "--------------<=" + lrx);
         Log.w("down2y", yposition + "---------2------->=" + lty + "--------------<=" + lby);
-        if ((xposition + 30 >= llx && xposition <= lrx) && (yposition >= lty)) {
+        if ((xposition + 20 >= llx && xposition <= lrx) && (yposition >= lty)) {
             mCurrentMode = Mode.SelectMoveBack;
             return true;
         }
 
-        return false;
-
+        //在选择范围外40dp取消选择
+        if (fty - yposition > Util.dp2px(mContext, 30) || yposition - lby > Util.dp2px(mContext, 30)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -705,4 +725,35 @@ public class MyPageWidget extends View {
         region.setPath(path, new Region((int) f.left, (int) f.top, (int) f.right, (int) f.bottom));
         return region;
     }
+
+
+    public void bookDetail(BookDetailResponse shareDetail) {
+        bookDetailResponse = shareDetail;
+    }
+
+    @Override
+    public void comment() {
+        initSelectBg();
+    }
+
+    @Override
+    public void copy() {
+        initSelectBg();
+        ClipboardManager clipboardManager = (ClipboardManager) mContext.getSystemService(mContext.CLIPBOARD_SERVICE);
+        ClipData mClipData = ClipData.newPlainText("copy_text", selectText);
+        clipboardManager.setPrimaryClip(mClipData);
+        ToastUtil.showToast("已复制到剪贴板");
+    }
+
+    @Override
+    public void share() {
+        initSelectBg();
+        new ShareSelectTextDialog(mContext).show();
+    }
+
+    public void initSelectBg() {
+        mCurrentMode = Mode.Normal;
+        invalidate();
+    }
+
 }

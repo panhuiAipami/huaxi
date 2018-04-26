@@ -446,12 +446,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (status == 0) {
                 mReadListener.onLoadChapterFailure(mCurrentChapter);
             } else {
-                Log.e("openChapter","---------------openChapter------------");
+                BookDetailResponse shareDetail = mNewBookDetail != null ?
+                        mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                 //更多设置里面内容显示
                 if (readMoreSettingLayout != null) {
-                    BookDetailResponse shareDetail = mNewBookDetail != null ?
-                            mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
                     readMoreSettingLayout.initRaderSetting(shareDetail);
+                }
+                if (bookpage != null) {
+                    bookpage.bookDetail(shareDetail);
                 }
                 //延迟关闭，防止黑屏闪过
                 handler.postDelayed(new Runnable() {

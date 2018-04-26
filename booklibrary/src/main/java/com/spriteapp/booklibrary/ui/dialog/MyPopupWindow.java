@@ -1,27 +1,26 @@
-package com.spriteapp.booklibrary.widget.readview.dialog;
+package com.spriteapp.booklibrary.ui.dialog;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 
 
 public class MyPopupWindow extends PopupWindow {
     Context mContext;
     private  LayoutInflater mInflater;
     private  View mContentView;
-    View.OnClickListener click;
+    OnButtonClick click;
 
-    public MyPopupWindow(Context context, View.OnClickListener click) {
+    public MyPopupWindow(Context context) {
         super(context);
-        this.click = click;
+        this.click  = ListenerManager.getInstance().getOnButtonClick();
         this.mContext=context;
         //打气筒
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -90,15 +89,32 @@ public class MyPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (click != null)
+                    click.comment();
             }
         });
 
-        textView1.setOnClickListener(new View.OnClickListener() {
+        textView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
-                click.onClick(v);
+                if(click != null)
+                click.copy();
             }
         });
+        textView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                if(click != null)
+                    click.share();
+            }
+        });
+    }
+
+    public interface OnButtonClick{
+        public void comment();
+        public void copy();
+        public void share();
     }
 }
