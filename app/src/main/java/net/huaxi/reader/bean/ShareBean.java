@@ -18,6 +18,16 @@ public class ShareBean implements Serializable {
 
     private String desc;
     private String author_name;
+    private String imagePath;
+
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public String getAuthor_name() {
         return author_name;

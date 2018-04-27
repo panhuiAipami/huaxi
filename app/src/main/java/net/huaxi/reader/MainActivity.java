@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode, int type) {
+                    public void showShareDialog(Context context, BookDetailResponse shareDetail, String imagePath, boolean isNightMode, int type) {
 //                        Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
                         try {
                             if (shareDetail != null && type == 1) {
@@ -98,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else if (shareDetail != null && type == 2) {//收徒分享
                                 shareBean = new ShareBean();
+                                Intent intent = new Intent(MainActivity.this, ShareActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(SHAREDATA, shareBean);
+                                bundle.putInt(SHARETYPE, type);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            } else if (type == 3) {//图片分享
+                                shareBean = new ShareBean();
+                                shareBean.setImagePath(imagePath);
                                 Intent intent = new Intent(MainActivity.this, ShareActivity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable(SHAREDATA, shareBean);

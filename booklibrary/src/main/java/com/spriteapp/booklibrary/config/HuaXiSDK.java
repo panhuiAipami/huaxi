@@ -85,10 +85,13 @@ public class HuaXiSDK {
     }
 
     public void showShareDialog(Context context, BookDetailResponse shareDetail, boolean isNightMode, int type) {
+        showShareDialog(context,shareDetail,null,isNightMode,type);
+    }
+    public void showShareDialog(Context context, BookDetailResponse shareDetail, String imagePath, boolean isNightMode, int type) {
         if (mConfig.channelListener == null) {
             throw new NullPointerException("HuaXiConfig ChannelListener不能为空");
         }
-        mConfig.channelListener.showShareDialog(context, shareDetail, isNightMode, type);
+        mConfig.channelListener.showShareDialog(context, shareDetail,imagePath, isNightMode, type);
     }
 
     public int getChannelId() {

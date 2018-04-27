@@ -21,6 +21,8 @@ import net.huaxi.reader.bean.ShareBean;
 import net.huaxi.reader.utils.MLog;
 import net.huaxi.reader.utils.ToastUtil;
 
+import java.io.File;
+
 import static com.umeng.socialize.bean.SHARE_MEDIA.QQ;
 import static com.umeng.socialize.bean.SHARE_MEDIA.QZONE;
 import static com.umeng.socialize.bean.SHARE_MEDIA.SINA;
@@ -154,16 +156,17 @@ public class ShareDialog extends BaseDialog {
             ToastUtil.showLong("请先安装" + name + "客户端");
             return;
         }
-        UMWeb web;
+        UMWeb web = null;
+        UMImage thumb = null;
         if (share_type == 1) {
-            UMImage thumb = new UMImage(activity, shareBean.getImgUrl());
+            thumb = new UMImage(activity, shareBean.getImgUrl());
             MLog.d("thum", shareBean.getImgUrl());
             web = new UMWeb(shareBean.getShareUrl());
             web.setThumb(thumb);
             web.setDescription(shareBean.getDesc());
             web.setTitle(shareBean.getTitle());
-        } else{
-            UMImage thumb = new UMImage(activity, "http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
+        } else if (share_type == 2) {
+            thumb = new UMImage(activity, "http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
             web = new UMWeb("http://baidu.com");
             web.setThumb(thumb);
             if (type == 1) {
@@ -174,46 +177,31 @@ public class ShareDialog extends BaseDialog {
                 title = "全新模式,读小说赚现金!";
             }
             web.setDescription(TextUtils.isEmpty(title) ? "划时代小说阅读神器,看小说也能赚钱!" : title);
-//            web.setTitle(shareBean.getTitle());
+            shareWeb(web, Platform);
+        } else if (share_type == 3) {//分享选择文字截图
+            if(shareBean.getImagePath() != null) {
+                thumb = new UMImage(activity, new File(shareBean.getImagePath()));
+                shareImage(thumb, Platform);
+            }else{
+                ToastUtil.showShort("分享失败");
+            }
         }
+    }
 
-
-        new ShareAction(activity).withMedia(web).setPlatform(Platform).setCallback(new UMShareListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
-
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA share_media) {
-                Log.d("share_qq", "成功");
-                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
-                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().success();
-                finishShareActivity();
-
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                Log.d("share_qq", "失败");
-                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
-                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().faild();
-                finishShareActivity();
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA share_media) {
-                Log.d("share_qq", "取消");
-                if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
-                    net.huaxi.reader.callback.ListenerManager.getInstance().getResult().cancel();
-                finishShareActivity();
-
-            }
-        }).setShareboardclickCallback(new ShareBoardlistener() {
+    public void shareWeb(UMWeb web, SHARE_MEDIA Platform) {
+        new ShareAction(activity).withMedia(web).setPlatform(Platform).setCallback(umShareListener).setShareboardclickCallback(new ShareBoardlistener() {
             @Override
             public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                Log.d("share_qq", "setShareboardclickCallback");
+                Log.d("shareWeb", "setShareboardclickCallback");
+            }
+        }).share();
+    }
+
+    public void shareImage(UMImage image, SHARE_MEDIA Platform) {
+        new ShareAction(activity).withMedia(image).setPlatform(Platform).setCallback(umShareListener).setShareboardclickCallback(new ShareBoardlistener() {
+            @Override
+            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                Log.d("shareImage", "setShareboardclickCallback");
             }
         }).share();
     }
@@ -225,4 +213,37 @@ public class ShareDialog extends BaseDialog {
         }
     }
 
+    UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            Log.d("share_qq", "成功");
+            if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                net.huaxi.reader.callback.ListenerManager.getInstance().getResult().success();
+            finishShareActivity();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Log.d("share_qq", "失败");
+            if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                net.huaxi.reader.callback.ListenerManager.getInstance().getResult().faild();
+            finishShareActivity();
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            Log.d("share_qq", "取消");
+            if (net.huaxi.reader.callback.ListenerManager.getInstance().getResult() != null)
+                net.huaxi.reader.callback.ListenerManager.getInstance().getResult().cancel();
+            finishShareActivity();
+
+        }
+    };
 }

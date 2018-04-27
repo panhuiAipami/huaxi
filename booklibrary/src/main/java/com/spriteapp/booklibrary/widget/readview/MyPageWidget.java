@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.widget.readview;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -25,6 +26,7 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.BookCommentActivity;
 import com.spriteapp.booklibrary.ui.dialog.MyPopupWindow;
 import com.spriteapp.booklibrary.ui.dialog.ShareSelectTextDialog;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -163,7 +165,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
             if (mCurrentMode == Mode.Normal && !isMove && !isPullDown) {
                 if (Down_X > 0 && Down_Y > 0) {// 说明还没释放，是长按事件
-                    selectText = "";
                     mCurrentMode = Mode.PressSelectText;
                     postInvalidate();
                 }
@@ -463,6 +464,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
     // 绘制椭圆型的选中背景
     private void DrawSeletLines(Canvas canvas) {
+        selectText = "";
         for (ShowLine l : mSelectLines) {
             selectText += l.getLineData();
             Log.e("selectline---------->", l.getLineData() + "");
@@ -734,6 +736,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void comment() {
         initSelectBg();
+        mContext.startActivity(new Intent(mContext, BookCommentActivity.class));
     }
 
     @Override
@@ -748,7 +751,9 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void share() {
         initSelectBg();
-        new ShareSelectTextDialog(mContext).show();
+        ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
+        selectTextDialog.setData(bookDetailResponse,selectText);
+        selectTextDialog.show();
     }
 
     public void initSelectBg() {
