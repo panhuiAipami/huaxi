@@ -18,6 +18,7 @@ import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.widget.readview.util.BitmapUtil;
 
 /**
+ * 分享文本截图
  * Created by panhui on 2018/4/26.
  */
 
