@@ -1,8 +1,6 @@
 package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,13 +13,11 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
-import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.second.FreeAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
-import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 
 import java.util.List;
@@ -49,7 +45,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View convertView = null;
         if (viewType == SHUPOS) {//竖布局
             convertView = LayoutInflater.from(context).inflate(R.layout.store_details_layout, parent, false);

@@ -165,6 +165,7 @@ public class ShareDialog extends BaseDialog {
             web.setThumb(thumb);
             web.setDescription(shareBean.getDesc());
             web.setTitle(shareBean.getTitle());
+            shareWeb(web, Platform);
         } else if (share_type == 2) {
             thumb = new UMImage(activity, "http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png");
             web = new UMWeb("http://baidu.com");

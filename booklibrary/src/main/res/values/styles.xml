@@ -50,6 +50,10 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/book_reader_main_color</item>
     </style>
+    <style name="Reader_Dialog_Fullscreen">
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowNoTitle">true</item>
+    </style>
     <!-- 全屏dialog样式 -->
     <style name="Dialog_Fullscreen">
         <item name="android:windowFullscreen">true</item>

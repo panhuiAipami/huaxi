@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,23 +24,17 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
-import com.spriteapp.booklibrary.ui.adapter.holder.BannerViewHolder;
 import com.spriteapp.booklibrary.ui.adapter.second.FreeAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
-import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.Util;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
-import com.zhouwei.mzbanner.MZBannerView;
-import com.zhouwei.mzbanner.holder.MZHolderCreator;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.spriteapp.booklibrary.ui.fragment.NewNativeBookStoreFragment.ISTOP;
 
 /**
  * Created by Administrator on 2018/1/30.
@@ -80,7 +73,6 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View convertView = null;
         if (viewType == BANNERPOS) {//左边文字
             convertView = LayoutInflater.from(context).inflate(R.layout.store_banner_layout, parent, false);
@@ -116,7 +108,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
 //                initBanner(bannerViewHolder.banner, top_banner_lists);
                 initBanner(bannerViewHolder.banner, top_banner_lists);
-                ininClick(bannerViewHolder);
+//                ininClick(bannerViewHolder);
             }
         } else if (holder instanceof TitleViewHolder) {
 //            if (titlePos == -1) return;
@@ -231,8 +223,8 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     holder.hour_time.setText("00");
                 }
 
-                holder.minute_time.setText(TimeUtil.getDateMinute(millisUntilFinished));
-                holder.second_time.setText(TimeUtil.getDateSecond(millisUntilFinished));
+//                holder.minute_time.setText(TimeUtil.getDateMinute(millisUntilFinished));
+//                holder.second_time.setText(TimeUtil.getDateSecond(millisUntilFinished));
 
             }
 
@@ -261,7 +253,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (v == classification_text) {//分类
 
             } else if (v == ranking_text) {//排行
-                ActivityUtil.toNestingActivity(context, 1, sex);
+//                ActivityUtil.toNestingActivity(context, 1, sex);
 
             } else if (v == monthly_text) {//包月
 
@@ -308,12 +300,11 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!TextUtils.isEmpty(url)) {
-//                    Uri uri = Uri.parse(url);
-//                    jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-//                    ActivityUtil.toWebViewActivity(context, jumpUrl);
-//                }
-                ActivityUtil.toStoreDetailsActivity(context, type, sex, title);
+                if (!TextUtils.isEmpty(url)) {
+                    Uri uri = Uri.parse(url);
+                    jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
+                    ActivityUtil.toWebViewActivity(context, jumpUrl);
+                }
 
             }
         });
@@ -326,53 +317,52 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * @param banner
      * @param top_banner_lists
      */
-    public void initBanner(MZBannerView banner, final List<NewBookStoreResponse.TopBannerListsBean> top_banner_lists) {
-//        Object a[] = new Object[17];
-//        a[0] = Transformer.Default;
-//        a[1] = Transformer.Accordion;
-//        a[2] = Transformer.BackgroundToForeground;
-//        a[3] = Transformer.ForegroundToBackground;
-//        a[4] = Transformer.CubeIn;
-//        a[5] = Transformer.CubeOut;
-//        a[6] = Transformer.DepthPage;
-//        a[7] = Transformer.FlipHorizontal;
-//        a[8] = Transformer.FlipVertical;
-//        a[9] = Transformer.RotateDown;
-//        a[10] = Transformer.RotateUp;
-//        a[11] = Transformer.ScaleInOut;
-//        a[12] = Transformer.Stack;
-//        a[13] = Transformer.Tablet;
-//        a[14] = Transformer.ZoomIn;
-//        a[15] = Transformer.ZoomOut;
-//        a[16] = Transformer.ZoomOutSlide;
+    public void initBanner(Banner banner, final List<NewBookStoreResponse.TopBannerListsBean> top_banner_lists) {
+        if (images.size() == 0) return;
         try {
-            banner.getViewPager().setOffscreenPageLimit(3);
-            banner.setDelayedTime(3000);
-            banner.setIndicatorVisible(false);
-//        banner.getViewPager().setPageTransformer(false, new AlphaScaleTransformer());
-            banner.setBannerPageClickListener(new MZBannerView.BannerPageClickListener() {
+            banner.setImages(images);
+            banner.setBannerAnimation(Transformer.Stack);
+            banner.setDelayTime(5000);
+            banner.setOffscreenPageLimit(3);
+            banner.setImageLoader(new RoundImageLoader() {
                 @Override
-                public void onPageClick(View view, int position) {
+                public void displayImage(Context context, Object path, RoundedImageView imageView) {
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    imageView.setCornerRadius(20);
+                    GlideUtils.loadImage(imageView, path.toString(), context);
+                }
+            });
+            banner.start();
+            banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+            banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
                     if (position < top_banner_lists.size() && top_banner_lists.get(position).getUrl() != null && !top_banner_lists.get(position).getUrl().isEmpty()) {
                         Uri uri = Uri.parse(top_banner_lists.get(position).getUrl());
                         jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
                         ActivityUtil.toWebViewActivity(context, jumpUrl);
                     }
+
                 }
             });
-            if (images != null && images.size() > 0) {
-                banner.setPages(images, new MZHolderCreator<com.spriteapp.booklibrary.ui.adapter.holder.BannerViewHolder>() {
-                    @Override
-                    public com.spriteapp.booklibrary.ui.adapter.holder.BannerViewHolder createViewHolder() {
-                        return new com.spriteapp.booklibrary.ui.adapter.holder.BannerViewHolder();
-                    }
-                });
-                banner.start();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -489,19 +479,13 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private TextView classification_text, ranking_text, monthly_text, sign_text,
             gotoMonthly_text;
 
+
     private class BannerViewHolder extends RecyclerView.ViewHolder {//轮播
-        private MZBannerView banner;
-        private LinearLayout monthly_layout;
+        private Banner banner;
 
         public BannerViewHolder(View itemView) {
             super(itemView);
-            banner = (MZBannerView) itemView.findViewById(R.id.banner);
-            classification_text = (TextView) itemView.findViewById(R.id.classification_text);
-            ranking_text = (TextView) itemView.findViewById(R.id.ranking_text);
-            monthly_text = (TextView) itemView.findViewById(R.id.monthly_text);
-            sign_text = (TextView) itemView.findViewById(R.id.sign_text);
-            gotoMonthly_text = (TextView) itemView.findViewById(R.id.gotoMonthly_text);
-            monthly_layout = (LinearLayout) itemView.findViewById(R.id.monthly_layout);
+            banner = (Banner) itemView.findViewById(R.id.banner);
             ViewGroup.LayoutParams layoutParams = banner.getLayoutParams();
 
             layoutParams.height = (BaseActivity.deviceWidth / 34) * 15;

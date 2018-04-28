@@ -114,6 +114,7 @@
         <activity android:name=".ui.activity.ApprenticeListActivity" />
         <activity android:name=".ui.activity.ProfitDetailsActivity" />
         <activity android:name=".ui.activity.BagActivity"></activity>
+        <activity android:name=".ui.activity.BookCommentActivity"></activity>
     </application>
 
 </manifest>
