@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/banner_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:riv_border_width="1px"
+        app:riv_border_color="@color/c10_themes_color"
+        app:riv_corner_radius="10dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        />
+
+</LinearLayout>

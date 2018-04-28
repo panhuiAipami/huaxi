@@ -1,12 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_background">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/app_background"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -14,7 +15,8 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="0dp">
+            android:paddingLeft="0dp"
+            android:visibility="invisible">
 
             <CheckBox
                 android:id="@+id/boy_or_girl"
@@ -43,18 +45,17 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:background="@color/app_background"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:background="@color/app_background"
-            tl:tl_indicator_color="@color/square_support_selector"
+            tl:tl_indicator_color="@color/choice_yellow_color"
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="20dp"
             tl:tl_tab_space_equal="true"
+            tl:tl_textBold="true"
             tl:tl_textSelectColor="#333333"
             tl:tl_textUnselectColor="#666666"
-            tl:tl_textBold="true"
-            tl:tl_textsize="16sp"
-            ></com.flyco.tablayout.SlidingTabLayout>
+            tl:tl_textsize="16sp"></com.flyco.tablayout.SlidingTabLayout>
 
         <ImageView
             android:id="@+id/search_btn"

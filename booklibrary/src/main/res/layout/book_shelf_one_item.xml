@@ -32,12 +32,12 @@
 
             <ImageView
                 android:id="@+id/book_reader_delete_image_view"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
-                android:src="@drawable/del_bg"
+                android:src="@drawable/del_bg_red"
                 android:visibility="gone" />
         </RelativeLayout>
 

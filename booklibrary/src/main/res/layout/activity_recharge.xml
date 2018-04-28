@@ -303,7 +303,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="花贝\n0"
+                            android:text="花瓣\n0"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -410,7 +410,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="花贝\n888"
+                            android:text="花瓣\n888"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -514,7 +514,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
-                            android:text="花贝\n3333"
+                            android:text="花瓣\n3333"
                             android:textSize="12sp" />
                     </LinearLayout>
 

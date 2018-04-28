@@ -1,84 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
     android:layout_marginTop="10dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textStyle="bold"
-        android:text="title"
-        android:textColor="@color/square_user_speak"
-        android:textSize="16sp" />
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/cover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:riv_corner_radius="6dp" />
-
-    <TextView
-        android:id="@+id/details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:text="content"
-        android:textColor="@color/square_introduce"
-        android:textSize="14sp" />
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="10dp"
+    app:contentPaddingLeft="0dp"
+    app:contentPaddingRight="0dp"
+    app:contentPaddingTop="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius_bottom_left="0dp"
+            app:riv_corner_radius_bottom_right="0dp"
+            app:riv_corner_radius_top_left="10dp"
+            app:riv_corner_radius_top_right="10dp" />
 
         <TextView
             android:id="@+id/reader"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-25dp"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/reader_icon"
             android:drawablePadding="5dp"
+            android:elevation="2dp"
             android:gravity="center_vertical|left"
             android:text="content"
-            android:textColor="@color/square_small"
+            android:textColor="@color/app_background"
             android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="title"
+                    android:textColor="@color/book_reader_black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cate_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/store_cate_bg"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="分类"
+                    android:textColor="@color/choice_cate_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="content"
+                android:textColor="@color/choice_details_color"
+                android:textSize="14sp" />
+        </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="25dp"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/look_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone">
+
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="查看详情"
-                android:textColor="@color/square_comment_selector"
-                android:textSize="12sp" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="7dp"
-                android:layout_marginLeft="3dp"
-                android:src="@mipmap/look_more_icon"/>
+                <TextView
+                    android:id="@+id/look_details"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="查看详情"
+                    android:textColor="@color/square_comment_selector"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="3dp"
+                    android:src="@mipmap/look_more_icon" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.v7.widget.CardView>

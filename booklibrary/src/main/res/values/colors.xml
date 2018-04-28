@@ -166,4 +166,15 @@
     <color name="code_btn_bg_color">#FFFEB10B</color>
     <color name="other_hint_bg_color">#FFFFF7EA</color>
     <color name="with_new_bg">#00A3FF</color>
+
+    <!--新精选书城-->
+    <color name="monthly_bg">#FFF6ED</color>
+    <color name="monthly_hint_bg">#B68307</color>
+    <color name="goto_monthly_bg">#FF8173</color>
+    <color name="choice_details_color">#9389A5</color>
+    <color name="choice_cate_color">#AFACBD</color>
+    <color name="choice_yellow_color">#FFD30B</color>
+    <color name="store_author_name_color">#BEBBCA</color>
+    <color name="book_shelf_del_layout_bg">#FFD101</color>
+    <color name="count_time_bg">#404150</color>
 </resources>
