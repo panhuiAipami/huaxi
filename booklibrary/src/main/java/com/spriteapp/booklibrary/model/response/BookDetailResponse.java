@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.model.response;
 
+import com.spriteapp.booklibrary.model.ChoiceBean;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -51,6 +53,33 @@ public class BookDetailResponse implements Serializable {
      */
     private String book_url;//书籍详情链接
     private List<String> book_keywords;//书籍关键字
+    private List<ChoiceBean.BookCategoryBean> book_category;
+    private long start_time;
+    private long end_time;
+
+    public long getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(long start_time) {
+        this.start_time = start_time;
+    }
+
+    public long getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(long end_time) {
+        this.end_time = end_time;
+    }
+
+    public List<ChoiceBean.BookCategoryBean> getBook_category() {
+        return book_category;
+    }
+
+    public void setBook_category(List<ChoiceBean.BookCategoryBean> book_category) {
+        this.book_category = book_category;
+    }
 
     public String getBook_url() {
         return book_url;

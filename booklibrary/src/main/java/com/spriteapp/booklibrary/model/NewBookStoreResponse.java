@@ -36,10 +36,17 @@ public class NewBookStoreResponse implements Serializable {
     private int code;
     private List<TopBannerListsBean> top_banner_lists;//轮播
     private List<BookDetailResponse> recommandBookList;//重磅推荐
-    private List<BookDetailResponse> freelimitBookList;//显示免费
+    private List<BookDetailResponse> freelimitBookList;//限时免费
     private List<BookDetailResponse> classicalBookList;//经典完本
     private List<BookDetailResponse> freeNewBookList;//免费新书
     private List<BookDetailResponse> recentBookList;//最近更新
+    private List<BookDetailResponse> discountlimitBookList;//限时折扣
+    //男女生频道
+    @SerializedName(value = "man_woman_one", alternate = {"location_10", "location_12"})
+    private List<BookDetailResponse> man_woman_one;//女生:现言总裁;男生:玄幻仙侠
+    @SerializedName(value = "man_woman_two", alternate = {"location_11", "location_13"})
+    private List<BookDetailResponse> man_woman_two;//女生:古言穿越;男生:都市传说
+
 
     public String getStatus() {
         return status;
@@ -135,6 +142,30 @@ public class NewBookStoreResponse implements Serializable {
 
     public void setRecentBookList(List<BookDetailResponse> recentBookList) {
         this.recentBookList = recentBookList;
+    }
+
+    public List<BookDetailResponse> getDiscountlimitBookList() {
+        return discountlimitBookList;
+    }
+
+    public void setDiscountlimitBookList(List<BookDetailResponse> discountlimitBookList) {
+        this.discountlimitBookList = discountlimitBookList;
+    }
+
+    public List<BookDetailResponse> getMan_woman_one() {
+        return man_woman_one;
+    }
+
+    public void setMan_woman_one(List<BookDetailResponse> man_woman_one) {
+        this.man_woman_one = man_woman_one;
+    }
+
+    public List<BookDetailResponse> getMan_woman_two() {
+        return man_woman_two;
+    }
+
+    public void setMan_woman_two(List<BookDetailResponse> man_woman_two) {
+        this.man_woman_two = man_woman_two;
     }
 
     public static class HashExtrainfoBean {
@@ -1007,8 +1038,8 @@ public class NewBookStoreResponse implements Serializable {
          * book_name : 司徒先生喜当爹
          * book_image : https://img.huaxi.net/upload/bookimage/2017/11/20171108114258344.jpg
          * book_intro : "这辈子你是逃不掉的！”
-         夜星儿嘴角一撇。
-         “司徒先生，我只是来告诉你一声，你快当爹了。”
+         * 夜星儿嘴角一撇。
+         * “司徒先生，我只是来告诉你一声，你快当爹了。”
          * book_share_url : http://w.huaxi.net/1108
          * book_url : huaxi://app?action=openpage&url=https%3A%2F%2Fs.hxdrive.net%2Fbook_detail%3Fformat%3Dhtml%26book_id%3D1108
          * book_total_score : 9
@@ -1281,9 +1312,9 @@ public class NewBookStoreResponse implements Serializable {
          * book_name : 重生之一笑倾城
          * book_image : https://img.huaxi.net/upload/bookimage/2018/1/20180116164141387.jpg
          * book_intro : 一场权谋，佳人为棋，三年苦楚，一朝丧命！
-         一梦回溯，重生三年前，花烛红妆，今生掌控不屈的命运；
-         弱女归，长风破浪会有时，一笑倾城，双宿双飞。
-
+         * 一梦回溯，重生三年前，花烛红妆，今生掌控不屈的命运；
+         * 弱女归，长风破浪会有时，一笑倾城，双宿双飞。
+         * <p>
          * book_share_url : http://w.huaxi.net/1391
          * book_url : huaxi://app?action=openpage&url=https%3A%2F%2Fs.hxdrive.net%2Fbook_detail%3Fformat%3Dhtml%26book_id%3D1391
          * book_total_score : 9
@@ -1556,9 +1587,9 @@ public class NewBookStoreResponse implements Serializable {
          * book_name : 撕婚十年
          * book_image : https://img.huaxi.net/upload/bookimage/2017/9/20170905164726796.jpg
          * book_intro : 我大学毕业就结婚了，老公是闺蜜的前任！
-         关系是有些复杂，但是别误会，我不是趁机上位的绿茶。
-         我和老公周翊辰是在他们分手一年以后才结婚的，准确的说我们是契约婚姻。
-         真正的豪门婚姻与生活是什么模样，由我娓娓道来……
+         * 关系是有些复杂，但是别误会，我不是趁机上位的绿茶。
+         * 我和老公周翊辰是在他们分手一年以后才结婚的，准确的说我们是契约婚姻。
+         * 真正的豪门婚姻与生活是什么模样，由我娓娓道来……
          * book_share_url : http://w.huaxi.net/732
          * book_url : huaxi://app?action=openpage&url=https%3A%2F%2Fs.hxdrive.net%2Fbook_detail%3Fformat%3Dhtml%26book_id%3D732
          * book_total_score : 9

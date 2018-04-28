@@ -27,11 +27,11 @@
         <activity
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HuaXiAppTheme" />
+            android:theme="@style/HuaXiAppTheme"></activity>
         <activity
             android:name=".ui.activity.ReadActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HuaXiAppTheme" />
+            android:theme="@style/HuaXiAppTheme"></activity>
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
@@ -113,8 +113,7 @@
         <activity android:name=".ui.activity.MangerAlipayActivity" />
         <activity android:name=".ui.activity.ApprenticeListActivity" />
         <activity android:name=".ui.activity.ProfitDetailsActivity" />
-        <activity android:name=".ui.activity.BagActivity" />
-        <activity android:name=".ui.activity.BookCommentActivity"></activity>
+        <activity android:name=".ui.activity.BagActivity"></activity>
     </application>
 
 </manifest>
