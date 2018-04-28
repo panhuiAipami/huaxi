@@ -54,6 +54,7 @@ import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
 import com.spriteapp.booklibrary.ui.adapter.ChapterAdapter;
+import com.spriteapp.booklibrary.ui.dialog.GuessYouLikeDialog;
 import com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment;
 import com.spriteapp.booklibrary.ui.presenter.SubscriberContentPresenter;
 import com.spriteapp.booklibrary.ui.view.SubscriberContentView;
@@ -786,12 +787,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     }
 
+    /**
+     * 加书架弹窗
+     */
+    boolean isRecommend = false;
+
     private void showAddShelfPrompt() {
         if (mBookDb == null) {
             finish();
             return;
         }
-        BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
+        final BookDetailResponse bookDetail = mBookDb.queryBook(mBookId);
         if (bookDetail == null || BookUtil.isBookAddShelf(bookDetail)) {
             if (AppUtil.isLogin()) {
                 addToShelf(true, false);//书架中已存在但要刷新顺序
@@ -799,11 +805,17 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             finish();
             return;
         }
+        if (isRecommend) {
+            finish();
+            return;
+        }
+
         DialogUtil.showCommonDialog(this, getResources().getString(R.string.book_reader_sure_to_add_shelf),
                 new DialogListener() {
                     @Override
                     public void clickCancel() {
-                        finish();
+                        isRecommend = true;
+                        new GuessYouLikeDialog(ReadActivity.this, bookDetail, 2).show();
                     }
 
                     @Override
@@ -827,7 +839,10 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     @Override
     public void onBackPressed() {
-        if (mOldBookDetail != null || mNewBookDetail != null) {
+        if (readMoreSettingLayout != null && readMoreSettingLayout.getVisibility() == View.VISIBLE) {
+            readMoreSettingLayout.setVisibility(View.GONE);
+            return;
+        } else if (mOldBookDetail != null || mNewBookDetail != null) {
             showAddShelfPrompt();
             return;
         }

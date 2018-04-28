@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.widget.readview;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,6 +28,7 @@ import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
+import com.spriteapp.booklibrary.ui.dialog.GuessYouLikeDialog;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.CollectionUtil;
@@ -58,7 +60,7 @@ import java.util.Vector;
 public class PageFactory2 {
     private static final int LEFT_PLUS_MARGIN = 5;
     int book_id;
-    private Context mContext;
+    private Activity mContext;
     private Config config;
     //页面宽
     private int mWidth;
@@ -129,7 +131,7 @@ public class PageFactory2 {
     private String mCurrentContent;
     private String chapterName;
     private float mPageLineCount, measureMarginWidth;
-    private int chapterIndex = 1;
+    private int chapterIndex = 0;
     private int currentChapter, tempChapter, currentPageNum;
     private OnReadStateChangeListener listener;
     private Map<Integer, Integer> mPageMap;
@@ -139,6 +141,7 @@ public class PageFactory2 {
      * 页首页尾的位置
      */
     private int curEndPos = 0, curBeginPos = 0, tempBeginPos, tempEndPos;
+    private  BookDetailResponse bookDetailResponse;
 
     private static Status mStatus = Status.OPENING;
 
@@ -148,11 +151,11 @@ public class PageFactory2 {
         FAIL,
     }
 
-    public PageFactory2(Context context, int book_id, List<BookChapterResponse> chaptersList) {
+    public PageFactory2(Activity context, int book_id, List<BookChapterResponse> chaptersList) {
         this.book_id = book_id;
         this.chaptersList = chaptersList;
         mBookUtil = new BookUtil();
-        mContext = context.getApplicationContext();
+        mContext = context;
         config = Config.getInstance();
 
 
@@ -214,7 +217,7 @@ public class PageFactory2 {
 
         percentLen = (int) mTitlePaint.measureText("00.00%");
 
-        BookDetailResponse bookDetailResponse = new BookDb(mContext).queryBook(book_id);
+        bookDetailResponse = new BookDb(mContext).queryBook(book_id);
         bookName = bookDetailResponse.getBook_name();
 
         initBg(config.getDayOrNight());
@@ -266,6 +269,20 @@ public class PageFactory2 {
         mBookPageWidget.postInvalidate();
     }
 
+    public void getChapterNameAndIndex() {
+        //切换章节需要找章节名
+        if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
+            for (int i = 0; i < chaptersList.size(); i++) {
+                BookChapterResponse catalogResponse = chaptersList.get(i);
+                if (catalogResponse.getChapter_id() == currentChapter) {
+                    chapterIndex = i;
+                    chapterName = catalogResponse.getChapter_title();
+                    break;
+                }
+            }
+        }
+    }
+
     @SuppressLint("WrongConstant")
     public void onDraw(Bitmap bitmap, List<ShowLine> mLines, Boolean updateCharter) {
         if (mLines.size() <= 0) {
@@ -287,20 +304,12 @@ public class PageFactory2 {
         y += ScreenUtil.dpToPx(35);
 
         // 绘制章节名
-        if (curBeginPos == 0) {
-            //切换章节需要找章节名
-            if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
-                for (int i = 0 ; i<chaptersList.size();i++) {
-                    BookChapterResponse catalogResponse = chaptersList.get(i);
-                    if (catalogResponse.getChapter_id() == currentChapter) {
-                        chapterIndex = i;
-                        chapterName = catalogResponse.getChapter_title();
-                        break;
-                    }
-                }
+        if (curBeginPos == 0 || chapterIndex == 0) {
+            getChapterNameAndIndex();
+            if (curBeginPos == 0) {
+                c.drawText(chapterName, measureMarginWidth, y, mChapterTitlePaint);
+                y += ScreenUtil.dpToPx(30);
             }
-            c.drawText(chapterName, measureMarginWidth, y, mChapterTitlePaint);
-            y += ScreenUtil.dpToPx(30);
         }
 
 
@@ -342,8 +351,8 @@ public class PageFactory2 {
         c.drawRect(rect2, mTitlePaint);
 
         //绘制进度
-        float chapter_progress = (float)1 / chaptersList.size()*100;
-        float percent = chapter_progress*chapterIndex + chapter_progress  * (float)curEndPos/ mbBufferLen;
+        float chapter_progress = (float) 1 / chaptersList.size() * 100;
+        float percent = chapter_progress * chapterIndex + chapter_progress * (float) curEndPos / mbBufferLen;
 
 //        Log.e(chapterIndex+"progress>"+(float)curEndPos/ mbBufferLen,chapter_progress+"-----a------"+percent);
 
@@ -379,7 +388,7 @@ public class PageFactory2 {
 
         float leftposition = ScreenUtil.dpToPxInt(20);
         float rightposition = 0;
-        float bottomposition = (isChangeLine?y-lineSpace:y) + mPaint.getFontMetrics().descent;
+        float bottomposition = (isChangeLine ? y - lineSpace : y) + mPaint.getFontMetrics().descent;
 
         for (ShowChar c : lines.CharsData) {
 
@@ -445,7 +454,6 @@ public class PageFactory2 {
                 currentPage(true);
             }
         }
-
         return 1;
     }
 
@@ -455,8 +463,10 @@ public class PageFactory2 {
      */
     public void nextPage() {
         if (!hasNextPage()) { // 最后一章的结束页
-            if (!m_islastPage)
+            if (!m_islastPage) {
                 ToastUtil.showSingleToast("没有下一页啦");
+                new GuessYouLikeDialog(mContext, bookDetailResponse, 1).show();
+            }
             m_islastPage = true;
             return;
         } else {
@@ -471,7 +481,7 @@ public class PageFactory2 {
                 BookChapterResponse catalog = chaptersList.get(i);
                 if (catalog.getChapter_id() == currentChapter) {
                     if (i + 1 < size) {
-                        chapterIndex = i+1;
+                        chapterIndex = i + 1;
                         currentChapter = chaptersList.get(chapterIndex).getChapter_id();
                         chapterName = chaptersList.get(chapterIndex).getChapter_title();
 //                        Log.d("nextPage", currentChapter+"-------下一章节-------" + chaptersList.get(i + 1).getChapter_title());
@@ -535,7 +545,7 @@ public class PageFactory2 {
                 int chapter_id = catalog.getChapter_id();
                 //上一章
                 if (chapter_id == currentChapter && i != 0) {
-                    chapterIndex = i-1;
+                    chapterIndex = i - 1;
                     currentChapter = chaptersList.get(chapterIndex).getChapter_id();
                     chapterName = chaptersList.get(chapterIndex).getChapter_title();
                     break;
