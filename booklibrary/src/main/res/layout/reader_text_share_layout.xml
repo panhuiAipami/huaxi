@@ -40,23 +40,27 @@
             android:src="@mipmap/share_violet_icon" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true"
-        android:layout_marginTop="55dp"
-        android:layout_marginBottom="55dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp">
+    <!--<ScrollView-->
+        <!--android:id="@+id/scroll_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:fillViewport="true"-->
+        <!--android:layout_marginTop="50dp"-->
+        <!--android:layout_marginBottom="50dp"-->
+        <!--android:layout_marginLeft="45dp"-->
+        <!--android:layout_marginRight="45dp">-->
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         android:gravity="center"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp">
 
         <RelativeLayout
             android:id="@+id/relative_center_bg"
@@ -99,7 +103,7 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/book_cover"
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     app:riv_corner_radius="5dp"
                     android:scaleType="centerCrop"
@@ -149,7 +153,7 @@
                             android:lineSpacingExtra="5dp"
                             android:text="作者"
                             android:textColor="@color/three_font_color"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -216,7 +220,7 @@
 
 
     </LinearLayout>
-    </ScrollView>
+    <!--</ScrollView>-->
 
     <LinearLayout
         android:layout_width="match_parent"

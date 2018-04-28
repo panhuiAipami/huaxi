@@ -36,13 +36,12 @@ import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
-import com.spriteapp.booklibrary.util.ToastUtil;
 
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-
+import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.IS_BAG;
 
 
 /**
@@ -99,7 +98,6 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View convertView = null;
         if (viewType == ITEM_ONE) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.book_shelf_one_item, parent, false);
@@ -257,7 +255,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             BookDetailResponse detailResponse = detail;
             final BookDetailResponse realBookDetailResponse;
             Log.d("realBookDetailResponse", "IS_HAVE_ONE===" + IS_HAVE_ONE);
-            if (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) {
+            if (AppUtil.isLogin() && IS_BAG == 1) {
                 if (position > 0) {
                     realBookDetailResponse = mDetailList.get(position - 1);
                     newposition = position - 1;
@@ -500,7 +498,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) ? mDetailList.size() + 1 : mDetailList.size();
+        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && IS_BAG == 1) ? mDetailList.size() + 1 : mDetailList.size();
     }
 
     @Override

@@ -91,7 +91,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     private LinearLayout null_layout;
     private TextView miaoshu;
     //控制是否显示书包 1显示0不显示
-//    public static int IS_BAG = 1;
+    public static int IS_BAG = 0;
 
     @Override
     public int getLayoutResId() {
