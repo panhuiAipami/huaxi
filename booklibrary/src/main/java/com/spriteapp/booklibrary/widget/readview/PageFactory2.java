@@ -129,6 +129,7 @@ public class PageFactory2 {
     private String mCurrentContent;
     private String chapterName;
     private float mPageLineCount, measureMarginWidth;
+    private int chapterIndex = 1;
     private int currentChapter, tempChapter, currentPageNum;
     private OnReadStateChangeListener listener;
     private Map<Integer, Integer> mPageMap;
@@ -289,8 +290,10 @@ public class PageFactory2 {
         if (curBeginPos == 0) {
             //切换章节需要找章节名
             if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
-                for (BookChapterResponse catalogResponse : chaptersList) {
+                for (int i = 0 ; i<chaptersList.size();i++) {
+                    BookChapterResponse catalogResponse = chaptersList.get(i);
                     if (catalogResponse.getChapter_id() == currentChapter) {
+                        chapterIndex = i;
                         chapterName = catalogResponse.getChapter_title();
                         break;
                     }
@@ -339,7 +342,11 @@ public class PageFactory2 {
         c.drawRect(rect2, mTitlePaint);
 
         //绘制进度
-        float percent = (float) curEndPos * 100 / mbBufferLen;
+        float chapter_progress = (float)1 / chaptersList.size()*100;
+        float percent = chapter_progress*chapterIndex + chapter_progress  * (float)curEndPos/ mbBufferLen;
+
+//        Log.e(chapterIndex+"progress>"+(float)curEndPos/ mbBufferLen,chapter_progress+"-----a------"+percent);
+
         if (mProgressCallback != null) {
             mProgressCallback.sendProgress(percent);
         }
@@ -464,8 +471,9 @@ public class PageFactory2 {
                 BookChapterResponse catalog = chaptersList.get(i);
                 if (catalog.getChapter_id() == currentChapter) {
                     if (i + 1 < size) {
-                        currentChapter = chaptersList.get(i + 1).getChapter_id();
-                        chapterName = chaptersList.get(i + 1).getChapter_title();
+                        chapterIndex = i+1;
+                        currentChapter = chaptersList.get(chapterIndex).getChapter_id();
+                        chapterName = chaptersList.get(chapterIndex).getChapter_title();
 //                        Log.d("nextPage", currentChapter+"-------下一章节-------" + chaptersList.get(i + 1).getChapter_title());
                         break;
                     }
@@ -527,8 +535,9 @@ public class PageFactory2 {
                 int chapter_id = catalog.getChapter_id();
                 //上一章
                 if (chapter_id == currentChapter && i != 0) {
-                    currentChapter = chaptersList.get(i - 1).getChapter_id();
-                    chapterName = chaptersList.get(i - 1).getChapter_title();
+                    chapterIndex = i-1;
+                    currentChapter = chaptersList.get(chapterIndex).getChapter_id();
+                    chapterName = chaptersList.get(chapterIndex).getChapter_title();
                     break;
                 }
             }

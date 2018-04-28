@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.TaskBean;
 import com.spriteapp.booklibrary.ui.dialog.InvitationCodeDialog;
 import com.spriteapp.booklibrary.util.ActivityUtil;
-import com.spriteapp.booklibrary.util.GlideUtils;
 
 import java.util.List;
 
@@ -182,7 +180,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void gotoHomePage() {
         if (ListenerManager.getInstance().getGotoHomePage() != null) {
-            ListenerManager.getInstance().getGotoHomePage().gotoPage();
+            ListenerManager.getInstance().getGotoHomePage().gotoPage(1);
             context.finish();
         }
 

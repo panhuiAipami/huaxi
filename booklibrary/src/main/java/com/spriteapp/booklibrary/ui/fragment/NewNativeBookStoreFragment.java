@@ -16,6 +16,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.ui.adapter.NewBookStoreAdapter;
 import com.spriteapp.booklibrary.util.NetworkUtil;
+import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
 
 /**
  * Created by Administrator on 2018/1/26.
@@ -71,7 +74,7 @@ public class NewNativeBookStoreFragment extends BaseFragment implements SwipeRef
 
     public void initList() {
         manager = new LinearLayoutManager(getActivity());
-        mAdapter = new NewBookStoreAdapter(getActivity(), mBookStoreResponseList);
+        mAdapter = new NewBookStoreAdapter(getActivity(), mBookStoreResponseList, SharedPreferencesUtil.getInstance().getInt(SEX));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(manager);
         mRefresh.setColorSchemeResources(R.color.square_comment_selector);

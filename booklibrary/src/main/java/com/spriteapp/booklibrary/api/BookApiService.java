@@ -300,8 +300,7 @@ public interface BookApiService {
 
     //书城
     @GET("book_store")
-    Observable<NewBookStoreResponse> book_store(@Query("format") String type,
-                                                @Query("g_gender") int sex);
+    Observable<NewBookStoreResponse> book_store(@Query("format") String type);
 
     //搜索列表
     @GET("book_search")
@@ -316,16 +315,14 @@ public interface BookApiService {
     @GET("book_weekly")
     Observable<Base<List<ChoiceBean>>> book_weekly(
             @Query("format") String format,
-            @Query("page") int page,
-            @Query("g_gender") int sex);
+            @Query("page") int page);
 
     //排行页
     @GET("book_ranklist")
     Observable<Base<List<BookDetailResponse>>> book_ranklist(@Query("format") String format,
                                                              @Query("type") int type,
                                                              @Query("interval") int interval,
-                                                             @Query("pagesize") int pagesize,
-                                                             @Query("g_gender") int sex);
+                                                             @Query("pagesize") int pagesize);
 
     //获取口令书籍
     @GET("book_command")
@@ -401,31 +398,6 @@ public interface BookApiService {
     @GET("user_novelpackage")
     Observable<Base<List<BookDetailResponse>>> user_novelpackage(@Query("format") String format,
                                                                  @Query("page") int page);
-
-    //重磅推荐
-    @GET("book_recommand")
-    Observable<Base<List<BookDetailResponse>>> book_recommand(@Query("format") String format,
-                                                              @Query("page") int page,
-                                                              @Query("g_gender") int sex);
-
-    //经典完本
-    @GET("book_finish")
-    Observable<Base<List<BookDetailResponse>>> book_finish(@Query("format") String format,
-                                                           @Query("page") int page,
-                                                           @Query("g_gender") int sex);
-
-    //免费新书
-    @GET("book_freenew")
-    Observable<Base<List<BookDetailResponse>>> book_freenew(@Query("format") String format,
-                                                            @Query("page") int page,
-                                                            @Query("g_gender") int sex);
-
-    //最近更新
-    @GET("book_news")
-    Observable<Base<List<BookDetailResponse>>> book_news(@Query("format") String format,
-                                                         @Query("page") int page,
-                                                         @Query("g_gender") int sex);
-
 
     //猜你喜欢
     @GET("book_searchrecommend")

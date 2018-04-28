@@ -147,7 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ImageView iv = (ImageView) view.findViewById(R.id.image_anim);
         AnimationDrawable animationDrawable = (AnimationDrawable) iv.getDrawable();
         animationDrawable.start();
-        loadingDialog = new Dialog(this, R.style.Dialog_Fullscreen);
+        loadingDialog = new Dialog(this, R.style.Reader_Dialog_Fullscreen);
         loadingDialog.show();
         loadingDialog.setContentView(view);
         loadingDialog.setCanceledOnTouchOutside(false);
