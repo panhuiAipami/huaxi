@@ -5,5 +5,5 @@ package com.spriteapp.booklibrary.listener;
  */
 
 public interface GotoHomePage {
-    void gotoPage();//去首页精选
+    void gotoPage(int type);//1去首页精选,2去书架
 }
