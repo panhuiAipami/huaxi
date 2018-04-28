@@ -38,6 +38,7 @@ public class GuessYouLikeDialog extends BaseDialog {
     private int type;//1为阅读到结尾,全屏,2为中途退出,半屏
     private RecyclerView recyclerView;
     private LinearLayout share_layout;
+    private SwipeRefreshLayout refresh;
     private GuessAdapter adapter;
     private List<BookDetailResponse> list = new ArrayList<>();
 
@@ -45,22 +46,38 @@ public class GuessYouLikeDialog extends BaseDialog {
         this.context = context;
         this.response = response;
         this.type = type;
-        initDialog(context, null, R.layout.guess_layout, BaseDialog.TYPE_BOTTOM, true);
-        WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
-        lp.flags = lp.flags | (WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        mDialog.getWindow().setAttributes(lp);
-        mDialog.getWindow().setWindowAnimations(R.style.bottomPopupDialog);
-        findViewById();
-        getLike();
+        if (!NetworkUtil.isAvailable(context)) {
+
+            if (type == 2) {
+                context.finish();
+            }
+        } else {
+            initDialog(context, null, type == 2 ? R.layout.guess_layout : R.layout.book_store_layout, BaseDialog.TYPE_BOTTOM, true);
+            WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
+            lp.flags = lp.flags | (WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            mDialog.getWindow().setAttributes(lp);
+            mDialog.getWindow().setWindowAnimations(R.style.bottomPopupDialog);
+            findViewById();
+            getLike();
+        }
+
     }
 
     private void findViewById() {
         recyclerView = (RecyclerView) mDialog.findViewById(R.id.recyclerView);
         share_layout = (LinearLayout) mDialog.findViewById(R.id.share_layout);
+        if (type == 1) {
+//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//            recyclerView.setLayoutParams(layoutParams);
+            refresh = (SwipeRefreshLayout) mDialog.findViewById(R.id.refresh);
+            refresh.setEnabled(false);
+        }
         share_layout.setBackgroundColor(context.getResources().getColor(R.color.app_background));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new GuessAdapter(context, list, response, type);
         recyclerView.setAdapter(adapter);
+
+
     }
 
     private void getLike() {
