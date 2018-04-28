@@ -63,6 +63,7 @@ import com.spriteapp.booklibrary.ui.fragment.BookshelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.CommunityFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomeFragment;
 import com.spriteapp.booklibrary.ui.fragment.HomePageFragment;
+import com.spriteapp.booklibrary.ui.fragment.OutsideBookShelfFragment;
 import com.spriteapp.booklibrary.ui.fragment.PersonCenterFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -161,7 +162,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     //华为移动服务Client
     private static HuaweiApiClient client;
     MessageRemindDialog dialog;
-    BookshelfFragment bookshelfFragment;
+    OutsideBookShelfFragment bookshelfFragment;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -270,7 +271,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     }
 
 
-
     private void messagePermisssion() {
         //前三天每天提醒一次，三天后不提示
         if (PreferenceHelper.getInt("messageNumber", 0) < 4 && System.currentTimeMillis() - PreferenceHelper.getLong("messageTime", 0) >= 1000 * 60 * 60 * 12) {
@@ -353,19 +353,22 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                                 if (appUpDateModelBase.getData().getHello_messages() != null && !appUpDateModelBase.getData().getHello_messages().isEmpty()) {
                                     ToastUtil.showLongToast(appUpDateModelBase.getData().getHello_messages());
                                 }
-                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
-                                    sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
-                                    if (homePageFragment1 != null) {
-                                        homePageFragment1.getHttpListData(appUpDateModelBase.getData().getTop_menu());
-                                    }
-                                    if (homePageFragment2 != null) {
-                                        homePageFragment2.getHttpListData(appUpDateModelBase.getData().getTop_menu());
-                                    }
-                                }
-                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getChosen() != null && appUpDateModelBase.getData().getTop_menu().getChosen().size() != 0) {
-                                    shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
-                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
-                                }
+                                /**
+                                 * 顶部导航，废弃
+                                 */
+//                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getStore() != null && appUpDateModelBase.getData().getTop_menu().getStore().size() != 0) {
+//                                    sy.addAll(appUpDateModelBase.getData().getTop_menu().getStore());
+//                                    if (homePageFragment1 != null) {
+//                                        homePageFragment1.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+//                                    }
+//                                    if (homePageFragment2 != null) {
+//                                        homePageFragment2.getHttpListData(appUpDateModelBase.getData().getTop_menu());
+//                                    }
+//                                }
+//                                if (appUpDateModelBase.getData().getTop_menu() != null && appUpDateModelBase.getData().getTop_menu().getChosen() != null && appUpDateModelBase.getData().getTop_menu().getChosen().size() != 0) {
+//                                    shu.addAll(appUpDateModelBase.getData().getTop_menu().getChosen());
+//                                    FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.PathTitle, appUpDateModelBase.getData().getTop_menu());
+//                                }
                                 if (appUpDateModelBase.getData().getTabbar() != null) {//底部导航栏图标
                                     FileHelper.writeObjectToJsonFile(AppUtil.getAppContext(), Constant.NAVIGATION, appUpDateModelBase.getData().getTabbar());
                                 }
@@ -462,10 +465,11 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         bundle2.putInt(FRAGMENTTYPE, 2);
         homePageFragment1.setArguments(bundle1);
         homePageFragment2.setArguments(bundle2);
-        mFragmentList.add(HomeFragment.newInstance());
-        mFragmentList.add(homePageFragment2);
+        mFragmentList.add(HomeFragment.newInstance(0));
+        mFragmentList.add(HomeFragment.newInstance(1));
+//        mFragmentList.add(homePageFragment2);
 //        mFragmentList.add(new DiscoverFragment());
-        bookshelfFragment = new BookshelfFragment();
+        bookshelfFragment = new OutsideBookShelfFragment();
         mFragmentList.add(bookshelfFragment);
         mFragmentList.add(new CommunityFragment());//社区分类
         mFragmentList.add(new PersonCenterFragment());
@@ -659,10 +663,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     }
 
     @Override
-    public void gotoPage() {//任务回调
-        if (mHomeViewPager != null) {
+    public void gotoPage(int type) {//任务回调
+        if (mHomeViewPager != null&&type==1) {
             mHomeViewPager.setCurrentItem(BOOKSHELF_POSITION);
             setSelectView(BOOKSHELF_POSITION);
+        }else if(mHomeViewPager != null&&type==2){
+            mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
+            setSelectView(BOOKSTORE_POSITION);
         }
 
     }
@@ -722,12 +729,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     setViewpagerTopMargin(0);
                     break;
                 case BOOKSTORE_POSITION:
-                    setTitle(R.string.book_reader_bookshelf);
+//                    setTitle(R.string.book_reader_bookshelf);
+                    setTitle("");
 //                    addSearchView();
                     addFreeTextView();
                     setSelectView(BOOKSTORE_POSITION);
-                    visible(mTitleLayout);
-                    setViewpagerTopMargin(TOP_BAR_HEIGHT);
+                    gone(mTitleLayout);
+                    setViewpagerTopMargin(0);
                     break;
                 case ME_POSITION:
                     setTitle(R.string.book_reader_me);
@@ -840,10 +848,14 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             if (bookshelfFragment.getIs_del1() == 0) {
 
             } else if (bookshelfFragment.getIs_del1() == 1) {
+                if (mTitleLayout.getVisibility() == View.GONE)
+                    visible(mTitleLayout);
                 gone(paixu, qiandao);
                 visible(selector_or_close, mLeftLayout);
                 selector_or_close.setText("取消");
             } else if (bookshelfFragment.getIs_del1() == 2) {
+                if (mTitleLayout.getVisibility() == View.GONE)
+                    visible(mTitleLayout);
                 gone(paixu, qiandao);
                 visible(selector_or_close, mLeftLayout);
                 selector_or_close.setText("全选");
@@ -1037,6 +1049,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             mLeftLayout.setVisibility(View.VISIBLE);
         Log.d("showLeftView", "条件不成立");
         if (selector_or_close.getVisibility() == View.GONE) {
+            if (mTitleLayout.getVisibility() == View.GONE)
+                visible(mTitleLayout);
             gone(paixu, qiandao);
             visible(selector_or_close);
             Log.d("showLeftView", "fragment可见时");
@@ -1055,6 +1069,8 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         if (selector_or_close.getVisibility() == View.VISIBLE) {
             gone(selector_or_close);
 //            visible(paixu, qiandao);
+            if (mTitleLayout.getVisibility() == View.VISIBLE)
+                gone(mTitleLayout);
             visible(paixu);
 
         }
