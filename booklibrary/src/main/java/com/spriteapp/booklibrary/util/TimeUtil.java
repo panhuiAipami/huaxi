@@ -79,4 +79,28 @@ public class TimeUtil {
         }
         return "刚刚";
     }
+
+
+    public static String getDateHour(long time) {
+        SimpleDateFormat ft = new SimpleDateFormat("hh");
+        Date dd = new Date(time);
+        return ft.format(dd);
+    }
+    public static String getDateMinute(long time) {
+        SimpleDateFormat ft = new SimpleDateFormat("mm");
+        Date dd = new Date(time);
+        return ft.format(dd);
+    }
+    public static String getDateSecond(long time) {
+        SimpleDateFormat ft = new SimpleDateFormat("ss");
+        Date dd = new Date(time);
+        return ft.format(dd);
+    }
+
+
+
+
+
+
+
 }

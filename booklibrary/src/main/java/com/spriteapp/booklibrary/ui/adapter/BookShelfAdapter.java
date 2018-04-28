@@ -27,6 +27,7 @@ import com.spriteapp.booklibrary.listener.DeleteBookListener;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -42,7 +43,9 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-
+import static com.spriteapp.booklibrary.ui.activity.HomeActivity.BOOKSHELF_TO_BOOKSTORE;
+import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.IS_BAG;
+import static com.spriteapp.booklibrary.ui.fragment.OutsideBookShelfFragment.isGrid;
 
 
 /**
@@ -54,6 +57,8 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final String TAG = "BookShelfAdapter";
     private static final int ITEM_ONE = 1;
     private static final int ITEM_OTHER = 2;
+    private static final int ITEM_SHU = 3;
+    private static final int ITEM_LAST = 4;
     private static final int IMAGE_WIDTH = 100;
     private static final int IMAGE_HEIGHT = 144;
     private static final int ANIMATION_TIME = 300;
@@ -67,6 +72,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private LinearLayout del_layout;
     private TextView is_del;
     private int num = 0;
+    public static boolean ISSHU = false;
 
     private static boolean IS_HAVE_ONE = false;
 
@@ -104,6 +110,12 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == ITEM_ONE) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.book_shelf_one_item, parent, false);
             return new OneViewHolder(convertView);
+        } else if (viewType == ITEM_SHU) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.bookshelfshu, parent, false);
+            return new ShelfViewHolder(convertView);
+        } else if (viewType == ITEM_LAST) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.goto_store, parent, false);
+            return new GoToStore(convertView);
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.book_reader_item_book_shelf, parent, false);
             return new ShelfViewHolder(convertView);
@@ -155,7 +167,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 oneViewHolder.progressTextView.setVisibility(View.GONE);
             }
-            oneViewHolder.logoImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            oneViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     if (isRecommendData || isRecentReadBook) {
@@ -187,7 +199,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     mHandler.sendEmptyMessageDelayed(0, 1000);
                 }
             });
-            oneViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
+            oneViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isDeleteBook) {
@@ -251,13 +263,21 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if (holder instanceof ShelfViewHolder) {
             final int newposition;
             final ShelfViewHolder shelfViewHolder = (BookShelfAdapter.ShelfViewHolder) holder;
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) shelfViewHolder.mShadowLayout.getLayoutParams();
-            params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
-            shelfViewHolder.mShadowLayout.setLayoutParams(params);
+            if (!ISSHU) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) shelfViewHolder.mShadowLayout.getLayoutParams();
+                params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
+                shelfViewHolder.mShadowLayout.setLayoutParams(params);
+            } else {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) shelfViewHolder.mShadowLayout.getLayoutParams();
+                params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
+                params.width = (BaseActivity.deviceWidth - ScreenUtil.dpToPxInt(40)) / 3;
+                shelfViewHolder.mShadowLayout.setLayoutParams(params);
+            }
             BookDetailResponse detailResponse = detail;
             final BookDetailResponse realBookDetailResponse;
             Log.d("realBookDetailResponse", "IS_HAVE_ONE===" + IS_HAVE_ONE);
-            if (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) {
+//            if (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) {
+            if (AppUtil.isLogin() && IS_BAG == 1) {
                 if (position > 0) {
                     realBookDetailResponse = mDetailList.get(position - 1);
                     newposition = position - 1;
@@ -276,7 +296,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     shelfViewHolder.progressTextView.setVisibility(View.INVISIBLE);
                     shelfViewHolder.deleteImageView.setVisibility(View.INVISIBLE);
                     shelfViewHolder.purchaseImageView.setVisibility(View.VISIBLE);
-                    shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
+                    shelfViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 //                            ToastUtil.showToast("书包");
@@ -289,13 +309,23 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     shelfViewHolder.purchaseImageView.setVisibility(View.GONE);
                 }
 
-            } else {
+            } else{
                 newposition = position;
                 realBookDetailResponse = detailResponse;
                 shelfViewHolder.purchaseImageView.setVisibility(View.GONE);
             }
             if (realBookDetailResponse == null) return;
 
+
+            if (ISSHU) {
+                if (realBookDetailResponse.getBook_finish_flag() == 1)
+                    shelfViewHolder.book_reader_chapter_text_view.setText("已完本");
+                else
+                    shelfViewHolder.book_reader_chapter_text_view.setText("更新至" + realBookDetailResponse.getBook_chapter_total() + "章");
+                if (!StringUtil.isEmpty(realBookDetailResponse.getAuthor_name())) {
+                    shelfViewHolder.book_reader_author_text_view.setText(realBookDetailResponse.getAuthor_name());
+                }
+            }
             Glide.with(mContext)
                     .load(realBookDetailResponse.getBook_image())
                     .into(shelfViewHolder.logoImageView);
@@ -310,7 +340,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 shelfViewHolder.progressTextView.setVisibility(View.GONE);
             }
-            shelfViewHolder.logoImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            shelfViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     if (isRecommendData || isRecentReadBook) {
@@ -350,7 +380,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             }
-            shelfViewHolder.logoImageView.setOnClickListener(new View.OnClickListener() {
+            shelfViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isDeleteBook) {
@@ -393,6 +423,20 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
             judgeShowDeleteView(shelfViewHolder.deleteImageView);
+        } else if (holder instanceof GoToStore) {
+            GoToStore goToStore = (GoToStore) holder;
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) goToStore.mShadowLayout.getLayoutParams();
+            params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
+            goToStore.mShadowLayout.setLayoutParams(params);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mContext instanceof HomeActivity) {
+                        HomeActivity homeActivity = (HomeActivity) mContext;
+                        homeActivity.setSelectView(BOOKSHELF_TO_BOOKSTORE);
+                    }
+                }
+            });
         }
 
     }
@@ -500,23 +544,27 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) ? mDetailList.size() + 1 : mDetailList.size();
+//        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && UserBean.getInstance().getUser_package() == 1) ? mDetailList.size() + 1 : mDetailList.size();
+//        return CollectionUtil.isEmpty(mDetailList) ? 0 : (AppUtil.isLogin() && IS_BAG == 1) ? mDetailList.size() + 1 : mDetailList.size();
+        return CollectionUtil.isEmpty(mDetailList) ? 0 : mDetailList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
+        if (position == mDetailList.size()) return ITEM_LAST;
         if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false)) {
-            Log.d("getItemViewType", "返回头部");
             IS_HAVE_ONE = true;
             return ITEM_ONE;
         }
-
+        if (ISSHU) {
+            return ITEM_SHU;
+        }
         return ITEM_OTHER;
     }
 
     static class ShelfViewHolder extends RecyclerView.ViewHolder {
 
-        TextView progressTextView;
+        TextView progressTextView, book_reader_chapter_text_view, book_reader_author_text_view;
         TextView titleTextView;
         ImageView logoImageView;
         RelativeLayout mShadowLayout;
@@ -524,6 +572,8 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         ShelfViewHolder(View itemView) {
             super(itemView);
+            book_reader_chapter_text_view = (TextView) itemView.findViewById(R.id.book_reader_chapter_text_view);
+            book_reader_author_text_view = (TextView) itemView.findViewById(R.id.book_reader_author_text_view);
             progressTextView = (TextView) itemView.findViewById(R.id.book_reader_progress_text_view);
             titleTextView = (TextView) itemView.findViewById(R.id.book_reader_title_text_view);
             logoImageView = (ImageView) itemView.findViewById(R.id.book_reader_logo_image_view);
@@ -549,6 +599,15 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             chapter_title = (TextView) itemView.findViewById(R.id.chapter_name);
             logoImageView = (ImageView) itemView.findViewById(R.id.book_cover);
             deleteImageView = (ImageView) itemView.findViewById(R.id.book_reader_delete_image_view);
+            mShadowLayout = (RelativeLayout) itemView.findViewById(R.id.book_reader_image_layout);
+        }
+    }
+
+    static class GoToStore extends RecyclerView.ViewHolder {
+        private RelativeLayout mShadowLayout;
+
+        GoToStore(View itemView) {
+            super(itemView);
             mShadowLayout = (RelativeLayout) itemView.findViewById(R.id.book_reader_image_layout);
         }
     }

@@ -31,6 +31,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 书包activity
+ */
 public class BagActivity extends TitleActivity implements SwipeRefreshLayout.OnRefreshListener, URecyclerView.LoadingListener {
     private URecyclerView recyclerView;
     private SwipeRefreshLayout swipe_refresh;
@@ -47,6 +50,7 @@ public class BagActivity extends TitleActivity implements SwipeRefreshLayout.OnR
         setTitle("书包");
         getData();
         goneOrShow();
+//        showReaderDialog("哈哈");
     }
 
 

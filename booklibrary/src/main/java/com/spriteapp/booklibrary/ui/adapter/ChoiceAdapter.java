@@ -1,6 +1,7 @@
 package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,7 +49,8 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
         else
             holder.details.setVisibility(View.VISIBLE);
         holder.details.setText(bean.getIntro());
-        holder.reader.setText(bean.getExtend() + "人追读");
+        holder.reader.setText("追读"+bean.getExtend() + "人");
+        holder.cate_text.setText(bean.getBook_category().get(0).getClass_name());
         GlideUtils.loadImage(holder.mContentView, bean.getImages(), c);
 
 
@@ -66,8 +68,9 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, details, reader, look_detail;
+        public TextView title, details, reader, look_detail, cate_text;
         public ImageView mContentView;
+        private CardView cardView;
 
         public ViewHolder(View view) {
             super(view);
@@ -75,11 +78,14 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
             details = (TextView) view.findViewById(R.id.details);
             look_detail = (TextView) view.findViewById(R.id.look_details);
             reader = (TextView) view.findViewById(R.id.reader);
+            cate_text = (TextView) view.findViewById(R.id.cate_text);
             mContentView = (ImageView) view.findViewById(R.id.cover);
+            cardView = (CardView) view.findViewById(R.id.cardView);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
             layoutParams.height = (BaseActivity.deviceWidth - Util.dp2px(c, 24)) / 2;
-            layoutParams.weight = LinearLayout.LayoutParams.MATCH_PARENT;
+//            layoutParams.weight = LinearLayout.LayoutParams.MATCH_PARENT;
             mContentView.setLayoutParams(layoutParams);
+
         }
     }
 }

@@ -25,7 +25,9 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.listener.LoginSuccess;
 import com.spriteapp.booklibrary.model.UserBean;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.dialog.GuessYouLikeDialog;
 import com.spriteapp.booklibrary.ui.dialog.InvitationCodeDialog;
 import com.spriteapp.booklibrary.ui.presenter.BookShelfPresenter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -42,6 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.PERSON_TO_BOOKSHELF;
+import static com.spriteapp.booklibrary.util.ActivityUtil.BACKREFRESH;
 import static com.spriteapp.booklibrary.util.ActivityUtil.LOGIN_BACK;
 
 /**
@@ -49,7 +52,7 @@ import static com.spriteapp.booklibrary.util.ActivityUtil.LOGIN_BACK;
  */
 
 public class PersonCenterFragment extends BaseFragment implements View.OnClickListener, LoginSuccess {
-    public static final int BACKREFRESH = 9;
+
     private View mView;
     private TextView user_name, hua_bei, hua_ban, user_share, user_follow, user_fans,
             recharge, bookshelf, recharge_record, records_of_consumption,
@@ -90,7 +93,7 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && AppUtil.isLogin() && getActivity()!= null)
+        if (isVisibleToUser && AppUtil.isLogin() && getActivity() != null)
             getUserData();
     }
 
@@ -222,8 +225,11 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
             ActivityUtil.toSettingActivity(getActivity());
         } else if (v == user_bg) {
             if (!AppUtil.isLogin(getActivity())) return;
+//            ActivityUtil.toNativeActivity(getActivity());
+//            new GuessYouLikeDialog(getActivity(),new BookDetailResponse(),1).show();
         } else if (v == user_head) {
             if (!AppUtil.isLogin(getActivity())) return;
+//            new GuessYouLikeDialog(getActivity(),new BookDetailResponse(),2).show();
         } else if (v == task) {//任务
             if (!AppUtil.isLogin(getActivity())) return;
             ActivityUtil.toTaskActivity(getActivity());//去任务

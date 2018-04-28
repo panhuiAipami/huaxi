@@ -91,7 +91,7 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
     private LinearLayout null_layout;
     private TextView miaoshu;
     //控制是否显示书包 1显示0不显示
-//    public static int IS_BAG = 1;
+    public static int IS_BAG = 0;
 
     @Override
     public int getLayoutResId() {
@@ -587,9 +587,26 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
         if (bookDetailResponse.getIs_recommend_book() == BookEnum.RECOMMEND_BOOK.getValue()) {
             return;
         }
-        Log.d("messageOne", "添加书籍");
-        Log.d("messageOne", BookUtil.getBookJson(mBookList));
+//        Log.d("messageOne", "添加书籍");
+//        Log.d("messageOne", BookUtil.getBookJson(mBookList));
         mPresenter.addOneMoreBookToShelf(BookUtil.getBookJson(mBookList));
+    }
+
+    public void setRecyclerViewMode(final int flag) {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 9, LinearLayoutManager.VERTICAL, false);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position == 0 && SharedPreferencesUtil.getInstance().getBoolean(ReadActivity.LAST_CHAPTER, false))
+                    return 9;
+                else
+                    return flag;
+
+            }
+        });
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -661,6 +678,13 @@ public class BookshelfFragment extends BaseFragment implements BookShelfView, De
 //            }
         }
 
+    }
+
+    public void setDel() {
+        mAdapter.setDeleteBook(true);
+        if (del_layout.getVisibility() == View.GONE)
+            del_layout.setVisibility(View.VISIBLE);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void showFinish(int type) {

@@ -52,9 +52,9 @@ public class HomePageTabAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (type == 0)
-            return titles != null ? titles.get(position).getName() : null;
+            return titles != null ? titles.get(position).getName() : "";
         else
-            return title != null ? title.get(position) : null;
+            return title != null ? title.get(position) : "";
     }
 
 }

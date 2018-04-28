@@ -13,7 +13,7 @@
         <LinearLayout
             android:id="@+id/sex_item"
             android:layout_width="60dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:gravity="center"
             android:paddingLeft="0dp"
             android:visibility="invisible">
@@ -43,11 +43,11 @@
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/mTabLayout_1"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="43dp"
             android:layout_weight="1"
             android:background="@color/app_background"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="45dp"
+            android:paddingRight="45dp"
             tl:tl_indicator_color="@color/choice_yellow_color"
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="20dp"
@@ -70,7 +70,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"></android.support.v4.view.ViewPager>
+        android:layout_marginTop="45dp"></android.support.v4.view.ViewPager>
 
 </FrameLayout><!--tl_indicator_color	color	设置显示器颜色
 tl_indicator_height	dimension	设置显示器高度

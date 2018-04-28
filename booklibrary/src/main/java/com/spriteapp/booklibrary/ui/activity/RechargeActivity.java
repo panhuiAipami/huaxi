@@ -29,8 +29,10 @@ import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.PayResult;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.WeChatBean;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.HuaWeiResponse;
 import com.spriteapp.booklibrary.model.response.PayResponse;
+import com.spriteapp.booklibrary.ui.dialog.GuessYouLikeDialog;
 import com.spriteapp.booklibrary.ui.presenter.WebViewPresenter;
 import com.spriteapp.booklibrary.ui.view.WebViewView;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -148,6 +150,8 @@ public class RechargeActivity extends TitleActivity {
         price2_layout.setOnClickListener(this);
         price3_layout.setOnClickListener(this);
         goto_pay.setOnClickListener(this);
+        user_head.setOnClickListener(this);
+        goto_pay.setOnClickListener(this);
         mLeftLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +195,8 @@ public class RechargeActivity extends TitleActivity {
 //                requestHuaWeiPay("com.huaxiapp." + price + "yuan");
                     requestHuaWeiPay("com.huaxiapp." + price + "yuan");
                 }
+            } else if (v == user_head) {
+//                new GuessYouLikeDialog(this, new BookDetailResponse(), 2).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -537,15 +543,6 @@ public class RechargeActivity extends TitleActivity {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
 
 
     public void requestWxWebPaywft(String productId) throws Exception {//生成威富通订单信息

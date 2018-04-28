@@ -17,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.spriteapp.booklibrary.R;
@@ -222,6 +223,7 @@ public class PageFactory2 {
 
         initBg(config.getDayOrNight());
         measureMarginWidth();
+        Log.d("measureMarginWidth", "使用PageFactory2绘制页面");
     }
 
     //初始化背景

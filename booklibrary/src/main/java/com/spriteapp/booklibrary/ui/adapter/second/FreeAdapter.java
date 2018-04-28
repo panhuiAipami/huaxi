@@ -59,6 +59,8 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
         if (position >= list.size()) return;
         final BookDetailResponse bookDetailResponse = list.get(position);
         holder.book_name.setText(bookDetailResponse.getBook_name());
+        holder.author_name.setText(bookDetailResponse.getAuthor_name());
+
 //        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.image_layout.getLayoutParams();
 //        params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
 //        holder.image_layout.setLayoutParams(params);
@@ -84,7 +86,7 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView book_name;
+        private TextView book_name,author_name;
         private ImageView book_cover;
         private RelativeLayout image_layout;
         private LinearLayout free_item;
@@ -92,20 +94,21 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
         public MyViewHolder(View itemView) {
             super(itemView);
             book_name = (TextView) itemView.findViewById(R.id.book_name);
+            author_name = (TextView) itemView.findViewById(R.id.author_name);
             book_cover = (ImageView) itemView.findViewById(R.id.book_cover);
             image_layout = (RelativeLayout) itemView.findViewById(R.id.book_reader_image_layout);
             free_item = (LinearLayout) itemView.findViewById(R.id.free_item);
             ViewGroup.LayoutParams layoutParams = free_item.getLayoutParams();
-            layoutParams.width = BaseActivity.deviceWidth / 3;
-            int padding = 60;
+            layoutParams.width = BaseActivity.deviceWidth / 4;
+            int padding = 30;
             if (BaseActivity.deviceWidth <= 480) {
-                padding = 40;
+                padding = 20;
             } else if (BaseActivity.deviceWidth > 480 && BaseActivity.deviceWidth <= 720) {
-                padding = 60;
+                padding = 30;
             } else if (BaseActivity.deviceWidth > 720 && BaseActivity.deviceWidth <= 1080) {
-                padding = 90;
+                padding = 45;
             } else if (BaseActivity.deviceWidth >= 1080) {
-                padding = 120;
+                padding = 60;
             }
             int imageWidth = layoutParams.width;
 
@@ -121,6 +124,7 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
                 ViewGroup.LayoutParams layoutParams2 = book_name.getLayoutParams();
                 layoutParams2.width = imageWidth - padding;
                 book_name.setLayoutParams(layoutParams2);
+                author_name.setLayoutParams(layoutParams2);
             }
 
         }

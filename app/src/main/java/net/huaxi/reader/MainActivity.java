@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.spriteapp.booklibrary.config.HuaXiConfig;
@@ -83,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             if (shareDetail != null && type == 1) {
                                 shareBean = new ShareBean();
-                                shareBean.setTitle(shareDetail.getBook_name().isEmpty() ? "" : shareDetail.getBook_name());
-                                shareBean.setDesc(shareDetail.getBook_intro().isEmpty() ? "" : shareDetail.getBook_intro());
-                                shareBean.setImgUrl(shareDetail.getBook_image().isEmpty() ? "" : shareDetail.getBook_image());
-                                shareBean.setShareUrl(shareDetail.getBook_share_url().isEmpty() ? "" : shareDetail.getBook_share_url());
+                                shareBean.setTitle(TextUtils.isEmpty(shareDetail.getBook_name()) ? "" : shareDetail.getBook_name());
+                                shareBean.setDesc(TextUtils.isEmpty(shareDetail.getBook_intro()) ? "" : shareDetail.getBook_intro());
+                                shareBean.setImgUrl(TextUtils.isEmpty(shareDetail.getBook_image()) ? "" : shareDetail.getBook_image());
+                                shareBean.setShareUrl(TextUtils.isEmpty(shareDetail.getBook_share_url()) ? "" : shareDetail.getBook_share_url());
                                 shareBean.setNid(shareDetail.getBook_id());
 
 //                        ListenerManager.getInstance().getShareBeanCallBack().getShareBean(shareBean);
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 bundle.putSerializable(SHAREDATA, shareBean);
                                 bundle.putInt(SHARETYPE, type);
                                 intent.putExtras(bundle);
+                                Log.d("showShareDialog", "showShareDialog");
                                 startActivity(intent);
                             } else if (shareDetail != null && type == 2) {//收徒分享
                                 shareBean = new ShareBean();

@@ -68,6 +68,7 @@ public class BookDb {
                 values.put(DbConstants.BOOK_NAME, model.getBook_name());
                 values.put(DbConstants.LAST_UPDATE_CHAPTER_TITLE, model.getLast_update_chapter_title());
                 values.put(DbConstants.BOOK_IMAGE, model.getBook_image());
+                values.put(DbConstants.AUTHOR_NAME, model.getAuthor_name());
                 values.put(DbConstants.BOOK_INTRODUCTION, model.getBook_intro());
                 values.put(DbConstants.BOOK_SHARE_URL, model.getBook_share_url());
                 values.put(DbConstants.LAST_CHAPTER_ID, model.getChapter_id());

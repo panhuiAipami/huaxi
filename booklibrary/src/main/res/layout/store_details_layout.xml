@@ -40,7 +40,7 @@
                     android:lines="1"
                     android:text=""
                     android:textColor="@color/square_user_speak"
-                    android:textSize="18sp"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <com.spriteapp.booklibrary.widget.RatingBar
@@ -145,6 +145,7 @@
                             android:textColor="@color/square_small"
                             android:textSize="12sp"
                             android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/book_state"

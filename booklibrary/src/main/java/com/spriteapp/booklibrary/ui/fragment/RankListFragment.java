@@ -19,6 +19,8 @@ import com.spriteapp.booklibrary.ui.view.RankView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.spriteapp.booklibrary.ui.fragment.ChoiceFragment.ARG_COLUMN_COUNT;
+
 /**
  * 排行的周/月/总
  */
@@ -32,13 +34,15 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
     private int page = 1;
     private LinearLayout null_layout;
     private TextView miaoshu;
+    private int sex;
 
     public RankListFragment() {
     }
 
-    public static RankListFragment newInstance(int interval) {
+    public static RankListFragment newInstance(int interval, int columnCount) {
         Bundle bundle = new Bundle();
         bundle.putInt("interval", interval);
+        bundle.putInt(ARG_COLUMN_COUNT, columnCount);
         RankListFragment fragment = new RankListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -56,6 +60,7 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             interval = bundle.getInt("interval");
+            sex = bundle.getInt(ARG_COLUMN_COUNT);
         }
         getData();
     }
@@ -83,6 +88,7 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
         if (swipe_refresh != null)
             swipe_refresh.setRefreshing(false);
     }
+
     public void goneOrShow() {
         if (lists.size() == 0) {
             null_layout.setVisibility(View.VISIBLE);
@@ -128,15 +134,18 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
 
     /**
      * 热销  人气  评论 更新榜
+     *
      * @param interval
      */
-    public void sortRefresh(int type,int interval) {
+    public void sortRefresh(int type, int interval) {
         this.type = type;
         this.interval = interval;
         getData();
     }
+
     /**
      * 周  月  总
+     *
      * @param interval
      */
     public void timeRefresh(int interval) {
@@ -147,6 +156,6 @@ public class RankListFragment extends BaseFragment implements RankView, SwipeRef
 
     public void getData() {
         if (presenter != null)
-            presenter.requestGetData(type, interval);
+            presenter.requestGetData(type, interval, sex);
     }
 }
