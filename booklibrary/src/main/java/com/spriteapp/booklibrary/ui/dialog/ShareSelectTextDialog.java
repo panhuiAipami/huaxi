@@ -14,6 +14,7 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.widget.readview.util.BitmapUtil;
 
@@ -93,8 +94,10 @@ public class ShareSelectTextDialog extends Dialog  {
         share_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imagePath = BitmapUtil.loadBitmapFromView(scroll_view);
-                HuaXiSDK.getInstance().showShareDialog(context, null,imagePath ,false, 3);
+                if (AppUtil.isLogin(context)) {
+                    String imagePath = BitmapUtil.loadBitmapFromView(scroll_view);
+                    HuaXiSDK.getInstance().showShareDialog(context, null, imagePath, false, 3);
+                }
             }
         });
 

@@ -174,7 +174,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     };
 
     public void showPopWindow() {
-        popupWindow.showAtLocation(this, Gravity.TOP | Gravity.LEFT, (int) Down_X, (int) Down_Y);
+        popupWindow.showAtLocation(this, Gravity.TOP|Gravity.LEFT, (int) Down_X, (int) Down_Y);
     }
 
     public void dismissPopWindow() {
