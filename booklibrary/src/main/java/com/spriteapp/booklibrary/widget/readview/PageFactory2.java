@@ -688,10 +688,9 @@ public class PageFactory2 {
             mBookUtil.setPostition(currentPage.getEnd() + strParagraph.length());
             curEndPos += strParagraph.length();
 
-            boolean isParagraphEmpty = StringUtil.isEmpty(strParagraph);
-//            String text = strParagraph;
-//            if (!TextUtils.isEmpty(text)) {
-//                text += "@";
+//            boolean isParagraphEmpty = StringUtil.isEmpty(strParagraph);
+//            if (!TextUtils.isEmpty(strParagraph)) {
+//                strParagraph += "99";
 //            }
             while (strParagraph.length() > 0) {
                 //截取最大宽度能容纳文本数
@@ -709,7 +708,7 @@ public class PageFactory2 {
                 }
             }
             //在段落末尾加上区分符号
-            if (!CollectionUtil.isEmpty(lines) && !isParagraphEmpty) {
+//            if (!CollectionUtil.isEmpty(lines) && !isParagraphEmpty) {
 //                ShowLine sl = lines.get(lines.size() - 1);
 //                List<ShowChar> CharsData = sl.CharsData;
 //                ShowChar sc = CharsData.get(CharsData.size() - 1);
@@ -722,7 +721,7 @@ public class PageFactory2 {
 //                CharsData.set(CharsData.size() - 1, sc);
 //                sl.CharsData = CharsData;
 //                lines.set(lines.size() - 1, sl);
-            }
+//            }
             //减去多余文本
             if (strParagraph.length() != 0) {
                 mBookUtil.setPostition(currentPage.getEnd() - strParagraph.length());

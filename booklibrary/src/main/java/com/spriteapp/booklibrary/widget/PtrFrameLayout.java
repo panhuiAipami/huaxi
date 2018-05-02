@@ -2,6 +2,8 @@ package com.spriteapp.booklibrary.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -194,6 +196,13 @@ public class PtrFrameLayout extends ViewGroup {
     float actiondownX = 0;
     float actiondownY = 0;
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent e) {
         if (!isEnabled() || mHeaderView == null || mContentView == null) {
@@ -208,7 +217,13 @@ public class PtrFrameLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                MyPageWidget.isPullDown = false;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyPageWidget.isPullDown = false;
+                    }
+                }, 1000);
+
                 mPtrIndicator.onRelease();
                 if (mPtrIndicator.hasLeftStartPosition()) {
                     onRelease();
@@ -256,16 +271,13 @@ public class PtrFrameLayout extends ViewGroup {
                 boolean canMoveUp = mPtrIndicator.hasLeftStartPosition();
 
 
-                if (moveDown) {
-                    MyPageWidget.isPullDown = true;
-                }
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
                     return dispatchTouchEventSuper(e);
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-
-                    if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 50) {
+                    MyPageWidget.isPullDown = true;
+                    if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 80) {
                         if (x > 100 && x < BaseActivity.deviceWidth - 100)
                             movePos(offsetY);
                     }

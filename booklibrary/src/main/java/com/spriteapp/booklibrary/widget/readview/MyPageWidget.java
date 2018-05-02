@@ -577,7 +577,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                     if (isFirst) {
                         FirstSelectShowChar = l.getCharsData().get(0);
                         LastSelectShowChar = l.getCharsData().get(l.getCharsData().size() - 1);
-                        Log.e("DetectPressShowChar", "--------------这一行都选中=" + FirstSelectShowChar.chardata);
+//                        Log.e("DetectPressShowChar", "--------------这一行都选中=" + FirstSelectShowChar.chardata);
 
                     }
                     return c;

@@ -2,6 +2,7 @@ package com.spriteapp.booklibrary.api;
 
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseTwo;
+import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
@@ -408,4 +409,11 @@ public interface BookApiService {
     @GET("user_readhistory")
     Observable<Base<List<BookDetailResponse>>> user_readhistory(@Query("format") String format);
 
+    //获取书的评论
+    @GET("book_commentreply")
+    Observable<Base<List<BookCommentBean>>> getBookComment(@Query("book_id") int book_id,
+                                                           @Query("chapter_id") int chapter_id,
+                                                           @Query("start_time") int start_time,
+                                                           @Query("stop_time") int stop_time,
+                                                           @Query("row_count") int row_count);
 }
