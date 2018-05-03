@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.util.ScreenUtil;
 
 
 public class MyPopupWindow extends PopupWindow {
@@ -28,8 +29,8 @@ public class MyPopupWindow extends PopupWindow {
         mContentView = mInflater.inflate(R.layout.popup_window_layout,null);
         //设置View
         setContentView(mContentView);
-//        setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-//        setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        setWidth(ScreenUtil.dpToPxInt(180));
+        setHeight(ScreenUtil.dpToPxInt(60));
         /**
          * 设置进出动画
          */
