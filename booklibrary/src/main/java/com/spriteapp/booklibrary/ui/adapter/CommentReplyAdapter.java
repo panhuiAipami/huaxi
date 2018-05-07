@@ -15,6 +15,8 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.BookCommentReplyBean;
+import com.spriteapp.booklibrary.model.CommentBean;
 import com.spriteapp.booklibrary.model.CommentReply;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
@@ -42,11 +44,19 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int REPLYCOMMENT = 2;
     private Activity context;
     private List<CommentReplyBean> replyBean;
+    private List<BookCommentReplyBean> replyBean2;
+    private int type;
 
-    public CommentReplyAdapter(Activity context, List<CommentReplyBean> replyBean) {
+    public CommentReplyAdapter(Activity context, List<CommentReplyBean> replyBean, int type) {
         this.context = context;
         this.replyBean = replyBean;
+        this.type = type;
+    }
 
+    public CommentReplyAdapter(Activity context, List<BookCommentReplyBean> replyBean, int type, int p) {//p无用
+        this.context = context;
+        this.replyBean2 = replyBean;
+        this.type = type;
     }
 
     @Override
@@ -69,14 +79,35 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CommentViewHolder) {
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
-            if (position == 0) {
-                CommentReply data = replyBean.get(0).getData().get(0);
-                setData(commentViewHolder, data);
-            } else if (position >= 2) {
-                CommentReply reply = replyBean.get(0).getReplydata().getData().get(position - 2);
-                setData(commentViewHolder, reply);
+            if (type == 1) {
+                if (position == 0) {
+                    CommentReply data = replyBean.get(0).getData().get(0);
+                    setData(commentViewHolder, data);
+                } else if (position >= 2) {
+                    CommentReply reply = replyBean.get(0).getReplydata().getData().get(position - 2);
+                    setData(commentViewHolder, reply);
+
+                }
+            } else if (type == 2) {
+
+                if (position == 0) {
+                    BookCommentReplyBean.CommentBean comment = replyBean2.get(0).getComment();
+//                    GlideUtils.loadImage(commentViewHolder.user_head,comment.getSource(),context);
+                    commentViewHolder.user_name.setText(comment.getUserName());
+//                    commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(comment.getReplyDatetime() + "000")));
+                    commentViewHolder.send_time.setText(comment.getReplyDatetime());
+                    commentViewHolder.user_speak.setText(comment.getCmtContent());
+                } else if (position >= 2) {
+                    BookCommentReplyBean.ListsBean listsBean = replyBean2.get(0).getLists().get(position - 2);
+                    GlideUtils.loadImage(commentViewHolder.user_head,listsBean.getUser_avatar(),context);
+                    commentViewHolder.user_name.setText(listsBean.getUser_nickname());
+                    commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(listsBean.getComment_replydatetime() + "000")));
+                    commentViewHolder.user_speak.setText(listsBean.getComment_content());
+//                    commentViewHolder.send_time.setText(listsBean.getComment_replydatetime());
+                }
 
             }
+
 
         } else if (holder instanceof TitleViewHolder) {
 
@@ -97,20 +128,33 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             isSuppor = true;
         commentViewHolder.support_num.setEnabled(isSuppor);
         commentViewHolder.user_speak.setText(reply.getContent());
-        toSupport(commentViewHolder.support_num,reply);
+        toSupport(commentViewHolder.support_num, reply);
     }
+
 
     @Override
     public int getItemCount() {
-        if (replyBean != null && replyBean.size() != 0 && replyBean.get(0).getData() != null &&
-                replyBean.get(0).getReplydata().getData() != null && replyBean.get(0).getReplydata().getData().size() != 0) {
-            return replyBean.get(0).getReplydata().getData().size() + 2;
+        if (type == 1) {
+            if (replyBean != null && replyBean.size() != 0 && replyBean.get(0).getData() != null &&
+                    replyBean.get(0).getReplydata().getData() != null && replyBean.get(0).getReplydata().getData().size() != 0) {
+                return replyBean.get(0).getReplydata().getData().size() + 2;
+            } else {
+                Log.d("getItemCount", "getItemCount===" + 0);
+                return 0;
+            }
         } else {
-            Log.d("getItemCount", "getItemCount===" + 0);
-            return 0;
+            if (replyBean2 != null && replyBean2.size() != 0 && replyBean2.get(0).getComment() != null && replyBean2.get(0).getLists() != null && replyBean2.get(0).getLists().size() != 0) {
+
+                return replyBean2.get(0).getLists().size() + 2;
+            } else {
+                Log.d("getItemCount", "getItemCount===" + 0);
+                return 0;
+            }
         }
 
+
     }
+
     /**
      * @param view  点赞布局
      * @param reply 回复实体类 对评论点赞
