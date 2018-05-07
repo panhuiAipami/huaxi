@@ -1,5 +1,7 @@
 package com.spriteapp.booklibrary.model;
 
+import java.util.List;
+
 /**
  * Created by panhui on 2018/5/2.
  */
@@ -23,8 +25,8 @@ public class BookCommentBean {
 
     private int comment_id;
     private String comment_content;
-    private int comment_datetime;
-    private int comment_replydatetime;
+    private long comment_datetime;
+    private long comment_replydatetime;
     private int comment_parent_id;
     private String user_avatar;
     private int user_id;
@@ -33,13 +35,31 @@ public class BookCommentBean {
     private int volume_id;
     private int chapter_id;
     private String ip_address;
-    private BookRepyBean children;
+    private int reply_count;
+    private int source;
+    private List<BookRepyBean> children;
 
-    public BookRepyBean getChildren() {
+    public int getReply_count() {
+        return reply_count;
+    }
+
+    public void setReply_count(int reply_count) {
+        this.reply_count = reply_count;
+    }
+
+    public int getSource() {
+        return source;
+    }
+
+    public void setSource(int source) {
+        this.source = source;
+    }
+
+    public List<BookRepyBean> getChildren() {
         return children;
     }
 
-    public void setChildren(BookRepyBean children) {
+    public void setChildren(List<BookRepyBean> children) {
         this.children = children;
     }
 
@@ -59,19 +79,19 @@ public class BookCommentBean {
         this.comment_content = comment_content;
     }
 
-    public int getComment_datetime() {
+    public long getComment_datetime() {
         return comment_datetime;
     }
 
-    public void setComment_datetime(int comment_datetime) {
+    public void setComment_datetime(long comment_datetime) {
         this.comment_datetime = comment_datetime;
     }
 
-    public int getComment_replydatetime() {
+    public long getComment_replydatetime() {
         return comment_replydatetime;
     }
 
-    public void setComment_replydatetime(int comment_replydatetime) {
+    public void setComment_replydatetime(long comment_replydatetime) {
         this.comment_replydatetime = comment_replydatetime;
     }
 
