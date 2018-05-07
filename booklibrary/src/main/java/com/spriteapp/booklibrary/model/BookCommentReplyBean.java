@@ -22,7 +22,7 @@ public class BookCommentReplyBean {
     private int code;
     private String total;
     private int lists_total;
-    private List<ListsBean> lists;
+    private List<BookCommentBean> lists;
 
     public String getStatus() {
         return status;
@@ -64,11 +64,11 @@ public class BookCommentReplyBean {
         this.lists_total = lists_total;
     }
 
-    public List<ListsBean> getLists() {
+    public List<BookCommentBean> getLists() {
         return lists;
     }
 
-    public void setLists(List<ListsBean> lists) {
+    public void setLists(List<BookCommentBean> lists) {
         this.lists = lists;
     }
 
@@ -238,139 +238,5 @@ public class BookCommentReplyBean {
         }
     }
 
-    public static class ListsBean {
-        /**
-         * comment_id : 72
-         * comment_content : 期待啊??
-         * comment_datetime : 1506760260
-         * comment_replydatetime : 1506760260
-         * comment_parent_id : 0
-         * user_avatar : https://img.huaxi.net/userhead/488847.jpg
-         * user_id : 488847
-         * user_nickname : 云间月0717145734
-         * book_id : 264
-         * volume_id : 0
-         * chapter_id : 0
-         * ip_address : 112.38.40.59
-         * children : []
-         */
 
-        private int comment_id;
-        private String comment_content;
-        private long comment_datetime;
-        private long comment_replydatetime;
-        private int comment_parent_id;
-        private String user_avatar;
-        private int user_id;
-        private String user_nickname;
-        private int book_id;
-        private int volume_id;
-        private int chapter_id;
-        private String ip_address;
-        private List<?> children;
-
-        public int getComment_id() {
-            return comment_id;
-        }
-
-        public void setComment_id(int comment_id) {
-            this.comment_id = comment_id;
-        }
-
-        public String getComment_content() {
-            return comment_content;
-        }
-
-        public void setComment_content(String comment_content) {
-            this.comment_content = comment_content;
-        }
-
-        public long getComment_datetime() {
-            return comment_datetime;
-        }
-
-        public void setComment_datetime(long comment_datetime) {
-            this.comment_datetime = comment_datetime;
-        }
-
-        public long getComment_replydatetime() {
-            return comment_replydatetime;
-        }
-
-        public void setComment_replydatetime(long comment_replydatetime) {
-            this.comment_replydatetime = comment_replydatetime;
-        }
-
-        public int getComment_parent_id() {
-            return comment_parent_id;
-        }
-
-        public void setComment_parent_id(int comment_parent_id) {
-            this.comment_parent_id = comment_parent_id;
-        }
-
-        public String getUser_avatar() {
-            return user_avatar;
-        }
-
-        public void setUser_avatar(String user_avatar) {
-            this.user_avatar = user_avatar;
-        }
-
-        public int getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(int user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getUser_nickname() {
-            return user_nickname;
-        }
-
-        public void setUser_nickname(String user_nickname) {
-            this.user_nickname = user_nickname;
-        }
-
-        public int getBook_id() {
-            return book_id;
-        }
-
-        public void setBook_id(int book_id) {
-            this.book_id = book_id;
-        }
-
-        public int getVolume_id() {
-            return volume_id;
-        }
-
-        public void setVolume_id(int volume_id) {
-            this.volume_id = volume_id;
-        }
-
-        public int getChapter_id() {
-            return chapter_id;
-        }
-
-        public void setChapter_id(int chapter_id) {
-            this.chapter_id = chapter_id;
-        }
-
-        public String getIp_address() {
-            return ip_address;
-        }
-
-        public void setIp_address(String ip_address) {
-            this.ip_address = ip_address;
-        }
-
-        public List<?> getChildren() {
-            return children;
-        }
-
-        public void setChildren(List<?> children) {
-            this.children = children;
-        }
-    }
 }

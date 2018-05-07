@@ -1,7 +1,6 @@
 package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +14,8 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.BookCommentReplyBean;
-import com.spriteapp.booklibrary.model.CommentBean;
 import com.spriteapp.booklibrary.model.CommentReply;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
@@ -44,7 +43,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int REPLYCOMMENT = 2;
     private Activity context;
     private List<CommentReplyBean> replyBean;
-    private List<BookCommentReplyBean> replyBean2;
+    private BookCommentReplyBean comment;
     private int type;
 
     public CommentReplyAdapter(Activity context, List<CommentReplyBean> replyBean, int type) {
@@ -53,15 +52,14 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.type = type;
     }
 
-    public CommentReplyAdapter(Activity context, List<BookCommentReplyBean> replyBean, int type, int p) {//p无用
+    public CommentReplyAdapter(Activity context, BookCommentReplyBean replyBean, int type) {
         this.context = context;
-        this.replyBean2 = replyBean;
+        this.comment = replyBean;
         this.type = type;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View convertView = null;
         if (viewType == MAINCOMMENT) {//评论
             convertView = LayoutInflater.from(context).inflate(R.layout.comment_reply_layout, parent, false);
@@ -91,14 +89,14 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else if (type == 2) {
 
                 if (position == 0) {
-                    BookCommentReplyBean.CommentBean comment = replyBean2.get(0).getComment();
+                    BookCommentReplyBean.CommentBean comment = this.comment.getComment();
 //                    GlideUtils.loadImage(commentViewHolder.user_head,comment.getSource(),context);
                     commentViewHolder.user_name.setText(comment.getUserName());
 //                    commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(comment.getReplyDatetime() + "000")));
                     commentViewHolder.send_time.setText(comment.getReplyDatetime());
                     commentViewHolder.user_speak.setText(comment.getCmtContent());
                 } else if (position >= 2) {
-                    BookCommentReplyBean.ListsBean listsBean = replyBean2.get(0).getLists().get(position - 2);
+                    BookCommentBean listsBean = this.comment.getLists().get(position - 2);
                     GlideUtils.loadImage(commentViewHolder.user_head,listsBean.getUser_avatar(),context);
                     commentViewHolder.user_name.setText(listsBean.getUser_nickname());
                     commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(listsBean.getComment_replydatetime() + "000")));
@@ -143,9 +141,9 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 return 0;
             }
         } else {
-            if (replyBean2 != null && replyBean2.size() != 0 && replyBean2.get(0).getComment() != null && replyBean2.get(0).getLists() != null && replyBean2.get(0).getLists().size() != 0) {
+            if (comment != null && comment.getComment() != null && comment.getLists() != null && comment.getLists().size() != 0) {
 
-                return replyBean2.get(0).getLists().size() + 2;
+                return comment.getLists().size() + 2;
             } else {
                 Log.d("getItemCount", "getItemCount===" + 0);
                 return 0;
