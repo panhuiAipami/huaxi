@@ -454,7 +454,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     readMoreSettingLayout.initRaderSetting(shareDetail);
                 }
                 if (bookpage != null) {
-                    bookpage.bookDetail(shareDetail);
+                    bookpage.bookDetail(this,shareDetail);
                 }
                 //延迟关闭，防止黑屏闪过
                 handler.postDelayed(new Runnable() {

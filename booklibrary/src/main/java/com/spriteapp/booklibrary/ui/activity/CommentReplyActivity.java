@@ -85,7 +85,7 @@ public class CommentReplyActivity extends TitleActivity {
 
     public void initList() {
         comment_reply_list.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommentReplyAdapter(this, reply);
+        adapter = new CommentReplyAdapter(this, reply,1);
         comment_reply_list.setAdapter(adapter);
     }
 

@@ -37,7 +37,6 @@ import com.spriteapp.booklibrary.util.RecyclerViewUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.spriteapp.booklibrary.util.StringUtil;
-import com.spriteapp.booklibrary.util.ToastUtil;
 
 import java.util.List;
 
@@ -45,7 +44,6 @@ import de.greenrobot.event.EventBus;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.BOOKSHELF_TO_BOOKSTORE;
 import static com.spriteapp.booklibrary.ui.fragment.BookshelfFragment.IS_BAG;
-import static com.spriteapp.booklibrary.ui.fragment.OutsideBookShelfFragment.isGrid;
 
 
 /**

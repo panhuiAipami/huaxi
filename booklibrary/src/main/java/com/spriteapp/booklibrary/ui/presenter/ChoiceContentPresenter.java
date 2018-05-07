@@ -26,10 +26,10 @@ public class ChoiceContentPresenter implements BasePresenter<ChoiceView> {
         attachView(view);
     }
 
-    public void requestGetData(final int page,int sex) {
+    public void requestGetData(final int page) {
         BookApi.getInstance()
                 .service
-                .book_weekly("json",page,sex)
+                .book_weekly("json",page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<ChoiceBean>>>() {

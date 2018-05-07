@@ -1,8 +1,10 @@
 package com.spriteapp.booklibrary.api;
 
+import com.google.gson.JsonObject;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.model.BookCommentBean;
+import com.spriteapp.booklibrary.model.BookCommentReplyBean;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
@@ -416,4 +418,31 @@ public interface BookApiService {
                                                            @Query("start_time") int start_time,
                                                            @Query("stop_time") int stop_time,
                                                            @Query("row_count") int row_count);
+
+    //获取章节评论数
+    @GET("book_chaptercomment")
+    Observable<JsonObject> get_book_chaptercomment(@Query("book_id") int book_id,
+                                                   @Query("chapter_id") int chapter_id,
+                                                   @Query("u_action") String action
+
+    );
+
+    //获取章节评论内容
+    @GET("book_chaptercomment")
+    Observable<Base<BookCommentReplyBean>> get_chapter_comment_content(@Query("book_id") int book_id,
+                                                                       @Query("chapter_id") int chapter_id,
+                                                                       @Query("pid") int pid,
+                                                                       @Query("u_action") String action,
+                                                                       @Query("start_time") int start_time
+
+    );
+
+    //添加书的评论
+    @GET("book_comment")
+    Observable<Base> send_book_comment(@Query("book_id") int book_id,
+                                               @Query("chapter_id") int chapter_id,
+                                               @Query("parent_id") int parent_id,
+                                               @Query("content") String content
+
+    );
 }

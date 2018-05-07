@@ -1,7 +1,6 @@
 package com.spriteapp.booklibrary.ui.fragment;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
@@ -19,8 +18,6 @@ import com.spriteapp.booklibrary.ui.dialog.RankSortPop;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.spriteapp.booklibrary.ui.fragment.ChoiceFragment.ARG_COLUMN_COUNT;
-
 
 /**
  * 排行
@@ -35,16 +32,12 @@ public class RankFragment extends BaseFragment {
     private String[] mTitles = {"周榜", "月榜", "总榜"};
     private RankListFragment rankListFragment1, rankListFragment2, rankListFragment3;
     List<TextPaint> list = new ArrayList<>();
-    private int sex = 0;
 
     public RankFragment() {
     }
 
-    public static RankFragment newInstance(int columnCount) {
+    public static RankFragment newInstance() {
         RankFragment fragment = new RankFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -56,12 +49,9 @@ public class RankFragment extends BaseFragment {
 
     @Override
     public void configViews() {
-        if (getArguments() != null) {
-            sex = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-        rankListFragment1 = RankListFragment.newInstance(1, sex);
-        rankListFragment2 = RankListFragment.newInstance(2, sex);
-        rankListFragment3 = RankListFragment.newInstance(3, sex);
+        rankListFragment1 = RankListFragment.newInstance(1);
+        rankListFragment2 = RankListFragment.newInstance(2);
+        rankListFragment3 = RankListFragment.newInstance(3);
         fragments.add(rankListFragment1);
         fragments.add(rankListFragment2);
         fragments.add(rankListFragment3);
@@ -98,12 +88,14 @@ public class RankFragment extends BaseFragment {
     }
 
     public void setTextStyle(int pos) {
-        Log.d("setTextStyle", "pos");
+        Log.d("setTextStyle","pos");
         for (int i = 0; i < list.size(); i++) {
-            if (pos == i) {
+            if (pos == i){
                 list.get(i).setFakeBoldText(true);
-                Log.d("setTextStyle", "true");
-            } else
+                Log.d("setTextStyle","true");
+            }
+
+            else
                 list.get(i).setFakeBoldText(false);
         }
     }

@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.widget.readview.util;
 import java.util.List;
 
 public class ShowLine {
+	public int sectionIndex;
 	public List<ShowChar> CharsData = null;
 
 	public List<ShowChar> getCharsData() {

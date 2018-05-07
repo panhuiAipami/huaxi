@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.spriteapp.booklibrary.widget.readview.BubbleRelativeLayout
+        android:id="@+id/bubbleRelative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/c02_themes_color"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
+            android:id="@+id/recycler_book_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
+
+        <TextView
+            android:id="@+id/write_book_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@mipmap/write_book_comment_icon"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:textColor="@color/square_comment_selector"
+            android:layout_below="@+id/recycler_book_comment"
+            android:text="写评论" />
+    </com.spriteapp.booklibrary.widget.readview.BubbleRelativeLayout>
+</LinearLayout>

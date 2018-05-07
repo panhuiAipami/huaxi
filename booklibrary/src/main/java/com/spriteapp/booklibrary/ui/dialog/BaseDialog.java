@@ -41,16 +41,14 @@ public class BaseDialog {
      * @param layoutResId
      * @param isCanceledOnTouchOutside
      * @param isCanTouchOutside
-     * @param isDim
-     *            背景灰暗
-     * @param isFullScreen
-     *            是否全屏
+     * @param isDim                    背景灰暗
+     * @param isFullScreen             是否全屏
      */
     @SuppressWarnings("deprecation")
     public void initDialog(Activity act, View inflateView, int layoutResId,
                            boolean isCanceledOnTouchOutside, boolean isCanTouchOutside,
                            boolean isDim, boolean isFullScreen) {
-        this.activity=act;
+        this.activity = act;
         // initDialog(act, inflateView, layoutResId, TYPE_BOTTOM);
         mDialog = new CustomDialog(act, R.style.popBottomDialog);
         if (inflateView == null) {
@@ -90,7 +88,7 @@ public class BaseDialog {
     @SuppressWarnings("deprecation")
     public void initDialog(Activity act, View inflateView, int layoutResId,
                            int type, boolean isFullScreen) {
-        this.activity=act;
+        this.activity = act;
         mDialog = new CustomDialog(act, R.style.popBottomDialog);
         if (inflateView == null) {
             mDialog.setContentView(layoutResId);
@@ -220,11 +218,13 @@ public class BaseDialog {
 
     public void show() {
 
-        mDialog.show();
+        if (mDialog != null)
+            mDialog.show();
     }
 
     public void dismiss() {
-        mDialog.dismiss();
+        if (mDialog != null)
+            mDialog.dismiss();
 
     }
 

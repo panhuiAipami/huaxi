@@ -13,8 +13,6 @@ import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
 import com.spriteapp.booklibrary.ui.activity.MangerAlipayActivity;
-import com.spriteapp.booklibrary.ui.activity.NativeActivity;
-import com.spriteapp.booklibrary.ui.activity.NestingActivity;
 import com.spriteapp.booklibrary.ui.activity.ProfitDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.PublishCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.ReadActivity;
@@ -22,7 +20,6 @@ import com.spriteapp.booklibrary.ui.activity.RechargeActivity;
 import com.spriteapp.booklibrary.ui.activity.SearchActivity;
 import com.spriteapp.booklibrary.ui.activity.SettingActivity;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
-import com.spriteapp.booklibrary.ui.activity.StoreDetailsActivity;
 import com.spriteapp.booklibrary.ui.activity.TaskActivity;
 import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
 import com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity;
@@ -33,19 +30,14 @@ import com.spriteapp.booklibrary.ui.activity.WithdrawalsActivity;
 
 public class ActivityUtil {
     public static final int LOGIN_BACK = 1;
-    public static final int BACKREFRESH = 9;
     public static final int TOCREATEDYNAMICACTIVITY = 0;//跳转到发广播activity的result
     public static final String SQUAREID = "squareid";//跳转到帖子详情activity的id
     public static final String ISLOOKCOMMENT = "is_look_comment";//跳转到帖子详情activity的id
-    public static final String REPLYTITLE = "comment_reply_title";//评论回复标题
-    public static final String COMMENT_ID = "comment_id";//评论id
-    public static final String USER_ID = "user_id";//用户id
-    public static final String REWARDTYPE = "reward_type";//奖励类型
-    public final static String FRAGMENT_TYPE = "fragment_type";//排行fragment类型
-    public final static String FRAGMENT_SEX = "fragment_sex";//性别
-    public static final String STORE_DETAILS_TYPE = "store_details_type";
-    public static final String STORE_DETAILS_TITLE = "store_details_title";
-
+    public static final String REPLYTITLE = "comment_reply_title";
+    public static final String COMMENT_ID = "comment_id";
+    public static final String USER_ID = "user_id";
+    public static final String REWARDTYPE = "reward_type";
+    public static final int BACKREFRESH = 9;
 
     public static final String BOOK_ID = "book_id";
 
@@ -190,28 +182,8 @@ public class ActivityUtil {
         intent.putExtra(REWARDTYPE, type);
         context.startActivityForResult(intent, 0);
     }
-
     public static void toBagActivity(Context context) {
         Intent intent = new Intent(context, BagActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void toNestingActivity(Context context, int count, int sex) {//count用来区分使用哪个fragment，1为排行,其他未添加
-        Intent intent = new Intent(context, NestingActivity.class);
-        intent.putExtra(FRAGMENT_TYPE, count);
-        intent.putExtra(FRAGMENT_SEX, sex);
-        context.startActivity(intent);
-    }
-
-    public static void toStoreDetailsActivity(Activity context, int type, int sex,int title) {//type用来区分使用哪个接口,sex性别
-        Intent intent = new Intent(context, StoreDetailsActivity.class);
-        intent.putExtra(STORE_DETAILS_TYPE, type);
-        intent.putExtra(FRAGMENT_SEX, sex);
-        intent.putExtra(STORE_DETAILS_TITLE, title);
-        context.startActivity(intent);
-    }
-    public static void toNativeActivity(Context context) {
-        Intent intent = new Intent(context, NativeActivity.class);
         context.startActivity(intent);
     }
 }

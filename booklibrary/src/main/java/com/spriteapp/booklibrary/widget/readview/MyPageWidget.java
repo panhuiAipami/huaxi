@@ -1,9 +1,9 @@
 package com.spriteapp.booklibrary.widget.readview;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,9 +27,10 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
-import com.spriteapp.booklibrary.ui.activity.BookCommentActivity;
+import com.spriteapp.booklibrary.ui.dialog.BookCommentDialog;
 import com.spriteapp.booklibrary.ui.dialog.MyPopupWindow;
 import com.spriteapp.booklibrary.ui.dialog.ShareSelectTextDialog;
+import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
 import com.spriteapp.booklibrary.widget.readview.animation.AnimationProvider;
@@ -50,6 +52,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     private int mScreenWidth = 0; // 屏幕宽
     private int mScreenHeight = 0; // 屏幕高
     private Context mContext;
+    private Activity activity;
 
     //是否移动了
     private Boolean isMove = false;
@@ -77,11 +80,14 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     private Paint mBorderPointPaint, mTextSelectPaint = null;
     private List<ShowLine> mLinseData = null;
     private List<ShowLine> mSelectLines = new ArrayList<>();
+    private List<ShowChar> sectionEnd = new ArrayList<>();
     public static boolean isPullDown = false;
     private float TextHeight;
     private String selectText = "";
+    private int selectTextSection = 0;
     private MyPopupWindow popupWindow;
     private BookDetailResponse bookDetailResponse;
+    private String mCurrentContent;
 
     public MyPageWidget(Context context) {
         this(context, null);
@@ -158,6 +164,19 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         mLinseData = list;
     }
 
+    public void getSectionEnd(List<ShowChar> sectionEnd) {
+        this.sectionEnd = sectionEnd;
+    }
+
+    public void getChapterContent(String content) {
+        this.mCurrentContent = content;
+    }
+
+    public void bookDetail(Activity activity,BookDetailResponse shareDetail) {
+        this.activity = activity;
+        bookDetailResponse = shareDetail;
+    }
+
     private OnLongClickListener mLongClickListener = new OnLongClickListener() {
 
         @Override
@@ -174,7 +193,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     };
 
     public void showPopWindow() {
-        popupWindow.showAtLocation(this, Gravity.TOP|Gravity.LEFT, (int) Down_X, (int) Down_Y);
+        popupWindow.showAtLocation(this, Gravity.TOP | Gravity.LEFT, (int) Down_X, (int) Down_Y);
     }
 
     public void dismissPopWindow() {
@@ -229,7 +248,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 Log.e("ACTION_MOVE", "ACTION_DOWN");
             }
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            Log.e("ACTION_MOVE", "-----ACTION_MOVE--------mCurrentMode = " + mCurrentMode);
             getParent().requestDisallowInterceptTouchEvent(true);
             if (mCurrentMode == Mode.SelectMoveForward) {
 
@@ -353,6 +371,10 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
             } else {
                 Log.e("ACTION_UP", "-------->ACTION_UP");
                 if (!isMove) {
+                    if (onSectionClick()) {
+                        return true;
+                    }
+
                     cancelPage = false;
                     //是否点击了中间
                     if (downX > mScreenWidth / 5 && downX < mScreenWidth * 4 / 5 && downY > mScreenHeight / 3 && downY < mScreenHeight * 2 / 3) {
@@ -399,9 +421,9 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 }
             }
         }
-
         return true;
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -467,8 +489,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         selectText = "";
         for (ShowLine l : mSelectLines) {
             selectText += l.getLineData();
-            Log.e("selectline---------->", l.getLineData() + "");
-
+            selectTextSection = l.sectionIndex;
             if (l.CharsData != null && l.CharsData.size() > 0) {
 
 
@@ -486,6 +507,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
             }
         }
+        Log.e("selectline---------->", mSelectLines.get(0).sectionIndex + "------选取内容------>" + selectText);
     }
 
     private void GetSelectData() {
@@ -500,7 +522,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
             ShowLine selectline = new ShowLine();
             selectline.CharsData = new ArrayList<ShowChar>();
-
+            selectline.sectionIndex = l.sectionIndex;
             for (ShowChar c : l.CharsData) {
 
                 if (!Started) {
@@ -538,9 +560,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     //按下时查找字符串所在位置，画上下左右
     private void DrawPressSelectText(Canvas canvas, boolean isFirst) {
         ShowChar p = DetectPressShowChar(Down_X, Down_Y, isFirst);
-
-        Log.e("DrawPressSelectText", "---------------ShowChar=" + p);
-
         // 找到了选择的字符，首次按下选一行，不走这
         if (p != null && !isFirst) {
 //            FirstSelectShowChar = LastSelectShowChar = p;
@@ -577,8 +596,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                     if (isFirst) {
                         FirstSelectShowChar = l.getCharsData().get(0);
                         LastSelectShowChar = l.getCharsData().get(l.getCharsData().size() - 1);
-//                        Log.e("DetectPressShowChar", "--------------这一行都选中=" + FirstSelectShowChar.chardata);
-
                     }
                     return c;
                 }
@@ -706,7 +723,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
             return true;
         }
 
-        //在选择范围外40dp取消选择
+        //在选择范围外30dp取消选择
         if (fty - yposition > Util.dp2px(mContext, 30) || yposition - lby > Util.dp2px(mContext, 30)) {
             return false;
         } else {
@@ -729,14 +746,29 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     }
 
 
-    public void bookDetail(BookDetailResponse shareDetail) {
-        bookDetailResponse = shareDetail;
+    /**
+     * 点击段尾评论按钮
+     */
+    public boolean onSectionClick() {
+        int space = ScreenUtil.dpToPxInt(25);
+        for (int i = 0; i < sectionEnd.size(); i++) {
+            ShowChar c = sectionEnd.get(i);
+            Log.e(sectionEnd.size() + "onSectionClick--" + downY + "---<=" + c.BottomLeftPosition.y, downX + "---------->=" + c.BottomLeftPosition.x + "--------<=" + c.BottomRightPosition.x);
+            if (Math.abs(downX - c.BottomRightPosition.x) < space && Math.abs(downY - c.BottomRightPosition.y) < space) {//&& downY + 35 <= c.BottomLeftPosition.y
+                ToastUtil.showSingleToast(i + "点击了段落id=" + c.sectionIndex);
+                if(ListenerManager.getInstance().getSendBookComment() !=null){
+                    ListenerManager.getInstance().getSendBookComment().show(this,c.sectionIndex,c.BottomRightPosition.x,c.BottomRightPosition.y);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void comment() {
         initSelectBg();
-        mContext.startActivity(new Intent(mContext, BookCommentActivity.class));
+        new BookCommentDialog(activity,selectText,selectTextSection).show();
     }
 
     @Override
@@ -752,7 +784,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     public void share() {
         initSelectBg();
         ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
-        selectTextDialog.setData(bookDetailResponse,selectText);
+        selectTextDialog.setData(bookDetailResponse, selectText);
         selectTextDialog.show();
     }
 
@@ -761,4 +793,26 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         invalidate();
     }
 
+    /**
+     * 获取段落位置
+     *
+     * @param selectText
+     * @return
+     */
+    public int getSectionIndex(String selectText) {
+        if (!TextUtils.isEmpty(mCurrentContent)) {
+            String section[] = mCurrentContent.split("\n");
+            if (selectText.contains("\n")) {
+                String selectArr[] = selectText.split("\n");
+                selectText = selectArr[selectArr.length - 1];
+            }
+            for (int i = 0; i < section.length; i++) {
+                String text = section[i];
+                if (text.contains(selectText)) {
+                    return (i + 1);
+                }
+            }
+        }
+        return 0;
+    }
 }

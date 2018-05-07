@@ -2,17 +2,14 @@ package com.spriteapp.booklibrary.ui.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.spriteapp.booklibrary.ui.activity.HomeActivity.SEX;
-import static com.spriteapp.booklibrary.ui.fragment.ChoiceFragment.ARG_COLUMN_COUNT;
 
 /**
  * 首页（精选和排行）
@@ -45,23 +41,18 @@ public class HomeFragment extends BaseFragment {
     private HomePageTabAdapter adapter;
     private List<Fragment> fragmentList = new ArrayList<>();
     private SlidingTabLayout mTabLayout_1;
-    private String[] mTitles = {"男生", "女生"};
-    private ChoiceFragment choiceFragment, choiceFragmentWoman;
-    private NewNativeBookStoreFragment bookStoreFragment, womanBookStoreFragment;
-    private FrameLayout layout_bg;
+    private String[] mTitles = {"精选", "排行"};
+    private ChoiceFragment choiceFragment;
     private RankFragment rankFragment;
+    private int reload;
     private TextView titleView1;
     private TextView titleView2;
-    private int IsStore = 0;
 
     public HomeFragment() {
     }
 
-    public static HomeFragment newInstance(int columnCount) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -85,63 +76,50 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
-
-
+        reload = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
+        if (reload == 1) {
+            boy_or_girl.setChecked(true);
+        } else {
+            boy_or_girl.setChecked(false);
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && boy_or_girl != null) {
+            int load = SharedPreferencesUtil.getInstance().getInt(SEX, 0);
+            if (reload != load) {
+                setCheck(true);
+                reload = load;
+            } else {
+                setCheck(false);
+            }
+
+        }
     }
 
     @Override
     public void findViewId() {
-        if (getArguments() != null) {
-            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            Log.d("mColumnCount", "执行mColumnCount===" + mColumnCount);
-            if (mColumnCount == 0) {
-                IsStore = 1;
-            } else {
-                IsStore = 2;
-            }
-        }
         mTabLayout_1 = (SlidingTabLayout) view.findViewById(R.id.mTabLayout_1);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         sex_layout = (LinearLayout) view.findViewById(R.id.sex_item);
         boy_or_girl = (CheckBox) view.findViewById(R.id.boy_or_girl);
-        layout_bg = (FrameLayout) view.findViewById(R.id.layout_bg);
-        if (IsStore == 1) {
-            choiceFragment = ChoiceFragment.newInstance(0);
-            choiceFragmentWoman = ChoiceFragment.newInstance(1);
-//        rankFragment = RankFragment.newInstance();
-            fragmentList.add(choiceFragment);
-            fragmentList.add(choiceFragmentWoman);
-        } else {
-            layout_bg.setBackgroundColor(getResources().getColor(R.color.app_background));
-            bookStoreFragment = NewNativeBookStoreFragment.newInstance(0);
-            womanBookStoreFragment = NewNativeBookStoreFragment.newInstance(1);
-            fragmentList.add(bookStoreFragment);
-            fragmentList.add(womanBookStoreFragment);
-        }
 
+        choiceFragment = ChoiceFragment.newInstance(0);
+        rankFragment = RankFragment.newInstance();
+        fragmentList.add(choiceFragment);
+        fragmentList.add(rankFragment);
         adapter = new HomePageTabAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(adapter);
         mTabLayout_1.setViewPager(viewPager, mTitles);
         titleView1 = mTabLayout_1.getTitleView(0);
         titleView2 = mTabLayout_1.getTitleView(1);
-        titleView1.setTextSize(17);
-        titleView2.setTextSize(15);
+        titleView1.setTextSize(18);
+        titleView2.setTextSize(16);
         setCheck(false);
         listener();
 
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (SharedPreferencesUtil.getInstance().getInt(SEX) == 2) {
-            viewPager.setCurrentItem(1);
-        }
     }
 
     @Override
@@ -159,11 +137,11 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    titleView1.setTextSize(17);
-                    titleView2.setTextSize(15);
+                    titleView1.setTextSize(18);
+                    titleView2.setTextSize(16);
                 } else if (position == 1) {
-                    titleView1.setTextSize(15);
-                    titleView2.setTextSize(17);
+                    titleView1.setTextSize(16);
+                    titleView2.setTextSize(18);
                 }
             }
 

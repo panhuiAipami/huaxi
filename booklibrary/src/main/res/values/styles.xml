@@ -47,12 +47,14 @@
         <item name="android:activityCloseEnterAnimation">@anim/activity_stop</item>
         <item name="android:activityCloseExitAnimation">@anim/activity_out</item>
     </style>
+
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/book_reader_main_color</item>
     </style>
+
     <style name="Reader_Dialog_Fullscreen">
-    <item name="android:windowFullscreen">true</item>
-    <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
     <!-- 全屏dialog样式 -->
     <style name="Dialog_Fullscreen">
@@ -75,6 +77,7 @@
         <!--<item name="android:windowEnterAnimation">@anim/</item>-->
         <!--<item name="android:windowExitAnimation">@anim/</item>-->
     </style>
+
     <style name="Theme_follow_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -83,25 +86,37 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="bottomPopupDialog" parent="@style/popBottomDialog">
         <item name="android:windowEnterAnimation">@anim/pop_push_up_in</item>
         <item name="android:windowExitAnimation">@anim/pop_push_down_out</item>
     </style>
+
     <style name="rewardDialog" parent="@style/popBottomDialog">
         <item name="android:windowEnterAnimation">@anim/reward_in</item>
         <item name="android:windowExitAnimation">@anim/reward_out</item>
     </style>
+
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/square_comment_selector</item>
         <item name="colorAccent">@color/c10_themes_color</item>
         <item name="colorControlNormal">@color/c10_themes_color</item>
         <item name="colorControlHighlight">@color/square_comment_selector</item>
     </style>
+
     <style name="CodeEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/c02_themes_color</item>
         <item name="colorAccent">@color/c10_themes_color</item>
         <item name="colorControlNormal">@color/c10_themes_color</item>
         <item name="colorControlHighlight">@color/c02_themes_color</item>
     </style>
+
+    <declare-styleable name="bubble">
+        <attr name="shadowColor" format="color" />
+        <attr name="padding" format="dimension" />
+        <attr name="strokeWidth" format="float" />
+        <attr name="cornerRadius" format="float" />
+        <attr name="halfBaseOfLeg" format="dimension" />
+    </declare-styleable>
 
 </resources>

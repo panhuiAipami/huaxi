@@ -26,10 +26,10 @@ public class RankContentPresenter implements BasePresenter<RankView> {
         attachView(view);
     }
 
-    public void requestGetData(int type ,int interval,int sex) {
+    public void requestGetData(int type ,int interval) {
         BookApi.getInstance()
                 .service
-                .book_ranklist("json",type,interval,50,sex)
+                .book_ranklist("json",type,interval,50)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<BookDetailResponse>>>() {

@@ -15,6 +15,7 @@ public class ShowChar {
 	
 	public float charWidth = 0;
 	public int Index = 0;
+	public int sectionIndex = 0;
 	
 	@Override
 	public String toString() {

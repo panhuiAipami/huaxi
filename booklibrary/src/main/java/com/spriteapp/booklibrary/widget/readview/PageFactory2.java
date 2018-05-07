@@ -17,18 +17,26 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.spriteapp.booklibrary.R;
+import com.spriteapp.booklibrary.api.BookApi;
+import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.callback.ProgressCallback;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.database.ContentDb;
+import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.listener.SendBookComment;
 import com.spriteapp.booklibrary.manager.SettingManager;
 import com.spriteapp.booklibrary.model.response.BookChapterResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.model.response.SubscriberContent;
+import com.spriteapp.booklibrary.ui.dialog.BookCommentPopupWindow;
 import com.spriteapp.booklibrary.ui.dialog.GuessYouLikeDialog;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.BookUtil;
@@ -47,18 +55,29 @@ import com.spriteapp.booklibrary.widget.readview.util.ShowLine;
 import com.spriteapp.booklibrary.widget.readview.util.TRPage;
 import com.spriteapp.booklibrary.widget.readview.util.TextBreakUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Created by Administrator on 2016/7/20 0020.
  */
-public class PageFactory2 {
+public class PageFactory2 implements SendBookComment {
     private static final int LEFT_PLUS_MARGIN = 5;
     int book_id;
     private Activity mContext;
@@ -136,15 +155,18 @@ public class PageFactory2 {
     private int currentChapter, tempChapter, currentPageNum;
     private OnReadStateChangeListener listener;
     private Map<Integer, Integer> mPageMap;
+    private Map<Integer, int[]> mSectionMap;
+    private Map<Integer, Integer> resultSctionMap;
     private int mTotalPage;
     private int mbBufferLen;
     /**
      * 页首页尾的位置
      */
     private int curEndPos = 0, curBeginPos = 0, tempBeginPos, tempEndPos;
-    private  BookDetailResponse bookDetailResponse;
+    private BookDetailResponse bookDetailResponse;
 
     private static Status mStatus = Status.OPENING;
+
 
     public enum Status {
         OPENING,
@@ -153,6 +175,7 @@ public class PageFactory2 {
     }
 
     public PageFactory2(Activity context, int book_id, List<BookChapterResponse> chaptersList) {
+        ListenerManager.getInstance().setSendBookComment(this);
         this.book_id = book_id;
         this.chaptersList = chaptersList;
         mBookUtil = new BookUtil();
@@ -186,8 +209,8 @@ public class PageFactory2 {
         }
         waitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);// 画笔
         waitPaint.setTextAlign(Paint.Align.LEFT);// 左对齐
-        waitPaint.setTextSize(mContext.getResources().getDimension(R.dimen.reading_max_text_size));// 字体大小
-        waitPaint.setColor(Color.YELLOW);// 字体颜色
+        waitPaint.setTextSize(mContext.getResources().getDimension(R.dimen.reading_min_text_size));// 字体大小
+        waitPaint.setColor(Color.WHITE);// 字体颜色
         waitPaint.setSubpixelText(true);// 设置该项为true，将有助于文本在LCD屏幕上的显示效果
 
 
@@ -223,7 +246,6 @@ public class PageFactory2 {
 
         initBg(config.getDayOrNight());
         measureMarginWidth();
-        Log.d("measureMarginWidth", "使用PageFactory2绘制页面");
     }
 
     //初始化背景
@@ -243,47 +265,6 @@ public class PageFactory2 {
         }
     }
 
-
-    private void drawStatus(Bitmap bitmap) {
-        String status = "";
-        switch (mStatus) {
-            case OPENING:
-                status = "正在打开书本...";
-                break;
-            case FAIL:
-                status = "打开书本失败！";
-                break;
-
-        }
-
-        Canvas c = new Canvas(bitmap);
-        c.drawBitmap(getBgBitmap(), 0, 0, null);
-        waitPaint.setColor(getTextColor());
-
-        Rect targetRect = new Rect(0, 0, mWidth, mHeight);
-//        c.drawRect(targetRect, waitPaint);
-        Paint.FontMetricsInt fontMetrics = waitPaint.getFontMetricsInt();
-        int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
-        // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
-        waitPaint.setTextAlign(Paint.Align.CENTER);
-        c.drawText(status, targetRect.centerX(), baseline, waitPaint);
-//        c.drawText("正在打开书本...", mHeight / 2, 0, waitPaint);
-        mBookPageWidget.postInvalidate();
-    }
-
-    public void getChapterNameAndIndex() {
-        //切换章节需要找章节名
-        if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
-            for (int i = 0; i < chaptersList.size(); i++) {
-                BookChapterResponse catalogResponse = chaptersList.get(i);
-                if (catalogResponse.getChapter_id() == currentChapter) {
-                    chapterIndex = i;
-                    chapterName = catalogResponse.getChapter_title();
-                    break;
-                }
-            }
-        }
-    }
 
     @SuppressLint("WrongConstant")
     public void onDraw(Bitmap bitmap, List<ShowLine> mLines, Boolean updateCharter) {
@@ -318,6 +299,7 @@ public class PageFactory2 {
         // 绘制阅读页面文字
         if (mLines.size() > 0) {
             y += ScreenUtil.dpToPx(10);
+            sectionEnd.clear();
             for (ShowLine strLine : mLines) {
                 y = drawLineText(strLine, c, y);
             }
@@ -371,16 +353,41 @@ public class PageFactory2 {
 
         SettingManager.getInstance().saveReadProgress(book_id + "", currentChapter, curBeginPos, curEndPos);
         mBookPageWidget.getListData(mLines);
+        mBookPageWidget.getSectionEnd(sectionEnd);
         mBookPageWidget.postInvalidate();
     }
 
     private float TextHeight = 0;
+
+    List<ShowChar> sectionEnd = new ArrayList<>();
 
     private float drawLineText(ShowLine lines, Canvas cs, float y) {
         boolean isChangeLine = false;
         String text = lines.getLineData();
         if (text.endsWith("\n")) {
             cs.drawText(text, measureMarginWidth, y, mPaint);
+
+            //段尾显示评论数---------
+            if (resultSctionMap != null) {
+                if (resultSctionMap.get(lines.sectionIndex) != null) {
+                    int num = resultSctionMap.get(lines.sectionIndex);
+                    float wordWidth = mPaint.measureText(text);
+                    int left = (int) (wordWidth);
+                    int top = (int) y;
+                    int clearance = ScreenUtil.dpToPxInt(5);
+                    RectF re2 = new RectF(left + clearance, top + ScreenUtil.dpToPxInt(2), left + ScreenUtil.dpToPxInt(25), top + ScreenUtil.dpToPxInt(15));
+                    //背景
+                    cs.drawRoundRect(re2, left + clearance, left + clearance, mTitlePaint);
+                    //数字
+                    String textNum = num + "";
+                    if (num > 99) {
+                        textNum = num + "+";
+                    }
+                    cs.drawText(textNum, left + (num > 9 ? clearance * 2 : clearance * 3), top + ScreenUtil.dpToPxInt(12), waitPaint);
+                    //-------------------
+                }
+            }
+
             y += lineSpace;
             isChangeLine = true;
         } else {
@@ -393,7 +400,7 @@ public class PageFactory2 {
         float bottomposition = (isChangeLine ? y - lineSpace : y) + mPaint.getFontMetrics().descent;
 
         for (ShowChar c : lines.CharsData) {
-
+            c.sectionIndex = lines.sectionIndex;//给每个字加上段落id
             rightposition = leftposition + c.charWidth;
             Point tlp = new Point();
             c.TopLeftPosition = tlp;
@@ -416,7 +423,9 @@ public class PageFactory2 {
             brp.y = (int) bottomposition;
 
             leftposition = rightposition;
-
+            if (c.chardata == '\n') {
+                sectionEnd.add(c);
+            }
         }
         y += lineSpace + m_fontSize;
         return y;
@@ -441,6 +450,7 @@ public class PageFactory2 {
         if (subscriberContent == null) {
             return 0;
         }
+        getChapterCommentNum();
         String key = subscriberContent.getChapter_content_key();
         String content = subscriberContent.getChapter_content();
         mCurrentContent = EncryptUtils.decrypt(content, key);
@@ -449,6 +459,7 @@ public class PageFactory2 {
         curEndPos = position[1];
         setChapterTotalPage();
         onChapterChanged(chapter);
+        mBookPageWidget.getChapterContent(mCurrentContent);
         if (isfirstPage) {
             currentPage = getPageForBegin(curBeginPos);
             if (mBookPageWidget != null) {
@@ -681,11 +692,13 @@ public class PageFactory2 {
         Vector<ShowLine> lines = new Vector<>();
         int paraSpace = 0;
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
-
+        int nowSection = 0;
+        int pageSection[] = getPageSections(curEndPos);
         while ((lines.size() < mPageLineCount) && (curEndPos < mbBufferLen)) {
             //一个段落内容，根据\n 划分段
+            nowSection++;
             String strParagraph = readNextParagraph(curEndPos);
-//            Log.e("getNextLines-->" + curEndPos, curEndPos + strParagraph.length() + "-------下一段落： " + strParagraph);
+//            Log.e("getNextLines-->" + curEndPos, pageSection[0] - pageSection[1] + nowSection + "-------下一段落： " + strParagraph);
             currentPage.setEnd(currentPage.getEnd() + strParagraph.length());
             mBookUtil.setPostition(currentPage.getEnd() + strParagraph.length());
             curEndPos += strParagraph.length();
@@ -702,6 +715,7 @@ public class PageFactory2 {
                 ShowLine showLine = new ShowLine();
                 showLine.CharsData = breakResult.showChars;
                 lines.add(showLine);
+                showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
 
                 //剩下无法容纳的文本
                 strParagraph = strParagraph.substring(paintSize);
@@ -770,9 +784,13 @@ public class PageFactory2 {
     private Vector<ShowLine> getPreLines() {
         Vector<ShowLine> lines = new Vector<>(); // 页面行
         int paraSpace = 0;
+        int nowSection = 0;
+        int pageSection[] = getPageSections(curBeginPos);
+//        Log.e("section", totalSection + "----段数---" + pageSection);
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
         while ((lines.size() < mPageLineCount) && (curBeginPos > 0)) {
             Vector<ShowLine> paraLines = new Vector<>(); // 段落行
+            nowSection++;
             String strParagraph = readUpParagraph(curBeginPos);
 //            Log.e("getPreLines", "----上一页的行： " + strParagraph);
             mBookUtil.setPostition(currentPage.getBegin() - strParagraph.length());
@@ -785,6 +803,7 @@ public class PageFactory2 {
                 BreakResult breakResult = TextBreakUtil.BreakText(strParagraph.substring(0, paintSize), mVisibleWidth, 0, mPaint);
                 ShowLine showLine = new ShowLine();
                 showLine.CharsData = breakResult.showChars;
+                showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
                 paraLines.add(showLine);
                 strParagraph = strParagraph.substring(paintSize);
             }
@@ -1076,21 +1095,30 @@ public class PageFactory2 {
     /**
      * 获取当前章的总页数
      */
+    int totalSection = 0;
+
     public int setChapterTotalPage() {
         if (mPageMap == null) {
             mPageMap = new LinkedHashMap<>();
         }
+        mSectionMap = new LinkedHashMap<>();
         mPageMap.clear();
         Vector<String> lines = new Vector<>();
         mTotalPage = 0;
+        totalSection = 0;
         int currentEndPos = 0;
+        //一页的内容
         while (currentEndPos < mbBufferLen) {
             int paraSpace = 0;
+            int pageSection = 0;
             mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
             int curBeginPos = currentEndPos;
+            //一段的内容
             while ((lines.size() < mPageLineCount) && (currentEndPos < mbBufferLen)) {
                 String strParagraph = readNextParagraph(currentEndPos);
+                pageSection++;
                 currentEndPos += strParagraph.length();
+                //一行的内容
                 while (strParagraph.length() > 0) {
                     int paintSize = mPaint.breakText(strParagraph, true, mVisibleWidth, null);
                     lines.add(strParagraph.substring(0, paintSize));
@@ -1109,10 +1137,155 @@ public class PageFactory2 {
             if (currentEndPos < mbBufferLen) {
                 lines.clear();
             }
+//            Log.e("mTotalPage", mTotalPage + "<--mTotalPage---------totalSection-->" + totalSection);
             mPageMap.put(mTotalPage, curBeginPos);
+            totalSection += pageSection;
+            mSectionMap.put(curBeginPos, new int[]{totalSection, pageSection});
             mTotalPage++;
+
         }
         return mTotalPage;
     }
+
+    public int[] getPageSections(int curBeginPos) {
+        int arr[];
+        arr = mSectionMap.get(curBeginPos);
+        return arr;
+    }
+
+
+    private void drawStatus(Bitmap bitmap) {
+        String status = "";
+        switch (mStatus) {
+            case OPENING:
+                status = "正在打开书本...";
+                break;
+            case FAIL:
+                status = "打开书本失败！";
+                break;
+
+        }
+
+        Canvas c = new Canvas(bitmap);
+        c.drawBitmap(getBgBitmap(), 0, 0, null);
+
+        Rect targetRect = new Rect(0, 0, mWidth, mHeight);
+//        c.drawRect(targetRect, waitPaint);
+        Paint.FontMetricsInt fontMetrics = waitPaint.getFontMetricsInt();
+        int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
+        // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
+        waitPaint.setTextAlign(Paint.Align.CENTER);
+        c.drawText(status, targetRect.centerX(), baseline, waitPaint);
+//        c.drawText("正在打开书本...", mHeight / 2, 0, waitPaint);
+        mBookPageWidget.postInvalidate();
+    }
+
+    public void getChapterNameAndIndex() {
+        //切换章节需要找章节名
+        if (TextUtils.isEmpty(chapterName) && !CollectionUtil.isEmpty(chaptersList)) {
+            for (int i = 0; i < chaptersList.size(); i++) {
+                BookChapterResponse catalogResponse = chaptersList.get(i);
+                if (catalogResponse.getChapter_id() == currentChapter) {
+                    chapterIndex = i;
+                    chapterName = catalogResponse.getChapter_title();
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void send(int section, String text) {
+        sendCommentContent(section, text);
+    }
+
+    @Override
+    public void show(View v,int pid,int x, int y) {
+        BookCommentPopupWindow commentPopupWindow = new BookCommentPopupWindow(mContext,book_id,currentChapter,pid);
+        commentPopupWindow.show(v,x,y);
+    }
+
+    /**
+     * 获取章节评论数和评论
+     */
+    public void getChapterCommentNum() {
+        BookApi.getInstance().service.get_book_chaptercomment(book_id, currentChapter, "number")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<JsonObject>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(JsonObject stringBase) {
+                        if (stringBase != null) {
+                            JsonElement data = stringBase.get("lists");
+                            if (data != null && data.isJsonObject()) {
+                                try {
+                                    JsonObject object = data.getAsJsonObject();
+                                    JSONObject json = new JSONObject(object.toString());
+                                    Iterator it = json.keys();
+                                    resultSctionMap = new HashMap<>();
+                                    while (it.hasNext()) {
+                                        int next = Integer.parseInt(it.next().toString());
+                                        resultSctionMap.put(next, json.getInt(next + ""));
+                                    }
+                                    currentPage(false);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
+    }
+
+    /**
+     * 发送评论
+     *
+     * @param pid
+     * @param content
+     */
+    public void sendCommentContent(int pid, String content) {
+        BookApi.getInstance().service.send_book_comment(book_id, currentChapter, pid, content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Base stringBase) {
+                        if (stringBase != null && stringBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
+                            ToastUtil.showSingleToast("评论成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showSingleToast("评论失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
+    }
+
+
 
 }

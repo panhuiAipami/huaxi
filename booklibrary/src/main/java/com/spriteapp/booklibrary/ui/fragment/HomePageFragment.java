@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.base.BaseFragment;
 import com.spriteapp.booklibrary.constant.Constant;
@@ -47,10 +46,11 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     private TextView tab_one, tab_two, tab_three;
     private ImageView search_btn, top_bottom;
     private ViewPager viewPager;
-    private SlidingTabLayout tabLayout;
+    private TabLayout tabLayout;
     public static List<StoreBean> syTitles = new ArrayList<>();
     public static List<StoreBean> shuTitles = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
+    private List<TextView> textViews = new ArrayList<>();
     private int type;
     public static final String FRAGMENTTYPE = "type";
     PopupWindow popupWindow;
@@ -63,7 +63,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     private HomePageTabAdapter adapter1;
     private HomePageTabAdapter adapter2;
     ChoiceFragment choiceFragment;
-    private NewNativeBookStoreFragment bookStoreFragment, womanBookStoreFragment;
+    private NewNativeBookStoreFragment bookStoreFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +100,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         search_btn = (ImageView) mView.findViewById(R.id.search_btn);
         top_bottom = (ImageView) mView.findViewById(R.id.top_bottom);
         viewPager = (ViewPager) mView.findViewById(R.id.viewPager);
-        tabLayout = (SlidingTabLayout) mView.findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) mView.findViewById(R.id.tabLayout);
+        textViews.add(tab_one);
+        textViews.add(tab_two);
+        textViews.add(tab_three);
         sex_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +139,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                setColor(position);
+                setColor(position);
             }
 
             @Override
@@ -237,49 +240,49 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-//    public void addListData() {
-//        CateBean.Top_menu top_menu = FileHelper.readObjectFromJsonFile(getActivity(), Constant.PathTitle, CateBean.Top_menu.class);
-//        if (top_menu != null && top_menu.getStore() != null && top_menu.getChosen() != null) {
-//            if (top_menu.getChosen().size() != 0) {
-//                syTitles.clear();
-//                syTitles.addAll(top_menu.getChosen());
-//            }
-//            if (top_menu.getStore().size() != 0) {
-//                shuTitles.clear();
-//                shuTitles.addAll(top_menu.getStore());
-//            }
-//        }
-//    }
+    public void addListData() {
+        CateBean.Top_menu top_menu = FileHelper.readObjectFromJsonFile(getActivity(), Constant.PathTitle, CateBean.Top_menu.class);
+        if (top_menu != null && top_menu.getStore() != null && top_menu.getChosen() != null) {
+            if (top_menu.getChosen().size() != 0) {
+                syTitles.clear();
+                syTitles.addAll(top_menu.getChosen());
+            }
+            if (top_menu.getStore().size() != 0) {
+                shuTitles.clear();
+                shuTitles.addAll(top_menu.getStore());
+            }
+        }
+    }
 
-//    public void getHttpListData(CateBean.Top_menu top_menu) {
-//        if (top_menu != null && top_menu.getStore() != null && top_menu.getChosen() != null) {
-//            if (top_menu.getChosen().size() != 0) {
-//                syTitles.clear();
-//                syTitles.addAll(top_menu.getChosen());
-//            }
-//            if (top_menu.getStore().size() != 0) {
-//                shuTitles.clear();
-//                shuTitles.addAll(top_menu.getStore());
-//            }
-//            try {
-//                CateBean.Top_menu menu = FileHelper.readObjectFromJsonFile(getActivity(), Constant.PathTitle, CateBean.Top_menu.class);
-//                if (menu == null) {
-//                    if (top_menu.getChosen().size() != 0) {
-//                        syTitles.clear();
-//                        syTitles.addAll(top_menu.getChosen());
-//                    }
-//                    if (top_menu.getStore().size() != 0) {
-//                        shuTitles.clear();
-//                        shuTitles.addAll(top_menu.getStore());
-//                    }
-//                    initFragment();
-//                    Log.d("fragment", "重新加载");
-//                }
-//            } catch (Exception e) {
-//
-//            }
-//        }
-//    }
+    public void getHttpListData(CateBean.Top_menu top_menu) {
+        if (top_menu != null && top_menu.getStore() != null && top_menu.getChosen() != null) {
+            if (top_menu.getChosen().size() != 0) {
+                syTitles.clear();
+                syTitles.addAll(top_menu.getChosen());
+            }
+            if (top_menu.getStore().size() != 0) {
+                shuTitles.clear();
+                shuTitles.addAll(top_menu.getStore());
+            }
+            try {
+                CateBean.Top_menu menu = FileHelper.readObjectFromJsonFile(getActivity(), Constant.PathTitle, CateBean.Top_menu.class);
+                if (menu == null) {
+                    if (top_menu.getChosen().size() != 0) {
+                        syTitles.clear();
+                        syTitles.addAll(top_menu.getChosen());
+                    }
+                    if (top_menu.getStore().size() != 0) {
+                        shuTitles.clear();
+                        shuTitles.addAll(top_menu.getStore());
+                    }
+                    initFragment();
+                    Log.d("fragment", "重新加载");
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    }
 
     public void setData() {
         if (choiceFragment != null) {
@@ -305,41 +308,142 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-//    public void setColor(int pos) {//选中字体颜色修改
-//
-//    }
+    public void setColor(int pos) {//选中字体颜色修改
+        int listSize = 0;
+        if (type == 1) {
+            listSize = syTitles.size();
+        } else if (type == 2) {
+            listSize = shuTitles.size();
+        }
+        for (int i = 0; i < listSize; i++) {
+            if (pos == i) {
+                textViews.get(i).setTextColor(ContextCompat.getColor(getActivity(), R.color.book_reader_black));
+                textViews.get(i).setTextSize(18);
+            } else {
+                textViews.get(i).setTextColor(ContextCompat.getColor(getActivity(), R.color.book_reader_half_black));
+                textViews.get(i).setTextSize(16);
+            }
+        }
+    }
 
     @Override
     protected void lazyLoad() {
     }
 
     public void initFragment() {
-
-
-        shuTitles.add(new StoreBean("", "男生"));
-        shuTitles.add(new StoreBean("", "女生"));
+        if (syTitles.size() == 0 && shuTitles.size() == 0) {
+            addListData();
+            if (syTitles.size() == 0 && shuTitles.size() == 0) {
+                return;
+            }
+        }
+        if (syTitles.size() == 0) {
+            syTitles.add(new StoreBean("", "精选"));
+        }
+        if (shuTitles.size() == 0) {
+            shuTitles.add(new StoreBean("", "书城"));
+        }
         Bundle bundle1 = new Bundle();
         Bundle bundle2 = new Bundle();
         bundle1.putInt(FRAGMENTTYPE, 1);
         bundle2.putInt(FRAGMENTTYPE, 2);
         switch (type) {
             case 1://精选
-
+                for (int i = 0; i < syTitles.size(); i++) {
+                    if (i < 2)
+                        textViews.get(i).setText(syTitles.get(i).getName());
+                }
+                choiceFragment = ChoiceFragment.newInstance(0);
+                if (syTitles.size() == 1) {
+                    discoverFragment1 = new DiscoverFragment();
+                    discoverFragment1.setArguments(bundle1);
+                    fragments.add(choiceFragment);
+                    textViews.get(1).setVisibility(View.GONE);
+                } else if (syTitles.size() == 2) {
+                    discoverFragment1 = new DiscoverFragment();
+                    discoverFragment2 = new DiscoverFragment();
+                    discoverFragment1.setArguments(bundle1);
+                    discoverFragment2.setArguments(bundle2);
+                    fragments.add(choiceFragment);
+                    fragments.add(discoverFragment2);
+                    textViews.get(1).setVisibility(View.VISIBLE);
+                }
+                break;
             case 2://书城
+//                for (int i = 0; i < shuTitles.size(); i++) {
+//                    if (i < 3)
+//                        textViews.get(i).setText(shuTitles.get(i).getName());
+//                }
+//                if (shuTitles.size() == 0) {
+//
+//                } else if (shuTitles.size() == 1) {
+//                    bookstoreFragment1 = new BookstoreFragment();
+//                    bookstoreFragment1.setArguments(bundle1);
+//                    fragments.add(bookstoreFragment1);
+//                    textViews.get(1).setVisibility(View.GONE);
+//                } else if (shuTitles.size() == 2) {
+//                    bookstoreFragment1 = new BookstoreFragment();
+//                    bookstoreFragment2 = new BookstoreFragment();
+//                    bookstoreFragment1.setArguments(bundle1);
+//                    bookstoreFragment2.setArguments(bundle2);
+//                    fragments.add(bookstoreFragment1);
+//                    fragments.add(bookstoreFragment2);
+//                    textViews.get(1).setVisibility(View.VISIBLE);
+//
+//                }
+                textViews.get(0).setText("书城");
                 bookStoreFragment = new NewNativeBookStoreFragment();
-                womanBookStoreFragment = new NewNativeBookStoreFragment();
                 fragments.add(bookStoreFragment);
-                fragments.add(womanBookStoreFragment);
 
                 break;
         }
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                DisplayMetrics display;
+                if (AppUtil.getAppContext() != null) {
+                    display = AppUtil.getAppContext().getResources().getDisplayMetrics();
+                    int kuan = display.widthPixels;
+                    Util.setIndicator(tabLayout, 40, 40);
+                }
+//                if (kuan < 400) {
+//                    Util.setIndicator(tabLayout, 40, 40);
+//                }else if(kuan==400){
+//                    Util.setIndicator(tabLayout, 45, 45);
+//                }else if(kuan==720){
+//                    Util.setIndicator(tabLayout, 50, 50);
+//                }else if(kuan==1080){
+//                    Util.setIndicator(tabLayout, 60, 60);
+//                }else if(kuan>1080&&kuan<1450){
+//                    Util.setIndicator(tabLayout, 65, 65);
+//                }else if(kuan>1450){
+//                    Util.setIndicator(tabLayout, 65, 65);
+//                }else {
+//                    Util.setIndicator(tabLayout, 50, 50);
+//                }
+
+            }
+        });
 
         if (type == 1) {
-
+            for (int i = 0; i < syTitles.size(); i++) {
+                if (i < 2) {
+                    textViews.get(i).setVisibility(View.VISIBLE);
+                }
+            }
+            viewPager.setOffscreenPageLimit(syTitles.size());
+            if (adapter1 == null) {
+                adapter1 = new HomePageTabAdapter(getChildFragmentManager(), syTitles, fragments);
+            }
+            adapter1.notifyDataSetChanged();
+            viewPager.setAdapter(adapter1);
 
         } else if (type == 2) {
-            Log.d("shutitles", "type==" + shuTitles.size());
-
+            for (int i = 0; i < shuTitles.size(); i++) {
+                if (i < 2) {
+                    textViews.get(i).setVisibility(View.VISIBLE);
+                }
+            }
             viewPager.setOffscreenPageLimit(shuTitles.size());
             if (adapter2 == null) {
                 adapter2 = new HomePageTabAdapter(getChildFragmentManager(), shuTitles, fragments);
@@ -347,7 +451,10 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
             adapter2.notifyDataSetChanged();
             viewPager.setAdapter(adapter2);
         }
-        tabLayout.setViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        if (type == 1 && syTitles.size() > 1) {
+            tabLayout.setVisibility(View.VISIBLE);
+        }
         if (type == 2 && shuTitles.size() > 1) {
             tabLayout.setVisibility(View.VISIBLE);
         }

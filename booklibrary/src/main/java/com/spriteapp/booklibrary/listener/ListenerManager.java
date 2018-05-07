@@ -13,6 +13,7 @@ public class ListenerManager {
     private HuaWeiPayCallBack huaWeiPayCallBack;//华为支付回调
     private GotoHomePage gotoHomePage;//去首页精选
     private MyPopupWindow.OnButtonClick onButtonClick;
+    private SendBookComment sendBookComment;
 
 
     public static ListenerManager getInstance() {
@@ -20,6 +21,15 @@ public class ListenerManager {
             instance = new ListenerManager();
         }
         return instance;
+    }
+
+
+    public SendBookComment getSendBookComment() {
+        return sendBookComment;
+    }
+
+    public void setSendBookComment(SendBookComment sendBookComment) {
+        this.sendBookComment = sendBookComment;
     }
 
     public MyPopupWindow.OnButtonClick getOnButtonClick() {
