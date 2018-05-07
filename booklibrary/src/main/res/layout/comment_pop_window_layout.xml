@@ -13,13 +13,12 @@
         android:background="@color/c02_themes_color"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:padding="10dp">
 
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/recycler_book_comment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="100dp">
 
         </com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
 
@@ -27,13 +26,13 @@
             android:id="@+id/write_book_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:drawablePadding="5dp"
-            android:drawableLeft="@mipmap/write_book_comment_icon"
-            android:layout_centerHorizontal="true"
-            android:textSize="16sp"
-            android:textColor="@color/square_comment_selector"
             android:layout_below="@+id/recycler_book_comment"
-            android:text="写评论" />
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:drawableLeft="@mipmap/write_book_comment_icon"
+            android:drawablePadding="5dp"
+            android:text="写评论"
+            android:textColor="@color/square_comment_selector"
+            android:textSize="16sp" />
     </com.spriteapp.booklibrary.widget.readview.BubbleRelativeLayout>
 </LinearLayout>

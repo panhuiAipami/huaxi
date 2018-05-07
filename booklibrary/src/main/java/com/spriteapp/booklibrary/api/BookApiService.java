@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.model.BookCommentBean;
-import com.spriteapp.booklibrary.model.BookCommentReplyBean;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
@@ -429,7 +428,7 @@ public interface BookApiService {
 
     //获取章节评论内容
     @GET("book_chaptercomment")
-    Observable<Base<BookCommentReplyBean>> get_chapter_comment_content(@Query("book_id") int book_id,
+    Observable<Base<List<BookCommentBean>>> get_chapter_comment_content(@Query("book_id") int book_id,
                                                                        @Query("chapter_id") int chapter_id,
                                                                        @Query("pid") int pid,
                                                                        @Query("u_action") String action,

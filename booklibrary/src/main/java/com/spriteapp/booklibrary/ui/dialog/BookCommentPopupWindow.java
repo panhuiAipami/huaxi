@@ -16,11 +16,15 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseActivity;
+import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.BookCommentReplyBean;
 import com.spriteapp.booklibrary.ui.adapter.CommentReplyAdapter;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.widget.readview.BubbleRelativeLayout;
 import com.spriteapp.booklibrary.widget.recyclerview.URecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,8 +43,8 @@ public class BookCommentPopupWindow extends PopupWindow {
     private BubbleRelativeLayout bubbleRelative;
     private URecyclerView recycler_book_comment;
     private CommentReplyAdapter adapter;
-    private BookCommentReplyBean data = new BookCommentReplyBean();
-
+    private List<BookCommentBean> data = new ArrayList<>();
+    private BookCommentReplyBean commentReplyBean = new BookCommentReplyBean();
     private int book_id, chapter_id, pid;
 
     public BookCommentPopupWindow(Activity context, int book_id, int chapter_id, int pid) {
@@ -60,6 +64,7 @@ public class BookCommentPopupWindow extends PopupWindow {
         setBackgroundDrawable(new ColorDrawable());
         setOutsideTouchable(true);
         setTouchable(true);
+        setFocusable(true);
         setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -108,7 +113,7 @@ public class BookCommentPopupWindow extends PopupWindow {
         bubbleRelative = (BubbleRelativeLayout) mContentView.findViewById(R.id.bubbleRelative);
         recycler_book_comment = (URecyclerView) mContentView.findViewById(R.id.recycler_book_comment);
 
-        adapter = new CommentReplyAdapter(mContext, data, 2);
+        adapter = new CommentReplyAdapter(mContext, commentReplyBean, 2);
         recycler_book_comment.setLayoutManager(new LinearLayoutManager(mContext));
         recycler_book_comment.setAdapter(adapter);
     }
@@ -120,23 +125,25 @@ public class BookCommentPopupWindow extends PopupWindow {
         BookApi.getInstance().service.get_chapter_comment_content(book_id, chapter_id, pid, "parent", 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Base<BookCommentReplyBean>>() {
+                .subscribe(new Observer<Base<List<BookCommentBean>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Base<BookCommentReplyBean> listBase) {
-                        if (listBase != null)
-                            data = listBase.getData();
-                        adapter.notifyDataSetChanged();
+                    public void onNext(Base<List<BookCommentBean>> listBase) {
+                        if (listBase != null) {
+                            data.addAll(listBase.getData());
+                            commentReplyBean.setLists(data);
+                            adapter.notifyDataSetChanged();
+                        }
                         Log.e("onNext", "----onNext-------" + listBase.toString());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("onError", "----onError-------" + e.toString());
                     }
 
                     @Override
