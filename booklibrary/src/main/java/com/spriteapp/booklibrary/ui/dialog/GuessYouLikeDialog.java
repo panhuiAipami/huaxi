@@ -53,12 +53,16 @@ public class GuessYouLikeDialog extends BaseDialog {
             }
         } else {
             initDialog(context, null, type == 2 ? R.layout.guess_layout : R.layout.book_store_layout, BaseDialog.TYPE_BOTTOM, true);
+            mDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
             lp.flags = lp.flags | (WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             mDialog.getWindow().setAttributes(lp);
             mDialog.getWindow().setWindowAnimations(R.style.bottomPopupDialog);
             findViewById();
             getLike();
+//            if (type == 1) {
+//                getOtherPeopleLike();
+//            }
         }
 
     }
@@ -84,7 +88,7 @@ public class GuessYouLikeDialog extends BaseDialog {
         if (!NetworkUtil.isAvailable(context)) return;
         BookApi.getInstance()
                 .service
-                .book_searchrecommend(Constant.JSON_TYPE)
+                .book_newrecommend(response.getBook_id(), Constant.JSON_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<List<BookDetailResponse>>>() {
@@ -101,6 +105,56 @@ public class GuessYouLikeDialog extends BaseDialog {
                                 if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
                                     list.addAll(bookStoreResponse.getData());
                                     adapter.notifyDataSetChanged();
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 看过本书的人也喜欢
+     */
+    private void getOtherPeopleLike() {
+        if (!NetworkUtil.isAvailable(context)) return;
+        BookApi.getInstance()
+                .service
+                .book_newrecommend(response.getBook_id(), Constant.JSON_TYPE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Base<List<BookDetailResponse>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Base<List<BookDetailResponse>> bookStoreResponse) {
+                        if (bookStoreResponse != null) {
+                            int resultCode = bookStoreResponse.getCode();
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
+                                    if (bookStoreResponse.getData().size() > 2) {
+                                        List<BookDetailResponse> bookDetailResponses = bookStoreResponse.getData().subList(0, 2);
+                                        list.addAll(0, bookDetailResponses);
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        list.addAll(0, bookStoreResponse.getData());
+                                        adapter.notifyDataSetChanged();
+                                    }
+
                                 }
 
                             }

@@ -59,6 +59,7 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
         if (position >= list.size()) return;
         final BookDetailResponse bookDetailResponse = list.get(position);
         holder.book_name.setText(bookDetailResponse.getBook_name());
+        holder.author_name.setText(bookDetailResponse.getAuthor_name());
 
 //        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.image_layout.getLayoutParams();
 //        params.height = mImageHeight - ScreenUtil.dpToPxInt(12);
@@ -85,13 +86,14 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView book_name;
+        private TextView book_name,author_name;
         private ImageView book_cover;
         private LinearLayout free_item;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             book_name = (TextView) itemView.findViewById(R.id.book_name);
+            author_name = (TextView) itemView.findViewById(R.id.author_name);
             book_cover = (ImageView) itemView.findViewById(R.id.book_cover);
             free_item = (LinearLayout) itemView.findViewById(R.id.free_item);
             ViewGroup.LayoutParams layoutParams = free_item.getLayoutParams();
@@ -120,6 +122,7 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.MyViewHolder> 
                 ViewGroup.LayoutParams layoutParams2 = book_name.getLayoutParams();
                 layoutParams2.width = imageWidth - padding;
                 book_name.setLayoutParams(layoutParams2);
+                author_name.setLayoutParams(layoutParams2);
             }
 
         }

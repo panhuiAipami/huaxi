@@ -407,6 +407,11 @@ public interface BookApiService {
     @GET("book_searchrecommend")
     Observable<Base<List<BookDetailResponse>>> book_searchrecommend(@Query("format") String format);
 
+    //猜你喜欢
+    @GET("book_newrecommend")
+    Observable<Base<List<BookDetailResponse>>> book_newrecommend(@Query("book_id") int book_id,
+                                                                 @Query("format") String format);
+
 
     //历史记录
     @GET("user_readhistory")

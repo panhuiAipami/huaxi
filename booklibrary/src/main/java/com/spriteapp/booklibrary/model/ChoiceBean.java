@@ -1,12 +1,13 @@
 package com.spriteapp.booklibrary.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by panhui on 2018/1/26.
  */
 
-public class ChoiceBean {
+public class ChoiceBean implements Serializable{
 
     /**
      * book_id : 1184
@@ -387,7 +388,7 @@ public class ChoiceBean {
         this.book_category = book_category;
     }
 
-    public static class BookCategoryBean {
+    public static class BookCategoryBean implements Serializable{
         /**
          * class_id : 2
          * class_name : 总裁豪门

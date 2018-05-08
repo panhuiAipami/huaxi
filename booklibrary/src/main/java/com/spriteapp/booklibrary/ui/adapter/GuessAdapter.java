@@ -66,7 +66,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (bookDetailResponse == null) return;
             if (position == 0) {
                 shuViewHolder.store_title_bar.setVisibility(View.VISIBLE);
-                shuViewHolder.cate_title.setText(R.string.other_like);
+                shuViewHolder.cate_title.setText(type==1?R.string.other_like:R.string.guess_you_like);
                 shuViewHolder.cate_title_small.setVisibility(View.GONE);
             } else {
                 shuViewHolder.store_title_bar.setVisibility(View.GONE);
