@@ -16,16 +16,15 @@
 
         <ImageView
             android:id="@+id/image_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_book_shelf_selector" />
 
         <TextView
             android:id="@+id/text_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/book_reader_bookshelf"
+            android:text="@string/book_reader_book_selector"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
@@ -40,19 +39,19 @@
 
         <ImageView
             android:id="@+id/image_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_discover_selector" />
 
         <TextView
             android:id="@+id/text_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/book_reader_book_selector"
+            android:text="@string/book_reader_bookstore"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
+
 
 
     <LinearLayout
@@ -65,20 +64,18 @@
 
         <ImageView
             android:id="@+id/image_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_book_store_selector" />
 
         <TextView
             android:id="@+id/text_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/book_reader_bookstore"
+            android:text="@string/book_reader_bookshelf"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/book_reader_community_layout"
         android:layout_width="0dp"
@@ -90,15 +87,14 @@
 
         <ImageView
             android:id="@+id/image_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="25dp"
             android:src="@drawable/square_icon_bg" />
 
         <TextView
             android:id="@+id/text_five"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:text="@string/book_reader_community"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
@@ -114,15 +110,14 @@
 
         <ImageView
             android:id="@+id/image_four"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/book_reader_me_selector" />
 
         <TextView
             android:id="@+id/text_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:text="@string/book_reader_me"
             android:textColor="@color/book_reader_home_bottom_text_selector"
             android:textSize="@dimen/book_reader_home_bottom_text_size" />
