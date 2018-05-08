@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,10 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/c02_themes_color"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+
+        app:cornerRadius="10"
+        app:halfBaseOfLeg="12dp"
+        app:padding="12dp"
+        app:strokeWidth="0">
 
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/recycler_book_comment"
@@ -21,6 +27,13 @@
             android:layout_height="250dp">
 
         </com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:layout_below="@+id/recycler_book_comment"
+            android:background="@color/line_color"></View>
 
         <TextView
             android:id="@+id/write_book_comment"
@@ -34,5 +47,7 @@
             android:text="写评论"
             android:textColor="@color/square_comment_selector"
             android:textSize="16sp" />
+
+
     </com.spriteapp.booklibrary.widget.readview.BubbleRelativeLayout>
 </LinearLayout>

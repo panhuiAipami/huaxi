@@ -424,7 +424,8 @@ public class PageFactory2 implements SendBookComment {
 
             leftposition = rightposition;
             if (c.chardata == '\n') {
-                sectionEnd.add(c);
+                if (resultSctionMap != null && resultSctionMap.get(c.sectionIndex) != null)
+                    sectionEnd.add(c);
             }
         }
         y += lineSpace + m_fontSize;
@@ -1194,19 +1195,28 @@ public class PageFactory2 implements SendBookComment {
         }
     }
 
+    /**
+     * 发送评论
+     *
+     * @param section
+     * @param text
+     */
     @Override
     public void send(int section, String text) {
         sendCommentContent(section, text);
     }
 
+    /**
+     * 显示评论列表
+     */
     @Override
-    public void show(View v,int pid,int x, int y) {
-        BookCommentPopupWindow commentPopupWindow = new BookCommentPopupWindow(mContext,book_id,currentChapter,pid);
-        commentPopupWindow.show(v,x,y);
+    public void show(View v, int pid, int x, int y) {
+        BookCommentPopupWindow commentPopupWindow = new BookCommentPopupWindow(mContext, book_id, currentChapter, pid);
+        commentPopupWindow.show(v, x, y);
     }
 
     /**
-     * 获取章节评论数和评论
+     * 获取章节评论数
      */
     public void getChapterCommentNum() {
         BookApi.getInstance().service.get_book_chaptercomment(book_id, currentChapter, "number")
@@ -1271,6 +1281,7 @@ public class PageFactory2 implements SendBookComment {
                     public void onNext(Base stringBase) {
                         if (stringBase != null && stringBase.getCode() == ApiCodeEnum.SUCCESS.getValue()) {
                             ToastUtil.showSingleToast("评论成功");
+                            getChapterCommentNum();
                         }
                     }
 
@@ -1285,7 +1296,6 @@ public class PageFactory2 implements SendBookComment {
                 });
 
     }
-
 
 
 }

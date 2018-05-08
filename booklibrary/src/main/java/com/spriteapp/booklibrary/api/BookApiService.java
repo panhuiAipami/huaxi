@@ -432,7 +432,7 @@ public interface BookApiService {
                                                                        @Query("chapter_id") int chapter_id,
                                                                        @Query("pid") int pid,
                                                                        @Query("u_action") String action,
-                                                                       @Query("start_time") int start_time
+                                                                       @Query("stop_time") long start_time
 
     );
 

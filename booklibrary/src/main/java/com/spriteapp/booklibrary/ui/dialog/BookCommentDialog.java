@@ -3,6 +3,7 @@ package com.spriteapp.booklibrary.ui.dialog;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.listener.ListenerManager;
+import com.spriteapp.booklibrary.util.AppUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,7 +47,11 @@ public class BookCommentDialog extends BaseDialog {
         cancel_comment = (TextView) mDialog.findViewById(R.id.cancel_comment);
         send_comment = (TextView) mDialog.findViewById(R.id.send_comment);
         select_text_content = (TextView) mDialog.findViewById(R.id.select_text_content);
-        select_text_content.setText(text);
+        if (TextUtils.isEmpty(text)) {
+            select_text_content.setVisibility(View.GONE);
+        } else {
+            select_text_content.setText(text);
+        }
         user_edit_content = (EditText) mDialog.findViewById(R.id.user_edit_content);
         user_edit_content.setHorizontallyScrolling(false);
         user_edit_content.setMaxLines(Integer.MAX_VALUE);
@@ -59,7 +65,7 @@ public class BookCommentDialog extends BaseDialog {
         send_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListenerManager.getInstance().getSendBookComment() != null) {
+                if (AppUtil.isLogin(context) && ListenerManager.getInstance().getSendBookComment() != null) {
                     ListenerManager.getInstance().getSendBookComment().send(selectTextSection, user_edit_content.getText().toString().trim());
                     mDialog.dismiss();
                 }
@@ -105,7 +111,7 @@ public class BookCommentDialog extends BaseDialog {
             public void run() {
                 inputmanager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
-        }, 50);
+        }, 200);
     }
 
 

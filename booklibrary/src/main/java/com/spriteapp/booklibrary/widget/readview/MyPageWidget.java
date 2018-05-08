@@ -754,8 +754,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         for (int i = 0; i < sectionEnd.size(); i++) {
             ShowChar c = sectionEnd.get(i);
             Log.e(sectionEnd.size() + "onSectionClick--" + downY + "---<=" + c.BottomLeftPosition.y, downX + "---------->=" + c.BottomLeftPosition.x + "--------<=" + c.BottomRightPosition.x);
-            if (Math.abs(downX - c.BottomRightPosition.x) < space && Math.abs(downY - c.BottomRightPosition.y) < space) {//&& downY + 35 <= c.BottomLeftPosition.y
-                ToastUtil.showSingleToast(i + "点击了段落id=" + c.sectionIndex);
+            if (Math.abs(downX - c.BottomLeftPosition.x) < space && Math.abs(downY - c.BottomLeftPosition.y) < space) {//&& downY + 35 <= c.BottomLeftPosition.y
                 if(ListenerManager.getInstance().getSendBookComment() !=null){
                     ListenerManager.getInstance().getSendBookComment().show(this,c.sectionIndex,c.BottomRightPosition.x,c.BottomRightPosition.y);
                 }
