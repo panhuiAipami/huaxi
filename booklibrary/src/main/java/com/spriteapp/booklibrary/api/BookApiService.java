@@ -194,7 +194,8 @@ public interface BookApiService {
     Observable<Base<Void>> addComment(@Field("book_id") int bookId,
                                       @Field("title") String title,
                                       @Field("content") String content,
-                                      @Field("star") float score);
+                                      @Field("star") float score,
+                                      @Field("source") float source);
 
     @GET("book_store")
     Call<BookStoreResponse> getBookStore(@Query("format") String type);
@@ -432,16 +433,17 @@ public interface BookApiService {
                                                                        @Query("chapter_id") int chapter_id,
                                                                        @Query("pid") int pid,
                                                                        @Query("u_action") String action,
-                                                                       @Query("stop_time") long start_time
+                                                                       @Query("start_time") long start_time
 
     );
 
     //添加书的评论
     @GET("book_comment")
     Observable<Base> send_book_comment(@Query("book_id") int book_id,
-                                               @Query("chapter_id") int chapter_id,
-                                               @Query("parent_id") int parent_id,
-                                               @Query("content") String content
+                                       @Query("chapter_id") int chapter_id,
+                                       @Query("parent_id") int parent_id,
+                                       @Query("content") String content,
+                                       @Field("source") float source
 
     );
     //评论书籍

@@ -1268,7 +1268,7 @@ public class PageFactory2 implements SendBookComment {
      * @param content
      */
     public void sendCommentContent(int pid, String content) {
-        BookApi.getInstance().service.send_book_comment(book_id, currentChapter, pid, content)
+        BookApi.getInstance().service.send_book_comment(book_id, currentChapter, pid, content, 6)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base>() {

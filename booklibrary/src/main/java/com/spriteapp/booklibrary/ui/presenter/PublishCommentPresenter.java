@@ -44,7 +44,7 @@ public class PublishCommentPresenter implements BasePresenter<PublishCommentView
         mView.showNetWorkProgress();
         BookApi.getInstance().
                 service
-                .addComment(bookId,title, content,score)
+                .addComment(bookId,title, content,score,6)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Base<Void>>() {
