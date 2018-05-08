@@ -737,7 +737,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                         header.setAddOrClean(!isAddOrClean);
                         mPtrFrameLayout.refreshComplete();
                     }
-                }, 500);
+                }, 300);
             }
         });
     }

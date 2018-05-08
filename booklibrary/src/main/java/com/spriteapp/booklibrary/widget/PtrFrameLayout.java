@@ -33,7 +33,7 @@ public class PtrFrameLayout extends ViewGroup {
     private PtrIndicator mPtrIndicator;
 
     private int mDurationToClose = 200;
-    private int mDurationToCloseHeader = 1000;
+    private int mDurationToCloseHeader = 500;
 
     private long mLoadingStartTime = 0;
     private int book_id;
@@ -208,7 +208,6 @@ public class PtrFrameLayout extends ViewGroup {
         if (!isEnabled() || mHeaderView == null || mContentView == null) {
             return dispatchTouchEventSuper(e);
         }
-        Log.e("dispatchTouchEvent", MyPageWidget.mCurrentMode + "-------------------" + MyPageWidget.Mode.Normal);
         if (MyPageWidget.mCurrentMode != MyPageWidget.Mode.Normal) {
             return dispatchTouchEventSuper(e);
         }
@@ -217,6 +216,7 @@ public class PtrFrameLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -269,6 +269,8 @@ public class PtrFrameLayout extends ViewGroup {
                 boolean moveDown = offsetY > 0;
                 boolean moveUp = !moveDown;
                 boolean canMoveUp = mPtrIndicator.hasLeftStartPosition();
+                if (moveDown)
+                    MyPageWidget.isPullDown = true;
 
 
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
@@ -276,7 +278,7 @@ public class PtrFrameLayout extends ViewGroup {
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
-                    MyPageWidget.isPullDown = true;
+
                     if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 80) {
                         if (x > 100 && x < BaseActivity.deviceWidth - 100)
                             movePos(offsetY);

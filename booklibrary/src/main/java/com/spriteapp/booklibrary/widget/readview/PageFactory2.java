@@ -1294,8 +1294,5 @@ public class PageFactory2 implements SendBookComment {
                     public void onComplete() {
                     }
                 });
-
     }
-
-
 }

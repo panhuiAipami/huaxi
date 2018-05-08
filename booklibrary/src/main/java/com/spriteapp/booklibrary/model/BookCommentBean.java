@@ -88,7 +88,7 @@ public class BookCommentBean {
     }
 
     public long getComment_replydatetime() {
-        return comment_replydatetime;
+        return comment_replydatetime==0?comment_datetime:comment_replydatetime;
     }
 
     public void setComment_replydatetime(long comment_replydatetime) {

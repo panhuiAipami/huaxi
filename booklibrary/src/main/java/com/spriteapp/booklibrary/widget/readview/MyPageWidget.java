@@ -181,7 +181,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
         @Override
         public boolean onLongClick(View v) {
-
             if (mCurrentMode == Mode.Normal && !isMove && !isPullDown) {
                 if (Down_X > 0 && Down_Y > 0) {// 说明还没释放，是长按事件
                     mCurrentMode = Mode.PressSelectText;
@@ -245,32 +244,29 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 isRuning = false;
                 mAnimationProvider.setStartPoint(downX, downY);
                 abortAnimation();
-                Log.e("ACTION_MOVE", "ACTION_DOWN");
             }
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             getParent().requestDisallowInterceptTouchEvent(true);
             if (mCurrentMode == Mode.SelectMoveForward) {
 
                 if (CanMoveForward(event.getX(), event.getY())) {// 判断是否是向上移动
-
-                    Log.e("is CanMoveForward", "-----ACTION_MOVE--------CanMoveForward");
-
+//                    Log.e("is CanMoveForward", "-----ACTION_MOVE--------CanMoveForward");
                     ShowChar firstselectchar = DetectPressShowChar(event.getX(), event.getY());
                     if (firstselectchar != null) {
                         FirstSelectShowChar = firstselectchar;
                         invalidate();
                     } else {
-                        Log.e("firstselectchar", "------ACTION_MOVE------firstselectchar is null");
+//                        Log.e("firstselectchar", "------ACTION_MOVE------firstselectchar is null");
                     }
 
                 } else {
-                    Log.e("is CanMoveForward", "CanMoveForward");
+//                    Log.e("is CanMoveForward", "CanMoveForward");
                 }
 
             } else if (mCurrentMode == Mode.SelectMoveBack) {
 
                 if (CanMoveBack(event.getX(), event.getY())) {// 判断是否可以向下移动
-                    Log.e("CanMoveBack", "not CanMoveBack");
+//                    Log.e("CanMoveBack", "not CanMoveBack");
 
                     ShowChar lastselectchar = DetectPressShowChar(event.getX(), event.getY());
 
@@ -278,11 +274,11 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                         LastSelectShowChar = lastselectchar;
                         invalidate();
                     } else {
-                        Log.e("is lastselectchar", "lastselectchar is null");
+//                        Log.e("is lastselectchar", "lastselectchar is null");
                     }
 
                 } else {
-                    Log.e("is CanMoveBack", "not CanMoveBack");
+//                    Log.e("is CanMoveBack", "not CanMoveBack");
                 }
             } else if (mCurrentMode == Mode.PressSelectText) {
                 return false;
@@ -298,7 +294,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 if (isMove) {
                     isMove = true;
                     if (moveX == 0 && moveY == 0) {
-                        Log.e("ACTION_MOVE", y - downY + "<---------isMove--X=>" + (x - downX));
+//                        Log.e("ACTION_MOVE", y - downY + "<---------isMove--X=>" + (x - downX));
                         //判断翻得是上一页还是下一页
                         if (x - downX > 0 && Math.abs(y - downY) < Math.abs(x - downX)) {
                             isNext = false;
@@ -310,7 +306,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                             Boolean isNext = mTouchListener.nextPage();
 //                        calcCornerXY(downX,mScreenHeight);
                             mAnimationProvider.setDirection(AnimationProvider.Direction.next);
-                            Log.e("ACTION_MOVE", "-----nextPage---->" + isNext);
+//                            Log.e("ACTION_MOVE", "-----nextPage---->" + isNext);
                             if (!isNext) {
                                 noNext = true;
                                 return true;
@@ -318,14 +314,13 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                         } else {
                             Boolean isPre = mTouchListener.prePage();
                             mAnimationProvider.setDirection(AnimationProvider.Direction.pre);
-                            Log.e("ACTION_MOVE", "-----prePage---->" + isPre);
+//                            Log.e("ACTION_MOVE", "-----prePage---->" + isPre);
 
                             if (!isPre) {
                                 noNext = true;
                                 return true;
                             }
                         }
-                        Log.e("ACTION_MOVE", "isNext:" + isNext);
                     } else {
                         //判断是否取消翻页
                         if (isNext) {
@@ -345,7 +340,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                                 cancelPage = false;
                             }
                         }
-                        Log.e("ACTION_MOVE", "cancelPage:" + cancelPage);
                     }
 
                     moveX = x;
@@ -369,7 +363,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 }
                 Release();
             } else {
-                Log.e("ACTION_UP", "-------->ACTION_UP");
                 if (!isMove) {
                     if (onSectionClick()) {
                         return true;
@@ -381,7 +374,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                         if (mTouchListener != null) {
                             mTouchListener.center();
                         }
-                        Log.e("ACTION_UP", "-------->center");
 //                    mCornerX = 1; // 拖拽点对应的页脚
 //                    mCornerY = 1;
 //                    mTouch.x = 0.1f;
@@ -412,8 +404,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                     mTouchListener.cancel();
                 }
 
-                Log.e("ACTION_UP", "-------->isNext:" + isNext);
-
                 if (!noNext) {
                     isRuning = true;
                     mAnimationProvider.startAnimation(mScroller);
@@ -436,7 +426,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         }
 
         if (mCurrentMode != Mode.Normal) {
-            Log.e("onDraw", "---x-------onDraw-----------------y--" + mCurrentMode);
             DrawSelectText(canvas);
         }
     }
@@ -693,7 +682,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         float flx, fty, frx, fby;//第一个字左边 X，右边 X，顶部Y，底部Y
 
         float hPadding = FirstSelectShowChar.charWidth;
-        Log.e("CheckIfTrySelectMove", "------------hPadding---------" + hPadding);
         hPadding = hPadding < 10 ? 10 : hPadding;
 
         flx = FirstSelectShowChar.TopLeftPosition.x - hPadding;
@@ -710,21 +698,21 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         lty = LastSelectShowChar.TopRightPosition.y;
         lby = LastSelectShowChar.BottomRightPosition.y;
 
-        Log.i("up1x", xposition + "-----1----->=" + flx + "--------------<=" + frx);
-        Log.i("up2y", yposition + "-----2----->=" + fty + "--------------<=" + fby);
+//        Log.i("up1x", xposition + "-----1----->=" + flx + "--------------<=" + frx);
+//        Log.i("up2y", yposition + "-----2----->=" + fty + "--------------<=" + fby);
         if ((xposition + 20 >= flx && xposition - 20 <= frx) && (yposition >= fty && yposition <= fby)) {
             mCurrentMode = Mode.SelectMoveForward;
             return true;
         }
-        Log.w("down1x", xposition + "---------1------->=" + llx + "--------------<=" + lrx);
-        Log.w("down2y", yposition + "---------2------->=" + lty + "--------------<=" + lby);
+//        Log.w("down1x", xposition + "---------1------->=" + llx + "--------------<=" + lrx);
+//        Log.w("down2y", yposition + "---------2------->=" + lty + "--------------<=" + lby);
         if ((xposition + 20 >= llx && xposition <= lrx) && (yposition >= lty)) {
             mCurrentMode = Mode.SelectMoveBack;
             return true;
         }
 
-        //在选择范围外30dp取消选择
-        if (fty - yposition > Util.dp2px(mContext, 30) || yposition - lby > Util.dp2px(mContext, 30)) {
+        //点击选择范围外取消选择
+        if (fty - yposition > Util.dp2px(mContext, 20) || yposition - lby > Util.dp2px(mContext, 20)) {
             return false;
         } else {
             return true;
@@ -753,7 +741,6 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         int space = ScreenUtil.dpToPxInt(25);
         for (int i = 0; i < sectionEnd.size(); i++) {
             ShowChar c = sectionEnd.get(i);
-            Log.e(sectionEnd.size() + "onSectionClick--" + downY + "---<=" + c.BottomLeftPosition.y, downX + "---------->=" + c.BottomLeftPosition.x + "--------<=" + c.BottomRightPosition.x);
             if (Math.abs(downX - c.BottomLeftPosition.x) < space && Math.abs(downY - c.BottomLeftPosition.y) < space) {//&& downY + 35 <= c.BottomLeftPosition.y
                 if(ListenerManager.getInstance().getSendBookComment() !=null){
                     ListenerManager.getInstance().getSendBookComment().show(this,c.sectionIndex,c.BottomRightPosition.x,c.BottomRightPosition.y);
