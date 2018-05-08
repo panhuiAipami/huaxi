@@ -93,12 +93,12 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                    commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(comment.getReplyDatetime() + "000")));
                     commentViewHolder.send_time.setText(comment.getReplyDatetime());
                     commentViewHolder.user_speak.setText(comment.getCmtContent());
-                    commentViewHolder.support_num.setVisibility(View.GONE);
                 } else if (position >= 2) {
                     setData2(commentViewHolder, this.comment.getLists().get(position - 2));
                 }
-
+                commentViewHolder.support_num.setVisibility(View.GONE);
             } else if (type == 3) {//段尾评论
+                commentViewHolder.support_num.setVisibility(View.GONE);
                 setData2(commentViewHolder, this.comment.getLists().get(position));
             }
         } else if (holder instanceof TitleViewHolder) {
