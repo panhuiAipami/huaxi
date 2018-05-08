@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
-import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
@@ -105,8 +102,14 @@ public class GuessYouLikeDialog extends BaseDialog {
                                 if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
                                     list.addAll(bookStoreResponse.getData());
                                     adapter.notifyDataSetChanged();
+                                }else {
+                                    if (type == 2) {
+                                        dismiss();
+                                        context.finish();
+                                    } else {
+                                        dismiss();
+                                    }
                                 }
-
                             }
                         }
 

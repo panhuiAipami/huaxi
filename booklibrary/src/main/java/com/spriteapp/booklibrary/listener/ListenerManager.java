@@ -14,6 +14,7 @@ public class ListenerManager {
     private GotoHomePage gotoHomePage;//去首页精选
     private MyPopupWindow.OnButtonClick onButtonClick;
     private SendBookComment sendBookComment;
+    private DismissDialog dismissDialog;
 
 
     public static ListenerManager getInstance() {
@@ -23,7 +24,17 @@ public class ListenerManager {
         return instance;
     }
 
+    public interface DismissDialog{
+        void disDialog();
+    }
 
+    public DismissDialog getDismissDialog() {
+        return dismissDialog;
+    }
+
+    public void setDismissDialog(DismissDialog dismissDialog) {
+        this.dismissDialog = dismissDialog;
+    }
     public SendBookComment getSendBookComment() {
         return sendBookComment;
     }

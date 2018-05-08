@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.config.HuaXiSDK;
+import com.spriteapp.booklibrary.listener.ListenerManager;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -23,7 +24,7 @@ import com.spriteapp.booklibrary.widget.readview.util.BitmapUtil;
  * Created by panhui on 2018/4/26.
  */
 
-public class ShareSelectTextDialog extends Dialog  {
+public class ShareSelectTextDialog extends Dialog implements ListenerManager.DismissDialog {
     Context context;
     LinearLayout linear_share_layout;
     RelativeLayout relative_center_bg;
@@ -46,6 +47,7 @@ public class ShareSelectTextDialog extends Dialog  {
 
     public ShareSelectTextDialog(Context context, int style) {
         super(context, style);
+        ListenerManager.getInstance().setDismissDialog(this);
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.reader_text_share_layout, null);
         setContentView(view);
@@ -142,4 +144,8 @@ public class ShareSelectTextDialog extends Dialog  {
     }
 
 
+    @Override
+    public void disDialog() {
+        dismiss();
+    }
 }
