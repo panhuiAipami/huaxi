@@ -172,7 +172,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         this.mCurrentContent = content;
     }
 
-    public void bookDetail(Activity activity,BookDetailResponse shareDetail) {
+    public void bookDetail(Activity activity, BookDetailResponse shareDetail) {
         this.activity = activity;
         bookDetailResponse = shareDetail;
     }
@@ -182,7 +182,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         @Override
         public boolean onLongClick(View v) {
             if (mCurrentMode == Mode.Normal && !isMove && !isPullDown) {
-                if (Down_X > 0 && Down_Y > 0) {// 说明还没释放，是长按事件
+                if (Down_X > 0 && Down_Y > 0 && Math.abs(Move_Y - Down_Y) < 50) {// 说明还没释放，是长按事件
                     mCurrentMode = Mode.PressSelectText;
                     postInvalidate();
                 }
@@ -200,7 +200,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
             popupWindow.dismiss();
     }
 
-    private float Tounch_X = 0, Tounch_Y = 0;
+    private float Move_X = 0, Move_Y = 0;
     private float Down_X = -1, Down_Y = -1;
     public static Mode mCurrentMode = Mode.Normal;
     Boolean isTrySelectMove = true;
@@ -216,14 +216,12 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
         int x = (int) event.getX();
         int y = (int) event.getY();
-        Tounch_X = x;
-        Tounch_Y = y;
 
         mAnimationProvider.setTouchPoint(x, y);
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             getParent().requestDisallowInterceptTouchEvent(true);
-            Down_X = Tounch_X;
-            Down_Y = Tounch_Y;
+            Down_X = (int) event.getX();
+            Down_Y = (int) event.getY();
             dismissPopWindow();
             if (mCurrentMode != Mode.Normal) {
                 isTrySelectMove = CheckIfTrySelectMove(Down_X, Down_Y);
@@ -247,6 +245,8 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
             }
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             getParent().requestDisallowInterceptTouchEvent(true);
+            Move_X = event.getX();
+            Move_Y = event.getY();
             if (mCurrentMode == Mode.SelectMoveForward) {
 
                 if (CanMoveForward(event.getX(), event.getY())) {// 判断是否是向上移动
@@ -742,8 +742,8 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         for (int i = 0; i < sectionEnd.size(); i++) {
             ShowChar c = sectionEnd.get(i);
             if (Math.abs(downX - c.BottomLeftPosition.x) < space && Math.abs(downY - c.BottomLeftPosition.y) < space) {//&& downY + 35 <= c.BottomLeftPosition.y
-                if(ListenerManager.getInstance().getSendBookComment() !=null){
-                    ListenerManager.getInstance().getSendBookComment().show(this,c.sectionIndex,c.BottomRightPosition.x,c.BottomRightPosition.y);
+                if (ListenerManager.getInstance().getSendBookComment() != null) {
+                    ListenerManager.getInstance().getSendBookComment().show(this, c.sectionIndex, c.BottomRightPosition.x, c.BottomRightPosition.y);
                 }
                 return true;
             }
@@ -754,7 +754,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void comment() {
         initSelectBg();
-        new BookCommentDialog(activity,selectText,selectTextSection).show();
+        new BookCommentDialog(activity, selectText, selectTextSection).show();
     }
 
     @Override

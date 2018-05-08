@@ -269,8 +269,6 @@ public class PtrFrameLayout extends ViewGroup {
                 boolean moveDown = offsetY > 0;
                 boolean moveUp = !moveDown;
                 boolean canMoveUp = mPtrIndicator.hasLeftStartPosition();
-                if (moveDown)
-                    MyPageWidget.isPullDown = true;
 
 
                 if (moveDown && mPtrHandler != null && !mPtrHandler.checkCanDoRefresh(this, mContentView, mHeaderView)) {
@@ -278,6 +276,7 @@ public class PtrFrameLayout extends ViewGroup {
                 }
 //                Log.i("dispatchTouchEvent" , Math.abs(actiondownY - y) + "-y---------------------------------x-" + Math.abs(actiondownX - x));
                 if ((moveUp && canMoveUp) || moveDown) {//下拉收藏
+                    MyPageWidget.isPullDown = true;
 
                     if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 80) {
                         if (x > 100 && x < BaseActivity.deviceWidth - 100)
