@@ -19,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * 段落评论dialog
  * Created by Administrator on 2018/1/18.
  */
 
