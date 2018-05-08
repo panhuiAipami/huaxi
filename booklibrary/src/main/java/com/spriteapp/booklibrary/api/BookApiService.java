@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.base.BaseTwo;
 import com.spriteapp.booklibrary.model.BookCommentBean;
+import com.spriteapp.booklibrary.model.BookCommentReplyBean;
 import com.spriteapp.booklibrary.model.CateBean;
 import com.spriteapp.booklibrary.model.ChoiceBean;
 import com.spriteapp.booklibrary.model.CommentDetailsBean;
@@ -414,8 +415,7 @@ public interface BookApiService {
     @GET("book_commentreply")
     Observable<Base<List<BookCommentBean>>> getBookComment(@Query("book_id") int book_id,
                                                            @Query("chapter_id") int chapter_id,
-                                                           @Query("start_time") int start_time,
-                                                           @Query("stop_time") int stop_time,
+                                                           @Query("stop_time") long stop_time,
                                                            @Query("row_count") int row_count);
 
     //获取章节评论数
@@ -444,4 +444,16 @@ public interface BookApiService {
                                                @Query("content") String content
 
     );
+    //评论书籍
+    @FormUrlEncoded
+    @POST("book_reply")
+    Observable<Base<List<BookCommentBean>>> book_reply(@Field("book_id") int book_id,
+                                                       @Field("comment_id") int comment_id,
+                                                       @Field("content") String content);
+
+    //获取书的评论
+    @GET("book_reply")
+    Observable<BookCommentReplyBean> book_reply(@Query("book_id") int book_id,
+                                                @Query("comment_id") int comment_id,
+                                                @Query("row_count") int row_count);
 }

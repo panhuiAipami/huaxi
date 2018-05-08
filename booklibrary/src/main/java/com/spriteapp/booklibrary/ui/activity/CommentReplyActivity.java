@@ -16,6 +16,10 @@ import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.BookCommentBean;
+import com.spriteapp.booklibrary.model.BookCommentReplyBean;
+import com.spriteapp.booklibrary.model.BookRepyBean;
+import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.ui.adapter.CommentReplyAdapter;
 import com.spriteapp.booklibrary.ui.adapter.CommentReplyBean;
 import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
@@ -33,6 +37,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity.PLATFORM_ID;
 import static com.spriteapp.booklibrary.util.ActivityUtil.COMMENT_ID;
+import static com.spriteapp.booklibrary.util.ActivityUtil.FRAGMENT_TYPE;
 import static com.spriteapp.booklibrary.util.ActivityUtil.REPLYTITLE;
 import static com.spriteapp.booklibrary.util.ActivityUtil.SQUAREID;
 import static com.spriteapp.booklibrary.util.ActivityUtil.USER_ID;
@@ -45,9 +50,11 @@ public class CommentReplyActivity extends TitleActivity {
     private TextView hint_text;
     private ImageView send_img;
     private List<CommentReplyBean> reply = new ArrayList<>();
+    private List<BookCommentReplyBean> bookCommentReply = new ArrayList<>();
     private int squareid = 0;
     private int comment_id = 0;
     private int user_id = 0;
+    private int type = 0;//1为社区回复,2为书籍回复
     private CommentReplyAdapter adapter;
     private CommentDialog commentDialog;
 
@@ -60,6 +67,7 @@ public class CommentReplyActivity extends TitleActivity {
         squareid = intent.getIntExtra(SQUAREID, 0);
         comment_id = intent.getIntExtra(COMMENT_ID, 0);
         user_id = intent.getIntExtra(USER_ID, 0);
+        type = intent.getIntExtra(FRAGMENT_TYPE, 0);
         if (titleNum != 0)
             setTitle(titleNum + "条回复");
         initList();
@@ -85,12 +93,27 @@ public class CommentReplyActivity extends TitleActivity {
 
     public void initList() {
         comment_reply_list.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommentReplyAdapter(this, reply,1);
-        comment_reply_list.setAdapter(adapter);
+        if (type == 1)
+            adapter = new CommentReplyAdapter(this, reply, type);
+        else {
+            if (bookCommentReply != null && bookCommentReply.size() != 0)
+                adapter = new CommentReplyAdapter(this, bookCommentReply.get(0), type);
+        }
+        if (adapter != null)
+            comment_reply_list.setAdapter(adapter);
     }
 
     public void getReply() {
         showDialog();
+        if (type == 2) {
+            getBookCommentReply();
+        } else {
+            getSquareReply();
+        }
+
+    }
+
+    private void getSquareReply() {
         BookApi.getInstance()
                 .service
                 .square_replypage(comment_id, squareid, 0, titleNum == 0 ? 50 : titleNum, PLATFORM_ID)
@@ -113,6 +136,45 @@ public class CommentReplyActivity extends TitleActivity {
                             }
 
 
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                    }
+                });
+    }
+
+    private void getBookCommentReply() {
+        BookApi.getInstance()
+                .service
+                .book_reply(squareid, comment_id, titleNum)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BookCommentReplyBean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BookCommentReplyBean commentReplyBean) {
+                        int resultCode = commentReplyBean.getCode();
+                        if (commentReplyBean != null) {
+                            if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
+                                bookCommentReply.add(commentReplyBean);
+                                if (adapter == null) {
+                                    adapter = new CommentReplyAdapter(CommentReplyActivity.this, bookCommentReply.get(0), 2);
+                                    comment_reply_list.setAdapter(adapter);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
                         }
                     }
 
@@ -173,7 +235,12 @@ public class CommentReplyActivity extends TitleActivity {
         }
         commentDialog.clearText();
         commentDialog.dismiss();
-        toCommentHttp(content);
+        if (type == 1) {
+            toCommentHttp(content);
+        } else {
+            toBookCommentReply(content);
+        }
+
     }
 
     public void toCommentHttp(final String content) {
@@ -223,5 +290,41 @@ public class CommentReplyActivity extends TitleActivity {
                         dismissDialog();
                     }
                 });
+    }
+
+    private void toBookCommentReply(String content) {
+        BookApi.getInstance()
+                .service
+                .book_reply(squareid, comment_id, content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Base<List<BookCommentBean>>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Base<List<BookCommentBean>> listBase) {
+                if (listBase != null) {
+                    int resultCode = listBase.getCode();
+                    if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {
+                        ToastUtil.showToast("评论成功");
+                        getReply();
+                    } else {
+                        ToastUtil.showToast("评论失败");
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

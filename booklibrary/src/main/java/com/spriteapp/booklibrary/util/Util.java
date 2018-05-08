@@ -1887,4 +1887,42 @@ public class Util {
         return result;
 
     }
+    public static void getSystem(int num, TextView textView) {
+        if (textView == null) return;
+        String system;
+        switch (num) {
+            case 1:
+                system = "主站";
+                break;
+            case 4:
+                system = "手机站";
+                break;
+            case 5:
+                system = "客户端";
+                break;
+            case 6:
+                system = "Android客户端";
+                break;
+            case 7:
+                system = "IOS客户端";
+                break;
+            case 8:
+                system = "作家中心";
+                break;
+            case 9:
+                system = "漫画站";
+                break;
+            case 10:
+                system = "打赏评论";
+                break;
+            case 11:
+                system = "微信版";
+                break;
+            default:
+                system = "其他";
+                break;
+        }
+        textView.setText("来自" + system);
+
+    }
 }

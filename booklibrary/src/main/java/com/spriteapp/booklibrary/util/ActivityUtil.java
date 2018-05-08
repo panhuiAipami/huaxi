@@ -9,6 +9,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.ApprenticeListActivity;
 import com.spriteapp.booklibrary.ui.activity.BagActivity;
 import com.spriteapp.booklibrary.ui.activity.BindPhoneActivity;
+import com.spriteapp.booklibrary.ui.activity.BookCommentActivity;
 import com.spriteapp.booklibrary.ui.activity.CommentReplyActivity;
 import com.spriteapp.booklibrary.ui.activity.CreateDynamicActivity;
 import com.spriteapp.booklibrary.ui.activity.DownloadChapterActivity;
@@ -36,6 +37,7 @@ public class ActivityUtil {
     public static final String REPLYTITLE = "comment_reply_title";
     public static final String COMMENT_ID = "comment_id";
     public static final String USER_ID = "user_id";
+    public final static String FRAGMENT_TYPE = "fragment_type";//排行fragment类型
     public static final String REWARDTYPE = "reward_type";
     public static final int BACKREFRESH = 9;
 
@@ -112,6 +114,15 @@ public class ActivityUtil {
         intent.putExtra(PublishCommentActivity.BOOK_ID_TAG, bookId);
         context.startActivity(intent);
     }
+    public static void gotoPublishCommentActivity(Activity context, int bookId) {
+        if (!AppUtil.isLogin()) {
+            HuaXiSDK.getInstance().toLoginPage(context);
+            return;
+        }
+        Intent intent = new Intent(context, PublishCommentActivity.class);
+        intent.putExtra(PublishCommentActivity.BOOK_ID_TAG, bookId);
+        context.startActivityForResult(intent, 0);
+    }
 
     public static void toCommonActivity(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -139,6 +150,15 @@ public class ActivityUtil {
         intent.putExtra(COMMENT_ID, comment_id);
         intent.putExtra(SQUAREID, squareid);
         intent.putExtra(USER_ID, user_id);
+        context.startActivity(intent);
+    }
+    public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid, int user_id, int type) {//总条数
+        Intent intent = new Intent(context, CommentReplyActivity.class);
+        intent.putExtra(REPLYTITLE, total);
+        intent.putExtra(COMMENT_ID, comment_id);
+        intent.putExtra(SQUAREID, squareid);
+        intent.putExtra(USER_ID, user_id);
+        intent.putExtra(FRAGMENT_TYPE, type);
         context.startActivity(intent);
     }
 
@@ -184,6 +204,11 @@ public class ActivityUtil {
     }
     public static void toBagActivity(Context context) {
         Intent intent = new Intent(context, BagActivity.class);
+        context.startActivity(intent);
+    }
+    public static void toBookCommentActivity(Context context, BookDetailResponse detail) {
+        Intent intent = new Intent(context, BookCommentActivity.class);
+        intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
         context.startActivity(intent);
     }
 }

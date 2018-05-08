@@ -16,6 +16,7 @@ public class Base<T> implements Serializable {
     @SerializedName(value = "data", alternate = {"lists", "squarelist", "detail"})//分别适应不同名称的集合
     private T data;
     private int command;
+    private int count;
 
     public String getStatus() {
         return status;
@@ -55,6 +56,14 @@ public class Base<T> implements Serializable {
 
     public void setCommand(int command) {
         this.command = command;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
