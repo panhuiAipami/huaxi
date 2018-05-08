@@ -51,7 +51,7 @@ public class BookCommentDialog extends BaseDialog {
         if (TextUtils.isEmpty(text)) {
             select_text_content.setVisibility(View.GONE);
         } else {
-            select_text_content.setText(text);
+            select_text_content.setText(text.replace("\n",""));
         }
         user_edit_content = (EditText) mDialog.findViewById(R.id.user_edit_content);
         user_edit_content.setHorizontallyScrolling(false);

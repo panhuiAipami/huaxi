@@ -2,7 +2,6 @@ package com.spriteapp.booklibrary.widget.readview.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.view.View;
 
 import com.spriteapp.booklibrary.util.Constants;
@@ -21,12 +20,19 @@ public class BitmapUtil {
         if (v == null) {
             return null;
         }
-        Bitmap screenshot;
-        screenshot = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(screenshot);
-        canvas.translate(-v.getScrollX(), -v.getScrollY());//我们在用滑动View获得它的Bitmap时候，获得的是整个View的区域（包括隐藏的），如果想得到当前区域，需要重新定位到当前可显示的区域
-        v.draw(canvas);// 将 view 画到画布上
-        return saveBitmap(screenshot);
+//        Bitmap screenshot;
+//        screenshot = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_4444);
+//        Canvas canvas = new Canvas(screenshot);
+//        canvas.translate(-v.getScrollX(), -v.getScrollY());//我们在用滑动View获得它的Bitmap时候，获得的是整个View的区域（包括隐藏的），如果想得到当前区域，需要重新定位到当前可显示的区域
+//        v.draw(canvas);// 将 view 画到画布上
+
+        v.setDrawingCacheEnabled(true);
+        v.buildDrawingCache();       //启用DrawingCache并创建位图
+        //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
+        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+        v.setDrawingCacheEnabled(false);     //禁用DrawingCahce否则会影响性能
+
+        return saveBitmap(bitmap);
     }
 
     public static byte[] getBytes(Bitmap bitmap){

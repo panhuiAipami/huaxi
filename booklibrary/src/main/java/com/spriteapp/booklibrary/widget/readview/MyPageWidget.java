@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -496,7 +495,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
 
             }
         }
-        Log.e("selectline---------->", mSelectLines.get(0).sectionIndex + "------选取内容------>" + selectText);
+//        Log.e("selectline---------->", mSelectLines.get(0).sectionIndex + "------选取内容------>" + selectText);
     }
 
     private void GetSelectData() {
@@ -575,22 +574,33 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     }
 
     private ShowChar DetectPressShowChar(float down_X2, float down_Y2, boolean isFirst) {
+        List<ShowLine> lines = new ArrayList<>();
+        ShowChar ch = null;
+        find_text_over:
         for (ShowLine l : mLinseData) {
             for (ShowChar c : l.CharsData) {
                 if (down_Y2 > c.BottomLeftPosition.y) {
                     break;// 说明是在下一行
                 }
                 if (down_X2 >= c.BottomLeftPosition.x && down_X2 <= c.BottomRightPosition.x) {
-                    //首次按下把这一行都选中
-                    if (isFirst) {
-                        FirstSelectShowChar = l.getCharsData().get(0);
-                        LastSelectShowChar = l.getCharsData().get(l.getCharsData().size() - 1);
-                    }
-                    return c;
+                    ch = c;
+                    break find_text_over;
                 }
             }
         }
-        return null;
+        //首次按下把这一段都选中
+        if (isFirst) {
+            for (ShowLine l : mLinseData) {
+                if (ch != null && ch.sectionIndex == l.sectionIndex) {
+                    lines.add(l);
+                }
+            }
+            if (lines.size() > 0) {
+                FirstSelectShowChar = lines.get(0).getCharsData().get(0);
+                LastSelectShowChar = lines.get(lines.size() - 1).getCharsData().get(lines.get(lines.size() - 1).getCharsData().size() - 1);
+            }
+        }
+        return ch;
     }
 
 

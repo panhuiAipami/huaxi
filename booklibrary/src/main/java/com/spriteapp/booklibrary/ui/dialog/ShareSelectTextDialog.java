@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
@@ -25,7 +25,7 @@ import com.spriteapp.booklibrary.widget.readview.util.BitmapUtil;
 
 public class ShareSelectTextDialog extends Dialog  {
     Context context;
-    ScrollView scroll_view;
+    LinearLayout linear_share_layout;
     RelativeLayout relative_center_bg;
     ImageView image_back, share_button;
     TextView share_book_title;
@@ -49,7 +49,7 @@ public class ShareSelectTextDialog extends Dialog  {
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.reader_text_share_layout, null);
         setContentView(view);
-        scroll_view = (ScrollView) findViewById(R.id.scroll_view);
+        linear_share_layout = (LinearLayout) findViewById(R.id.linear_share_layout);
         relative_center_bg = (RelativeLayout) view.findViewById(R.id.relative_center_bg);
         image_back = (ImageView) view.findViewById(R.id.image_back);
         share_button = (ImageView) view.findViewById(R.id.share_button);
@@ -95,7 +95,7 @@ public class ShareSelectTextDialog extends Dialog  {
             @Override
             public void onClick(View v) {
                 if (AppUtil.isLogin(context)) {
-                    String imagePath = BitmapUtil.loadBitmapFromView(scroll_view);
+                    String imagePath = BitmapUtil.loadBitmapFromView(linear_share_layout);
                     HuaXiSDK.getInstance().showShareDialog(context, null, imagePath, false, 3);
                 }
             }
