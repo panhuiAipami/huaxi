@@ -113,7 +113,7 @@ public class BookCommentPopupWindow extends PopupWindow {
         bubbleRelative = (BubbleRelativeLayout) mContentView.findViewById(R.id.bubbleRelative);
         recycler_book_comment = (URecyclerView) mContentView.findViewById(R.id.recycler_book_comment);
 
-        adapter = new CommentReplyAdapter(mContext, commentReplyBean, 2);
+        adapter = new CommentReplyAdapter(mContext, commentReplyBean, 3);
         recycler_book_comment.setLayoutManager(new LinearLayoutManager(mContext));
         recycler_book_comment.setAdapter(adapter);
     }

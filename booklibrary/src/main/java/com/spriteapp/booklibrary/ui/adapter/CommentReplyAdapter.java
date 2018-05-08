@@ -2,7 +2,6 @@ package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +85,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     setData(commentViewHolder, reply);
 
                 }
-            } else if (type == 2) {
-
+            } else if (type == 2) {//书的评论
                 if (position == 0) {
                     BookCommentReplyBean.CommentBean comment = this.comment.getComment();
 //                    GlideUtils.loadImage(commentViewHolder.user_head,comment.getSource(),context);
@@ -96,23 +94,24 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     commentViewHolder.send_time.setText(comment.getReplyDatetime());
                     commentViewHolder.user_speak.setText(comment.getCmtContent());
                 } else if (position >= 2) {
-                    BookCommentBean listsBean = this.comment.getLists().get(position - 2);
-                    GlideUtils.loadImage(commentViewHolder.user_head,listsBean.getUser_avatar(),context);
-                    commentViewHolder.user_name.setText(listsBean.getUser_nickname());
-                    commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(listsBean.getComment_replydatetime() + "000")));
-                    commentViewHolder.user_speak.setText(listsBean.getComment_content());
-//                    commentViewHolder.send_time.setText(listsBean.getComment_replydatetime());
+                    setData2(commentViewHolder, this.comment.getLists().get(position - 2));
                 }
 
+            } else if (type == 3) {//段尾评论
+                setData2(commentViewHolder, this.comment.getLists().get(position));
             }
-
-
         } else if (holder instanceof TitleViewHolder) {
 
         }
-
-
     }
+
+    public void setData2(CommentViewHolder commentViewHolder, BookCommentBean listsBean) {
+        GlideUtils.loadImage(commentViewHolder.user_head, listsBean.getUser_avatar(), context);
+        commentViewHolder.user_name.setText(listsBean.getUser_nickname());
+        commentViewHolder.send_time.setText(TimeUtil.getTimeFormatText(Long.parseLong(listsBean.getComment_replydatetime() + "000")));
+        commentViewHolder.user_speak.setText(listsBean.getComment_content());
+    }
+
 
     public void setData(CommentViewHolder commentViewHolder, CommentReply reply) {
         GlideUtils.loadImage(commentViewHolder.user_head, reply.getUser_avatar(), context);
@@ -136,20 +135,17 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (replyBean != null && replyBean.size() != 0 && replyBean.get(0).getData() != null &&
                     replyBean.get(0).getReplydata().getData() != null && replyBean.get(0).getReplydata().getData().size() != 0) {
                 return replyBean.get(0).getReplydata().getData().size() + 2;
-            } else {
-                Log.d("getItemCount", "getItemCount===" + 0);
-                return 0;
             }
-        } else {
+        } else if (type == 2) {
             if (comment != null && comment.getComment() != null && comment.getLists() != null && comment.getLists().size() != 0) {
-
                 return comment.getLists().size() + 2;
-            } else {
-                Log.d("getItemCount", "getItemCount===" + 0);
-                return 0;
+            }
+        } else if (type == 3) {
+            if (comment != null && comment.getLists() != null && comment.getLists().size() != 0) {
+                return comment.getLists().size();
             }
         }
-
+        return 0;
 
     }
 
@@ -216,7 +212,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {//定义类型
-        if (position == 1)
+        if (position == 1 && type != 3)
             return TITLECOMMENT;
         else
             return MAINCOMMENT;

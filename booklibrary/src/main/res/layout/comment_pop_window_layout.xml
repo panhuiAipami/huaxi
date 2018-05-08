@@ -18,7 +18,7 @@
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/recycler_book_comment"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="250dp">
 
         </com.spriteapp.booklibrary.widget.recyclerview.URecyclerView>
 
