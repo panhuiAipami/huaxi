@@ -16,8 +16,15 @@ public class ListenerManager {
     }
     private ShareResult result;
     private ShareBeanCallBack shareBeanCallBack;
-    private FinishActivity finishActivity;
     private FinishWebActivity finishWebActivity;
+    private FinishActivity finishActivity;
+    public FinishActivity getFinishActivity() {
+        return finishActivity;
+    }
+
+    public void setFinishActivity(FinishActivity finishActivity) {
+        this.finishActivity = finishActivity;
+    }
 
     public ShareResult getResult() {
         return result;
@@ -35,13 +42,7 @@ public class ListenerManager {
         this.shareBeanCallBack = shareBeanCallBack;
     }
 
-    public FinishActivity getFinishActivity() {
-        return finishActivity;
-    }
 
-    public void setFinishActivity(FinishActivity finishActivity) {
-        this.finishActivity = finishActivity;
-    }
 
     public FinishWebActivity getFinishWebActivity() {
         return finishWebActivity;

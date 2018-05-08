@@ -100,6 +100,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -108,13 +109,17 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void qq_finish() {//qq,微博分享回来后销毁
-        if (!this.isFinishing()) {
-            finish();
-        }
+        finishView();
     }
 
     @Override
     public void finishActivity() {//微信分享回来后销毁
+        finishView();
+    }
+
+    public void finishView(){
+        if (com.spriteapp.booklibrary.listener.ListenerManager.getInstance().getDismissDialog() != null)
+            com.spriteapp.booklibrary.listener.ListenerManager.getInstance().getDismissDialog().disDialog();
         if (!this.isFinishing()) {
             finish();
         }
