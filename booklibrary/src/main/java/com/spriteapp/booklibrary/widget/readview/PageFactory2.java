@@ -17,7 +17,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -105,6 +104,7 @@ public class PageFactory2 implements SendBookComment {
     private float statusMarginBottom;
     //行间距
     private float lineSpace;
+    private int format;
     //文字画笔
     private Paint mPaint, waitPaint;
     //加载画笔
@@ -198,7 +198,7 @@ public class PageFactory2 implements SendBookComment {
         marginWidth = mContext.getResources().getDimension(R.dimen.readingMarginWidth);
         marginHeight = mContext.getResources().getDimension(R.dimen.readingMarginHeight);
         statusMarginBottom = mContext.getResources().getDimension(R.dimen.reading_status_margin_bottom);
-        int format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
+        format = SharedPreferencesUtil.getInstance().getInt(com.spriteapp.booklibrary.constant.Constant.READ_PAGE_FONT_FORMAT, 1);
         m_fontSize = config.getFontSize();
         lineSpace = m_fontSize / 17 * (5 * (format + 1));
         mVisibleWidth = mWidth - marginWidth * 2;
@@ -220,6 +220,7 @@ public class PageFactory2 implements SendBookComment {
         mPaint.setTextSize(m_fontSize);
         mPaint.setColor(Color.BLACK);
         mPaint.setSubpixelText(true);
+
         Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
         TextHeight = Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent);
 
@@ -894,8 +895,13 @@ public class PageFactory2 implements SendBookComment {
     //改变字体大小
     public void changeFontSize(int fontSize) {
         this.m_fontSize = fontSize;
+        lineSpace = m_fontSize / 17 * (5 * (format + 1));
+        mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
+
         mPaint.setTextSize(m_fontSize);
         mChapterTitlePaint.setTextSize(m_fontSize - 2);
+        Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+        TextHeight = Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent);
 
         setChapterTotalPage();
 
@@ -918,6 +924,7 @@ public class PageFactory2 implements SendBookComment {
      * 设置间距
      */
     public void setFontSpace(int space) {
+        format = space;
         lineSpace = m_fontSize / 17 * (5 * (space + 1));
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
 
