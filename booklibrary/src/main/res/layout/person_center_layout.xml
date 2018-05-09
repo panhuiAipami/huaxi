@@ -592,6 +592,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/person_line_left_padding"
             android:layout_marginTop="30dp"
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:orientation="vertical">
 

@@ -46,14 +46,16 @@ public class BookCommentPopupWindow extends PopupWindow implements URecyclerView
     private List<BookCommentBean> data = new ArrayList<>();
     private BookCommentReplyBean commentReplyBean = new BookCommentReplyBean();
     private int book_id, chapter_id, pid;
+    private String selectText;
     long start_time = 0, stop_time = 0;
 
-    public BookCommentPopupWindow(Activity context, int book_id, int chapter_id, int pid) {
+    public BookCommentPopupWindow(Activity context, int book_id, int chapter_id, int pid,String selectText) {
         super(context);
         this.mContext = context;
         this.book_id = book_id;
         this.chapter_id = chapter_id;
         this.pid = pid;
+        this.selectText = selectText;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContentView = mInflater.inflate(R.layout.comment_pop_window_layout, null);
 
@@ -122,7 +124,7 @@ public class BookCommentPopupWindow extends PopupWindow implements URecyclerView
             @Override
             public void onClick(View v) {
                 if (AppUtil.isLogin(mContext)) {
-                    new BookCommentDialog(mContext, "", pid).show();
+                    new BookCommentDialog(mContext, selectText, pid).show();
                     dismiss();
                 }
             }

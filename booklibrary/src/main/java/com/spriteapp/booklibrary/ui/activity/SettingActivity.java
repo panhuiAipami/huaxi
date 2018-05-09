@@ -98,7 +98,7 @@ public class SettingActivity extends TitleActivity implements LoginOutView {
         if (toSetting == 1) {
             gone(mClearCacheLayout, app_updata, mLoginOutButton);
         } else if (toSetting == 2) {
-            gone(remind_layout, fang_layout);
+//            gone(remind_layout, fang_layout);
         }
     }
 

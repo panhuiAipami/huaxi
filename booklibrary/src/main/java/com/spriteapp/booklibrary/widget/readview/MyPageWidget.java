@@ -764,6 +764,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void comment() {
         initSelectBg();
+        if(TextUtils.isEmpty(selectText))
         new BookCommentDialog(activity, selectText, selectTextSection).show();
     }
 
@@ -789,26 +790,5 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         invalidate();
     }
 
-    /**
-     * 获取段落位置
-     *
-     * @param selectText
-     * @return
-     */
-    public int getSectionIndex(String selectText) {
-        if (!TextUtils.isEmpty(mCurrentContent)) {
-            String section[] = mCurrentContent.split("\n");
-            if (selectText.contains("\n")) {
-                String selectArr[] = selectText.split("\n");
-                selectText = selectArr[selectArr.length - 1];
-            }
-            for (int i = 0; i < section.length; i++) {
-                String text = section[i];
-                if (text.contains(selectText)) {
-                    return (i + 1);
-                }
-            }
-        }
-        return 0;
-    }
+
 }

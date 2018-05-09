@@ -1251,7 +1251,7 @@ public class PageFactory2 implements SendBookComment {
      */
     @Override
     public void show(View v, int pid, int x, int y) {
-        BookCommentPopupWindow commentPopupWindow = new BookCommentPopupWindow(mContext, book_id, currentChapter, pid);
+        BookCommentPopupWindow commentPopupWindow = new BookCommentPopupWindow(mContext, book_id, currentChapter, pid,getSectionIndexText(pid));
         commentPopupWindow.show(v, x, y);
     }
 
@@ -1334,5 +1334,25 @@ public class PageFactory2 implements SendBookComment {
                     public void onComplete() {
                     }
                 });
+    }
+
+    /**
+     * 获取段落位置
+     * @return
+     */
+    public String getSectionIndexText(int pid) {
+        if (!TextUtils.isEmpty(mCurrentContent)) {
+            String section[] = mCurrentContent.split("\n");
+//            if (selectText.contains("\n")) {
+//                String selectArr[] = selectText.split("\n");
+//                selectText = selectArr[selectArr.length - 1];
+//            }
+            for (int i = 0; i < section.length; i++) {
+                if (i == pid) {
+                    return section[i-1];
+                }
+            }
+        }
+        return null;
     }
 }

@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/recycler_book_comment"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:padding="10dp"
             android:drawableLeft="@mipmap/write_book_comment_icon"
             android:drawablePadding="5dp"
             android:text="写评论"
