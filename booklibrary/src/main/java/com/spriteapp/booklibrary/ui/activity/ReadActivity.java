@@ -1042,7 +1042,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             } else {
                 mRightTitleLayout.setBuyImageState(false);
             }
-            mReadProgressLayout.setTitle(getCurrentChapterTitle(chapter));
+
             if (pagefactory != null) {
                 mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
                 mReadProgressLayout.setProgress(pagefactory.getCurrentProgress());
@@ -1054,6 +1054,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 BookChapterResponse catalog = mChapterList.get(i);
                 int chapter_id = catalog.getChapter_id();
                 if (chapter_id == chapter) {
+                    mReadProgressLayout.setTitle(catalog.getChapter_title());
 
                     if (HomeActivity.ISHAUDU && AppUtil.isLogin() && catalog.getChapter_is_vip() == 0 && oldChapter_id == chapter) {//当前章节等于跳转章节并且跳转章节为免费
 
@@ -1177,8 +1178,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
     private ReadDialogListener mDialogListener = new ReadDialogListener() {
         @Override
-        public void clickCancelPay() {
-            toggleReadBar();
+        public void clickCancelPay() {//取消购买
+//            toggleReadBar();
         }
 
         @Override
@@ -1205,19 +1206,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         }
     };
 
-    private String getCurrentChapterTitle(int chapter) {
-        String title = "";
-        if (CollectionUtil.isEmpty(mChapterList)) {
-            return title;
-        }
-        for (BookChapterResponse response : mChapterList) {
-            if (response.getChapter_id() == chapter) {
-                title = response.getChapter_title();
-                break;
-            }
-        }
-        return title;
-    }
 
     @Override
     public void showNetWorkProgress() {
@@ -1302,7 +1290,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             if (pagefactory != null) {
                 pagefactory.changeFontSize(ScreenUtil.dpToPxInt(textSize));
 
-                pagefactory.setChapterTotalPage();
                 mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
             }
         }
@@ -1318,8 +1305,6 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         public void sendFontFormat(int format) {
             if (pagefactory != null) {
                 pagefactory.setFontSpace(format);
-
-                pagefactory.setChapterTotalPage();
                 mReadProgressLayout.setCount(pagefactory.getChapterTotalPage());
             }
         }

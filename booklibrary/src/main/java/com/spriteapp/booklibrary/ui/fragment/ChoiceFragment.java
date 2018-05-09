@@ -136,6 +136,7 @@ public class ChoiceFragment extends BaseFragment implements ChoiceView, URecycle
 
     @Override
     public void disMissProgress() {
+        if(swipe_refresh != null)
         swipe_refresh.setRefreshing(false);
 
     }

@@ -195,7 +195,7 @@ public interface BookApiService {
                                       @Field("title") String title,
                                       @Field("content") String content,
                                       @Field("star") float score,
-                                      @Field("source") float source);
+                                      @Field("source") int source);
 
     @GET("book_store")
     Call<BookStoreResponse> getBookStore(@Query("format") String type);
@@ -443,12 +443,13 @@ public interface BookApiService {
     );
 
     //添加书的评论
-    @GET("book_comment")
-    Observable<Base> send_book_comment(@Query("book_id") int book_id,
-                                       @Query("chapter_id") int chapter_id,
-                                       @Query("parent_id") int parent_id,
-                                       @Query("content") String content,
-                                       @Field("source") float source
+    @FormUrlEncoded
+    @POST("book_comment")
+    Observable<Base> send_book_comment(@Field("book_id") int book_id,
+                                       @Field("chapter_id") int chapter_id,
+                                       @Field("parent_id") int parent_id,
+                                       @Field("content") String content,
+                                       @Field("source") int source
 
     );
     //评论书籍

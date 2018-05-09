@@ -17,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -242,7 +243,8 @@ public class PageFactory2 implements SendBookComment {
         percentLen = (int) mTitlePaint.measureText("00.00%");
 
         bookDetailResponse = new BookDb(mContext).queryBook(book_id);
-        bookName = bookDetailResponse.getBook_name();
+        if (bookDetailResponse != null)
+            bookName = bookDetailResponse.getBook_name();
 
         initBg(config.getDayOrNight());
         measureMarginWidth();
@@ -694,12 +696,11 @@ public class PageFactory2 implements SendBookComment {
         int paraSpace = 0;
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
         int nowSection = 0;
-        int pageSection[] = getPageSections(curEndPos);
+        int pageSection[] = getPageSections(true, curEndPos);
         while ((lines.size() < mPageLineCount) && (curEndPos < mbBufferLen)) {
             //一个段落内容，根据\n 划分段
             nowSection++;
             String strParagraph = readNextParagraph(curEndPos);
-//            Log.e("getNextLines-->" + curEndPos, pageSection[0] - pageSection[1] + nowSection + "-------下一段落： " + strParagraph);
             currentPage.setEnd(currentPage.getEnd() + strParagraph.length());
             mBookUtil.setPostition(currentPage.getEnd() + strParagraph.length());
             curEndPos += strParagraph.length();
@@ -715,8 +716,9 @@ public class PageFactory2 implements SendBookComment {
                 BreakResult breakResult = TextBreakUtil.BreakText(strParagraph.substring(0, paintSize), mVisibleWidth, 0, mPaint);
                 ShowLine showLine = new ShowLine();
                 showLine.CharsData = breakResult.showChars;
+                if (pageSection != null && pageSection.length > 1)
+                    showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
                 lines.add(showLine);
-                showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
 
                 //剩下无法容纳的文本
                 strParagraph = strParagraph.substring(paintSize);
@@ -747,6 +749,8 @@ public class PageFactory2 implements SendBookComment {
             }
             paraSpace += lineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (m_fontSize + lineSpace);
+//            Log.e("getNextLines-->", curEndPos+ "end-------下一段落： " + strParagraph);
+
         }
 
         int index = 0;
@@ -786,14 +790,14 @@ public class PageFactory2 implements SendBookComment {
         Vector<ShowLine> lines = new Vector<>(); // 页面行
         int paraSpace = 0;
         int nowSection = 0;
-        int pageSection[] = getPageSections(curBeginPos);
+        int pageSection[] = getPageSections(false, curBeginPos);
 //        Log.e("section", totalSection + "----段数---" + pageSection);
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
         while ((lines.size() < mPageLineCount) && (curBeginPos > 0)) {
             Vector<ShowLine> paraLines = new Vector<>(); // 段落行
             nowSection++;
             String strParagraph = readUpParagraph(curBeginPos);
-//            Log.e("getPreLines", "----上一页的行： " + strParagraph);
+//            Log.e("getPreLines", curBeginPos + "<-----上一页的行： " + strParagraph);
             mBookUtil.setPostition(currentPage.getBegin() - strParagraph.length());
             currentPage.setBegin(currentPage.getBegin() - strParagraph.length());
 
@@ -804,7 +808,8 @@ public class PageFactory2 implements SendBookComment {
                 BreakResult breakResult = TextBreakUtil.BreakText(strParagraph.substring(0, paintSize), mVisibleWidth, 0, mPaint);
                 ShowLine showLine = new ShowLine();
                 showLine.CharsData = breakResult.showChars;
-                showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
+                if (pageSection != null && pageSection.length > 1)
+                    showLine.sectionIndex = pageSection[0] - pageSection[1] + nowSection;
                 paraLines.add(showLine);
                 strParagraph = strParagraph.substring(paintSize);
             }
@@ -837,7 +842,7 @@ public class PageFactory2 implements SendBookComment {
     private String readUpParagraph(long curBeginPos) {
         String result = "";
         long i = curBeginPos - 1;
-        while (i >= 0) {
+        while (i >= 0 && i < mCurrentContent.length()) {
             char value = mCurrentContent.charAt((int) i);
             String s = String.valueOf(value);
             result += s;
@@ -891,6 +896,9 @@ public class PageFactory2 implements SendBookComment {
         this.m_fontSize = fontSize;
         mPaint.setTextSize(m_fontSize);
         mChapterTitlePaint.setTextSize(m_fontSize - 2);
+
+        setChapterTotalPage();
+
         currentPage = getPageForBegin(currentPage.getBegin());
         measureMarginWidth();
         currentPage(true);
@@ -912,6 +920,9 @@ public class PageFactory2 implements SendBookComment {
     public void setFontSpace(int space) {
         lineSpace = m_fontSize / 17 * (5 * (space + 1));
         mPageLineCount = mVisibleHeight / (m_fontSize + lineSpace);
+
+        setChapterTotalPage();
+
         currentPage = getPageForBegin(currentPage.getBegin());
         measureMarginWidth();
         currentPage(true);
@@ -1138,9 +1149,9 @@ public class PageFactory2 implements SendBookComment {
             if (currentEndPos < mbBufferLen) {
                 lines.clear();
             }
-//            Log.e("mTotalPage", mTotalPage + "<--mTotalPage---------totalSection-->" + totalSection);
             mPageMap.put(mTotalPage, curBeginPos);
             totalSection += pageSection;
+//            Log.e("mTotalPage" + curBeginPos, totalSection + "<--totalSection---------mTotalPage-->" + mTotalPage);
             mSectionMap.put(curBeginPos, new int[]{totalSection, pageSection});
             mTotalPage++;
 
@@ -1148,9 +1159,31 @@ public class PageFactory2 implements SendBookComment {
         return mTotalPage;
     }
 
-    public int[] getPageSections(int curBeginPos) {
+    public int[] getPageSections(boolean isNext, int position) {
         int arr[];
-        arr = mSectionMap.get(curBeginPos);
+        arr = mSectionMap.get(position);
+        //字体大小有调整过,无法确定页
+        if (arr == null) {
+            for (int i = 0; i < mPageMap.size(); i++) {
+//                Log.e("for", position + "--------for-------->" + mPageMap.get(i));
+
+                if (mPageMap.get(i) > position) {
+                    position = mPageMap.get(i - 1);
+
+                    break;
+                } else if (i == mPageMap.size() - 1) {
+                    position = mPageMap.get(i);
+
+                    break;
+                }
+            }
+            if (isNext)
+                curEndPos = position;
+            else
+                curBeginPos = position;
+            arr = mSectionMap.get(position);
+        }
+//        Log.e("getPageSections", arr[0] + "--------getPageSections-------->" + position);
         return arr;
     }
 
