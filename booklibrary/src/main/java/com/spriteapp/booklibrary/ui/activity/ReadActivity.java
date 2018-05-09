@@ -909,7 +909,14 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
 
                 @Override
                 public void clickComment() {//评论
-                    ActivityUtil.toBookCommentActivity(ReadActivity.this,mNewBookDetail==null?mOldBookDetail:mNewBookDetail);
+                    BookDetailResponse response = mNewBookDetail == null ? mOldBookDetail : mNewBookDetail;
+                    if (response == null) return;
+                    if (isAddOrClean) {
+                        response.setBook_add_shelf(1);
+                    } else {
+                        response.setBook_add_shelf(0);
+                    }
+                    ActivityUtil.toBookCommentActivity(ReadActivity.this, response);
                 }
 
                 @Override
