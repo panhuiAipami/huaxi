@@ -14,6 +14,7 @@ import com.spriteapp.booklibrary.constant.Constant;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.GuessAdapter;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.NetworkUtil;
 
 import java.util.ArrayList;
@@ -43,8 +44,7 @@ public class GuessYouLikeDialog extends BaseDialog {
         this.context = context;
         this.response = response;
         this.type = type;
-        if (!NetworkUtil.isAvailable(context)) {
-
+        if (!NetworkUtil.isAvailable(context) || !AppUtil.isLogin()) {
             if (type == 2) {
                 context.finish();
             }
@@ -102,7 +102,7 @@ public class GuessYouLikeDialog extends BaseDialog {
                                 if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
                                     list.addAll(bookStoreResponse.getData());
                                     adapter.notifyDataSetChanged();
-                                }else {
+                                } else {
                                     if (type == 2) {
                                         dismiss();
                                         context.finish();
