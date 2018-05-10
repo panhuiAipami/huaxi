@@ -47,6 +47,9 @@ public class NewBookStoreResponse implements Serializable {
     @SerializedName(value = "man_woman_two", alternate = {"location_11", "location_13"})
     private List<BookDetailResponse> man_woman_two;//女生:古言穿越;男生:都市传说
 
+    //男女生频道
+    @SerializedName(value = "man_woman_one_url", alternate = {"location_10_url", "location_12_url"})
+    private String man_woman_one_url;
 
     public String getStatus() {
         return status;
@@ -62,6 +65,14 @@ public class NewBookStoreResponse implements Serializable {
 
     public void setClassicalBookUrl(String classicalBookUrl) {
         this.classicalBookUrl = classicalBookUrl;
+    }
+
+    public String getMan_woman_one_url() {
+        return man_woman_one_url;
+    }
+
+    public void setMan_woman_one_url(String man_woman_one_url) {
+        this.man_woman_one_url = man_woman_one_url;
     }
 
     public String getRecentBookUrl() {

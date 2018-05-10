@@ -142,7 +142,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else if ((position == p5 || position == p4 || position == p3 || position == p2 || position == p1) && man_or_woman1Size != 0) {//都市传说、古言穿越
                 Log.d("mianfeixinshu", "都市传说position==" + position);
                 detailsViewHolder.store_title_bar.setVisibility(View.VISIBLE);
-                setText(detailsViewHolder.cate_title, sex == 1 ? R.string.xuanhuan : R.string.zongcai, newBookStoreResponse.getFreeNewBookUrl(), detailsViewHolder.cate_title_small, sex == 1 ? R.string.xuanhuan_man : R.string.zongcai_woman, detailsViewHolder.store_title_bar, 5);
+                setText(detailsViewHolder.cate_title, sex == 1 ? R.string.xuanhuan : R.string.zongcai, newBookStoreResponse.getMan_woman_one_url(), detailsViewHolder.cate_title_small, sex == 1 ? R.string.xuanhuan_man : R.string.zongcai_woman, detailsViewHolder.store_title_bar, sex == 1 ? 5 : 6);
             } else if ((position == p7 || position == p6 || position == p5 || position == p4 || position == p3 || position == p2 || position == p1) && freenewSize != 0) {//免费新书
                 Log.d("mianfeixinshu", "免费新书position==" + position);
                 detailsViewHolder.store_title_bar.setVisibility(View.VISIBLE);
