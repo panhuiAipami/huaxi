@@ -28,6 +28,7 @@ import com.spriteapp.booklibrary.ui.adapter.second.FreeAdapter;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
+import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.Util;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
@@ -208,12 +209,15 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void countDown(final FreeViewHolder holder, BookDetailResponse response) {
-
+        if (response == null) return;
+        if (System.currentTimeMillis() / 1000 > response.getEnd_time()) return;
+        long current = response.getEnd_time() - (System.currentTimeMillis() / 1000);
+        Log.d("countDown", "countDown===" + current);
         holder.count_time_item.setVisibility(View.VISIBLE);
         if (timer != null) {
             timer.cancel();
         }
-        timer = new CountDownTimer(14400000, 1000) {
+        timer = new CountDownTimer(current, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (millisUntilFinished != 0) {
@@ -223,8 +227,8 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     holder.hour_time.setText("00");
                 }
 
-//                holder.minute_time.setText(TimeUtil.getDateMinute(millisUntilFinished));
-//                holder.second_time.setText(TimeUtil.getDateSecond(millisUntilFinished));
+                holder.minute_time.setText(TimeUtil.getDateMinute(millisUntilFinished));
+                holder.second_time.setText(TimeUtil.getDateSecond(millisUntilFinished));
 
             }
 

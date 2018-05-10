@@ -37,8 +37,6 @@ import static com.spriteapp.booklibrary.ui.activity.ReadActivity.BOOK_DETAIL_TAG
 public class BookCommentActivity extends TitleActivity implements SwipeRefreshLayout.OnRefreshListener, URecyclerView.LoadingListener {
     private URecyclerView recycler_view_comment;
     private SwipeRefreshLayout refresh;
-    private ImageView book_cover, book_author_cover;
-    private TextView book_name, author_name, book_comment_num, book_collection, goto_comment;
     private BookDetailResponse detailResponse;
     private List<BookCommentBean> list = new ArrayList<>();
     private NewBookCommentAdapter adapter;
@@ -54,7 +52,6 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
         detailResponse = (BookDetailResponse) intent.getSerializableExtra(BOOK_DETAIL_TAG);
         listener();
         setAdapter();
-        setBookDetails();
     }
 
     @Override
@@ -63,24 +60,17 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
         recycler_view_comment = (URecyclerView) findViewById(R.id.recycler_view_comment);
         refresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
         refresh.setColorSchemeResources(R.color.square_comment_selector);
-        book_cover = (ImageView) findViewById(R.id.book_cover);
-        book_author_cover = (ImageView) findViewById(R.id.book_author_cover);
-        book_name = (TextView) findViewById(R.id.book_name);
-        author_name = (TextView) findViewById(R.id.author_name);
-        book_comment_num = (TextView) findViewById(R.id.book_comment_num);
-        book_collection = (TextView) findViewById(R.id.book_collection);
-        goto_comment = (TextView) findViewById(R.id.goto_comment);
+
 
     }
 
     private void setAdapter() {
-        adapter = new NewBookCommentAdapter(this, list);
+        adapter = new NewBookCommentAdapter(this, list, detailResponse);
         recycler_view_comment.setLayoutManager(new LinearLayoutManager(this));
         recycler_view_comment.setAdapter(adapter);
     }
 
     private void listener() {
-        goto_comment.setOnClickListener(this);
         refresh.setOnRefreshListener(this);
         recycler_view_comment.setLoadingListener(this);
     }
@@ -93,6 +83,8 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
     }
 
     private void getComment() {
+        if (detailResponse == null) return;
+        book_id = detailResponse.getBook_id();
         BookApi.getInstance()
                 .service
                 .getBookComment(book_id, 0, firstTime, 20)
@@ -113,7 +105,8 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
                             if (firstTime == 0) list.clear();
                             firstTime = listBase.getData().get(listBase.getData().size() - 1).getComment_replydatetime();
                             list.addAll(listBase.getData());
-                            book_comment_num.setText(listBase.getCount() + "条评论");
+//                            book_comment_num.setText(listBase.getCount() + "条评论");
+                            adapter.setCommentCount(listBase.getCount());
                             adapter.notifyDataSetChanged();
 
 
@@ -141,29 +134,15 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
         mContainerLayout.setPadding(0, ScreenUtil.dpToPxInt(47), 0, 0);
     }
 
-    private void setBookDetails() {
-        if (detailResponse == null) return;
-        book_id = detailResponse.getBook_id();
-        GlideUtils.loadImage(book_cover, detailResponse.getBook_image(), this);
-        Log.d("book_author_cover", "作者名称：" + detailResponse.getAuthor_avatar());
-        GlideUtils.loadImage(book_author_cover, detailResponse.getAuthor_avatar(), this);
-        book_name.setText(detailResponse.getBook_name());
-        author_name.setText(detailResponse.getAuthor_name());
-        if (detailResponse.getBook_add_shelf() == 1){
-            book_collection.setSelected(true);
-            book_collection.setText("已收藏");
-        }
-
-    }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if (v == goto_comment) {//去评论
-            if (!AppUtil.isLogin(this)) return;
-            if (detailResponse == null) return;
-            ActivityUtil.gotoPublishCommentActivity(this, detailResponse.getBook_id());
-        }
+//        if (v == goto_comment) {//去评论
+//            if (!AppUtil.isLogin(this)) return;
+//            if (detailResponse == null) return;
+//            ActivityUtil.gotoPublishCommentActivity(this, detailResponse.getBook_id());
+//        }
     }
 
     @Override
@@ -186,7 +165,7 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if(requestCode==0){
+            if (requestCode == 0) {
                 firstTime = 0;
                 lastTime = 0;
                 getComment();

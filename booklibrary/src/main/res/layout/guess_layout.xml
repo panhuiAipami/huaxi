@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/share_layout"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
 
+        <include layout="@layout/store_title_layout"></include>
         <com.spriteapp.booklibrary.widget.recyclerview.URecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"

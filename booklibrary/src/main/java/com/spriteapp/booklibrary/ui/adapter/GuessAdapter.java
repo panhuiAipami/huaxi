@@ -64,9 +64,9 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ShuViewHolder shuViewHolder = (ShuViewHolder) holder;
             final BookDetailResponse bookDetailResponse = list.get(position);
             if (bookDetailResponse == null) return;
-            if (position == 0) {
+            if (position == 0 && type == 1) {
                 shuViewHolder.store_title_bar.setVisibility(View.VISIBLE);
-                shuViewHolder.cate_title.setText(type==1?R.string.other_like:R.string.guess_you_like);
+                shuViewHolder.cate_title.setText(type == 1 ? R.string.other_like : R.string.guess_you_like);
                 shuViewHolder.cate_title_small.setVisibility(View.GONE);
             } else {
                 shuViewHolder.store_title_bar.setVisibility(View.GONE);
@@ -88,6 +88,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //                        ActivityUtil.toWebViewActivity(context, jumpUrl);
 //                    }
                     ActivityUtil.toReadActivity(context, bookDetailResponse.getBook_id(), bookDetailResponse.getChapter_id());
+                    context.finish();
 
                 }
             });
@@ -136,11 +137,12 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        if (list == null) return 0;
         if (type == 1) {
 
             return list.size() >= 3 ? 4 : list.size() == 0 ? list.size() : list.size() + 1;
         } else {
-            return list.size() >= 3 ? 3 : list.size();
+            return list.size();
         }
 
     }

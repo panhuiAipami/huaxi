@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
 import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.BookRepyBean;
 import com.spriteapp.booklibrary.model.UserBean;
+import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
 import com.spriteapp.booklibrary.util.ActivityUtil;
@@ -43,13 +45,16 @@ import io.reactivex.schedulers.Schedulers;
 public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int COMMENTPOS = 0;
     private final int NODATAPOS = 1;
+    private final int COMMENTTOPPOS = 2;
     private Activity context;
     private List<BookCommentBean> list;
     private CommentDialog commentDialog;
+    private BookDetailResponse response;
 
-    public NewBookCommentAdapter(Activity context, List<BookCommentBean> list) {
+    public NewBookCommentAdapter(Activity context, List<BookCommentBean> list, BookDetailResponse response) {
         this.context = context;
         this.list = list;
+        this.response = response;
     }
 
     @Override
@@ -62,6 +67,9 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewType == NODATAPOS) {
             convertView = LayoutInflater.from(context).inflate(R.layout.follow_null_layout, parent, false);
             return new NoDataViewHolder(convertView);
+        } else if (viewType == COMMENTTOPPOS) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.comment_top, parent, false);
+            return new CommentTopViewHolder(convertView);
         } else {
             convertView = LayoutInflater.from(context).inflate(R.layout.new_book_comment_item, parent, false);
             return new CommentViewHolder(convertView);
@@ -73,7 +81,8 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof CommentViewHolder) {
-            final BookCommentBean bookCommentBean = list.get(position);
+            if (position <= 0) return;
+            final BookCommentBean bookCommentBean = list.get(position - 1);
             if (bookCommentBean == null) return;
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             //设置数据到布局item
@@ -85,7 +94,7 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             commentViewHolder.user_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    replyComment(bookCommentBean, position);
+                    replyComment(bookCommentBean, position-1);
                 }
             });
             if (bookCommentBean.getChildren() == null) {
@@ -164,11 +173,14 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         } else if (holder instanceof NoDataViewHolder) {
 
+        } else if (holder instanceof CommentTopViewHolder) {
+            CommentTopViewHolder commentTopViewHolder = (CommentTopViewHolder) holder;
+            setBookDetails(response, commentTopViewHolder);
+
         }
     }
 
     private void replyComment(final BookCommentBean bean, final int pos) {
-        if (!AppUtil.isLogin(context)) return;
         if (bean == null) return;
         if (commentDialog == null) commentDialog = new CommentDialog(context);
         if (commentDialog.isShowing()) commentDialog.dismiss();
@@ -251,15 +263,52 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
     }
 
+    private int book_id;
+    private int comment_num = 0;
+
+    private void setBookDetails(final BookDetailResponse detailResponse, CommentTopViewHolder holder) {
+        if (detailResponse == null) return;
+        book_id = detailResponse.getBook_id();
+        GlideUtils.loadImage(holder.book_cover, detailResponse.getBook_image(), context);
+        Log.d("book_author_cover", "作者名称：" + detailResponse.getAuthor_avatar());
+        GlideUtils.loadImage(holder.book_author_cover, detailResponse.getAuthor_avatar(), context);
+        holder.book_name.setText(detailResponse.getBook_name());
+        holder.author_name.setText(detailResponse.getAuthor_name());
+        holder.book_comment_num.setText(comment_num + "条评论");
+        if (detailResponse.getBook_add_shelf() == 1) {
+            holder.book_collection.setSelected(true);
+            holder.book_collection.setText("已收藏");
+        }
+        holder.goto_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AppUtil.isLogin(context)) return;
+                if (detailResponse == null) return;
+                ActivityUtil.gotoPublishCommentActivity(context, detailResponse.getBook_id());
+            }
+        });
+
+    }
+
+    public void setCommentCount(int commentCount) {
+        comment_num = commentCount;
+        notifyItemChanged(0);
+    }
+
+
     @Override
     public int getItemCount() {
-        if (list == null) return 0;
-        return list.size() == 0 ? 1 : list.size();
+        if (list == null) return 2;
+        return list.size() == 0 ? 2 : list.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (list != null && list.size() == 0) return NODATAPOS;
+        if (list == null && position == 0) return COMMENTTOPPOS;
+        if (list == null && position == 1) return NODATAPOS;
+        if (list != null && list.size() == 0 && position == 0) return COMMENTTOPPOS;
+        if (list != null && list.size() == 0 && position == 1) return NODATAPOS;
+        if (list.size() != 0 && position == 0) return COMMENTTOPPOS;
         return COMMENTPOS;
     }
 
@@ -297,6 +346,23 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             null_layout = (LinearLayout) itemView.findViewById(R.id.null_layout);
             miaoshu = (TextView) itemView.findViewById(R.id.miaoshu);
             miaoshu.setText("暂时没有评论");
+        }
+    }
+
+
+    private class CommentTopViewHolder extends RecyclerView.ViewHolder {
+        private ImageView book_cover, book_author_cover;
+        private TextView book_name, author_name, book_comment_num, book_collection, goto_comment;
+
+        public CommentTopViewHolder(View itemView) {
+            super(itemView);
+            book_cover = (ImageView) itemView.findViewById(R.id.book_cover);
+            book_author_cover = (ImageView) itemView.findViewById(R.id.book_author_cover);
+            book_name = (TextView) itemView.findViewById(R.id.book_name);
+            author_name = (TextView) itemView.findViewById(R.id.author_name);
+            book_comment_num = (TextView) itemView.findViewById(R.id.book_comment_num);
+            book_collection = (TextView) itemView.findViewById(R.id.book_collection);
+            goto_comment = (TextView) itemView.findViewById(R.id.goto_comment);
         }
     }
 }
