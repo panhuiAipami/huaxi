@@ -917,6 +917,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                         response.setBook_add_shelf(0);
                     }
                     ActivityUtil.toBookCommentActivity(ReadActivity.this, response);
+                    ActivityUtil.gotoPublishCommentActivity(ReadActivity.this, response.getBook_id());
                 }
 
                 @Override
