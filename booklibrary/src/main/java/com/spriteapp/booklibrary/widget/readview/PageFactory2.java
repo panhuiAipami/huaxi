@@ -377,16 +377,16 @@ public class PageFactory2 implements SendBookComment {
                     float wordWidth = mPaint.measureText(text);
                     int left = (int) (wordWidth);
                     int top = (int) y;
-                    int clearance = ScreenUtil.dpToPxInt(5);
+                    float clearance = ScreenUtil.dpToPxInt(5);
                     RectF re2 = new RectF(left + clearance, top + ScreenUtil.dpToPxInt(2), left + ScreenUtil.dpToPxInt(25), top + ScreenUtil.dpToPxInt(15));
                     //背景
                     cs.drawRoundRect(re2, left + clearance, left + clearance, mTitlePaint);
                     //数字
                     String textNum = num + "";
                     if (num > 99) {
-                        textNum = num + "+";
+                        textNum = "99+";
                     }
-                    cs.drawText(textNum, left + (num > 9 ? clearance * 2 : clearance * 3), top + ScreenUtil.dpToPxInt(12), waitPaint);
+                    cs.drawText(textNum, left + (num > 9 ? clearance * 2.8f : clearance * 3f), top + ScreenUtil.dpToPxInt(12), waitPaint);
                     //-------------------
                 }
             }
@@ -457,7 +457,7 @@ public class PageFactory2 implements SendBookComment {
         getChapterCommentNum();
         String key = subscriberContent.getChapter_content_key();
         String content = subscriberContent.getChapter_content();
-        mCurrentContent = EncryptUtils.decrypt(content, key);
+        mCurrentContent = EncryptUtils.decrypt(content, key)+"\n";
         mbBufferLen = mCurrentContent.length();
         curBeginPos = position[0];
         curEndPos = position[1];
