@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -765,8 +764,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void comment() {
         initSelectBg();
-        if (TextUtils.isEmpty(selectText))
-            new BookCommentDialog(activity, selectText, selectTextSection).show();
+        new BookCommentDialog(activity, selectText, selectTextSection).show();
     }
 
     @Override
