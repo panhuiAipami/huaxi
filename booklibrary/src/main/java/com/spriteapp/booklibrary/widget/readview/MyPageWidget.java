@@ -29,6 +29,7 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.dialog.BookCommentDialog;
 import com.spriteapp.booklibrary.ui.dialog.MyPopupWindow;
 import com.spriteapp.booklibrary.ui.dialog.ShareSelectTextDialog;
+import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
@@ -764,8 +765,8 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void comment() {
         initSelectBg();
-        if(TextUtils.isEmpty(selectText))
-        new BookCommentDialog(activity, selectText, selectTextSection).show();
+        if (TextUtils.isEmpty(selectText))
+            new BookCommentDialog(activity, selectText, selectTextSection).show();
     }
 
     @Override
@@ -780,9 +781,11 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void share() {
         initSelectBg();
-        ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
-        selectTextDialog.setData(bookDetailResponse, selectText);
-        selectTextDialog.show();
+        if (AppUtil.isLogin(mContext)) {
+            ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
+            selectTextDialog.setData(bookDetailResponse, selectText);
+            selectTextDialog.show();
+        }
     }
 
     public void initSelectBg() {

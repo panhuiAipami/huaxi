@@ -68,7 +68,7 @@ public class ShareSelectTextDialog extends Dialog implements ListenerManager.Dis
         image_share_bg1 = (ImageView) view.findViewById(R.id.image_share_bg1);
         image_share_bg2 = (ImageView) view.findViewById(R.id.image_share_bg2);
         image_share_bg3 = (ImageView) view.findViewById(R.id.image_share_bg3);
-
+        setBgImage(2);
         onListener();
     }
 
@@ -97,7 +97,7 @@ public class ShareSelectTextDialog extends Dialog implements ListenerManager.Dis
             @Override
             public void onClick(View v) {
                 if (AppUtil.isLogin(context)) {
-                    String imagePath = BitmapUtil.loadBitmapFromView(linear_share_layout);
+                    String imagePath = BitmapUtil.loadBitmapFromView(context,linear_share_layout);
                     HuaXiSDK.getInstance().showShareDialog(context, null, imagePath, false, 3);
                 }
             }

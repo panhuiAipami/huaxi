@@ -48,7 +48,6 @@
 
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="45dp"
@@ -78,37 +77,29 @@
                     android:id="@+id/record_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:layout_centerHorizontal="true"
                     android:drawablePadding="5dp"
                     android:drawableRight="@mipmap/reader_record_icon"
                     android:gravity="center"
                     android:text="我的读书手记"
-                    android:textColor="@color/text3"
+                    android:textColor="@color/c05_themes_color"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/share_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/record_title"
-                    android:layout_marginTop="10dp"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="5dp"
-                    android:maxLines="3"
-                    android:textSize="16sp" />
-
                 <LinearLayout
+                    android:id="@+id/center_book_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_below="@+id/share_text"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_below="@+id/record_title"
                     android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/book_cover"
-                        android:layout_width="80dp"
-                        android:layout_height="100dp"
+                        android:layout_width="70dp"
+                        android:layout_height="95dp"
                         android:scaleType="centerCrop"
                         android:src="@mipmap/sc_ash"
                         app:riv_corner_radius="5dp" />
@@ -153,16 +144,31 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/record_title"
-                                android:layout_marginLeft="5dp"
-                                android:lineSpacingExtra="5dp"
+                                android:layout_marginLeft="8dp"
                                 android:text="作者"
-                                android:textColor="@color/three_font_color"
-                                android:textSize="14sp" />
+                                android:textColor="@color/c05_themes_color"
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </LinearLayout>
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/share_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="2dp"
+                    android:layout_below="@+id/center_book_info"
+                    android:layout_marginTop="15dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="5dp"
+                    android:textColor="@color/c05_themes_color"
+                    android:text="内容"
+                    android:maxLines="3"
+                    android:textSize="14sp" />
             </RelativeLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -170,8 +176,8 @@
                 android:background="@drawable/share_text_while_bg"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -194,10 +200,12 @@
                         android:id="@+id/user_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_below="@+id/user_name"
                         android:layout_marginTop="5dp"
                         android:text="昵称"
-                        android:textColor="@color/three_font_color" />
+                        android:textColor="@color/two_font_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -209,8 +217,8 @@
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/user_name"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:src="@mipmap/app_download_icon" />
 
                     <TextView
@@ -235,25 +243,34 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/image_share_bg1"
             android:layout_width="55dp"
             android:layout_height="55dp"
+            app:riv_corner_radius="5dp"
+            app:riv_border_color="@color/line_color"
+            app:riv_border_width="0.2dp"
             android:background="@mipmap/share_text_image_bg1" />
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/image_share_bg2"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            app:riv_corner_radius="5dp"
+            app:riv_border_color="@color/line_color"
+            app:riv_border_width="0.2dp"
             android:background="@mipmap/share_text_image_bg2"
-            android:src="@mipmap/select_this_bg_icon" />
+            />
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/image_share_bg3"
             android:layout_width="55dp"
             android:layout_height="55dp"
+            app:riv_corner_radius="5dp"
+            app:riv_border_color="@color/line_color"
+            app:riv_border_width="0.2dp"
             android:background="@mipmap/share_text_image_bg3" />
     </LinearLayout>
 

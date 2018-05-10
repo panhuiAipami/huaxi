@@ -1,5 +1,6 @@
 package com.spriteapp.booklibrary.widget.readview.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
@@ -16,7 +17,7 @@ import java.io.IOException;
  */
 
 public class BitmapUtil {
-    public static String loadBitmapFromView(View v) {
+    public static String loadBitmapFromView(Context c,View v) {
         if (v == null) {
             return null;
         }
@@ -25,7 +26,7 @@ public class BitmapUtil {
 //        Canvas canvas = new Canvas(screenshot);
 //        canvas.translate(-v.getScrollX(), -v.getScrollY());//我们在用滑动View获得它的Bitmap时候，获得的是整个View的区域（包括隐藏的），如果想得到当前区域，需要重新定位到当前可显示的区域
 //        v.draw(canvas);// 将 view 画到画布上
-
+//        v.setBackgroundColor(ContextCompat.getColor(c, R.color.white));
         v.setDrawingCacheEnabled(true);
         v.buildDrawingCache();       //启用DrawingCache并创建位图
         //创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
