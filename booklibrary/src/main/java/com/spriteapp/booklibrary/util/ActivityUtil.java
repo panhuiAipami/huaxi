@@ -114,6 +114,7 @@ public class ActivityUtil {
         intent.putExtra(PublishCommentActivity.BOOK_ID_TAG, bookId);
         context.startActivity(intent);
     }
+
     public static void gotoPublishCommentActivity(Activity context, int bookId) {
         if (!AppUtil.isLogin()) {
             HuaXiSDK.getInstance().toLoginPage(context);
@@ -129,11 +130,14 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toDownloadChapterActivity(Activity context, int book_id) {
-        Intent intent = new Intent(context, DownloadChapterActivity.class);
-        intent.putExtra(BOOK_ID, book_id);
-        context.startActivity(intent);
-
+    public static void toDownloadChapterActivity(Activity context, int book_id, boolean book_is_free) {
+        if (book_is_free) {
+            ToastUtil.showSingleToast("限免书籍暂不提供下载哦");
+        } else {
+            Intent intent = new Intent(context, DownloadChapterActivity.class);
+            intent.putExtra(BOOK_ID, book_id);
+            context.startActivity(intent);
+        }
     }
 
     public static void toSquareDetailsActivity(Activity context, int squareid, int IsLookComment) {
@@ -152,6 +156,7 @@ public class ActivityUtil {
         intent.putExtra(USER_ID, user_id);
         context.startActivity(intent);
     }
+
     public static void toCommentReplyActivity(Context context, int total, int comment_id, int squareid, int user_id, int type) {//总条数
         Intent intent = new Intent(context, CommentReplyActivity.class);
         intent.putExtra(REPLYTITLE, total);
@@ -202,10 +207,12 @@ public class ActivityUtil {
         intent.putExtra(REWARDTYPE, type);
         context.startActivityForResult(intent, 0);
     }
+
     public static void toBagActivity(Context context) {
         Intent intent = new Intent(context, BagActivity.class);
         context.startActivity(intent);
     }
+
     public static void toBookCommentActivity(Context context, BookDetailResponse detail) {
         Intent intent = new Intent(context, BookCommentActivity.class);
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);

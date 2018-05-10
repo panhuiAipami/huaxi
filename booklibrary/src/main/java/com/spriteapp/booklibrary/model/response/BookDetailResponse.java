@@ -21,6 +21,7 @@ public class BookDetailResponse implements Serializable {
     private int book_total_reads;
     private int book_finish_flag;
     private int book_is_vip;
+    private int free_limit;// 0不免费，1限时免费
     private long book_content_byte;
     private int book_chapter_total;
 //    private List<String> book_keywords;
@@ -79,6 +80,14 @@ public class BookDetailResponse implements Serializable {
 
     public void setBook_category(List<ChoiceBean.BookCategoryBean> book_category) {
         this.book_category = book_category;
+    }
+
+    public boolean getFree_limit() {
+        return free_limit==1;
+    }
+
+    public void setFree_limit(int free_limit) {
+        this.free_limit = free_limit;
     }
 
     public String getBook_url() {

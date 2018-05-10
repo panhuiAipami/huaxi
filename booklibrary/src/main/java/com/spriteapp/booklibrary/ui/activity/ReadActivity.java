@@ -454,7 +454,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                     readMoreSettingLayout.initRaderSetting(shareDetail);
                 }
                 if (bookpage != null) {
-                    bookpage.bookDetail(this,shareDetail);
+                    bookpage.bookDetail(this, shareDetail);
                 }
                 //延迟关闭，防止黑屏闪过
                 handler.postDelayed(new Runnable() {
@@ -783,7 +783,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         } else if (v == mLeftLayout) {
             showAddShelfPrompt();
         } else if (v == download_btn) {
-            ActivityUtil.toDownloadChapterActivity(this, mBookId);
+            BookDetailResponse response = mNewBookDetail == null ? mOldBookDetail : mNewBookDetail;
+            ActivityUtil.toDownloadChapterActivity(this, mBookId,response.getFree_limit());
         }
     }
 
@@ -904,7 +905,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 @Override
                 public void clickAddShelf() {//下载
 //                    addToShelf(false);
-                    ActivityUtil.toDownloadChapterActivity(ReadActivity.this, mBookId);
+                    BookDetailResponse response = mNewBookDetail == null ? mOldBookDetail : mNewBookDetail;
+                    ActivityUtil.toDownloadChapterActivity(ReadActivity.this, mBookId, response.getFree_limit());
                 }
 
                 @Override
