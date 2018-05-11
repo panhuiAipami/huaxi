@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
     private long firstTime = 0;
     private long lastTime = 0;
     private int book_id;
+    private int isAddShelf;
 
 
     @Override
@@ -73,6 +75,12 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
     private void listener() {
         refresh.setOnRefreshListener(this);
         recycler_view_comment.setLoadingListener(this);
+        mLeftLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newIntent();
+            }
+        });
     }
 
     @Override
@@ -171,5 +179,21 @@ public class BookCommentActivity extends TitleActivity implements SwipeRefreshLa
                 getComment();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        newIntent();
+    }
+
+    public void setIsAddShelf(int isAddShelf) {
+        this.isAddShelf = isAddShelf;
+    }
+
+    private void newIntent() {
+        Intent intent = new Intent();
+        intent.putExtra("isAddShelf", isAddShelf);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

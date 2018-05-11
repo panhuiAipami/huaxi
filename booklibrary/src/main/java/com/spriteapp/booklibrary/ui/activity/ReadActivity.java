@@ -783,7 +783,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             showAddShelfPrompt();
         } else if (v == download_btn) {
             BookDetailResponse response = mNewBookDetail == null ? mOldBookDetail : mNewBookDetail;
-            ActivityUtil.toDownloadChapterActivity(this, mBookId,response.getFree_limit());
+            ActivityUtil.toDownloadChapterActivity(this, mBookId, response.getFree_limit());
         }
     }
 
@@ -1643,6 +1643,16 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 99) {
             readMoreSettingLayout.refreshFontSelect(true);
+        } else if (requestCode == 100) {
+            if (data != null)
+                setIsAddOrClean(data.getIntExtra("isAddShelf", 0));
         }
+    }
+
+    private void setIsAddOrClean(int isAddShelf) {
+        if (mOldBookDetail != null) {
+            mOldBookDetail.setBook_add_shelf(isAddShelf);
+        }
+
     }
 }
