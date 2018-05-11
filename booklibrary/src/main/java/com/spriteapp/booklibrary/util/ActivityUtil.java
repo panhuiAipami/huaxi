@@ -213,9 +213,9 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toBookCommentActivity(Context context, BookDetailResponse detail) {
+    public static void toBookCommentActivity(Activity context, BookDetailResponse detail) {
         Intent intent = new Intent(context, BookCommentActivity.class);
         intent.putExtra(ReadActivity.BOOK_DETAIL_TAG, detail);
-        context.startActivity(intent);
+        context.startActivityForResult(intent, 100);
     }
 }

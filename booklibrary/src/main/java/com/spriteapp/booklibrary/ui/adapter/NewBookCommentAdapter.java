@@ -24,6 +24,7 @@ import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.BookRepyBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
+import com.spriteapp.booklibrary.ui.activity.BookCommentActivity;
 import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
@@ -49,13 +50,13 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final int COMMENTPOS = 0;
     private final int NODATAPOS = 1;
     private final int COMMENTTOPPOS = 2;
-    private Activity context;
+    private BookCommentActivity context;
     private List<BookCommentBean> list;
     private CommentDialog commentDialog;
     private BookDetailResponse response;
-    private BookDb  mBookDb ;
+    private BookDb mBookDb;
 
-    public NewBookCommentAdapter(Activity context, List<BookCommentBean> list, BookDetailResponse response) {
+    public NewBookCommentAdapter(BookCommentActivity context, List<BookCommentBean> list, BookDetailResponse response) {
         this.context = context;
         this.list = list;
         this.response = response;
@@ -293,17 +294,19 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     holder.book_collection.setSelected(true);
                     holder.book_collection.setText("已收藏");
                     detailResponse.setBook_add_shelf(1);
+                    context.setIsAddShelf(1);
                 } else if (detailResponse.getBook_add_shelf() == 1) {//移除书架
                     addToShelf(true, true, detailResponse);
                     holder.book_collection.setSelected(false);
                     holder.book_collection.setText("未收藏");
                     detailResponse.setBook_add_shelf(0);
-
-                    BookDetailResponse bookDetail =new BookDb(context).queryBook(detailResponse.getBook_id());
+                    context.setIsAddShelf(0);
+                    BookDetailResponse bookDetail = new BookDb(context).queryBook(detailResponse.getBook_id());
                     if (bookDetail != null || BookUtil.isBookAddShelf(bookDetail)) {
                         if (AppUtil.isLogin()) {
                             bookDetail.setBook_add_shelf(0);
                             mBookDb.update(bookDetail, 0);
+
                         }
                     }
                 }
