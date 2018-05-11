@@ -85,7 +85,7 @@ public class Config {
      * @return
      */
     public int getFontSize() {
-        float font = SharedPreferencesUtil.getInstance().getFloat(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 16);
+        float font = SharedPreferencesUtil.getInstance().getFloat(com.spriteapp.booklibrary.constant.Constant.READ_TEXT_SIZE_POSITION, 18);
         return ScreenUtil.dpToPxInt(font);
     }
 
