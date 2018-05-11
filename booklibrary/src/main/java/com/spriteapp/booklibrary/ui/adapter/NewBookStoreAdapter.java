@@ -25,6 +25,7 @@ import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.model.NewBookStoreResponse;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.adapter.second.FreeAdapter;
+import com.spriteapp.booklibrary.ui.fragment.NewNativeBookStoreFragment;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
@@ -66,10 +67,14 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private int p1, p2, p3, p4, p5, p6, p7, p8, p9;
     private CountDownTimer timer;
 
-    public NewBookStoreAdapter(Activity context, List<NewBookStoreResponse> list, int sex) {
+    private NewNativeBookStoreFragment fragment;
+    private List<BookDetailResponse> nullList;
+
+    public NewBookStoreAdapter(Activity context, List<NewBookStoreResponse> list, int sex, NewNativeBookStoreFragment fragment) {
         this.context = context;
         this.list = list;
         this.sex = sex;
+        this.fragment = fragment;
     }
 
     @Override
@@ -184,7 +189,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 freeViewHolder.free_title.setText("限时免费");
                 List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getFreelimitBookList();
                 if (freelimitBookList != null && freelimitBookList.size() != 0) {
-                    countDown(freeViewHolder, freelimitBookList.get(0));
+                    countDown(freeViewHolder, freelimitBookList.get(0), 1);
                     freeViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                     freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
                 }
@@ -192,7 +197,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 freeViewHolder.free_title.setText("限时折扣");
                 List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getDiscountlimitBookList();
                 if (freelimitBookList != null && freelimitBookList.size() != 0) {
-                    countDown(freeViewHolder, freelimitBookList.get(0));
+                    countDown(freeViewHolder, freelimitBookList.get(0), 2);
                     freeViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                     freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
                 }
@@ -208,35 +213,55 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void countDown(final FreeViewHolder holder, BookDetailResponse response) {
+    boolean flag = false;
+
+    private void countDown(final FreeViewHolder holder, BookDetailResponse response, final int type) {//type为限时免费,2为限时折扣
         if (response == null) return;
         if (System.currentTimeMillis() / 1000 > response.getEnd_time()) return;
         long current = response.getEnd_time() - (System.currentTimeMillis() / 1000);
         Log.d("countDown", "countDown===" + current);
         holder.count_time_item.setVisibility(View.VISIBLE);
+
         if (timer != null) {
             timer.cancel();
         }
-        timer = new CountDownTimer(current, 1000) {
+        timer = new CountDownTimer(current * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished != 0) {
-                    long hour = millisUntilFinished / 1000 / 3600;
+                if (millisUntilFinished >= 3600000) {
+                    long hour = millisUntilFinished / 3600000;
+                    Log.d("hour", "hour===" + hour + "millisUntilFinished===" + millisUntilFinished);
                     holder.hour_time.setText(hour < 10 ? "0" + hour : "" + hour);
                 } else {
                     holder.hour_time.setText("00");
                 }
 
+//                holder.hour_time.setText(TimeUtil.getDateHour(millisUntilFinished));
                 holder.minute_time.setText(TimeUtil.getDateMinute(millisUntilFinished));
                 holder.second_time.setText(TimeUtil.getDateSecond(millisUntilFinished));
-
+                if (!flag) flag = !flag;
             }
 
             @Override
             public void onFinish() {
+                Log.d("onFinish", "执行onFinish");
                 holder.hour_time.setText("00");
                 holder.minute_time.setText("00");
                 holder.second_time.setText("00");
+                if (fragment != null) {//倒计时结束刷新数据
+//                    fragment.adapterRefreshData();
+                }
+                if (list != null && list.size() != 0 && flag) {
+                    if (nullList == null) nullList = new ArrayList<>();
+                    if (type == 1) {//限时免费
+                        list.get(0).setFreelimitBookList(nullList);
+                        notifyDataSetChanged();
+                    } else if (type == 2) {//限时折扣
+                        list.get(0).setDiscountlimitBookList(nullList);
+                        notifyDataSetChanged();
+                    }
+                    flag = false;
+                }
             }
         }.start();
 

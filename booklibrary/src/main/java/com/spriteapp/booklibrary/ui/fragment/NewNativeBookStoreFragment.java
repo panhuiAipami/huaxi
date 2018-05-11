@@ -74,7 +74,7 @@ public class NewNativeBookStoreFragment extends BaseFragment implements SwipeRef
 
     public void initList() {
         manager = new LinearLayoutManager(getActivity());
-        mAdapter = new NewBookStoreAdapter(getActivity(), mBookStoreResponseList, SharedPreferencesUtil.getInstance().getInt(SEX));
+        mAdapter = new NewBookStoreAdapter(getActivity(), mBookStoreResponseList, SharedPreferencesUtil.getInstance().getInt(SEX),this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(manager);
         mRefresh.setColorSchemeResources(R.color.square_comment_selector);
