@@ -17,15 +17,17 @@ import android.widget.TextView;
 import com.spriteapp.booklibrary.R;
 import com.spriteapp.booklibrary.api.BookApi;
 import com.spriteapp.booklibrary.base.Base;
+import com.spriteapp.booklibrary.database.BookDb;
 import com.spriteapp.booklibrary.enumeration.ApiCodeEnum;
+import com.spriteapp.booklibrary.model.AddBookModel;
 import com.spriteapp.booklibrary.model.BookCommentBean;
 import com.spriteapp.booklibrary.model.BookRepyBean;
 import com.spriteapp.booklibrary.model.UserBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
-import com.spriteapp.booklibrary.ui.activity.SquareDetailsActivity;
 import com.spriteapp.booklibrary.ui.dialog.CommentDialog;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.AppUtil;
+import com.spriteapp.booklibrary.util.BookUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
 import com.spriteapp.booklibrary.util.TimeUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
@@ -33,6 +35,7 @@ import com.spriteapp.booklibrary.util.Util;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -50,11 +53,13 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<BookCommentBean> list;
     private CommentDialog commentDialog;
     private BookDetailResponse response;
+    private BookDb  mBookDb ;
 
     public NewBookCommentAdapter(Activity context, List<BookCommentBean> list, BookDetailResponse response) {
         this.context = context;
         this.list = list;
         this.response = response;
+        mBookDb = new BookDb(context);
     }
 
     @Override
@@ -94,7 +99,7 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             commentViewHolder.user_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    replyComment(bookCommentBean, position-1);
+                    replyComment(bookCommentBean, position - 1);
                 }
             });
             if (bookCommentBean.getChildren() == null) {
@@ -266,7 +271,7 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int book_id;
     private int comment_num = 0;
 
-    private void setBookDetails(final BookDetailResponse detailResponse, CommentTopViewHolder holder) {
+    private void setBookDetails(final BookDetailResponse detailResponse, final CommentTopViewHolder holder) {
         if (detailResponse == null) return;
         book_id = detailResponse.getBook_id();
         GlideUtils.loadImage(holder.book_cover, detailResponse.getBook_image(), context);
@@ -279,6 +284,32 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.book_collection.setSelected(true);
             holder.book_collection.setText("已收藏");
         }
+
+        holder.book_collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (detailResponse.getBook_add_shelf() == 0) {//加书架
+                    addToShelf(true, false, detailResponse);
+                    holder.book_collection.setSelected(true);
+                    holder.book_collection.setText("已收藏");
+                    detailResponse.setBook_add_shelf(1);
+                } else if (detailResponse.getBook_add_shelf() == 1) {//移除书架
+                    addToShelf(true, true, detailResponse);
+                    holder.book_collection.setSelected(false);
+                    holder.book_collection.setText("未收藏");
+                    detailResponse.setBook_add_shelf(0);
+
+                    BookDetailResponse bookDetail =new BookDb(context).queryBook(detailResponse.getBook_id());
+                    if (bookDetail != null || BookUtil.isBookAddShelf(bookDetail)) {
+                        if (AppUtil.isLogin()) {
+                            bookDetail.setBook_add_shelf(0);
+                            mBookDb.update(bookDetail, 0);
+                        }
+                    }
+                }
+            }
+        });
+
         holder.goto_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,5 +395,14 @@ public class NewBookCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             book_collection = (TextView) itemView.findViewById(R.id.book_collection);
             goto_comment = (TextView) itemView.findViewById(R.id.goto_comment);
         }
+    }
+
+    private void addToShelf(boolean isShelf, boolean isClean, BookDetailResponse detailResponse) {
+        AddBookModel model = new AddBookModel();
+        model.setBookId(detailResponse.getBook_id());
+        model.setChapterId(detailResponse.getChapter_id());
+        model.setAddShelf(isShelf);//刷新纪录的标识,是否弹出提示Toast
+        model.setClean(isClean);
+        EventBus.getDefault().post(model);
     }
 }

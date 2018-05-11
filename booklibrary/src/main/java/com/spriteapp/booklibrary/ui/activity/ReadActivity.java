@@ -280,8 +280,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mBookId = bookDetail.getBook_id();
         mPtrFrameLayout.setBookId(mBookId);
         mOldBookDetail = mBookDb.queryBook(mBookId);
-        isAddOrClean = BookUtil.isBookAddShelf(mOldBookDetail);
-        is_add_shelf.setVisibility(isAddOrClean ? View.VISIBLE : View.GONE);
+
 //        mRightTitleLayout.setAddShelfViewState(BookUtil.isBookAddShelf(mOldBookDetail));
         mChapterList = mChapterDb.queryCatalog(mBookId);
         int lastChapterId = SettingManager.getInstance().getLastChapter(String.valueOf(mBookId), 0);
@@ -1002,6 +1001,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             Log.d("handleMessage", "onRestart===" + time);
             handler.sendEmptyMessageDelayed(0, 1000);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isAddOrClean = BookUtil.isBookAddShelf(mOldBookDetail);
+        is_add_shelf.setVisibility(isAddOrClean ? View.VISIBLE : View.GONE);
     }
 
     @Override
