@@ -101,7 +101,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (list.size() == 0) return;
-        NewBookStoreResponse newBookStoreResponse = list.get(0);
+        final NewBookStoreResponse newBookStoreResponse = list.get(0);
 
         if (holder instanceof BannerViewHolder) {
             if (newBookStoreResponse.getTop_banner_lists() != null && newBookStoreResponse.getTop_banner_lists().size() != 0) {
@@ -184,8 +184,11 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         } else if (holder instanceof FreeViewHolder) {
-            FreeViewHolder freeViewHolder = (FreeViewHolder) holder;
+            final FreeViewHolder freeViewHolder = (FreeViewHolder) holder;
+            freeViewHolder.line1.setVisibility(View.GONE);
+            freeViewHolder.line2.setVisibility(View.VISIBLE);
             if (position == p2) {
+                freeViewHolder.cate_title_small.setVisibility(View.INVISIBLE);
                 freeViewHolder.free_title.setText("限时免费");
                 List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getFreelimitBookList();
                 if (freelimitBookList != null && freelimitBookList.size() != 0) {
@@ -194,6 +197,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
                 }
             } else if (position == p4) {
+                freeViewHolder.cate_title_small.setVisibility(View.INVISIBLE);
                 freeViewHolder.free_title.setText("限时折扣");
                 List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getDiscountlimitBookList();
                 if (freelimitBookList != null && freelimitBookList.size() != 0) {
@@ -202,13 +206,22 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
                 }
             } else if (position == p6) {
+                freeViewHolder.cate_title_small.setVisibility(View.VISIBLE);
+                freeViewHolder.cate_title_small.setText(sex == 1 ? R.string.dushi_man : R.string.chuanyue_woman);
                 freeViewHolder.free_title.setText(sex == 1 ? R.string.dushi : R.string.chuanyue);
+                freeViewHolder.count_time_item.setVisibility(View.GONE);
                 List<BookDetailResponse> freelimitBookList = newBookStoreResponse.getMan_woman_two();
                 if (freelimitBookList != null && freelimitBookList.size() != 0) {
                     Log.d("FreeViewHolder", "当前position===" + position);
                     freeViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                     freeViewHolder.recyclerView.setAdapter(new FreeAdapter(context, freelimitBookList));
                 }
+                freeViewHolder.free_title_bar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setText(freeViewHolder.free_title, sex == 1 ? R.string.dushi : R.string.chuanyue, newBookStoreResponse.getMan_woman_one_url(), freeViewHolder.cate_title_small, sex == 1 ? R.string.dushi_man : R.string.chuanyue_woman, freeViewHolder.free_title_bar, sex == 1 ? 7 : 8);
+                    }
+                });
             }
         }
     }
@@ -309,6 +322,13 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.book_describe.setText(bookDetailResponse.getBook_intro());
         holder.book_state.setText(bookDetailResponse.getBook_finish_flag() == 0 ? "连载" : "完本");
         holder.book_num.setText(Util.getFloat(bookDetailResponse.getBook_content_byte()));
+        if (startPos == bean.size() - 1) {
+            holder.line1.setVisibility(View.GONE);
+            holder.line2.setVisibility(View.VISIBLE);
+        }else {
+            holder.line1.setVisibility(View.VISIBLE);
+            holder.line2.setVisibility(View.GONE);
+        }
         holder.book_cate.setText((bookDetailResponse.getBook_category() != null && bookDetailResponse.getBook_category().size() != 0) ? bookDetailResponse.getBook_category().get(0).getClass_name() : "都市");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -538,6 +558,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //标题
         private TextView cate_title, cate_title_small;
         private LinearLayout store_title_bar;
+        private View line1, line2;
 
         public DetailsViewHolder(View itemView) {
             super(itemView);
@@ -553,24 +574,31 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             cate_title = (TextView) itemView.findViewById(R.id.cate_title);
             cate_title_small = (TextView) itemView.findViewById(R.id.cate_title_small);
             store_title_bar = (LinearLayout) itemView.findViewById(R.id.store_title_bar);
+            line1 = itemView.findViewById(R.id.line1);
+            line2 = itemView.findViewById(R.id.line2);
 
         }
     }
 
     private class FreeViewHolder extends RecyclerView.ViewHolder {//标题
         private TextView free_title;
+        private View line1, line2;
         private RecyclerView recyclerView;
-        private LinearLayout count_time_item;
-        private TextView hour_time, minute_time, second_time;
+        private LinearLayout count_time_item, free_title_bar;
+        private TextView hour_time, minute_time, second_time, cate_title_small;
 
         public FreeViewHolder(View itemView) {
             super(itemView);
             free_title = (TextView) itemView.findViewById(R.id.free_title);
+            cate_title_small = (TextView) itemView.findViewById(R.id.cate_title_small);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView);
             count_time_item = (LinearLayout) itemView.findViewById(R.id.count_time_item);
+            free_title_bar = (LinearLayout) itemView.findViewById(R.id.free_title_bar);
             hour_time = (TextView) itemView.findViewById(R.id.hour_time);
             minute_time = (TextView) itemView.findViewById(R.id.minute_time);
             second_time = (TextView) itemView.findViewById(R.id.second_time);
+            line1 = itemView.findViewById(R.id.line1);
+            line2 = itemView.findViewById(R.id.line2);
         }
     }
 }

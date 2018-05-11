@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/free_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -18,9 +19,8 @@
 
         <TextView
             android:id="@+id/free_title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="47dp"
-            android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -28,6 +28,20 @@
             android:textColor="@color/square_user_speak"
             android:textSize="18dp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cate_title_small"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_weight="1"
+            android:drawableEnd="@mipmap/to_more_yellow"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingRight="10dp"
+            android:text=""
+            android:textColor="@color/square_small"
+            android:textSize="14sp" />
 
         <include layout="@layout/count_down_layout"></include>
     </LinearLayout>
@@ -39,9 +53,18 @@
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <View
+        android:id="@+id/line1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="5dp"
         android:background="@color/c10_themes_color2"></View>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/c10_themes_color"
+        android:visibility="gone"></View>
 
 </LinearLayout>
