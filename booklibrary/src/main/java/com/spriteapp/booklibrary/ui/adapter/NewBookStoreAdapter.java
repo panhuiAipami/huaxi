@@ -219,7 +219,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 freeViewHolder.free_title_bar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setText(freeViewHolder.free_title, sex == 1 ? R.string.dushi : R.string.chuanyue, newBookStoreResponse.getMan_woman_one_url(), freeViewHolder.cate_title_small, sex == 1 ? R.string.dushi_man : R.string.chuanyue_woman, freeViewHolder.free_title_bar, sex == 1 ? 7 : 8);
+                        setText(freeViewHolder.free_title, sex == 1 ? R.string.dushi : R.string.chuanyue, newBookStoreResponse.getMan_woman_two_url(), freeViewHolder.cate_title_small, sex == 1 ? R.string.dushi_man : R.string.chuanyue_woman, freeViewHolder.free_title_bar, sex == 1 ? 7 : 8);
                     }
                 });
             }
@@ -349,11 +349,12 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(url)) {
-                    Uri uri = Uri.parse(url);
-                    jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
-                    ActivityUtil.toWebViewActivity(context, jumpUrl);
-                }
+//                if (!TextUtils.isEmpty(url)) {
+//                    Uri uri = Uri.parse(url);
+//                    jumpUrl = uri.getQueryParameter(WebConstant.URL_QUERY);
+//                    ActivityUtil.toWebViewActivity(context, jumpUrl);
+//                }
+                ActivityUtil.toStoreDetailsActivity(context, type, sex, title);
 
             }
         });

@@ -403,6 +403,38 @@ public interface BookApiService {
     Observable<Base<List<BookDetailResponse>>> user_novelpackage(@Query("format") String format,
                                                                  @Query("page") int page);
 
+    //重磅推荐
+    @GET("book_recommand")
+    Observable<Base<List<BookDetailResponse>>> book_recommand(@Query("format") String format,
+                                                              @Query("offset") int offset,
+                                                              @Query("g_gender") int sex);
+
+    //经典完本
+    @GET("book_finish")
+    Observable<Base<List<BookDetailResponse>>> book_finish(@Query("format") String format,
+                                                           @Query("offset") int offset,
+                                                           @Query("g_gender") int sex);
+
+    //免费新书
+    @GET("book_freenew")
+    Observable<Base<List<BookDetailResponse>>> book_freenew(@Query("format") String format,
+                                                            @Query("offset") int offset,
+                                                            @Query("g_gender") int sex);
+
+    //最近更新
+    @GET("book_news")
+    Observable<Base<List<BookDetailResponse>>> book_news(@Query("format") String format,
+                                                         @Query("offset") int offset,
+                                                         @Query("g_gender") int sex);
+
+    //最近更新
+    @GET("book_widget")
+    Observable<Base<List<BookDetailResponse>>> book_widget(@Query("format") String format,
+                                                           @Query("offset") int offset,
+                                                           @Query("location") int location,
+                                                           @Query("g_gender") int sex);
+
+
     //猜你喜欢
     @GET("book_searchrecommend")
     Observable<Base<List<BookDetailResponse>>> book_searchrecommend(@Query("format") String format);

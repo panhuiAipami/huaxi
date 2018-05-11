@@ -115,6 +115,7 @@
         <activity android:name=".ui.activity.ProfitDetailsActivity" />
         <activity android:name=".ui.activity.BagActivity"></activity>
         <activity android:name=".ui.activity.BookCommentActivity"></activity>
+        <activity android:name=".ui.activity.StoreDetailsActivity"></activity>
     </application>
 
 </manifest>
