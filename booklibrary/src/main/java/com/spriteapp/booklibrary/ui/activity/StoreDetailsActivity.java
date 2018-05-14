@@ -199,7 +199,7 @@ public class StoreDetailsActivity extends TitleActivity implements SwipeRefreshL
                             int resultCode = bookStoreResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
-                                    if (page == 0) list.clear();
+                                    if (page == 1) list.clear();
                                     page++;
                                     setLastPage();
                                     list.addAll(bookStoreResponse.getData());
@@ -247,7 +247,7 @@ public class StoreDetailsActivity extends TitleActivity implements SwipeRefreshL
                             int resultCode = bookStoreResponse.getCode();
                             if (resultCode == ApiCodeEnum.SUCCESS.getValue()) {//成功
                                 if (bookStoreResponse.getData() != null && bookStoreResponse.getData().size() != 0) {
-                                    if (page == 0) list.clear();
+                                    if (page == 1) list.clear();
                                     page++;
                                     setLastPage();
                                     list.addAll(bookStoreResponse.getData());
