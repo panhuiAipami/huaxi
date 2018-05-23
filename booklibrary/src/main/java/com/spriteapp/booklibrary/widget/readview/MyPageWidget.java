@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -28,7 +29,6 @@ import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.dialog.BookCommentDialog;
 import com.spriteapp.booklibrary.ui.dialog.MyPopupWindow;
 import com.spriteapp.booklibrary.ui.dialog.ShareSelectTextDialog;
-import com.spriteapp.booklibrary.util.AppUtil;
 import com.spriteapp.booklibrary.util.ScreenUtil;
 import com.spriteapp.booklibrary.util.ToastUtil;
 import com.spriteapp.booklibrary.util.Util;
@@ -302,6 +302,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                         }
                         cancelPage = false;
                         if (isNext) {
+                            MyPageWidget.mCurrentMode = Mode.PullDown;
                             Boolean isNext = mTouchListener.nextPage();
 //                        calcCornerXY(downX,mScreenHeight);
                             mAnimationProvider.setDirection(AnimationProvider.Direction.next);
@@ -311,6 +312,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                                 return true;
                             }
                         } else {
+                            MyPageWidget.mCurrentMode = Mode.PullDown;
                             Boolean isPre = mTouchListener.prePage();
                             mAnimationProvider.setDirection(AnimationProvider.Direction.pre);
 //                            Log.e("ACTION_MOVE", "-----prePage---->" + isPre);
@@ -350,7 +352,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             getParent().requestDisallowInterceptTouchEvent(true);
             //确定popWindow的位置
-            if (mCurrentMode != Mode.Normal && FirstSelectShowChar != null) {
+            if (mCurrentMode != Mode.Normal && mCurrentMode != Mode.PullDown && FirstSelectShowChar != null) {
                 Down_X = BaseActivity.deviceWidth / 2 - Util.dp2px(mContext, 90);
                 Down_Y = FirstSelectShowChar.TopLeftPosition.y - Util.dp2px(mContext, 70);
                 if (!isTrySelectMove) {// 如果不是准备滑动选择文字，转变为正常模式，隐藏选择框
@@ -362,6 +364,7 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
                 }
                 Release();
             } else {
+                mCurrentMode = Mode.Normal;
                 if (!isMove) {
                     if (onSectionClick()) {
                         return true;
@@ -779,11 +782,9 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     @Override
     public void share() {
         initSelectBg();
-        if (AppUtil.isLogin(mContext)) {
-            ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
-            selectTextDialog.setData(bookDetailResponse, selectText);
-            selectTextDialog.show();
-        }
+        ShareSelectTextDialog selectTextDialog = new ShareSelectTextDialog(mContext);
+        selectTextDialog.setData(bookDetailResponse, selectText);
+        selectTextDialog.show();
     }
 
     public void initSelectBg() {
@@ -791,5 +792,26 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
         invalidate();
     }
 
-
+    /**
+     * 获取段落位置
+     *
+     * @param selectText
+     * @return
+     */
+    public int getSectionIndex(String selectText) {
+        if (!TextUtils.isEmpty(mCurrentContent)) {
+            String section[] = mCurrentContent.split("\n");
+            if (selectText.contains("\n")) {
+                String selectArr[] = selectText.split("\n");
+                selectText = selectArr[selectArr.length - 1];
+            }
+            for (int i = 0; i < section.length; i++) {
+                String text = section[i];
+                if (text.contains(selectText)) {
+                    return (i + 1);
+                }
+            }
+        }
+        return 0;
+    }
 }

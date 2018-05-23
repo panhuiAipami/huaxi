@@ -15,7 +15,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.base.BaseActivity;
 import com.spriteapp.booklibrary.widget.readview.MyPageWidget;
 
 
@@ -279,12 +278,11 @@ public class PtrFrameLayout extends ViewGroup {
                     MyPageWidget.isPullDown = true;
 
                     if (Math.abs(actiondownY - y) > 10 && Math.abs(actiondownY - y) > Math.abs(actiondownX - x) && Math.abs(actiondownX - x) < 80) {
-                        if (x > 100 && x < BaseActivity.deviceWidth - 100)
-                            movePos(offsetY);
+                        movePos(offsetY);
                     }
                     return true;
                 }
-        }   //switch
+        }
 
         return super.dispatchTouchEvent(e);
     }
