@@ -1,1 +1,1 @@
-include ':app', ':booklibrary', ':PushSDK'
+include ':app', ':booklibrary'
