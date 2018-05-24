@@ -211,11 +211,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
         try {
             Intent intent = getIntent();
             int type = intent.getIntExtra(ADVERTISEMENT, 0);
+            //启动页书的广告--->阅读页或H5书籍详情
             if (type == 1) {
-                Log.d("toJump", "跳转广告页");
                 String link = FileHelper.readObjectFromJsonFile(this, Constant.START_PAGE_URL, String.class);
                 if (link != null && !link.isEmpty()) {
-                    Log.d("toJump", link);
                     if (link.contains("book_details")) {
                         Uri uri = Uri.parse(link);
                         String book_id = uri.getQueryParameter(WebConstant.BOOK_ID_QUERY);
@@ -235,14 +234,13 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
                     }
 
                 }
-            } else {
-                Log.d("toJump", "不跳转广告页");
+            } else if (type == 2) {//推送H5
+                ActivityUtil.toWebViewActivity(this, intent.getStringExtra(WebViewActivity.LOAD_URL_TAG));
+            } else {//网页或推送打开阅读
                 book_id = intent.getStringExtra(BOOK_ID);
                 chapter_id = intent.getStringExtra(CHAPTER_ID);
                 if (!TextUtils.isEmpty(book_id)) {//直接跳转到阅读页并销毁
-                    Log.d("toJump", "直接跳转到阅读页并销毁");
                     ActivityUtil.toReadActivity(this, Integer.parseInt(book_id), TextUtils.isEmpty(chapter_id) ? 0 : Integer.parseInt(chapter_id));
-                    finish();
                 }
             }
 
@@ -268,7 +266,6 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
             e.printStackTrace();
         }
     }
-
 
 
     private void messagePermisssion() {
@@ -660,10 +657,10 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
 
     @Override
     public void gotoPage(int page) {//任务回调
-        if (mHomeViewPager != null && page ==1) {
+        if (mHomeViewPager != null && page == 1) {
             mHomeViewPager.setCurrentItem(BOOKSHELF_POSITION);
             setSelectView(BOOKSHELF_POSITION);
-        }else if (mHomeViewPager != null && page == 2){
+        } else if (mHomeViewPager != null && page == 2) {
             mHomeViewPager.setCurrentItem(BOOKSTORE_POSITION);
             setSelectView(BOOKSTORE_POSITION);
         }

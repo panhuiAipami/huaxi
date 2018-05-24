@@ -7,8 +7,8 @@ android {
         applicationId "net.huaxi.reader"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 15
-        versionName "2.5.5"
+        versionCode 16
+        versionName "2.5.6"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -97,6 +97,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'http://developer.huawei.com/repo/' }
+        mavenCentral()
     }
 }
 
@@ -105,16 +106,28 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile project(':booklibrary')
     compile files('libs/open_sdk_r5788_lite.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
     compile files('libs/SocialSDK_Sina_Full.jar')
     compile files('libs/SocialSDK_WeiXin_Full.jar')
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:okhttputils:2.0.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/wftsdk5.0.jar')
+    //小米Push通道
+    compile 'com.umeng.sdk:push-xiaomi:1.0.0'
+    //华为Push通道
+    compile 'com.umeng.sdk:push-huawei:1.0.0'
+    //魅族Push通道
+    compile 'com.umeng.sdk:push-meizu:1.0.0'
+
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:common:1.5.0'
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:utdid:1.1.5.3'
+    //PushSDK
+    compile 'com.umeng.sdk:push:4.1.0'
 }

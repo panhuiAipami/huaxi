@@ -25,4 +25,16 @@ public class LoginHelper {
     public static String LOGINCANCLETEXT = "关闭授权";
     public static String LOGINFAILEDTEXT = "授权失败";
     public static final String WX_AppSecert = "a2498b938e917fcbdd3c043278e02f25";
+
+
+    public static String UMENGMESSAGESECRET = "7d092f917d37895917d0d3da8fa5065c";
+    //小米
+    public static String XIAOMI_ID = "2882303761517608524";
+    public static String XIAOMI_KEY = "5231760852524";
+
+    //魅族
+    public static String MEIZU_ID = "113578";
+    public static String MEIZU_KEY = "a1083e49ddf54cc7974d0c5a672f82ff";
+
+
 }

@@ -37,23 +37,34 @@
         android:roundIcon="@mipmap/huaxi_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="android.max_aspect"
-            android:value="2.1"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+
+
         <activity android:name=".MainActivity">
-        <intent-filter android:autoVerify="true">
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <data android:host="yoursite.example.com" android:scheme="http"/>
-            <data android:host="yoursite.example.com" android:scheme="https"/>
-        </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="yoursite.example.com"
+                    android:scheme="http" />
+                <data
+                    android:host="yoursite.example.com"
+                    android:scheme="https" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="huaxi" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -116,8 +127,9 @@
         <activity
             android:name=".activity.ShareActivity"
             android:theme="@style/MyDialogActivityStyle" />
-        <!--android:theme="@style/StartAppTheme"-->
-        <activity android:name=".activity.SplashActivity"
+        <!-- android:theme="@style/StartAppTheme" -->
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/StartAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -125,10 +137,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SexActivity"></activity>
+        <activity android:name=".activity.SexActivity" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
+        <activity
+            android:name=".activity.MipushActivity"
+            android:exported="true"
+            android:launchMode="singleTask"></activity>
+
+        <!--魅族push应用定义消息receiver声明 -->
+        <receiver android:name="net.huaxi.reader.MeizuTestReceiver">
+            <intent-filter>
+                <!-- 接收push消息 -->
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+                <!-- 接收register消息 -->
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <!-- 接收unregister消息-->
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
+                <!-- 兼容低版本Flyme3推送服务配置 -->
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+
+                <category android:name="net.huaxi.reader"></category>
+            </intent-filter>
+        </receiver>
 
     </application>
 

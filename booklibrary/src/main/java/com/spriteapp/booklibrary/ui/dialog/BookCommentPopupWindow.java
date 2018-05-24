@@ -100,12 +100,12 @@ public class BookCommentPopupWindow extends PopupWindow implements URecyclerView
         if (y < BaseActivity.deviceHeight / 2) {
             orientation = BubbleRelativeLayout.BubbleLegOrientation.TOP;
             y += ScreenUtil.dpToPxInt(10);
-            //在屏幕上半部分
-        } else {
+
+        } else {//在屏幕上半部分
             orientation = BubbleRelativeLayout.BubbleLegOrientation.BOTTOM;
-            y -= getMeasureHeight();
+            y -= (getMeasureHeight()+ScreenUtil.dpToPxInt(2));
         }
-        bubbleRelative.setBubbleParams(orientation, x - ScreenUtil.dpToPxInt(25)); // 设置气泡布局方向及尖角偏移
+        bubbleRelative.setBubbleParams(orientation, x - ScreenUtil.dpToPxInt(5)); // 设置气泡布局方向及尖角偏移
 
         showAtLocation(parent, Gravity.NO_GRAVITY, x, y);
     }

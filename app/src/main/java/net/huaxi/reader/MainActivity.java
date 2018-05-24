@@ -14,6 +14,7 @@ import com.spriteapp.booklibrary.listener.ChannelListener;
 import com.spriteapp.booklibrary.model.WeChatBean;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.ui.activity.HomeActivity;
+import com.spriteapp.booklibrary.ui.activity.WebViewActivity;
 import com.switfpass.pay.MainApplication;
 import com.switfpass.pay.activity.PayPlugin;
 import com.switfpass.pay.bean.RequestMsg;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ShareDialog shareDialog;
 
     private ShareBean shareBean;
-    private int toJump = 0;
+    private int toJump = 0;//0默认打开阅读页， 1打开广告的H5, 2打开推送的H5
 
 
     private String book_id = null;
@@ -59,14 +60,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String action = intent.getAction();
+        String push_url = null;
         if (Intent.ACTION_VIEW.equals(action)) {//从网页跳转过来
-            Log.d("MainActivity--", "从网页跳转过来");
             Uri uri = intent.getData();
             if (uri != null) {
-                Log.d("MainActivity--", "uri不为空");
-                book_id = uri.getQueryParameter("book_id");
-                chapter_id = uri.getQueryParameter("chapter_id");
+                Log.d("MainActivity--", "从网页跳转过来" + uri);
+                book_id = uri.getQueryParameter(BOOK_ID);
+                chapter_id = uri.getQueryParameter(CHAPTER_ID);
             }
+        } else {//推送
+            book_id = intent.getStringExtra(BOOK_ID);
+            chapter_id = intent.getStringExtra(CHAPTER_ID);
+            push_url = intent.getStringExtra(WebViewActivity.LOAD_URL_TAG);
         }
 
         toJump = intent.getIntExtra(ADVERTISEMENT, 0);
@@ -138,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         HuaXiSDK.getInstance().init(config);
         Intent intent1 = new Intent(this, HomeActivity.class);
         intent1.putExtra(ADVERTISEMENT, toJump);
+        intent1.putExtra(WebViewActivity.LOAD_URL_TAG, push_url);
         intent1.putExtra(BOOK_ID, book_id);
         intent1.putExtra(CHAPTER_ID, chapter_id);
         startActivity(intent1);

@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.content.Context;
 
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
@@ -20,6 +21,11 @@ import net.huaxi.reader.http.OKhttpRequest;
 import net.huaxi.reader.http.UrlUtils;
 import net.huaxi.reader.utils.LoginHelper;
 import net.huaxi.reader.utils.ToastUtil;
+import net.huaxi.reader.utils.Util;
+
+import org.android.agoo.huawei.HuaWeiRegister;
+import org.android.agoo.mezu.MeizuRegister;
+import org.android.agoo.xiaomi.MiPushRegistar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,9 +45,25 @@ public class MyApplication extends Application implements ShareResult {
         try {
             mInstance = this;
             UMShareAPI.get(this);
+            UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, LoginHelper.UMENGMESSAGESECRET);
             PlatformConfig.setWeixin(LoginHelper.WX_APP_ID, LoginHelper.WX_AppSecert);
             PlatformConfig.setQQZone(LoginHelper.QQLOGIN_APP_ID, LoginHelper.QQLOGIN_APP_ID);
             PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
+
+            //小米 华为 魅族系统推送
+            switch (Util.getSystem()) {
+                case Util.SYS_EMUI:
+                    HuaWeiRegister.register(this);
+                    break;
+                case Util.SYS_MIUI:
+                    MiPushRegistar.register(this, LoginHelper.XIAOMI_ID, LoginHelper.XIAOMI_KEY);
+                    break;
+                case Util.SYS_FLYME:
+                    ToastUtil.showLong(LoginHelper.MEIZU_KEY+"----------UI----------->"+LoginHelper.MEIZU_ID);
+                    MeizuRegister.register(this, LoginHelper.MEIZU_ID, LoginHelper.MEIZU_KEY);
+                    break;
+            }
+
             PushAgent mPushAgent = PushAgent.getInstance(this);
             //注册推送服务，每次调用register方法都会回调该接口
             mPushAgent.register(callback);
@@ -53,8 +75,8 @@ public class MyApplication extends Application implements ShareResult {
         }
         SharedPreferencesUtil.init(MyApplication.getInstance(),
                 MyApplication.getInstance().getPackageName() + "hua_xi_preference", Context.MODE_PRIVATE);
-        android.util.Log.d("inittoken", MyApplication.getInstance().getPackageName() + "hua_xi_preference");
     }
+
 
     UmengMessageHandler messageHandler = new UmengMessageHandler() {
         @Override
@@ -83,6 +105,8 @@ public class MyApplication extends Application implements ShareResult {
 //            ToastUtil.showToast("通知点击");
         }
     };
+
+
     IUmengRegisterCallback callback = new IUmengRegisterCallback() {
         @Override
         public void onSuccess(String deviceToken) {
