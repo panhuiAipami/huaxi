@@ -59,7 +59,6 @@ public class MyApplication extends Application implements ShareResult {
                     MiPushRegistar.register(this, LoginHelper.XIAOMI_ID, LoginHelper.XIAOMI_KEY);
                     break;
                 case Util.SYS_FLYME:
-                    ToastUtil.showLong(LoginHelper.MEIZU_KEY+"----------UI----------->"+LoginHelper.MEIZU_ID);
                     MeizuRegister.register(this, LoginHelper.MEIZU_ID, LoginHelper.MEIZU_KEY);
                     break;
             }
