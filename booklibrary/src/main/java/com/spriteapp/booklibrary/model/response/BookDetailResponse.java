@@ -194,8 +194,8 @@ public class BookDetailResponse implements Serializable {
         this.book_total_reads = book_total_reads;
     }
 
-    public int getBook_finish_flag() {
-        return book_finish_flag;
+    public boolean getBook_finish_flag() {
+        return book_finish_flag == 1;
     }
 
     public void setBook_finish_flag(int book_finish_flag) {

@@ -316,7 +316,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
             if (ISSHU) {
-                if (realBookDetailResponse.getBook_finish_flag() == 1)
+                if (realBookDetailResponse.getBook_finish_flag())
                     shelfViewHolder.book_reader_chapter_text_view.setText("已完本");
                 else
                     shelfViewHolder.book_reader_chapter_text_view.setText("更新至" + realBookDetailResponse.getBook_chapter_total() + "章");

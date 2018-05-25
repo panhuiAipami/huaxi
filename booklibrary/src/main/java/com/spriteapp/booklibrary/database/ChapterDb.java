@@ -102,6 +102,7 @@ public class ChapterDb {
                     model.setChapter_title(cursor.getString(cursor.getColumnIndex(DbConstants.CHAPTER_TITLE)));
 //                    model.setCacheTime(cursor.getInt(cursor.getColumnIndex(DbConstant.CACHE_TIME)));
                     model.setChapter_is_vip(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_IS_VIP)));
+                    model.setChapter_price(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_PRICE)));
                     model.setChapterReadState(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_READ_STATE)));
                     if (!cursor.isNull(cursor.getColumnIndex(DbConstants.CHAPTER_IS_DOWN_LOAD)))
                         model.setIs_download(cursor.getInt(cursor.getColumnIndex(DbConstants.CHAPTER_IS_DOWN_LOAD)));

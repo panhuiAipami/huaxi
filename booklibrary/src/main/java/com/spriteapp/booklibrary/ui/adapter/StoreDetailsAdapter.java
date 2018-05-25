@@ -2,7 +2,6 @@ package com.spriteapp.booklibrary.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spriteapp.booklibrary.R;
-import com.spriteapp.booklibrary.constant.WebConstant;
 import com.spriteapp.booklibrary.model.response.BookDetailResponse;
 import com.spriteapp.booklibrary.util.ActivityUtil;
 import com.spriteapp.booklibrary.util.GlideUtils;
@@ -91,7 +89,7 @@ public class StoreDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             shuViewHolder.book_name.setText(bookDetailResponse.getBook_name());
             shuViewHolder.author_name.setText(bookDetailResponse.getAuthor_name());
             shuViewHolder.book_describe.setText(bookDetailResponse.getBook_intro());
-            shuViewHolder.book_state.setText(bookDetailResponse.getBook_finish_flag() == 0 ? "连载" : "完本");
+            shuViewHolder.book_state.setText(bookDetailResponse.getBook_finish_flag() ?  "完本":"连载");
             shuViewHolder.book_num.setText(Util.getFloat(bookDetailResponse.getBook_content_byte()));
             shuViewHolder.book_cate.setText((bookDetailResponse.getBook_category() != null && bookDetailResponse.getBook_category().size() != 0) ? bookDetailResponse.getBook_category().get(0).getClass_name() : "都市");
             holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -86,6 +86,7 @@ import com.spriteapp.booklibrary.widget.readview.PageFactory2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -130,10 +131,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     private DrawerLayout mDrawerLayout;
     private ChapterDb mChapterDb;
     private ChapterAdapter mChapterAdapter;
-    //    private TextSizeLayout mTextSizeLayout;
-    private TextView book_reader_title_textView;
+    private TextView book_name, book_status, book_chapter_num, tv_sort;
     private ImageView is_add_shelf;
-
+    private boolean isSort = false;
     /**
      * 是否开始阅读章节
      **/
@@ -314,14 +314,8 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
                 mPresenter.getBookDetail(mBookId, false);
             } else {
                 judgeChapterNeedLoad();
-                //添加标题
-                BookDetailResponse shareDetail = mNewBookDetail != null ?
-                        mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-                if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
-                    book_reader_title_textView.setText(shareDetail.getBook_name());
-                }
-
             }
+            setLeftTopBookInfo(mOldBookDetail);
         }
         setBatteryState();
     }
@@ -396,8 +390,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             mPresenter.getChapter(mBookId);
         } else {
             //判断是否完结
-            int finishTag = mOldBookDetail.getBook_finish_flag();
-            if (finishTag == BookEnum.BOOK_FINISH_TAG.getValue()) {
+            if (mOldBookDetail.getBook_finish_flag()) {
                 return;
             }
             // 判断章节时间差是否大于六小时
@@ -596,15 +589,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mTextLayout = (LinearLayout) findViewById(R.id.book_reader_text_layout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.book_reader_drawer_layout);
         mReadProgressLayout = (ReadProgressLayout) findViewById(R.id.book_reader_read_progress_layout);
-//        mTextSizeLayout = (TextSizeLayout) findViewById(R.id.book_reader_text_size_layout);
+        book_name = (TextView) findViewById(R.id.book_name);
+        book_status = (TextView) findViewById(R.id.book_status);
+        book_chapter_num = (TextView) findViewById(R.id.book_chapter_num);
+        tv_sort = (TextView) findViewById(R.id.tv_sort);
 
-        book_reader_title_textView = (TextView) findViewById(R.id.book_reader_title_textView);
-//        book_reader_title_textView.setMaxEms(6);
-        book_reader_title_textView.setVisibility(View.GONE);
-//        book_reader_title_textView.setTextColor(ContextCompat.getColor(this, R.color.book_reader_reader_text_color));
         mShowView = mBottomLayout;
         mDismissView = mBottomLayout;
-//        mTextSizeLayout.setCallBack(mTextSizeCallback);
         mReadProgressLayout.setCallback(mPositionCallback);
         is_add_shelf = (ImageView) findViewById(R.id.is_add_shelf);
         setListener();
@@ -641,6 +632,22 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mModeLayout.setOnClickListener(this);
         mTextLayout.setOnClickListener(this);
         download_btn.setOnClickListener(this);
+        tv_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isSort = !isSort;
+                if (isSort) {
+                    tv_sort.setText("正序");
+                } else {
+                    tv_sort.setText("倒叙");
+
+                }
+                if (mChapterList != null && mChapterList.size() > 0) {
+                    Collections.reverse(mChapterList);
+                }
+                mChapterAdapter.notifyDataSetChanged();
+            }
+        });
         mChapterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -810,7 +817,7 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
             return;
         }
 
-        DialogUtil.showCommonDialog(this, getResources().getString(R.string.book_reader_sure_to_add_shelf),
+        DialogUtil.showAddShelfDialog(this, getResources().getString(R.string.book_reader_sure_to_add_shelf),
                 new DialogListener() {
                     @Override
                     public void clickCancel() {
@@ -1516,11 +1523,9 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         mChapterAdapter.notifyDataSetChanged();
 
         //添加标题
-//        BookDetailResponse shareDetail = mNewBookDetail != null ?
-//                mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
-//        if (shareDetail != null && shareDetail.getBook_name() != null && !shareDetail.getBook_name().isEmpty()) {
-//            book_reader_title_textView.setText(shareDetail.getBook_name());
-//        }
+        BookDetailResponse shareDetail = mNewBookDetail != null ?
+                mNewBookDetail : mOldBookDetail != null ? mOldBookDetail : null;
+        setLeftTopBookInfo(shareDetail);
 
         //保存章节目录
         saveChapterToDb();
@@ -1654,6 +1659,29 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
         if (mOldBookDetail != null) {
             mOldBookDetail.setBook_add_shelf(isAddShelf);
         }
+    }
 
+    /**
+     * 显示左侧view信息
+     *
+     * @param shareDetail
+     */
+    public void setLeftTopBookInfo(BookDetailResponse shareDetail) {
+        book_chapter_num.setText("共" + mChapterList.size() + "章");
+        book_name.setText(shareDetail.getBook_name());
+        String status = null;
+        int color, bg_color;
+        if (shareDetail.getBook_finish_flag()) {
+            status = "已完结";
+            color = R.color.down_load_orange;
+            bg_color = R.color.yellow_shallow_bg_color;
+        } else {
+            status = "连载中...";
+            color = R.color.green_color;
+            bg_color = R.color.green_shallow_bg_color;
+        }
+        book_status.setTextColor(ContextCompat.getColor(this, color));
+        book_status.setBackgroundColor(ContextCompat.getColor(this, bg_color));
+        book_status.setText(status);
     }
 }

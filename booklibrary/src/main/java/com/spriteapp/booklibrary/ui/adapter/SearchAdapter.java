@@ -58,7 +58,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             search.book_name.setText(bookDetailResponse.getBook_name());
             search.author_name.setText(bookDetailResponse.getAuthor_name());
             search.book_describe.setText(bookDetailResponse.getBook_intro());
-            search.book_state.setText(bookDetailResponse.getBook_finish_flag() == 0 ? "连载" : "完本");
+            search.book_state.setText(bookDetailResponse.getBook_finish_flag()? "完本": "连载");
             search.book_num.setText(Util.getFloat(bookDetailResponse.getBook_content_byte()));
             search.book_cate.setText((bookDetailResponse.getBook_keywords() != null && bookDetailResponse.getBook_keywords().size() != 0) ? bookDetailResponse.getBook_keywords().get(0) : "都市");
             holder.itemView.setOnClickListener(new View.OnClickListener() {

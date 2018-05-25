@@ -76,7 +76,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             shuViewHolder.book_name.setText(bookDetailResponse.getBook_name());
             shuViewHolder.author_name.setText(bookDetailResponse.getAuthor_name());
             shuViewHolder.book_describe.setText(bookDetailResponse.getBook_intro());
-            shuViewHolder.book_state.setText(bookDetailResponse.getBook_finish_flag() == 0 ? "连载" : "完本");
+            shuViewHolder.book_state.setText(bookDetailResponse.getBook_finish_flag() ?  "完本":"连载");
             shuViewHolder.book_num.setText(Util.getFloat(bookDetailResponse.getBook_content_byte()));
             shuViewHolder.book_cate.setText((bookDetailResponse.getBook_keywords() != null && bookDetailResponse.getBook_keywords().size() != 0) ? bookDetailResponse.getBook_keywords().get(0) : "都市");
             holder.itemView.setOnClickListener(new View.OnClickListener() {

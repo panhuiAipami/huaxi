@@ -319,7 +319,7 @@ public class NewBookStoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.book_name.setText(bookDetailResponse.getBook_name());
         holder.author_name.setText(bookDetailResponse.getAuthor_name());
         holder.book_describe.setText(bookDetailResponse.getBook_intro());
-        holder.book_state.setText(bookDetailResponse.getBook_finish_flag() == 0 ? "连载" : "完本");
+        holder.book_state.setText(bookDetailResponse.getBook_finish_flag()?  "完本":"连载" );
         holder.book_num.setText(Util.getFloat(bookDetailResponse.getBook_content_byte()));
         if (startPos == bean.size() - 1) {
             holder.line1.setVisibility(View.GONE);

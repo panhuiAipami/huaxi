@@ -102,26 +102,28 @@ public class ChapterAdapter extends BaseAdapter {
                             hasRead ? R.color.book_reader_common_text_color :
                                     R.color.book_reader_chapter_not_read_day_color));
         }
+        boolean isVipChapter = ChapterEnum.CHAPTER_IS_VIP.getCode()
+                == bookChapterResponse.getChapter_is_vip();
 
+        String text = null;
         if (bookChapterResponse.getIs_download()) {
-            holder.freeChapterTextView.setText("已下载");
-            holder.freeChapterTextView.setVisibility(View.VISIBLE);
+            text = "已下载";
+        } else if (!isVipChapter) {
+            text = "免费";
         } else {
-            boolean isVipChapter = ChapterEnum.CHAPTER_IS_VIP.getCode()
-                    == bookChapterResponse.getChapter_is_vip();
-            holder.freeChapterTextView.setText("免费");
-            holder.freeChapterTextView.setVisibility(isVipChapter ? View.GONE : View.VISIBLE);
+            text = bookChapterResponse.getChapter_price() + "花贝";
         }
-        if (isCurrentChapter) {
-            holder.freeChapterTextView.setTextColor(mContext.getResources()
-                    .getColor(isNight ? R.color.book_reader_chapter_free_text_night_color :
-                            R.color.book_reader_chapter_free_text_day_color));
-        } else {
+        holder.freeChapterTextView.setText(text);
+
+        if (!isVipChapter) {//免费颜色
             holder.freeChapterTextView.setTextColor(mContext.getResources()
                     .getColor(isNight ? R.color.book_reader_chapter_not_read_night_color :
                             R.color.book_reader_chapter_not_read_day_color));
+        } else {
+            holder.freeChapterTextView.setTextColor(mContext.getResources()
+                    .getColor(R.color.down_load_orange));
         }
-        
+
         holder.lineView.setBackgroundResource(isNight ? R.color.book_reader_divide_line_night_color :
                 R.color.book_reader_divide_line_color);
         return convertView;

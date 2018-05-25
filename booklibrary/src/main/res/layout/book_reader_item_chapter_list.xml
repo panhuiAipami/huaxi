@@ -17,8 +17,8 @@
             android:layout_marginRight="14dp"
             android:text="免费"
             android:textColor="@color/book_reader_main_color"
-            android:textSize="13sp"
-            android:visibility="gone" />
+            android:textSize="12sp"
+             />
 
         <TextView
             android:id="@+id/book_reader_chapter_text_view"
