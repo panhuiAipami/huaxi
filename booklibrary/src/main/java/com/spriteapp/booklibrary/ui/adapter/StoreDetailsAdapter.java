@@ -36,13 +36,15 @@ public class StoreDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int mImageHeight;
     private int HENG = 0;
     private int SHU = 1;
+    private int type;
     private String jumpUrl = "";
     private static final int IMAGE_WIDTH = 100;
     private static final int IMAGE_HEIGHT = 144;
 
-    public StoreDetailsAdapter(Activity context, List<BookDetailResponse> list, int spanCount, int spaceWidth) {
+    public StoreDetailsAdapter(Activity context, List<BookDetailResponse> list, int spanCount, int spaceWidth,int type) {
         this.context = context;
         this.list = list;
+        this.type = type;
         mImageWidth = RecyclerViewUtil.getImageWidth(spanCount - 1, spaceWidth);
         mImageHeight = mImageWidth * ScreenUtil.dpToPxInt(IMAGE_HEIGHT)
                 / ScreenUtil.dpToPxInt(IMAGE_WIDTH);
@@ -117,8 +119,9 @@ public class StoreDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if (ISSHU)
             return SHU;
-        else
-            return HENG;
+        else if (type == 1)
+            return SHU;
+        return HENG;
     }
 
     private class DetailsViewHolder extends RecyclerView.ViewHolder {

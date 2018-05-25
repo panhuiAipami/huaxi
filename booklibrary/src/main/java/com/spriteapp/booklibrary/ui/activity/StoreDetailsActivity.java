@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,8 @@ public class StoreDetailsActivity extends TitleActivity implements SwipeRefreshL
         big_layout.setPadding(-ScreenUtil.dpToPxInt(10), ScreenUtil.dpToPxInt(47), 0, 0);
         big_layout.setBackgroundColor(getResources().getColor(R.color.app_background));
         swipe_refresh.setColorSchemeResources(R.color.square_comment_selector);
-        adapter = new StoreDetailsAdapter(this, list, 3, 2);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new StoreDetailsAdapter(this, list, 1, 1,1);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
