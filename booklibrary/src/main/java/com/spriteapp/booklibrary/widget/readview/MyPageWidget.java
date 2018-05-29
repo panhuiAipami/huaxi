@@ -579,6 +579,10 @@ public class MyPageWidget extends View implements MyPopupWindow.OnButtonClick {
     private ShowChar DetectPressShowChar(float down_X2, float down_Y2, boolean isFirst) {
         List<ShowLine> lines = new ArrayList<>();
         ShowChar ch = null;
+
+        if (mLinseData == null)
+            return null;
+
         find_text_over:
         for (ShowLine l : mLinseData) {
             for (ShowChar c : l.CharsData) {

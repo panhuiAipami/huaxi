@@ -52,7 +52,14 @@ public class SharedPreferencesUtil {
 
 
     public float getFloat(String key, float defaultVal) {
-        return this.prefs.getFloat(key, defaultVal);
+        float size = 18;
+        try {
+            size = this.prefs.getFloat(key, defaultVal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return size;
+        }
+        return size;
     }
 
     public float getFloat(String key) {

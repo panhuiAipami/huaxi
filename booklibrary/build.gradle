@@ -54,7 +54,7 @@ dependencies {
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.7'
     compile 'com.android.support:recyclerview-v7:25+'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.android.support:design:25+'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

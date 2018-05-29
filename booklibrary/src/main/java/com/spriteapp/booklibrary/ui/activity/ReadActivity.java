@@ -1013,9 +1013,13 @@ public class ReadActivity extends TitleActivity implements SubscriberContentView
     @Override
     protected void onResume() {
         super.onResume();
-        isAddOrClean = BookUtil.isBookAddShelf(mOldBookDetail);
-        if (is_add_shelf != null)
-            is_add_shelf.setVisibility(isAddOrClean ? View.VISIBLE : View.GONE);
+        try {
+            isAddOrClean = BookUtil.isBookAddShelf(mOldBookDetail);
+            if (is_add_shelf != null)
+                is_add_shelf.setVisibility(isAddOrClean ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
