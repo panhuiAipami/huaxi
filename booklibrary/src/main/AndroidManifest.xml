@@ -13,6 +13,9 @@
 
         <!-- 下载app服务 -->
         <service android:name=".service.UpdateAPKService" />
+        <service
+            android:name="com.huawei.updatesdk.service.deamon.download.DownloadService"
+            android:exported="false" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -30,8 +33,8 @@
             android:theme="@style/HuaXiAppTheme"></activity>
         <activity
             android:name=".ui.activity.ReadActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/HuaXiAppTheme"></activity>
         <activity
             android:name=".ui.activity.WebViewActivity"
@@ -93,12 +96,40 @@
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
         </activity>
 
+        <activity
+            android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:theme="@style/upsdkDlDialog">
+
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar" />
+        </activity>
+
+        <activity
+            android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@style/upsdkDlDialog">
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+
         <!-- “xxx.xxx.xxx”用实际的应用包名替换 -->
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
             android:authorities="net.huaxi.reader.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true" />
+        <!--“xxx.xxx.xxx”用实际的应用包名替换-->
+        <provider
+            android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
+            android:authorities="net.huaxi.reader.updateSdk.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"></provider>
 
         <activity android:name=".ui.activity.SquareDetailsActivity" />
         <activity android:name=".ui.activity.CommentReplyActivity" />

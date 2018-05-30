@@ -4,6 +4,8 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 
+import com.huawei.android.hms.agent.HMSAgent;
+import com.spriteapp.booklibrary.ui.activity.HomeActivity;
 import com.spriteapp.booklibrary.util.SharedPreferencesUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -45,6 +47,8 @@ public class MyApplication extends Application implements ShareResult {
         try {
             mInstance = this;
             UMShareAPI.get(this);
+            if (HomeActivity.CHANNEL_IS_HUAWEI)
+                HMSAgent.init(this);
             UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, LoginHelper.UMENGMESSAGESECRET);
             PlatformConfig.setWeixin(LoginHelper.WX_APP_ID, LoginHelper.WX_AppSecert);
             PlatformConfig.setQQZone(LoginHelper.QQLOGIN_APP_ID, LoginHelper.QQLOGIN_APP_ID);

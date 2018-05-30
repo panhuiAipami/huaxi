@@ -1,0 +1,54 @@
+[
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\upsdk_app_dl_progress_dialog.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\66fb8aba3f301497070f8d438f84b2c0bf55bcd9\\output\\res\\layout\\upsdk_app_dl_progress_dialog.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\upsdk_ota_update_view.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\66fb8aba3f301497070f8d438f84b2c0bf55bcd9\\output\\res\\layout\\upsdk_ota_update_view.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hms_game_top_async_login.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\27af90d9002ba6ff403407e3c0e53cdd6ce63a09\\output\\res\\layout\\hms_game_top_async_login.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_layout2.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_layout2.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_layout4.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_layout4.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hms_game_buoy_hide_guide_dialog.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\27af90d9002ba6ff403407e3c0e53cdd6ce63a09\\output\\res\\layout\\hms_game_buoy_hide_guide_dialog.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_layout7.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_layout7.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hms_game_buoy_hide_notice.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\27af90d9002ba6ff403407e3c0e53cdd6ce63a09\\output\\res\\layout\\hms_game_buoy_hide_notice.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hms_download_progress.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\66fb8aba3f301497070f8d438f84b2c0bf55bcd9\\output\\res\\layout\\hms_download_progress.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_layout8.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_layout8.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_buttons_layout.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_buttons_layout.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hwpush_icons_layout.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\24a1767438b920f4b52e1b7bf09950845e6938c1\\output\\res\\layout\\hwpush_icons_layout.xml"
+    },
+    {
+        "merged": "F:\\studio_demo\\2018_04_12\\huaxiandroid\\hmsagents\\build\\intermediates\\res\\merged\\debug\\layout\\hms_game_buoy_window_small.xml",
+        "source": "C:\\Users\\userfirst\\.android\\build-cache\\27af90d9002ba6ff403407e3c0e53cdd6ce63a09\\output\\res\\layout\\hms_game_buoy_window_small.xml"
+    }
+]

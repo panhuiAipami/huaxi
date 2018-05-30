@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huawei.android.hms.agent.HMSAgent;
 import com.huawei.hms.activity.BridgeActivity;
 import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.api.HuaweiApiAvailability;
@@ -151,7 +152,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
      */
 
     //华为打包为true，否则为false（华为渠道需要用华为支付）
-    public static boolean CHANNEL_IS_HUAWEI = false;
+    public static boolean CHANNEL_IS_HUAWEI = true;
     //花都打包为:true,否则为false (添加拉新功能)
     public static final boolean ISHAUDU = false;
     public static final String SIGN_SECRET = CHANNEL_IS_HUAWEI ? "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc" : ISHAUDU ? "xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri" : "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
@@ -1096,6 +1097,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     @Override
     public void onConnected() {
         Log.i(HuaWeiPayTask.TAG, "HuaweiApiClient 连接成功");
+        HMSAgent.checkUpdate(this);
     }
 
     @Override

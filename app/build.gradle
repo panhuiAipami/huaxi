@@ -107,6 +107,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':booklibrary')
+    compile project(':hmsagents')
     compile files('libs/open_sdk_r5788_lite.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
     compile files('libs/SocialSDK_Sina_Full.jar')
