@@ -55,18 +55,17 @@ public class MyApplication extends Application implements ShareResult {
             PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
 
             //小米 华为 魅族系统推送
-            switch (Util.getSystem()) {
-                case Util.SYS_EMUI:
+            switch (android.os.Build.BRAND) {
+                case Util.SYS_HUAWEI:
                     HuaWeiRegister.register(this);
                     break;
-                case Util.SYS_MIUI:
+                case Util.SYS_XIAOMI:
                     MiPushRegistar.register(this, LoginHelper.XIAOMI_ID, LoginHelper.XIAOMI_KEY);
                     break;
-                case Util.SYS_FLYME:
+                case Util.SYS_MEIZU:
                     MeizuRegister.register(this, LoginHelper.MEIZU_ID, LoginHelper.MEIZU_KEY);
                     break;
             }
-
             PushAgent mPushAgent = PushAgent.getInstance(this);
             //注册推送服务，每次调用register方法都会回调该接口
             mPushAgent.register(callback);

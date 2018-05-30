@@ -1524,6 +1524,9 @@ public class Util {
     }
 
 
+    public static final String SYS_HUAWEI = "Hwawei";
+    public static final String SYS_XIAOMI = "Xiaomi";
+    public static final String SYS_MEIZU = "Meizu";
     public static final String SYS_EMUI = "sys_emui";
     public static final String SYS_MIUI = "sys_miui";
     public static final String SYS_FLYME = "sys_flyme";
