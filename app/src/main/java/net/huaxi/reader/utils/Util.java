@@ -1523,10 +1523,37 @@ public class Util {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    public static String getphoneSystem() {
+        String phoneManufacturer = android.os.Build.MANUFACTURER;
+        if (!TextUtils.isEmpty(phoneManufacturer)) {
+            if (phoneManufacturer.equals("smartisan")) {
+                return "chuizi";
+            } else if (phoneManufacturer.equals("HTC")) {
+                return "htc";
+            } else if (phoneManufacturer.equals("HUAWEI")) {
+                return SYS_HUAWEI;
+            } else if (phoneManufacturer.equals("Meizu")) {
+                return SYS_MEIZU;
+            } else if (phoneManufacturer.equals("OPPO")) {
+                return "oppo";
+            } else if (phoneManufacturer.equals("samsung")) {
+                return "sanxing";
+            } else if (phoneManufacturer.equals("vivo")) {
+                return "vivo";
+            } else if (phoneManufacturer.equals("Xiaomi")) {
+                return SYS_XIAOMI;
+            } else if (phoneManufacturer.equals("OnePlus")) {
+                return "yijia";
+            }
+        }
+        return "qita";
+    }
 
-    public static final String SYS_HUAWEI = "Hwawei";
-    public static final String SYS_XIAOMI = "Xiaomi";
-    public static final String SYS_MEIZU = "Meizu";
+
+    public static final String SYS_HUAWEI = "huawei";
+    public static final String SYS_XIAOMI = "xiaomi";
+    public static final String SYS_MEIZU = "meizu";
+
     public static final String SYS_EMUI = "sys_emui";
     public static final String SYS_MIUI = "sys_miui";
     public static final String SYS_FLYME = "sys_flyme";

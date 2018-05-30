@@ -55,7 +55,7 @@ public class MyApplication extends Application implements ShareResult {
             PlatformConfig.setSinaWeibo(LoginHelper.WB_APP_KEY, LoginHelper.WB_APP_SECRET, LoginHelper.WB_REDIRECT_URL);
 
             //小米 华为 魅族系统推送
-            switch (android.os.Build.BRAND) {
+            switch (Util.getphoneSystem()) {
                 case Util.SYS_HUAWEI:
                     HuaWeiRegister.register(this);
                     break;
