@@ -138,7 +138,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
     private LinearLayout icon_layout;
     private View icon_line;
 
-    //打包记得改成:huawei,测试用:alibaba,如果要打2.5.0之前的包(不支持华为登录与支付)用:aaaaa
+    //打包记得改成:huawei,测试用:alibaba,如果要打2.5.0之前的包(不支持华为登录与支付)用:
 
 
 //    public static final String HUAWEI = "alibaba";
@@ -152,7 +152,7 @@ public class HomeActivity extends TitleActivity implements View.OnClickListener,
      */
 
     //华为打包为true，否则为false（华为渠道需要用华为支付）
-    public static boolean CHANNEL_IS_HUAWEI = true;
+    public static boolean CHANNEL_IS_HUAWEI = false;
     //花都打包为:true,否则为false (添加拉新功能)
     public static final boolean ISHAUDU = false;
     public static final String SIGN_SECRET = CHANNEL_IS_HUAWEI ? "4zf8xzwv6c3ldcb8f2486ydji5z7u5ml5ktzxc" : ISHAUDU ? "xn7667qjhq8ew2vy1mfz5h5c63ijdjh97px9ri" : "fygopf7cixub8cpkh1oruik2byt2ykvkh81sy6";
